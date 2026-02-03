@@ -32,6 +32,56 @@ const projects = [
     liveUrl: "https://albertocid.com.br",
     repoUrl: "https://github.com/mhrzfrota",
     category: "Landing Page"
+  },
+  {
+    id: 4,
+    title: "Site Dropshipping",
+    description: "Projeto publicado no GitHub: site-dropshipping.",
+    tags: ["GitHub", "Web"],
+    image: "/images/project-code.jpg",
+    liveUrl: "#",
+    repoUrl: "https://github.com/mhrzfrota/site-dropshipping",
+    category: "Web"
+  },
+  {
+    id: 5,
+    title: "MG Aldeota",
+    description: "Projeto publicado no GitHub: mgaldeota.",
+    tags: ["GitHub", "Web"],
+    image: "/images/project-code.jpg",
+    liveUrl: "#",
+    repoUrl: "https://github.com/mhrzfrota/mgaldeota",
+    category: "Web"
+  },
+  {
+    id: 6,
+    title: "BuscaApp",
+    description: "Projeto publicado no GitHub: BuscaApp.",
+    tags: ["GitHub", "App"],
+    image: "/images/project-mobile.jpg",
+    liveUrl: "#",
+    repoUrl: "https://github.com/mhrzfrota/BuscaApp",
+    category: "Mobile"
+  },
+  {
+    id: 7,
+    title: "ClipRadio",
+    description: "Projeto publicado no GitHub: clipradio.",
+    tags: ["GitHub", "Web"],
+    image: "/images/project-analytics.jpg",
+    liveUrl: "#",
+    repoUrl: "https://github.com/Ambiente-MSL/clipradio",
+    category: "Web"
+  },
+  {
+    id: 8,
+    title: "Monitor",
+    description: "Projeto publicado no GitHub: monitor.",
+    tags: ["GitHub", "Web"],
+    image: "/images/project-analytics.jpg",
+    liveUrl: "#",
+    repoUrl: "https://github.com/Ambiente-MSL/monitor",
+    category: "Web"
   }
 ];
 
