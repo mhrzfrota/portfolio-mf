@@ -96,7 +96,7 @@ export default function Home() {
           <div className="order-2 md:order-1 space-y-4">
             <h3 className="text-2xl font-bold">Dashboard Meta Analytics</h3>
             <p className="text-muted-foreground">
-              Sistema de monitoramento de métricas do Facebook e Instagram, integrado à Meta Graph API e Supabase, com interface em Flask/React para KPIs em tempo quase real.
+              Sistema de monitoramento de métricas do Facebook e Instagram, integrado à Meta Graph API e PostgreSQL, com interface em Flask/React para KPIs em tempo quase real.
             </p>
             <ul className="flex flex-wrap gap-2 text-xs font-mono text-primary/80">
               <li className="px-2 py-1 bg-primary/10 rounded">Python</li>
@@ -113,7 +113,7 @@ export default function Home() {
           <div className="order-1 md:order-2 rounded-lg overflow-hidden border border-border group relative">
             <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity z-10 pointer-events-none"></div>
             <img 
-              src="/images/project-analytics.jpg" 
+              src="/images/image.png" 
               alt="Dashboard Meta Analytics" 
               className="w-full h-auto object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
             />

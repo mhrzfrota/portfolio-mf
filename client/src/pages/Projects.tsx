@@ -7,8 +7,8 @@ const projects = [
     id: 1,
     title: "Dashboard Meta Analytics",
     description: "Sistema de monitoramento de métricas do Facebook e Instagram, integrado à Meta Graph API e Supabase, com visualização de KPIs em tempo quase real.",
-    tags: ["Python", "Flask", "React", "Supabase", "Meta Graph API"],
-    image: "/images/project-analytics.jpg",
+    tags: ["Python", "Flask", "React", "PostgreSQL", "Meta Graph API"],
+    image: "/images/image.png",
     liveUrl: "https://dashmsl-frontend.vercel.app",
     repoUrl: "https://github.com/mhrzfrota",
     category: "Web"
@@ -32,6 +32,16 @@ const projects = [
     liveUrl: "https://albertocid.com.br",
     repoUrl: "https://github.com/mhrzfrota",
     category: "Landing Page"
+  },
+  {
+    id: 4,
+    title: "Clipradio",
+    description: "Plataforma para gestao de radios com agendamentos e gravacoes automatizadas, usando React/Vite no frontend e Flask no backend, com streaming HLS e transcricao de audio por IA.",
+    tags: ["React", "Vite", "Flask", "PostgreSQL", "Supabase", "Socket.IO", "HLS.js", "Docker"],
+    image: "/images/image2.png",
+    liveUrl: "#",
+    repoUrl: "https://github.com/Ambiente-MSL/clipradio",
+    category: "Web"
   }
 ];
 
