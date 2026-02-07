@@ -6,7 +6,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
 
   const navItems = [
-    { icon: Terminal, label: "_inicio", path: "/" },
+    { icon: Terminal, label: "_início", path: "/" },
     { icon: Code2, label: "_projetos", path: "/projects" },
     { icon: Cpu, label: "_habilidades", path: "/skills" },
     { icon: BookOpen, label: "_blog", path: "/blog" },

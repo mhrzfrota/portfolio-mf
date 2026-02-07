@@ -1,4 +1,4 @@
-import { Calendar, Clock, ArrowRight } from "lucide-react";
+﻿import { Calendar, Clock, ArrowRight } from "lucide-react";
 
 const posts = [
   {
@@ -53,15 +53,15 @@ export default function Blog() {
                 <Clock className="w-3 h-3" /> {post.readTime}
               </span>
             </div>
-            
+
             <h2 className="text-2xl font-bold mb-3 group-hover:text-primary transition-colors cursor-pointer">
               {post.title}
             </h2>
-            
+
             <p className="text-muted-foreground mb-4 leading-relaxed">
               {post.excerpt}
             </p>
-            
+
             <div className="flex items-center justify-between">
               <div className="flex gap-2">
                 {post.tags.map((tag) => (
@@ -70,7 +70,7 @@ export default function Blog() {
                   </span>
                 ))}
               </div>
-              
+
               <span className="text-sm font-mono text-primary flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-all -translate-x-2 group-hover:translate-x-0 cursor-pointer">
                 Ler artigo <ArrowRight className="w-3 h-3" />
               </span>

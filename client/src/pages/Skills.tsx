@@ -1,4 +1,4 @@
-import { Progress } from "@/components/ui/progress";
+﻿import { Progress } from "@/components/ui/progress";
 
 const skillCategories = [
   {
@@ -49,7 +49,7 @@ export default function Skills() {
               <span className="w-2 h-2 bg-primary inline-block"></span>
               {category.title}
             </h2>
-            
+
             <div className="space-y-6">
               {category.skills.map((skill) => (
                 <div key={skill.name} className="space-y-2 group">
@@ -58,7 +58,7 @@ export default function Skills() {
                     <span className="text-muted-foreground">{skill.level}%</span>
                   </div>
                   <div className="h-2 bg-secondary overflow-hidden rounded-none">
-                    <div 
+                    <div
                       className="h-full bg-primary transition-all duration-1000 ease-out group-hover:bg-primary/80"
                       style={{ width: `${skill.level}%` }}
                     ></div>

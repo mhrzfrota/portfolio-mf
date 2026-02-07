@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+﻿import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Mail, MessageCircle, Send } from "lucide-react";
@@ -34,47 +34,47 @@ export default function Contact() {
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <label htmlFor="name" className="text-sm font-mono text-muted-foreground">Nome</label>
-                <Input 
-                  id="name" 
+                <Input
+                  id="name"
                   {...register("name", { required: true })}
-                  className="bg-card border-border focus:border-primary font-mono rounded-none" 
-                  placeholder="Seu nome" 
+                  className="bg-card border-border focus:border-primary font-mono rounded-none"
+                  placeholder="Seu nome"
                 />
               </div>
               <div className="space-y-2">
-                <label htmlFor="email" className="text-sm font-mono text-muted-foreground">Email</label>
-                <Input 
-                  id="email" 
+                <label htmlFor="email" className="text-sm font-mono text-muted-foreground">E-mail</label>
+                <Input
+                  id="email"
                   type="email"
                   {...register("email", { required: true })}
-                  className="bg-card border-border focus:border-primary font-mono rounded-none" 
-                  placeholder="voce@exemplo.com" 
+                  className="bg-card border-border focus:border-primary font-mono rounded-none"
+                  placeholder="você@exemplo.com"
                 />
               </div>
             </div>
-            
+
             <div className="space-y-2">
               <label htmlFor="subject" className="text-sm font-mono text-muted-foreground">Assunto</label>
-              <Input 
-                id="subject" 
+              <Input
+                id="subject"
                 {...register("subject", { required: true })}
-                className="bg-card border-border focus:border-primary font-mono rounded-none" 
-                placeholder="Proposta de projeto" 
+                className="bg-card border-border focus:border-primary font-mono rounded-none"
+                placeholder="Proposta de projeto"
               />
             </div>
-            
+
             <div className="space-y-2">
               <label htmlFor="message" className="text-sm font-mono text-muted-foreground">Mensagem</label>
-              <Textarea 
-                id="message" 
+              <Textarea
+                id="message"
                 {...register("message", { required: true })}
-                className="min-h-[150px] bg-card border-border focus:border-primary font-mono rounded-none resize-none" 
-                placeholder="Conte sobre o seu projeto..." 
+                className="min-h-[150px] bg-card border-border focus:border-primary font-mono rounded-none resize-none"
+                placeholder="Conte sobre o seu projeto..."
               />
             </div>
-            
-            <Button 
-              type="submit" 
+
+            <Button
+              type="submit"
               disabled={isSubmitting}
               className="w-full md:w-auto bg-primary text-primary-foreground hover:bg-primary/90 font-mono rounded-none"
             >
@@ -101,11 +101,11 @@ export default function Contact() {
                   <Mail className="w-5 h-5" />
                 </div>
                 <div>
-                  <p className="text-sm font-mono text-muted-foreground">Email</p>
+                  <p className="text-sm font-mono text-muted-foreground">E-mail</p>
                   <a href="mailto:frotamht@gmail.com" className="hover:text-primary transition-colors">frotamht@gmail.com</a>
                 </div>
               </div>
-              
+
               <div className="flex items-start gap-4">
                 <div className="p-2 bg-primary/10 rounded text-primary">
                   <MessageCircle className="w-5 h-5" />
