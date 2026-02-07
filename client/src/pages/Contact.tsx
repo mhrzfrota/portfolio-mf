@@ -1,7 +1,7 @@
 ﻿import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Mail, MessageCircle, Send } from "lucide-react";
+import { Download, Mail, MessageCircle, Send } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -123,8 +123,10 @@ export default function Contact() {
             <p className="text-sm text-muted-foreground mb-4">
               Um resumo da minha experiência, formação e habilidades técnicas.
             </p>
-            <Button variant="outline" className="w-full border-primary/30 hover:bg-primary hover:text-primary-foreground font-mono rounded-none">
-              Baixar PDF
+            <Button asChild variant="outline" className="w-full border-primary/30 hover:bg-primary hover:text-primary-foreground font-mono rounded-none">
+              <a href="/curriculo.pdf" download="Curriculo-Matheus-Frota.pdf">
+                Baixar PDF <Download className="w-4 h-4" />
+              </a>
             </Button>
           </div>
         </div>
