@@ -16,14 +16,14 @@ export default function Home() {
             Disponível para oportunidades
           </div>
 
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-tight">
+          <h1 className="text-[1.6875rem] md:text-[2.8125rem] lg:text-[3.375rem] font-bold tracking-tight leading-tight">
             Criando soluções <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/50">digitais e dados</span>
             <br /> que fazem diferença.
           </h1>
 
           <p className="text-lg text-muted-foreground max-w-xl leading-relaxed">
-            Sou Matheus Frota, desenvolvedor full stack júnior com foco em backend e dados. Crio APIs REST seguras, integro sistemas e transformo métricas em decisões com dashboards claros.
+            Sou Matheus Frota, desenvolvedor de software. 
           </p>
 
           <div className="flex flex-wrap gap-4 pt-4">
@@ -71,9 +71,17 @@ export default function Home() {
       <section className="space-y-6">
         <h2 className="text-sm font-mono text-muted-foreground uppercase tracking-widest">Tecnologias que uso</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-          {["Node.js", "Express", "Java", "PostgreSQL", "Supabase", "Docker"].map((tech) => (
-            <div key={tech} className="flex items-center justify-center p-4 border border-border bg-card/30 hover:border-primary/50 hover:bg-primary/5 transition-all cursor-default group">
-              <span className="font-mono text-sm group-hover:text-primary">{tech}</span>
+          {[
+            { name: "Node.js", icon: "/images/tech/nodejs.svg" },
+            { name: "Express", icon: "/images/tech/express.svg" },
+            { name: "Java", icon: "/images/tech/java.svg" },
+            { name: "PostgreSQL", icon: "/images/tech/postgresql.svg" },
+            { name: "Supabase", icon: "/images/tech/supabase.svg" },
+            { name: "Docker", icon: "/images/tech/docker.svg" },
+          ].map((tech) => (
+            <div key={tech.name} className="flex flex-col items-center justify-center gap-2 p-4 border border-border bg-card/30 hover:border-primary/50 hover:bg-primary/5 transition-all cursor-default group">
+              <img src={tech.icon} alt={tech.name} className="w-9 h-9 object-contain" loading="lazy" />
+              <span className="font-mono text-sm group-hover:text-primary">{tech.name}</span>
             </div>
           ))}
         </div>

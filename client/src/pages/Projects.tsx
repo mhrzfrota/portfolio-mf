@@ -1,5 +1,5 @@
 ﻿import { Button } from "@/components/ui/button";
-import { ExternalLink, Github, Code } from "lucide-react";
+import { ExternalLink, Github } from "lucide-react";
 import { useState } from "react";
 
 const projects = [
@@ -9,7 +9,7 @@ const projects = [
     description: "Sistema de monitoramento de métricas do Facebook e Instagram, integrado à Meta Graph API e Supabase, com visualização de KPIs em tempo quase real.",
     tags: ["Python", "Flask", "React", "PostgreSQL", "Meta Graph API"],
     image: "/images/image1.png",
-    liveUrl: "https://dashmsl-frontend.vercel.app",
+    liveUrl: "https://monitor.mslestrategia.com.br",
     repoUrl: "https://github.com/mhrzfrota",
     category: "Web"
   },
@@ -29,7 +29,7 @@ const projects = [
     description: "Landing page em HTML, CSS e JavaScript para o livro \"A criança e as novas tecnologias\", com foco em conversão e visual limpo.",
     tags: ["HTML", "CSS", "JavaScript"],
     image: "/images/image6.png",
-    liveUrl: "https://albertocid.com.br",
+    liveUrl: "https://albertocid.com.br/",
     repoUrl: "https://github.com/mhrzfrota",
     category: "Landing Page"
   },
@@ -49,7 +49,7 @@ const projects = [
     description: "E-commerce front-end para loja de roupas com vitrine de produtos, destaques de coleções e navegação SPA, desenvolvido com React e TypeScript.",
     tags: ["React", "TypeScript", "Vite", "Tailwind CSS", "React Router DOM"],
     image: "/images/image3.png",
-    liveUrl: "https://maremovsuamoda.vercel.app",
+    liveUrl: "https://maremovsuamoda.vercel.app/",
     repoUrl: "https://github.com/mhrzfrota/site-dropshipping",
     category: "Web"
   },
@@ -59,7 +59,7 @@ const projects = [
     description: "Landing page institucional para comunicação e captação de clientes, com seção de serviços, apresentação da marca e CTA para contato.",
     tags: ["HTML", "CSS", "Landing Page", "UI Responsiva"],
     image: "/images/image4.png",
-    liveUrl: "https://mgaldeota.vercel.app",
+    liveUrl: "https://mgaldeota.vercel.app/",
     repoUrl: "https://github.com/mhrzfrota/mgaldeota",
     category: "Landing Page"
   }
@@ -121,12 +121,14 @@ export default function Projects() {
                   {project.title}
                 </h3>
                 <div className="flex gap-2">
-                  <a href={project.repoUrl} className="text-muted-foreground hover:text-primary transition-colors">
+                  <a href={project.repoUrl} target="_blank" rel="noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
                     <Github className="w-5 h-5" />
                   </a>
-                  <a href={project.liveUrl} className="text-muted-foreground hover:text-primary transition-colors">
-                    <ExternalLink className="w-5 h-5" />
-                  </a>
+                  {project.liveUrl !== "#" && (
+                    <a href={project.liveUrl} target="_blank" rel="noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+                      <ExternalLink className="w-5 h-5" />
+                    </a>
+                  )}
                 </div>
               </div>
 
@@ -141,6 +143,16 @@ export default function Projects() {
                   </span>
                 ))}
               </div>
+
+              {project.liveUrl !== "#" && (
+                <div className="pt-2">
+                  <Button asChild variant="outline" className="font-mono text-xs border-primary/30 hover:border-primary hover:text-primary">
+                    <a href={project.liveUrl} target="_blank" rel="noreferrer">
+                      Visitar site <ExternalLink className="ml-2 w-3 h-3" />
+                    </a>
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
         ))}
