@@ -32,16 +32,6 @@ const projects = [
     liveUrl: "https://albertocid.com.br",
     repoUrl: "https://github.com/mhrzfrota",
     category: "Landing Page"
-  },
-  {
-    id: 4,
-    title: "Clipradio",
-    description: "Plataforma para gestao de radios com agendamentos e gravacoes automatizadas, usando React/Vite no frontend e Flask no backend, com streaming HLS e transcricao de audio por IA.",
-    tags: ["React", "Vite", "Flask", "PostgreSQL", "Supabase", "Socket.IO", "HLS.js", "Docker"],
-    image: "/images/image2.png",
-    liveUrl: "#",
-    repoUrl: "https://github.com/Ambiente-MSL/clipradio",
-    category: "Web"
   }
 ];
 
