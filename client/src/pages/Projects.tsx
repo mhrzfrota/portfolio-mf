@@ -6,7 +6,7 @@ const projects = [
   {
     id: 1,
     title: "Dashboard Meta Analytics",
-    description: "Sistema de monitoramento de métricas do Facebook e Instagram, integrado à Meta Graph API e Supabase, com visualização de KPIs em tempo quase real.",
+    description: "Sistema de monitoramento de métricas do Facebook e Instagram, integrado à Meta Graph API e PostgreSQL, com visualização de KPIs em tempo quase real.",
     tags: ["Python", "Flask", "React", "PostgreSQL", "Meta Graph API"],
     image: "/images/image1.png",
     liveUrl: "https://monitor.mslestrategia.com.br",
@@ -37,7 +37,7 @@ const projects = [
     id: 4,
     title: "Clipradio",
     description: "Plataforma para gestão de rádios com agendamentos e gravações automatizadas, usando React/Vite no frontend e Flask no backend, com streaming HLS e transcrição de áudio por IA.",
-    tags: ["React", "Vite", "Flask", "PostgreSQL", "Supabase", "Socket.IO", "HLS.js", "Docker"],
+    tags: ["React", "Vite", "Flask", "PostgreSQL", "Socket.IO", "HLS.js", "Docker"],
     image: "/images/image2.png",
     liveUrl: "#",
     repoUrl: "https://github.com/Ambiente-MSL/clipradio",

@@ -59,7 +59,7 @@ export default function Home() {
               </div>
               <p><span className="text-purple-400">const</span> <span className="text-blue-400">desenvolvedor</span> = <span className="text-yellow-300">{"{"}</span></p>
               <p className="pl-4">nome: <span className="text-orange-300">"Matheus Frota"</span>,</p>
-              <p className="pl-4">cargo: <span className="text-orange-300">"Dev Full Stack Jr"</span>,</p>
+              <p className="pl-4">cargo: <span className="text-orange-300">"Dev Full Stack"</span>,</p>
               <p className="pl-4">status: <span className="text-orange-300">"Disponível"</span></p>
               <p><span className="text-yellow-300">{"}"}</span>;</p>
             </div>
@@ -104,12 +104,12 @@ export default function Home() {
           <div className="order-2 md:order-1 space-y-4">
             <h3 className="text-2xl font-bold">Dashboard Meta Analytics</h3>
             <p className="text-muted-foreground">
-              Sistema de monitoramento de métricas do Facebook e Instagram, integrado à Meta Graph API e Supabase, com interface em Flask/React para KPIs em tempo quase real.
+              Sistema de monitoramento de métricas do Facebook e Instagram, integrado à Meta Graph API e PostgreSQL, com interface em Flask/React para KPIs em tempo quase real.
             </p>
             <ul className="flex flex-wrap gap-2 text-xs font-mono text-primary/80">
               <li className="px-2 py-1 bg-primary/10 rounded">Python</li>
               <li className="px-2 py-1 bg-primary/10 rounded">Flask</li>
-              <li className="px-2 py-1 bg-primary/10 rounded">Supabase</li>
+              <li className="px-2 py-1 bg-primary/10 rounded">PostgreSQL</li>
               <li className="px-2 py-1 bg-primary/10 rounded">React</li>
             </ul>
             <div className="pt-4">

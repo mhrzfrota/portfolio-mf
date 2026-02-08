@@ -21,12 +21,12 @@ const posts = [
   },
   {
     id: 3,
-    title: "Supabase na prática: auth, dados e deploy",
-    excerpt: "Uma visão direta sobre como usar Supabase para autenticação, banco e automações.",
+    title: "PostgreSQL na prática: auth, dados e deploy",
+    excerpt: "Uma visão direta sobre como usar PostgreSQL para autenticação, banco e automações.",
     date: "2025-06-18",
     readTime: "5 min de leitura",
-    tags: ["Supabase", "Banco de Dados"],
-    slug: "supabase-na-pratica"
+    tags: ["PostgreSQL", "Banco de Dados"],
+    slug: "postgresql-na-pratica"
   }
 ];
 
