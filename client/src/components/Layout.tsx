@@ -21,7 +21,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <h1 className="font-mono text-xl font-bold tracking-tighter text-primary">
             <span className="text-foreground">matheus</span>.frota<span className="animate-pulse">_</span>
           </h1>
-          <p className="text-xs text-muted-foreground mt-1 font-mono">Desenvolvedor Backend</p>
+          <p className="text-xs text-muted-foreground mt-1 font-mono">Desenvolvedor de Software</p>
         </div>
 
         <nav className="flex-1 py-6 px-4 space-y-2">

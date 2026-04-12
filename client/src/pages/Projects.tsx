@@ -78,7 +78,7 @@ const projects = [
     title: "Lyre Store - Site Ecommerce",
     description: "Site e-commerce em HTML e CSS para uma marca de moda feminina, com vitrine de coleções, navegação por categorias e CTA de compra em destaque.",
     tags: ["HTML", "CSS", "E-commerce"],
-    image: "/images/image5.png",
+    image: "/images/image8.png",
     liveUrl: "#",
     repoUrl: "https://github.com/mhrzfrota",
     category: "Web"
