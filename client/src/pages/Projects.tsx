@@ -62,10 +62,30 @@ const projects = [
     liveUrl: "https://mgaldeota.vercel.app/",
     repoUrl: "https://github.com/mhrzfrota/mgaldeota",
     category: "Landing Page"
+  },
+  {
+    id: 7,
+    title: "BarretoFit - Landing Page",
+    description: "Landing page institucional com catálogo e-commerce, desenvolvida para fortalecer a comunicação da marca e captar novos clientes, com apresentação dos serviços, identidade da BarretoFit e CTA para contato com a equipe.",
+    tags: ["HTML", "CSS"],
+    image: "/images/image7.png",
+    liveUrl: "https://barretofit.vercel.app/",
+    repoUrl: "https://github.com/mhrzfrota",
+    category: "Landing Page"
+  },
+  {
+    id: 8,
+    title: "Lyre Store - Site Ecommerce",
+    description: "Site e-commerce em HTML e CSS para uma marca de moda feminina, com vitrine de coleções, navegação por categorias e CTA de compra em destaque.",
+    tags: ["HTML", "CSS", "E-commerce"],
+    image: "/images/image5.png",
+    liveUrl: "#",
+    repoUrl: "https://github.com/mhrzfrota",
+    category: "Web"
   }
 ];
 
-const categories = ["Todos", "Web", "Mobile", "Landing Page"];
+const categories = ["Todos", "Web", "Landing Page"];
 
 export default function Projects() {
   const [activeCategory, setActiveCategory] = useState("Todos");
@@ -107,11 +127,11 @@ export default function Projects() {
         {filteredProjects.map((project) => (
           <div key={project.id} className="group border border-border bg-card hover:border-primary/50 transition-all duration-300 flex flex-col h-full">
             <div className="relative aspect-video overflow-hidden border-b border-border">
-              <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity z-10 pointer-events-none mix-blend-overlay"></div>
+              <div className="absolute inset-0 bg-primary/20 opacity-60 group-hover:opacity-100 transition-opacity z-10 pointer-events-none mix-blend-overlay"></div>
               <img
                 src={project.image}
                 alt={project.title}
-                className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500 transform group-hover:scale-105"
+                className="w-full h-full object-cover transition-all duration-500 transform group-hover:scale-105"
               />
             </div>
 

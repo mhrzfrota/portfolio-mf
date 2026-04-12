@@ -1,6 +1,29 @@
 ﻿import { Button } from "@/components/ui/button";
-import { ArrowRight, Download, Terminal } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Link } from "wouter";
+
+const featuredProjects = [
+  {
+    title: "Dashboard Meta Analytics",
+    description:
+      "Sistema de monitoramento de métricas do Facebook e Instagram, integrado à Meta Graph API e PostgreSQL, com interface em Flask/React para KPIs em tempo quase real.",
+    tags: ["Python", "Flask", "PostgreSQL", "React"],
+    image: "/images/image1.png",
+    href: "/projects",
+    actionLabel: "Ver detalhes",
+    external: false,
+  },
+  {
+    title: "MG Aldeota - Landing Page",
+    description:
+      "Landing page institucional para comunicação e captação de clientes, com seção de serviços, apresentação da marca e CTA para contato.",
+    tags: ["HTML", "CSS", "Landing Page", "UI Responsiva"],
+    image: "/images/image4.png",
+    href: "https://mgaldeota.vercel.app/",
+    actionLabel: "Visitar site",
+    external: true,
+  },
+];
 
 export default function Home() {
   return (
@@ -8,14 +31,6 @@ export default function Home() {
       {/* Hero Section */}
       <section className="flex flex-col-reverse lg:flex-row items-center gap-12">
         <div className="flex-1 space-y-6">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-mono">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
-            </span>
-            Disponível para oportunidades
-          </div>
-
           <h1 className="text-[1.6875rem] md:text-[2.8125rem] lg:text-[3.375rem] font-bold tracking-tight leading-tight">
             Criando soluções <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/50">digitais e dados</span>
@@ -91,7 +106,7 @@ export default function Home() {
       <section className="space-y-8">
         <div className="flex items-end justify-between border-b border-border pb-4">
           <h2 className="text-2xl md:text-3xl font-bold font-mono">
-            <span className="text-primary">01.</span> Projeto em Destaque
+            <span className="text-primary">01.</span> Projetos em Destaque
           </h2>
           <Link href="/projects">
             <span className="text-sm font-mono text-muted-foreground hover:text-primary cursor-pointer flex items-center gap-1">
@@ -100,32 +115,49 @@ export default function Home() {
           </Link>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8 items-center">
-          <div className="order-2 md:order-1 space-y-4">
-            <h3 className="text-2xl font-bold">Dashboard Meta Analytics</h3>
-            <p className="text-muted-foreground">
-              Sistema de monitoramento de métricas do Facebook e Instagram, integrado à Meta Graph API e PostgreSQL, com interface em Flask/React para KPIs em tempo quase real.
-            </p>
-            <ul className="flex flex-wrap gap-2 text-xs font-mono text-primary/80">
-              <li className="px-2 py-1 bg-primary/10 rounded">Python</li>
-              <li className="px-2 py-1 bg-primary/10 rounded">Flask</li>
-              <li className="px-2 py-1 bg-primary/10 rounded">PostgreSQL</li>
-              <li className="px-2 py-1 bg-primary/10 rounded">React</li>
-            </ul>
-            <div className="pt-4">
-              <Button variant="outline" className="font-mono text-xs border-primary/30 hover:border-primary hover:text-primary">
-                Ver detalhes
-              </Button>
-            </div>
-          </div>
-          <div className="order-1 md:order-2 rounded-lg overflow-hidden border border-border group relative">
-            <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity z-10 pointer-events-none"></div>
-            <img
-              src="/images/image1.png"
-              alt="Dashboard Meta Analytics"
-              className="w-full h-auto object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
-            />
-          </div>
+        <div className="grid lg:grid-cols-2 gap-8">
+          {featuredProjects.map(project => (
+            <article
+              key={project.title}
+              className="group border border-border bg-card hover:border-primary/50 transition-all duration-300 flex flex-col overflow-hidden"
+            >
+              <div className="relative aspect-video overflow-hidden border-b border-border">
+                <div className="absolute inset-0 bg-primary/15 opacity-60 group-hover:opacity-80 transition-opacity z-10 pointer-events-none mix-blend-overlay"></div>
+                <img
+                  src={project.image}
+                  alt={project.title}
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+              </div>
+
+              <div className="p-6 flex flex-col flex-1 space-y-4">
+                <h3 className="text-2xl font-bold">{project.title}</h3>
+                <p className="text-muted-foreground flex-1">{project.description}</p>
+                <ul className="flex flex-wrap gap-2 text-xs font-mono text-primary/80">
+                  {project.tags.map(tag => (
+                    <li key={tag} className="px-2 py-1 bg-primary/10 rounded">
+                      {tag}
+                    </li>
+                  ))}
+                </ul>
+                <div className="pt-2">
+                  {project.external ? (
+                    <Button asChild variant="outline" className="font-mono text-xs border-primary/30 hover:border-primary hover:text-primary">
+                      <a href={project.href} target="_blank" rel="noreferrer">
+                        {project.actionLabel}
+                      </a>
+                    </Button>
+                  ) : (
+                    <Link href={project.href}>
+                      <Button variant="outline" className="font-mono text-xs border-primary/30 hover:border-primary hover:text-primary">
+                        {project.actionLabel}
+                      </Button>
+                    </Link>
+                  )}
+                </div>
+              </div>
+            </article>
+          ))}
         </div>
       </section>
     </div>
