@@ -6,83 +6,106 @@ const projects = [
   {
     id: 1,
     title: "Dashboard Meta Analytics",
-    description: "Sistema de monitoramento de métricas do Facebook e Instagram, integrado à Meta Graph API e PostgreSQL, com visualização de KPIs em tempo quase real.",
+    description:
+      "Sistema de monitoramento de métricas do Facebook e Instagram, integrado à Meta Graph API e PostgreSQL, com visualização de KPIs em tempo quase real.",
     tags: ["Python", "Flask", "React", "PostgreSQL", "Meta Graph API"],
-    image: "/images/image1.png",
+    image: "/images/image1.webp",
     liveUrl: "https://monitor.mslestrategia.com.br",
     repoUrl: "https://github.com/mhrzfrota",
-    category: "Web"
+    category: "Web",
   },
   {
     id: 2,
     title: "Cícero Experience - Inteligência de Visitação do Horto",
-    description: "Sistema para a gestão ambiental do Horto do Padre Cícero, com check-in via QR Code e dashboard integrado para contabilizar visitantes e apoiar melhorias na infraestrutura e no fluxo de entrada.",
-    tags: ["Python", "Django", "Django REST Framework", "PostgreSQL", "Dashboard", "QR Code"],
-    image: "/images/imager5.png",
+    description:
+      "Sistema para a gestão ambiental do Horto do Padre Cícero, com check-in via QR Code e dashboard integrado para contabilizar visitantes e apoiar melhorias na infraestrutura e no fluxo de entrada.",
+    tags: [
+      "Python",
+      "Django",
+      "Django REST Framework",
+      "PostgreSQL",
+      "Dashboard",
+      "QR Code",
+    ],
+    image: "/images/imager5.webp",
     liveUrl: "https://ciceroexperience.vercel.app",
     repoUrl: "https://github.com/helionlf/ciceroExperience_api",
-    category: "Web"
+    category: "Web",
   },
   {
     id: 3,
     title: "Landing Page E-book Virtual",
-    description: "Landing page em HTML, CSS e JavaScript para o livro \"A criança e as novas tecnologias\", com foco em conversão e visual limpo.",
+    description:
+      'Landing page em HTML, CSS e JavaScript para o livro "A criança e as novas tecnologias", com foco em conversão e visual limpo.',
     tags: ["HTML", "CSS", "JavaScript"],
-    image: "/images/image6.png",
+    image: "/images/image6.webp",
     liveUrl: "https://albertocid.com.br/",
     repoUrl: "https://github.com/mhrzfrota",
-    category: "Landing Page"
+    category: "Landing Page",
   },
   {
     id: 4,
     title: "Clipradio",
-    description: "Plataforma para gestão de rádios com agendamentos e gravações automatizadas, usando React/Vite no frontend e Flask no backend, com streaming HLS e transcrição de áudio por IA.",
-    tags: ["React", "Vite", "Flask", "PostgreSQL", "Socket.IO", "HLS.js", "Docker"],
-    image: "/images/image2.png",
+    description:
+      "Plataforma para gestão de rádios com agendamentos e gravações automatizadas, usando React/Vite no frontend e Flask no backend, com streaming HLS e transcrição de áudio por IA.",
+    tags: [
+      "React",
+      "Vite",
+      "Flask",
+      "PostgreSQL",
+      "Socket.IO",
+      "HLS.js",
+      "Docker",
+    ],
+    image: "/images/image2.webp",
     liveUrl: "#",
     repoUrl: "https://github.com/Ambiente-MSL/clipradio",
-    category: "Web"
+    category: "Web",
   },
   {
     id: 5,
     title: "Mar&Mov - Moda Praia",
-    description: "E-commerce front-end para loja de roupas com vitrine de produtos, destaques de coleções e navegação SPA, desenvolvido com React e TypeScript.",
+    description:
+      "E-commerce front-end para loja de roupas com vitrine de produtos, destaques de coleções e navegação SPA, desenvolvido com React e TypeScript.",
     tags: ["React", "TypeScript", "Vite", "Tailwind CSS", "React Router DOM"],
-    image: "/images/image3.png",
+    image: "/images/image3.webp",
     liveUrl: "https://maremovsuamoda.vercel.app/",
     repoUrl: "https://github.com/mhrzfrota/site-dropshipping",
-    category: "Web"
+    category: "Web",
   },
   {
     id: 6,
     title: "MG Aldeota - Landing Page",
-    description: "Landing page institucional para comunicação e captação de clientes, com seção de serviços, apresentação da marca e CTA para contato.",
+    description:
+      "Landing page institucional para comunicação e captação de clientes, com seção de serviços, apresentação da marca e CTA para contato.",
     tags: ["HTML", "CSS", "Landing Page", "UI Responsiva"],
-    image: "/images/image4.png",
+    image: "/images/image4.webp",
     liveUrl: "https://mgaldeota.vercel.app/",
     repoUrl: "https://github.com/mhrzfrota/mgaldeota",
-    category: "Landing Page"
+    category: "Landing Page",
   },
   {
     id: 7,
     title: "BarretoFit - Landing Page",
-    description: "Landing page institucional com catálogo e-commerce, desenvolvida para fortalecer a comunicação da marca e captar novos clientes, com apresentação dos serviços, identidade da BarretoFit e CTA para contato com a equipe.",
+    description:
+      "Landing page institucional com catálogo e-commerce, desenvolvida para fortalecer a comunicação da marca e captar novos clientes, com apresentação dos serviços, identidade da BarretoFit e CTA para contato com a equipe.",
     tags: ["HTML", "CSS"],
-    image: "/images/image7.png",
+    image: "/images/image7.webp",
     liveUrl: "https://barretofit.vercel.app/",
     repoUrl: "https://github.com/mhrzfrota",
-    category: "Landing Page"
+    category: "Landing Page",
   },
   {
     id: 8,
     title: "Lyre Store - Site Ecommerce",
-    description: "Site e-commerce em HTML e CSS para uma marca de moda feminina, com vitrine de coleções, navegação por categorias e CTA de compra em destaque.",
+    description:
+      "Site e-commerce em HTML e CSS para uma marca de moda feminina, com vitrine de coleções, navegação por categorias e CTA de compra em destaque.",
     tags: ["HTML", "CSS", "E-commerce"],
-    image: "/images/image8.png",
+    image: "/images/image8.webp",
     liveUrl: "#",
     repoUrl: "https://github.com/mhrzfrota",
-    category: "Web"
-  }
+    category: "Web",
+  },
 ];
 
 const categories = ["Todos", "Web", "Landing Page"];
@@ -90,9 +113,10 @@ const categories = ["Todos", "Web", "Landing Page"];
 export default function Projects() {
   const [activeCategory, setActiveCategory] = useState("Todos");
 
-  const filteredProjects = activeCategory === "Todos"
-    ? projects
-    : projects.filter(p => p.category === activeCategory);
+  const filteredProjects =
+    activeCategory === "Todos"
+      ? projects
+      : projects.filter(p => p.category === activeCategory);
 
   return (
     <div className="space-y-12 py-8">
@@ -107,7 +131,7 @@ export default function Projects() {
 
       {/* Filter Tabs */}
       <div className="flex flex-wrap gap-2 border-b border-border pb-4">
-        {categories.map((cat) => (
+        {categories.map(cat => (
           <button
             key={cat}
             onClick={() => setActiveCategory(cat)}
@@ -124,8 +148,11 @@ export default function Projects() {
 
       {/* Projects Grid */}
       <div className="grid md:grid-cols-2 gap-8">
-        {filteredProjects.map((project) => (
-          <div key={project.id} className="group border border-border bg-card hover:border-primary/50 transition-all duration-300 flex flex-col h-full">
+        {filteredProjects.map(project => (
+          <div
+            key={project.id}
+            className="group border border-border bg-card hover:border-primary/50 transition-all duration-300 flex flex-col h-full"
+          >
             <div className="relative aspect-video overflow-hidden border-b border-border">
               <div className="absolute inset-0 bg-primary/20 opacity-60 group-hover:opacity-100 transition-opacity z-10 pointer-events-none mix-blend-overlay"></div>
               <img
@@ -141,11 +168,21 @@ export default function Projects() {
                   {project.title}
                 </h3>
                 <div className="flex gap-2">
-                  <a href={project.repoUrl} target="_blank" rel="noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+                  <a
+                    href={project.repoUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-muted-foreground hover:text-primary transition-colors"
+                  >
                     <Github className="w-5 h-5" />
                   </a>
                   {project.liveUrl !== "#" && (
-                    <a href={project.liveUrl} target="_blank" rel="noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+                    <a
+                      href={project.liveUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-muted-foreground hover:text-primary transition-colors"
+                    >
                       <ExternalLink className="w-5 h-5" />
                     </a>
                   )}
@@ -157,8 +194,11 @@ export default function Projects() {
               </p>
 
               <div className="flex flex-wrap gap-2 pt-2">
-                {project.tags.map((tag) => (
-                  <span key={tag} className="text-xs font-mono px-2 py-1 bg-secondary text-secondary-foreground rounded border border-border">
+                {project.tags.map(tag => (
+                  <span
+                    key={tag}
+                    className="text-xs font-mono px-2 py-1 bg-secondary text-secondary-foreground rounded border border-border"
+                  >
                     {tag}
                   </span>
                 ))}
@@ -166,7 +206,11 @@ export default function Projects() {
 
               {project.liveUrl !== "#" && (
                 <div className="pt-2">
-                  <Button asChild variant="outline" className="font-mono text-xs border-primary/30 hover:border-primary hover:text-primary">
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="font-mono text-xs border-primary/30 hover:border-primary hover:text-primary"
+                  >
                     <a href={project.liveUrl} target="_blank" rel="noreferrer">
                       Visitar site <ExternalLink className="ml-2 w-3 h-3" />
                     </a>

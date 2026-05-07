@@ -9,7 +9,7 @@ const featuredProjects = [
     description:
       "Sistema de monitoramento de métricas do Facebook e Instagram, integrado à Meta Graph API e PostgreSQL, com interface em Flask/React para KPIs em tempo quase real.",
     tags: ["Python", "Flask", "PostgreSQL", "React"],
-    image: "/images/image1.png",
+    image: "/images/image1.webp",
     href: "/projects",
     actionLabel: "Ver detalhes",
     external: false,
@@ -19,7 +19,7 @@ const featuredProjects = [
     description:
       "Landing page institucional para comunicação e captação de clientes, com seção de serviços, apresentação da marca e CTA para contato.",
     tags: ["HTML", "CSS", "Landing Page", "UI Responsiva"],
-    image: "/images/image4.png",
+    image: "/images/image4.webp",
     href: "https://mgaldeota.vercel.app/",
     actionLabel: "Visitar site",
     external: true,
@@ -70,7 +70,7 @@ export default function Home() {
           <div className="absolute -inset-1 bg-gradient-to-r from-primary to-blue-600 rounded-lg blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></div>
           <div className="relative aspect-square md:aspect-[4/3] overflow-hidden rounded-lg border border-border bg-card">
             <img
-              src="/images/hero-bg.jpg"
+              src="/images/hero-bg.webp"
               alt="Arte digital abstrata"
               className="w-full h-full object-cover opacity-80 hover:scale-105 transition-transform duration-700"
             />
