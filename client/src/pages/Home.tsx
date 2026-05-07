@@ -1,6 +1,7 @@
 ﻿import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { Link } from "wouter";
+import { WHATSAPP_BUDGET_URL } from "@/const";
 
 const featuredProjects = [
   {
@@ -33,25 +34,35 @@ export default function Home() {
         <div className="flex-1 space-y-6">
           <h1 className="text-[1.6875rem] md:text-[2.8125rem] lg:text-[3.375rem] font-bold tracking-tight leading-tight">
             Criando soluções <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/50">digitais e dados</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/50">
+              digitais e dados
+            </span>
             <br /> que fazem diferença.
           </h1>
 
           <p className="text-lg text-muted-foreground max-w-xl leading-relaxed">
-            Sou Matheus Frota, desenvolvedor de software. 
+            Sou Matheus Frota, desenvolvedor de software.
           </p>
 
           <div className="flex flex-wrap gap-4 pt-4">
             <Link href="/projects">
-              <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 font-mono rounded-none border border-transparent">
+              <Button
+                size="lg"
+                className="bg-primary text-primary-foreground hover:bg-primary/90 font-mono rounded-none border border-transparent"
+              >
                 Ver projetos <ArrowRight className="ml-2 w-4 h-4" />
               </Button>
             </Link>
-            <Link href="/contact">
-              <Button variant="outline" size="lg" className="font-mono rounded-none border-primary/30 hover:bg-primary/10 hover:text-primary">
+            <Button
+              asChild
+              variant="outline"
+              size="lg"
+              className="font-mono rounded-none border-primary/30 hover:bg-primary/10 hover:text-primary"
+            >
+              <a href={WHATSAPP_BUDGET_URL} target="_blank" rel="noreferrer">
                 Envie uma mensagem
-              </Button>
-            </Link>
+              </a>
+            </Button>
           </div>
         </div>
 
@@ -72,33 +83,26 @@ export default function Home() {
                 <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
                 <div className="w-3 h-3 rounded-full bg-green-500"></div>
               </div>
-              <p><span className="text-purple-400">const</span> <span className="text-blue-400">desenvolvedor</span> = <span className="text-yellow-300">{"{"}</span></p>
-              <p className="pl-4">nome: <span className="text-orange-300">"Matheus Frota"</span>,</p>
-              <p className="pl-4">cargo: <span className="text-orange-300">"Dev Full Stack"</span>,</p>
-              <p className="pl-4">status: <span className="text-orange-300">"Disponível"</span></p>
-              <p><span className="text-yellow-300">{"}"}</span>;</p>
+              <p>
+                <span className="text-purple-400">const</span>{" "}
+                <span className="text-blue-400">desenvolvedor</span> ={" "}
+                <span className="text-yellow-300">{"{"}</span>
+              </p>
+              <p className="pl-4">
+                nome: <span className="text-orange-300">"Matheus Frota"</span>,
+              </p>
+              <p className="pl-4">
+                cargo: <span className="text-orange-300">"Dev Full Stack"</span>
+                ,
+              </p>
+              <p className="pl-4">
+                status: <span className="text-orange-300">"Disponível"</span>
+              </p>
+              <p>
+                <span className="text-yellow-300">{"}"}</span>;
+              </p>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Tech Stack Marquee */}
-      <section className="space-y-6">
-        <h2 className="text-sm font-mono text-muted-foreground uppercase tracking-widest">Tecnologias que uso</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-          {[
-            { name: "Node.js", icon: "/images/tech/nodejs.svg" },
-            { name: "Express", icon: "/images/tech/express.svg" },
-            { name: "Java", icon: "/images/tech/java.svg" },
-            { name: "PostgreSQL", icon: "/images/tech/postgresql.svg" },
-            { name: "Supabase", icon: "/images/tech/supabase.svg" },
-            { name: "Docker", icon: "/images/tech/docker.svg" },
-          ].map((tech) => (
-            <div key={tech.name} className="flex flex-col items-center justify-center gap-2 p-4 border border-border bg-card/30 hover:border-primary/50 hover:bg-primary/5 transition-all cursor-default group">
-              <img src={tech.icon} alt={tech.name} className="w-9 h-9 object-contain" loading="lazy" />
-              <span className="font-mono text-sm group-hover:text-primary">{tech.name}</span>
-            </div>
-          ))}
         </div>
       </section>
 
@@ -132,7 +136,9 @@ export default function Home() {
 
               <div className="p-6 flex flex-col flex-1 space-y-4">
                 <h3 className="text-2xl font-bold">{project.title}</h3>
-                <p className="text-muted-foreground flex-1">{project.description}</p>
+                <p className="text-muted-foreground flex-1">
+                  {project.description}
+                </p>
                 <ul className="flex flex-wrap gap-2 text-xs font-mono text-primary/80">
                   {project.tags.map(tag => (
                     <li key={tag} className="px-2 py-1 bg-primary/10 rounded">
@@ -142,14 +148,21 @@ export default function Home() {
                 </ul>
                 <div className="pt-2">
                   {project.external ? (
-                    <Button asChild variant="outline" className="font-mono text-xs border-primary/30 hover:border-primary hover:text-primary">
+                    <Button
+                      asChild
+                      variant="outline"
+                      className="font-mono text-xs border-primary/30 hover:border-primary hover:text-primary"
+                    >
                       <a href={project.href} target="_blank" rel="noreferrer">
                         {project.actionLabel}
                       </a>
                     </Button>
                   ) : (
                     <Link href={project.href}>
-                      <Button variant="outline" className="font-mono text-xs border-primary/30 hover:border-primary hover:text-primary">
+                      <Button
+                        variant="outline"
+                        className="font-mono text-xs border-primary/30 hover:border-primary hover:text-primary"
+                      >
                         {project.actionLabel}
                       </Button>
                     </Link>

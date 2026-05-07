@@ -1,33 +1,52 @@
-﻿import { Calendar, Clock, ArrowRight } from "lucide-react";
+import { ArrowRight, Calendar } from "lucide-react";
 
 const posts = [
   {
     id: 1,
-    title: "Dashboards com Meta Graph API: do dado ao KPI",
-    excerpt: "Como estruturar coleta e tratamento de métricas do Facebook e Instagram para visualização em tempo quase real.",
-    date: "2025-10-12",
-    readTime: "7 min de leitura",
-    tags: ["Dados", "APIs", "Dashboard"],
-    slug: "dashboards-meta-graph-api"
+    title:
+      "Deploy moderno de aplicações Fullstack: do desenvolvimento à produção",
+    excerpt:
+      "Uma visão prática sobre hospedagem, CI/CD, banco de dados, ambientes e monitoramento para aplicações modernas.",
+    date: "2026-05-07",
+    tags: ["Deploy", "Fullstack", "CI/CD"],
+    slug: "deploy-moderno-aplicacoes-fullstack",
   },
   {
     id: 2,
-    title: "Boas práticas de APIs REST com Node.js e Express",
-    excerpt: "Padrões simples para segurança, versionamento e performance em projetos backend.",
-    date: "2025-08-03",
-    readTime: "6 min de leitura",
-    tags: ["Node.js", "Backend", "REST"],
-    slug: "boas-praticas-apis-rest"
+    title: "Como a IA está mudando a forma de criar softwares",
+    excerpt:
+      "Entenda como a inteligência artificial está ajudando desenvolvedores a criar sistemas mais rápido, automatizar tarefas e melhorar aplicações do dia a dia.",
+    date: "2026-05-07",
+    tags: ["IA", "Produtividade", "Software"],
+    slug: "ia-criacao-de-softwares",
   },
   {
     id: 3,
+    title: "Dashboards com Meta Graph API: do dado ao KPI",
+    excerpt:
+      "Como estruturar coleta e tratamento de métricas do Facebook e Instagram para visualização em tempo quase real.",
+    date: "2025-10-12",
+    tags: ["Dados", "APIs", "Dashboard"],
+    slug: "dashboards-meta-graph-api",
+  },
+  {
+    id: 4,
+    title: "Boas práticas de APIs REST com Node.js e Express",
+    excerpt:
+      "Padrões simples para segurança, versionamento e performance em projetos backend.",
+    date: "2025-08-03",
+    tags: ["Node.js", "Backend", "REST"],
+    slug: "boas-praticas-apis-rest",
+  },
+  {
+    id: 5,
     title: "PostgreSQL na prática: auth, dados e deploy",
-    excerpt: "Uma visão direta sobre como usar PostgreSQL para autenticação, banco e automações.",
+    excerpt:
+      "Uma visão direta sobre como usar PostgreSQL para autenticação, banco e automações.",
     date: "2025-06-18",
-    readTime: "5 min de leitura",
     tags: ["PostgreSQL", "Banco de Dados"],
-    slug: "postgresql-na-pratica"
-  }
+    slug: "postgresql-na-pratica",
+  },
 ];
 
 export default function Blog() {
@@ -43,18 +62,18 @@ export default function Blog() {
       </div>
 
       <div className="grid gap-8 max-w-3xl">
-        {posts.map((post) => (
-          <article key={post.id} className="group border-b border-border pb-8 last:border-0">
+        {posts.map(post => (
+          <article
+            key={post.id}
+            className="group border-b border-border pb-8 last:border-0"
+          >
             <div className="flex items-center gap-4 text-xs font-mono text-muted-foreground mb-3">
               <span className="flex items-center gap-1">
                 <Calendar className="w-3 h-3" /> {post.date}
               </span>
-              <span className="flex items-center gap-1">
-                <Clock className="w-3 h-3" /> {post.readTime}
-              </span>
             </div>
 
-            <h2 className="text-2xl font-bold mb-3 group-hover:text-primary transition-colors cursor-pointer">
+            <h2 className="text-2xl font-bold mb-3 group-hover:text-primary transition-colors">
               {post.title}
             </h2>
 
@@ -64,16 +83,24 @@ export default function Blog() {
 
             <div className="flex items-center justify-between">
               <div className="flex gap-2">
-                {post.tags.map((tag) => (
-                  <span key={tag} className="text-xs font-mono px-2 py-1 bg-secondary text-secondary-foreground rounded">
+                {post.tags.map(tag => (
+                  <span
+                    key={tag}
+                    className="text-xs font-mono px-2 py-1 bg-secondary text-secondary-foreground rounded"
+                  >
                     #{tag}
                   </span>
                 ))}
               </div>
 
-              <span className="text-sm font-mono text-primary flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-all -translate-x-2 group-hover:translate-x-0 cursor-pointer">
-                Ler artigo <ArrowRight className="w-3 h-3" />
-              </span>
+              <a
+                href={`/blog/${post.slug}`}
+                onClick={event => event.preventDefault()}
+                className="text-sm font-mono text-primary flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-all -translate-x-2 group-hover:translate-x-0 cursor-pointer"
+                aria-label={`Artigo ${post.title} em breve`}
+              >
+                Em breve <ArrowRight className="w-3 h-3" />
+              </a>
             </div>
           </article>
         ))}
