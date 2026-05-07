@@ -106,6 +106,28 @@ const projects = [
     repoUrl: "https://github.com/mhrzfrota",
     category: "Web",
   },
+  {
+    id: 9,
+    title: "FERPRO Contabilidade - Landing Page",
+    description:
+      "Landing page institucional para escritório de contabilidade, com apresentação de serviços, diferenciais, depoimentos e CTA para atendimento via WhatsApp.",
+    tags: ["HTML", "CSS"],
+    image: "/images/image9.jpg",
+    liveUrl: "https://www.ferprocontabilidade.com.br/",
+    repoUrl: "https://github.com/mhrzfrota/ferpro",
+    category: "Landing Page",
+  },
+  {
+    id: 10,
+    title: "TZ Produções - Landing Page",
+    description:
+      "Landing page institucional para produtora de eventos, com apresentação da marca, serviços, portfólio visual e CTA para contato.",
+    tags: ["HTML", "CSS", "JavaScript"],
+    image: "/images/image10.png",
+    liveUrl: "https://www.tzproducoes.com.br/",
+    repoUrl: "https://github.com/mhrzfrota",
+    category: "Landing Page",
+  },
 ];
 
 const categories = ["Todos", "Web", "Landing Page"];
