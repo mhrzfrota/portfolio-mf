@@ -1,4 +1,4 @@
-import { Link, useLocation } from "wouter";
+import { useEffect, useState } from "react";
 import {
   Terminal,
   Code2,
@@ -8,64 +8,92 @@ import {
   Github,
   Linkedin,
   MessageCircle,
+  Menu,
+  X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { WHATSAPP_BUDGET_URL } from "@/const";
 
-export default function Layout({ children }: { children: React.ReactNode }) {
-  const [location] = useLocation();
+const navItems = [
+  { icon: Terminal, label: "_início", id: "inicio" },
+  { icon: Code2, label: "_projetos", id: "projetos" },
+  { icon: Cpu, label: "_habilidades", id: "habilidades" },
+  { icon: BookOpen, label: "_blog", id: "blog" },
+  { icon: Mail, label: "_contato", id: "contato" },
+];
 
-  const navItems = [
-    { icon: Terminal, label: "_início", path: "/" },
-    { icon: Code2, label: "_projetos", path: "/projects" },
-    { icon: Cpu, label: "_habilidades", path: "/skills" },
-    { icon: BookOpen, label: "_blog", path: "/blog" },
-    { icon: Mail, label: "_contato", path: "/contact" },
-  ];
+export default function Layout({ children }: { children: React.ReactNode }) {
+  const [activeSection, setActiveSection] = useState("inicio");
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  useEffect(() => {
+    const sections = navItems
+      .map(item => document.getElementById(item.id))
+      .filter((el): el is HTMLElement => el !== null);
+
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      { rootMargin: "-40% 0px -55% 0px", threshold: 0 }
+    );
+
+    sections.forEach(section => observer.observe(section));
+    return () => observer.disconnect();
+  }, []);
+
+  const handleNavClick = (id: string) => {
+    setMobileOpen(false);
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col md:flex-row font-sans selection:bg-primary/20 selection:text-primary">
-      {/* Sidebar Navigation (Desktop) */}
-      <aside className="hidden md:flex w-64 flex-col border-r border-border bg-sidebar/50 backdrop-blur-sm fixed h-full z-50">
-        <div className="p-6 border-b border-border">
-          <h1 className="font-mono text-xl font-bold tracking-tighter text-primary">
+    <div className="min-h-screen bg-background text-foreground font-sans selection:bg-primary/20 selection:text-primary">
+      {/* Fixed Top Header */}
+      <header className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">
+        <div className="max-w-6xl mx-auto flex items-center justify-between px-6 py-4">
+          <button
+            onClick={() => handleNavClick("inicio")}
+            className="font-mono text-lg md:text-xl font-bold tracking-tighter text-primary cursor-pointer"
+          >
             <span className="text-foreground">matheus</span>.frota
             <span className="animate-pulse">_</span>
-          </h1>
-          <p className="text-xs text-muted-foreground mt-1 font-mono">
-            Desenvolvedor de Software
-          </p>
-        </div>
+          </button>
 
-        <nav className="flex-1 py-6 px-4 space-y-2">
-          {navItems.map(item => (
-            <Link key={item.path} href={item.path}>
-              <div
+          {/* Desktop Nav */}
+          <nav className="hidden md:flex items-center gap-1">
+            {navItems.map(item => (
+              <button
+                key={item.id}
+                onClick={() => handleNavClick(item.id)}
                 className={cn(
-                  "flex items-center gap-3 px-4 py-3 rounded-md transition-all duration-200 font-mono text-sm cursor-pointer group",
-                  location === item.path
-                    ? "bg-primary/10 text-primary border-l-2 border-primary"
-                    : "text-muted-foreground hover:text-foreground hover:bg-accent/50"
+                  "flex items-center gap-2 px-3 py-2 rounded-md transition-all duration-200 font-mono text-sm cursor-pointer",
+                  activeSection === item.id
+                    ? "text-primary"
+                    : "text-muted-foreground hover:text-foreground"
                 )}
               >
                 <item.icon className="w-4 h-4" />
-                <span className="group-hover:translate-x-1 transition-transform">
-                  {item.label}
-                </span>
-              </div>
-            </Link>
-          ))}
-        </nav>
+                <span>{item.label}</span>
+              </button>
+            ))}
+          </nav>
 
-        <div className="p-6 border-t border-border">
-          <div className="flex gap-4 justify-center">
+          <div className="hidden md:flex items-center gap-3 pl-4 border-l border-border ml-2">
             <a
               href="https://github.com/mhrzfrota"
               target="_blank"
               rel="noreferrer"
               className="text-muted-foreground hover:text-primary transition-colors"
             >
-              <Github className="w-5 h-5" />
+              <Github className="w-4 h-4" />
             </a>
             <a
               href="https://www.linkedin.com/in/matheusfrt"
@@ -73,7 +101,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               rel="noreferrer"
               className="text-muted-foreground hover:text-primary transition-colors"
             >
-              <Linkedin className="w-5 h-5" />
+              <Linkedin className="w-4 h-4" />
             </a>
             <a
               href={WHATSAPP_BUDGET_URL}
@@ -81,50 +109,116 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               rel="noreferrer"
               className="text-muted-foreground hover:text-primary transition-colors"
             >
-              <MessageCircle className="w-5 h-5" />
+              <MessageCircle className="w-4 h-4" />
             </a>
           </div>
-        </div>
-      </aside>
 
-      {/* Mobile Header */}
-      <header className="md:hidden flex items-center justify-between p-4 border-b border-border bg-background/95 backdrop-blur sticky top-0 z-50">
-        <h1 className="font-mono text-lg font-bold text-primary">
-          matheus.frota_
-        </h1>
-        {/* Simple mobile menu trigger could go here, for now we rely on bottom nav or simple links */}
+          <button
+            onClick={() => setMobileOpen(v => !v)}
+            className="md:hidden text-foreground"
+            aria-label="Abrir menu"
+          >
+            {mobileOpen ? (
+              <X className="w-6 h-6" />
+            ) : (
+              <Menu className="w-6 h-6" />
+            )}
+          </button>
+        </div>
+
+        {/* Mobile Menu Drawer */}
+        {mobileOpen && (
+          <div className="md:hidden border-t border-border bg-background/95 backdrop-blur">
+            <nav className="flex flex-col p-4 gap-1">
+              {navItems.map(item => (
+                <button
+                  key={item.id}
+                  onClick={() => handleNavClick(item.id)}
+                  className={cn(
+                    "flex items-center gap-3 px-4 py-3 rounded-md transition-all font-mono text-sm text-left",
+                    activeSection === item.id
+                      ? "bg-primary/10 text-primary"
+                      : "text-muted-foreground hover:bg-accent/50"
+                  )}
+                >
+                  <item.icon className="w-4 h-4" />
+                  <span>{item.label}</span>
+                </button>
+              ))}
+              <div className="flex gap-6 justify-center pt-4 mt-2 border-t border-border">
+                <a
+                  href="https://github.com/mhrzfrota"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-muted-foreground hover:text-primary"
+                >
+                  <Github className="w-5 h-5" />
+                </a>
+                <a
+                  href="https://www.linkedin.com/in/matheusfrt"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-muted-foreground hover:text-primary"
+                >
+                  <Linkedin className="w-5 h-5" />
+                </a>
+                <a
+                  href={WHATSAPP_BUDGET_URL}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-muted-foreground hover:text-primary"
+                >
+                  <MessageCircle className="w-5 h-5" />
+                </a>
+              </div>
+            </nav>
+          </div>
+        )}
       </header>
 
-      {/* Main Content Area */}
-      <main className="flex-1 md:ml-64 min-h-screen relative overflow-hidden">
-        {/* Background Grid Effect */}
+      {/* Main Content */}
+      <main className="relative pt-16">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none z-0"></div>
-
-        <div className="relative z-10 p-6 md:p-12 max-w-5xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-12">
           {children}
         </div>
       </main>
 
-      {/* Mobile Bottom Nav */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur border-t border-border z-50 flex justify-around p-3">
-        {navItems.map(item => (
-          <Link key={item.path} href={item.path}>
-            <div
-              className={cn(
-                "flex flex-col items-center gap-1 p-2 rounded-md cursor-pointer",
-                location === item.path
-                  ? "text-primary"
-                  : "text-muted-foreground"
-              )}
+      {/* Footer */}
+      <footer className="relative z-10 border-t border-border mt-16">
+        <div className="max-w-6xl mx-auto px-6 md:px-12 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-xs font-mono text-muted-foreground">
+            © {new Date().getFullYear()} matheus.frota_ — Desenvolvedor de
+            Software
+          </p>
+          <div className="flex gap-4">
+            <a
+              href="https://github.com/mhrzfrota"
+              target="_blank"
+              rel="noreferrer"
+              className="text-muted-foreground hover:text-primary transition-colors"
             >
-              <item.icon className="w-5 h-5" />
-              <span className="text-[10px] font-mono">
-                {item.label.replace("_", "")}
-              </span>
-            </div>
-          </Link>
-        ))}
-      </nav>
+              <Github className="w-4 h-4" />
+            </a>
+            <a
+              href="https://www.linkedin.com/in/matheusfrt"
+              target="_blank"
+              rel="noreferrer"
+              className="text-muted-foreground hover:text-primary transition-colors"
+            >
+              <Linkedin className="w-4 h-4" />
+            </a>
+            <a
+              href={WHATSAPP_BUDGET_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="text-muted-foreground hover:text-primary transition-colors"
+            >
+              <MessageCircle className="w-4 h-4" />
+            </a>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

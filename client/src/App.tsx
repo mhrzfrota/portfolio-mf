@@ -4,20 +4,12 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Layout from "./components/Layout";
 import Home from "./pages/Home";
-import Projects from "./pages/Projects";
-import Skills from "./pages/Skills";
-import Blog from "./pages/Blog";
-import Contact from "./pages/Contact";
 
 function Router() {
   return (
     <Layout>
       <Switch>
         <Route path="/" component={Home} />
-        <Route path="/projects" component={Projects} />
-        <Route path="/skills" component={Skills} />
-        <Route path="/blog" component={Blog} />
-        <Route path="/contact" component={Contact} />
         <Route component={NotFound} />
       </Switch>
     </Layout>

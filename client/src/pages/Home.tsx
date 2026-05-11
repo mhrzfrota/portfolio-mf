@@ -1,37 +1,261 @@
-﻿import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
-import { Link } from "wouter";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  ArrowRight,
+  ExternalLink,
+  Github,
+  Calendar,
+  Download,
+  MessageCircle,
+} from "lucide-react";
 import { WHATSAPP_BUDGET_URL } from "@/const";
 
-const featuredProjects = [
+const projects = [
   {
+    id: 1,
     title: "Dashboard Meta Analytics",
     description:
-      "Sistema de monitoramento de métricas do Facebook e Instagram, integrado à Meta Graph API e PostgreSQL, com interface em Flask/React para KPIs em tempo quase real.",
-    tags: ["Python", "Flask", "PostgreSQL", "React"],
+      "Sistema de monitoramento de métricas do Facebook e Instagram, integrado à Meta Graph API e PostgreSQL, com visualização de KPIs em tempo quase real.",
+    tags: ["Python", "Flask", "React", "PostgreSQL", "Meta Graph API"],
     image: "/images/image1.webp",
-    href: "/projects",
-    actionLabel: "Ver detalhes",
-    external: false,
+    liveUrl: "https://monitor.mslestrategia.com.br",
+    repoUrl: "https://github.com/mhrzfrota",
+    category: "Web",
   },
   {
+    id: 2,
+    title: "Cícero Experience - Inteligência de Visitação do Horto",
+    description:
+      "Sistema para a gestão ambiental do Horto do Padre Cícero, com check-in via QR Code e dashboard integrado para contabilizar visitantes e apoiar melhorias na infraestrutura e no fluxo de entrada.",
+    tags: [
+      "Python",
+      "Django",
+      "Django REST Framework",
+      "PostgreSQL",
+      "Dashboard",
+      "QR Code",
+    ],
+    image: "/images/imager5.webp",
+    liveUrl: "https://ciceroexperience.vercel.app",
+    repoUrl: "https://github.com/helionlf/ciceroExperience_api",
+    category: "Web",
+  },
+  {
+    id: 3,
+    title: "Landing Page E-book Virtual",
+    description:
+      'Landing page em HTML, CSS e JavaScript para o livro "A criança e as novas tecnologias", com foco em conversão e visual limpo.',
+    tags: ["HTML", "CSS", "JavaScript"],
+    image: "/images/image6.webp",
+    liveUrl: "https://albertocid.com.br/",
+    repoUrl: "https://github.com/mhrzfrota",
+    category: "Landing Page",
+  },
+  {
+    id: 4,
+    title: "Clipradio",
+    description:
+      "Plataforma para gestão de rádios com agendamentos e gravações automatizadas, usando React/Vite no frontend e Flask no backend, com streaming HLS e transcrição de áudio por IA.",
+    tags: [
+      "React",
+      "Vite",
+      "Flask",
+      "PostgreSQL",
+      "Socket.IO",
+      "HLS.js",
+      "Docker",
+    ],
+    image: "/images/image2.webp",
+    liveUrl: "#",
+    repoUrl: "https://github.com/Ambiente-MSL/clipradio",
+    category: "Web",
+  },
+  {
+    id: 5,
+    title: "Mar&Mov - Moda Praia",
+    description:
+      "E-commerce front-end para loja de roupas com vitrine de produtos, destaques de coleções e navegação SPA, desenvolvido com React e TypeScript.",
+    tags: ["React", "TypeScript", "Vite", "Tailwind CSS", "React Router DOM"],
+    image: "/images/image3.webp",
+    liveUrl: "https://maremovsuamoda.vercel.app/",
+    repoUrl: "https://github.com/mhrzfrota/site-dropshipping",
+    category: "Web",
+  },
+  {
+    id: 6,
     title: "MG Aldeota - Landing Page",
     description:
       "Landing page institucional para comunicação e captação de clientes, com seção de serviços, apresentação da marca e CTA para contato.",
     tags: ["HTML", "CSS", "Landing Page", "UI Responsiva"],
     image: "/images/image4.webp",
-    href: "https://mgaldeota.vercel.app/",
-    actionLabel: "Visitar site",
-    external: true,
+    liveUrl: "https://mgaldeota.vercel.app/",
+    repoUrl: "https://github.com/mhrzfrota/mgaldeota",
+    category: "Landing Page",
+  },
+  {
+    id: 7,
+    title: "BarretoFit - Landing Page",
+    description:
+      "Landing page institucional com catálogo e-commerce, desenvolvida para fortalecer a comunicação da marca e captar novos clientes.",
+    tags: ["HTML", "CSS"],
+    image: "/images/image7.webp",
+    liveUrl: "https://barretofit.vercel.app/",
+    repoUrl: "https://github.com/mhrzfrota",
+    category: "Landing Page",
+  },
+  {
+    id: 8,
+    title: "Lyre Store - Site Ecommerce",
+    description:
+      "Site e-commerce em HTML e CSS para uma marca de moda feminina, com vitrine de coleções, navegação por categorias e CTA de compra em destaque.",
+    tags: ["HTML", "CSS", "E-commerce"],
+    image: "/images/image8.webp",
+    liveUrl: "#",
+    repoUrl: "https://github.com/mhrzfrota",
+    category: "Web",
+  },
+  {
+    id: 9,
+    title: "FERPRO Contabilidade - Landing Page",
+    description:
+      "Landing page institucional para escritório de contabilidade, com apresentação de serviços, diferenciais, depoimentos e CTA para atendimento via WhatsApp.",
+    tags: ["HTML", "CSS"],
+    image: "/images/image9.jpg",
+    liveUrl: "https://www.ferprocontabilidade.com.br/",
+    repoUrl: "https://github.com/mhrzfrota/ferpro",
+    category: "Landing Page",
+  },
+  {
+    id: 10,
+    title: "TZ Produções - Landing Page",
+    description:
+      "Landing page institucional para produtora de eventos, com apresentação da marca, serviços, portfólio visual e CTA para contato.",
+    tags: ["HTML", "CSS", "JavaScript"],
+    image: "/images/image10.png",
+    liveUrl: "https://www.tzproducoes.com.br/",
+    repoUrl: "https://github.com/mhrzfrota",
+    category: "Landing Page",
   },
 ];
 
+const categories = ["Todos", "Web", "Landing Page"];
+
+const skillCategories = [
+  {
+    title: "Backend",
+    skills: [
+      { name: "Node.js", level: 85 },
+      { name: "Express", level: 80 },
+      { name: "Java", level: 75 },
+      { name: "APIs REST", level: 85 },
+    ],
+  },
+  {
+    title: "Frontend",
+    skills: [
+      { name: "React", level: 80 },
+      { name: "Tailwind CSS", level: 80 },
+      { name: "HTML / CSS", level: 85 },
+      { name: "JavaScript", level: 80 },
+    ],
+  },
+  {
+    title: "Dados & Cloud",
+    skills: [
+      { name: "MySQL / PostgreSQL", level: 80 },
+      { name: "Supabase", level: 80 },
+      { name: "AWS", level: 65 },
+      { name: "Docker", level: 70 },
+    ],
+  },
+];
+
+const methodItems = [
+  {
+    title: "Formação",
+    desc: "ADS na UNIFOR (conclusão prevista: dez/2025).",
+  },
+  {
+    title: "Metodologias Ágeis",
+    desc: "Experiência com Scrum, Agile e DevOps em times colaborativos.",
+  },
+  {
+    title: "Integração de APIs",
+    desc: "Integro serviços externos com foco em segurança e desempenho.",
+  },
+  {
+    title: "Dados & Automação",
+    desc: "Tratamento de dados, dashboards e rotinas automatizadas.",
+  },
+];
+
+const posts = [
+  {
+    id: 1,
+    title:
+      "Deploy moderno de aplicações Fullstack: do desenvolvimento à produção",
+    excerpt:
+      "Uma visão prática sobre hospedagem, CI/CD, banco de dados, ambientes e monitoramento para aplicações modernas.",
+    date: "2026-05-07",
+    tags: ["Deploy", "Fullstack", "CI/CD"],
+  },
+  {
+    id: 2,
+    title: "Como a IA está mudando a forma de criar softwares",
+    excerpt:
+      "Entenda como a inteligência artificial está ajudando desenvolvedores a criar sistemas mais rápido, automatizar tarefas e melhorar aplicações do dia a dia.",
+    date: "2026-05-07",
+    tags: ["IA", "Produtividade", "Software"],
+  },
+  {
+    id: 3,
+    title: "Dashboards com Meta Graph API: do dado ao KPI",
+    excerpt:
+      "Como estruturar coleta e tratamento de métricas do Facebook e Instagram para visualização em tempo quase real.",
+    date: "2025-10-12",
+    tags: ["Dados", "APIs", "Dashboard"],
+  },
+];
+
+const contactHighlights = [
+  {
+    title: "Orçamentos",
+    description: "Escopo, prazo e próximos passos definidos com clareza.",
+  },
+  {
+    title: "Landing pages",
+    description: "Páginas rápidas, responsivas e focadas em conversão.",
+  },
+  {
+    title: "Dashboards e automações",
+    description: "Dados organizados para operação, análise e decisão.",
+  },
+];
+
+function scrollToId(id: string) {
+  document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+}
+
 export default function Home() {
+  const [activeCategory, setActiveCategory] = useState("Todos");
+  const filteredProjects =
+    activeCategory === "Todos"
+      ? projects
+      : projects.filter(p => p.category === activeCategory);
+
   return (
-    <div className="flex flex-col gap-16 md:gap-24 py-8 md:py-12">
-      {/* Hero Section */}
-      <section className="flex flex-col-reverse lg:flex-row items-center gap-12">
+    <div className="flex flex-col">
+      {/* HERO */}
+      <section
+        id="inicio"
+        className="flex flex-col-reverse lg:flex-row items-center gap-12 py-16 md:py-24 min-h-[calc(100vh-4rem)]"
+      >
         <div className="flex-1 space-y-6">
+          <div className="inline-flex items-center gap-2 border border-primary/30 bg-primary/10 px-3 py-1 font-mono text-xs text-primary">
+            <span className="h-2 w-2 bg-primary animate-pulse" />
+            disponível para projetos
+          </div>
+
           <h1 className="text-[1.6875rem] md:text-[2.8125rem] lg:text-[3.375rem] font-bold tracking-tight leading-tight">
             Criando soluções <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/50">
@@ -41,18 +265,18 @@ export default function Home() {
           </h1>
 
           <p className="text-lg text-muted-foreground max-w-xl leading-relaxed">
-            Sou Matheus Frota, desenvolvedor de software.
+            Sou Matheus Frota, desenvolvedor de software focado em backend,
+            dados e web.
           </p>
 
           <div className="flex flex-wrap gap-4 pt-4">
-            <Link href="/projects">
-              <Button
-                size="lg"
-                className="bg-primary text-primary-foreground hover:bg-primary/90 font-mono rounded-none border border-transparent"
-              >
-                Ver projetos <ArrowRight className="ml-2 w-4 h-4" />
-              </Button>
-            </Link>
+            <Button
+              size="lg"
+              onClick={() => scrollToId("projetos")}
+              className="bg-primary text-primary-foreground hover:bg-primary/90 font-mono rounded-none border border-transparent"
+            >
+              Ver projetos <ArrowRight className="ml-2 w-4 h-4" />
+            </Button>
             <Button
               asChild
               variant="outline"
@@ -76,7 +300,6 @@ export default function Home() {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
 
-            {/* Code Overlay Effect */}
             <div className="absolute bottom-4 left-4 right-4 p-4 bg-black/80 backdrop-blur border border-white/10 rounded font-mono text-xs text-green-400 overflow-hidden">
               <div className="flex gap-2 mb-2 border-b border-white/10 pb-2">
                 <div className="w-3 h-3 rounded-full bg-red-500"></div>
@@ -106,71 +329,340 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Featured Project Preview */}
-      <section className="space-y-8">
-        <div className="flex items-end justify-between border-b border-border pb-4">
-          <h2 className="text-2xl md:text-3xl font-bold font-mono">
-            <span className="text-primary">01.</span> Projetos em Destaque
+      {/* PROJETOS */}
+      <section id="projetos" className="space-y-8 py-16 md:py-24 scroll-mt-20">
+        <div className="space-y-4">
+          <h2 className="text-3xl md:text-4xl font-bold font-mono tracking-tight">
+            <span className="text-primary">01.</span> Projetos
           </h2>
-          <Link href="/projects">
-            <span className="text-sm font-mono text-muted-foreground hover:text-primary cursor-pointer flex items-center gap-1">
-              Ver todos <ArrowRight className="w-3 h-3" />
-            </span>
-          </Link>
+          <p className="text-muted-foreground max-w-2xl">
+            Uma seleção de projetos recentes em backend, dados e web.
+          </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-8">
-          {featuredProjects.map(project => (
-            <article
-              key={project.title}
-              className="group border border-border bg-card hover:border-primary/50 transition-all duration-300 flex flex-col overflow-hidden"
+        <div className="flex flex-wrap gap-2 border-b border-border pb-4">
+          {categories.map(cat => (
+            <button
+              key={cat}
+              onClick={() => setActiveCategory(cat)}
+              className={`px-4 py-2 text-sm font-mono transition-all ${
+                activeCategory === cat
+                  ? "text-primary border-b-2 border-primary -mb-[17px]"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-8">
+          {filteredProjects.map(project => (
+            <div
+              key={project.id}
+              className="group border border-border bg-card hover:border-primary/50 transition-all duration-300 flex flex-col h-full"
             >
               <div className="relative aspect-video overflow-hidden border-b border-border">
-                <div className="absolute inset-0 bg-primary/15 opacity-60 group-hover:opacity-80 transition-opacity z-10 pointer-events-none mix-blend-overlay"></div>
+                <div className="absolute inset-0 bg-primary/20 opacity-60 group-hover:opacity-100 transition-opacity z-10 pointer-events-none mix-blend-overlay"></div>
                 <img
                   src={project.image}
                   alt={project.title}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  className="w-full h-full object-cover transition-all duration-500 transform group-hover:scale-105"
                 />
               </div>
 
               <div className="p-6 flex flex-col flex-1 space-y-4">
-                <h3 className="text-2xl font-bold">{project.title}</h3>
-                <p className="text-muted-foreground flex-1">
+                <div className="flex justify-between items-start gap-3">
+                  <h3 className="text-xl font-bold font-mono group-hover:text-primary transition-colors">
+                    {project.title}
+                  </h3>
+                  <div className="flex gap-2 shrink-0">
+                    <a
+                      href={project.repoUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-muted-foreground hover:text-primary transition-colors"
+                    >
+                      <Github className="w-5 h-5" />
+                    </a>
+                    {project.liveUrl !== "#" && (
+                      <a
+                        href={project.liveUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-muted-foreground hover:text-primary transition-colors"
+                      >
+                        <ExternalLink className="w-5 h-5" />
+                      </a>
+                    )}
+                  </div>
+                </div>
+
+                <p className="text-muted-foreground text-sm flex-1">
                   {project.description}
                 </p>
-                <ul className="flex flex-wrap gap-2 text-xs font-mono text-primary/80">
+
+                <div className="flex flex-wrap gap-2 pt-2">
                   {project.tags.map(tag => (
-                    <li key={tag} className="px-2 py-1 bg-primary/10 rounded">
+                    <span
+                      key={tag}
+                      className="text-xs font-mono px-2 py-1 bg-secondary text-secondary-foreground rounded border border-border"
+                    >
                       {tag}
-                    </li>
+                    </span>
                   ))}
-                </ul>
-                <div className="pt-2">
-                  {project.external ? (
+                </div>
+
+                {project.liveUrl !== "#" && (
+                  <div className="pt-2">
                     <Button
                       asChild
                       variant="outline"
                       className="font-mono text-xs border-primary/30 hover:border-primary hover:text-primary"
                     >
-                      <a href={project.href} target="_blank" rel="noreferrer">
-                        {project.actionLabel}
+                      <a
+                        href={project.liveUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        Visitar site <ExternalLink className="ml-2 w-3 h-3" />
                       </a>
                     </Button>
-                  ) : (
-                    <Link href={project.href}>
-                      <Button
-                        variant="outline"
-                        className="font-mono text-xs border-primary/30 hover:border-primary hover:text-primary"
-                      >
-                        {project.actionLabel}
-                      </Button>
-                    </Link>
-                  )}
-                </div>
+                  </div>
+                )}
               </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* HABILIDADES */}
+      <section
+        id="habilidades"
+        className="space-y-8 py-16 md:py-24 scroll-mt-20"
+      >
+        <div className="space-y-4">
+          <h2 className="text-3xl md:text-4xl font-bold font-mono tracking-tight">
+            <span className="text-primary">02.</span> Habilidades
+          </h2>
+          <p className="text-muted-foreground max-w-2xl">
+            Visão geral das minhas habilidades técnicas com foco em backend e
+            dados.
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
+          {skillCategories.map(category => (
+            <div key={category.title} className="space-y-6">
+              <h3 className="text-xl font-mono font-bold border-b border-border pb-2 flex items-center gap-2">
+                <span className="w-2 h-2 bg-primary inline-block"></span>
+                {category.title}
+              </h3>
+
+              <div className="space-y-6">
+                {category.skills.map(skill => (
+                  <div key={skill.name} className="space-y-2 group">
+                    <div className="flex justify-between text-sm font-mono">
+                      <span className="group-hover:text-primary transition-colors">
+                        {skill.name}
+                      </span>
+                      <span className="text-muted-foreground">
+                        {skill.level}%
+                      </span>
+                    </div>
+                    <div className="h-2 bg-secondary overflow-hidden rounded-none">
+                      <div
+                        className="h-full bg-primary transition-all duration-1000 ease-out group-hover:bg-primary/80"
+                        style={{ width: `${skill.level}%` }}
+                      ></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="space-y-6 pt-8">
+          <h3 className="text-xl font-mono font-bold border-b border-border pb-2 flex items-center gap-2">
+            <span className="w-2 h-2 bg-primary inline-block"></span>
+            Formação & Método
+          </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {methodItems.map(item => (
+              <div
+                key={item.title}
+                className="p-4 border border-border bg-card/50 hover:border-primary/30 transition-colors"
+              >
+                <h4 className="font-mono font-bold text-primary mb-2">
+                  {item.title}
+                </h4>
+                <p className="text-sm text-muted-foreground">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* BLOG */}
+      <section id="blog" className="space-y-8 py-16 md:py-24 scroll-mt-20">
+        <div className="space-y-4">
+          <h2 className="text-3xl md:text-4xl font-bold font-mono tracking-tight">
+            <span className="text-primary">03.</span> Blog
+          </h2>
+          <p className="text-muted-foreground max-w-2xl">
+            Notas sobre backend, dados e construção de produtos.
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-6">
+          {posts.map(post => (
+            <article
+              key={post.id}
+              className="group border border-border bg-card hover:border-primary/50 transition-all duration-300 p-6 flex flex-col gap-4"
+            >
+              <div className="flex items-center gap-4 text-xs font-mono text-muted-foreground">
+                <span className="flex items-center gap-1">
+                  <Calendar className="w-3 h-3" /> {post.date}
+                </span>
+              </div>
+
+              <h3 className="text-lg font-bold group-hover:text-primary transition-colors leading-snug">
+                {post.title}
+              </h3>
+
+              <p className="text-muted-foreground text-sm flex-1 leading-relaxed">
+                {post.excerpt}
+              </p>
+
+              <div className="flex flex-wrap gap-2">
+                {post.tags.map(tag => (
+                  <span
+                    key={tag}
+                    className="text-xs font-mono px-2 py-1 bg-secondary text-secondary-foreground rounded"
+                  >
+                    #{tag}
+                  </span>
+                ))}
+              </div>
+
+              <span className="text-xs font-mono text-muted-foreground pt-2 border-t border-border">
+                Em breve
+              </span>
             </article>
           ))}
+        </div>
+      </section>
+
+      {/* CONTATO */}
+      <section id="contato" className="py-16 md:py-24 scroll-mt-20">
+        <div className="space-y-4 mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold font-mono tracking-tight">
+            <span className="text-primary">04.</span> Contato
+          </h2>
+          <p className="text-muted-foreground max-w-2xl">
+            Tem um projeto em mente ou quer conversar? Estou aberto a novas
+            oportunidades.
+          </p>
+        </div>
+
+        <div className="grid lg:grid-cols-[1.2fr_0.8fr] gap-8 items-start">
+          <div className="relative overflow-hidden py-2 md:py-4">
+            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-primary via-primary/40 to-transparent" />
+
+            <div className="relative space-y-8 pt-8">
+              <div className="inline-flex items-center gap-2 border border-primary/30 bg-primary/10 px-3 py-1 font-mono text-xs text-primary">
+                <span className="h-2 w-2 bg-primary" />
+                atendimento direto
+              </div>
+
+              <div className="space-y-4">
+                <h3 className="max-w-2xl text-3xl font-bold leading-tight md:text-5xl">
+                  Vamos conversar pelo WhatsApp.
+                </h3>
+                <p className="max-w-xl text-muted-foreground leading-relaxed">
+                  Clique no botão abaixo para abrir uma conversa com a mensagem
+                  de orçamento já preenchida.
+                </p>
+              </div>
+
+              <Button
+                asChild
+                size="lg"
+                className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-mono rounded-none sm:w-auto"
+              >
+                <a href={WHATSAPP_BUDGET_URL} target="_blank" rel="noreferrer">
+                  Enviar mensagem <MessageCircle className="w-4 h-4" />
+                </a>
+              </Button>
+
+              <div className="grid gap-4 pt-2 sm:grid-cols-3">
+                {contactHighlights.map((item, index) => (
+                  <div
+                    key={item.title}
+                    className="group relative min-h-36 border border-border px-4 py-5 transition-colors hover:border-primary/70"
+                  >
+                    <div className="absolute inset-x-0 top-0 h-px bg-primary/0 transition-colors group-hover:bg-primary/80" />
+                    <span className="font-mono text-xs text-primary/70">
+                      0{index + 1}
+                    </span>
+                    <h4 className="mt-3 font-mono text-base font-bold text-foreground group-hover:text-primary transition-colors">
+                      {item.title}
+                    </h4>
+                    <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                      {item.description}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <aside className="space-y-8 lg:pl-12 lg:border-l border-border/50">
+            <div className="space-y-4">
+              <h3 className="text-xl font-bold font-mono">
+                Informações de contato
+              </h3>
+              <div className="space-y-4">
+                <div className="flex items-start gap-4">
+                  <div className="p-2 bg-primary/10 rounded text-primary">
+                    <MessageCircle className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-mono text-muted-foreground">
+                      WhatsApp
+                    </p>
+                    <a
+                      href={WHATSAPP_BUDGET_URL}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="hover:text-primary transition-colors"
+                    >
+                      (85) 99637-0080
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-6 border border-primary/20 bg-primary/5 rounded-none">
+              <h4 className="font-mono font-bold text-primary mb-2">
+                Baixar currículo
+              </h4>
+              <p className="text-sm text-muted-foreground mb-4">
+                Um resumo da minha experiência, formação e habilidades técnicas.
+              </p>
+              <Button
+                asChild
+                variant="outline"
+                className="w-full border-primary/30 hover:bg-primary hover:text-primary-foreground font-mono rounded-none"
+              >
+                <a href="/curriculo.pdf" download="Curriculo-Matheus-Frota.pdf">
+                  Baixar PDF <Download className="w-4 h-4" />
+                </a>
+              </Button>
+            </div>
+          </aside>
         </div>
       </section>
     </div>
