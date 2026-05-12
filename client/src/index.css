@@ -86,44 +86,44 @@
   /* Neon Green: oklch(0.75 0.2 145) approx #00ff41 but adjusted for oklch */
   /* Deep Black: oklch(0.1 0 0) approx #0a0a0a */
   /* Slate Gray: oklch(0.3 0.02 260) */
-  
+
   --primary: oklch(0.75 0.22 145); /* Vibrant Neon Green */
   --primary-foreground: oklch(0.05 0.02 145); /* Almost black */
-  
+
   --sidebar-primary: oklch(0.75 0.22 145);
   --sidebar-primary-foreground: oklch(0.05 0.02 145);
-  
+
   --background: oklch(0.05 0.01 260); /* Deep black/slate */
   --foreground: oklch(0.9 0.02 260); /* Light gray text */
-  
+
   --card: oklch(0.1 0.02 260); /* Slightly lighter black */
   --card-foreground: oklch(0.9 0.02 260);
-  
+
   --popover: oklch(0.08 0.02 260);
   --popover-foreground: oklch(0.9 0.02 260);
-  
+
   --secondary: oklch(0.2 0.03 260); /* Slate gray */
   --secondary-foreground: oklch(0.85 0.02 260);
-  
+
   --muted: oklch(0.15 0.02 260);
   --muted-foreground: oklch(0.6 0.02 260);
-  
+
   --accent: oklch(0.2 0.03 260);
   --accent-foreground: oklch(0.75 0.22 145); /* Neon green text on accent */
-  
+
   --destructive: oklch(0.6 0.2 25);
   --destructive-foreground: oklch(0.98 0 0);
-  
+
   --border: oklch(0.25 0.02 260); /* Subtle slate border */
   --input: oklch(0.25 0.02 260);
   --ring: oklch(0.75 0.22 145); /* Neon green focus ring */
-  
+
   --chart-1: oklch(0.75 0.22 145); /* Neon Green */
   --chart-2: oklch(0.65 0.18 145);
   --chart-3: oklch(0.55 0.15 145);
   --chart-4: oklch(0.45 0.12 145);
   --chart-5: oklch(0.35 0.1 145);
-  
+
   --sidebar: oklch(0.05 0.01 260);
   --sidebar-foreground: oklch(0.9 0.02 260);
   --sidebar-accent: oklch(0.15 0.02 260);
@@ -139,7 +139,12 @@
   body {
     @apply bg-background text-foreground font-sans antialiased selection:bg-primary/30 selection:text-primary;
   }
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-mono tracking-tight;
   }
   button:not(:disabled),
@@ -168,24 +173,66 @@
     min-height: 0;
     min-width: 0;
   }
-  
+
   /* Cyberpunk Utilities */
   .cyber-border {
     @apply border border-primary/30 hover:border-primary/80 transition-colors duration-300;
   }
-  
+
   .cyber-glitch-text {
     @apply relative inline-block;
   }
-  
+
   .cyber-glitch-text::before,
   .cyber-glitch-text::after {
     content: attr(data-text);
     @apply absolute top-0 left-0 w-full h-full opacity-0;
   }
-  
+
   .cyber-card {
     @apply bg-card/50 backdrop-blur-sm border border-border hover:border-primary/50 transition-all duration-300;
+  }
+
+  .project-carousel-track {
+    transition: transform 0.65s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  .project-carousel-track.is-dragging {
+    transition: none;
+  }
+
+  .project-carousel-card {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-box-reflect: below 12px
+      linear-gradient(transparent, transparent 72%, rgb(0 0 0 / 0.24));
+  }
+
+  .project-carousel-card-title,
+  .project-carousel-card-description {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .project-carousel-card-title {
+    -webkit-line-clamp: 2;
+  }
+
+  .project-carousel-card-description {
+    -webkit-line-clamp: 3;
+  }
+
+  @media (max-width: 640px) {
+    .project-carousel-card {
+      -webkit-box-reflect: unset;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .project-carousel-track {
+      transition: none;
+    }
   }
 
   @media (min-width: 640px) {

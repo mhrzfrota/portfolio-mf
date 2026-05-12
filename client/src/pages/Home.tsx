@@ -1,14 +1,8 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  ArrowRight,
-  ExternalLink,
-  Github,
-  Calendar,
-  Download,
-  MessageCircle,
-} from "lucide-react";
+import { ArrowRight, Calendar, Download, MessageCircle } from "lucide-react";
 import { WHATSAPP_BUDGET_URL } from "@/const";
+import ProjectCarousel from "@/components/ProjectCarousel";
 
 const projects = [
   {
@@ -251,11 +245,6 @@ export default function Home() {
         className="flex flex-col-reverse lg:flex-row items-center gap-12 py-16 md:py-24 min-h-[calc(100vh-4rem)]"
       >
         <div className="flex-1 space-y-6">
-          <div className="inline-flex items-center gap-2 border border-primary/30 bg-primary/10 px-3 py-1 font-mono text-xs text-primary">
-            <span className="h-2 w-2 bg-primary animate-pulse" />
-            disponível para projetos
-          </div>
-
           <h1 className="text-[1.6875rem] md:text-[2.8125rem] lg:text-[3.375rem] font-bold tracking-tight leading-tight">
             Criando soluções <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/50">
@@ -356,84 +345,10 @@ export default function Home() {
           ))}
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8">
-          {filteredProjects.map(project => (
-            <div
-              key={project.id}
-              className="group border border-border bg-card hover:border-primary/50 transition-all duration-300 flex flex-col h-full"
-            >
-              <div className="relative aspect-video overflow-hidden border-b border-border">
-                <div className="absolute inset-0 bg-primary/20 opacity-60 group-hover:opacity-100 transition-opacity z-10 pointer-events-none mix-blend-overlay"></div>
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  className="w-full h-full object-cover transition-all duration-500 transform group-hover:scale-105"
-                />
-              </div>
-
-              <div className="p-6 flex flex-col flex-1 space-y-4">
-                <div className="flex justify-between items-start gap-3">
-                  <h3 className="text-xl font-bold font-mono group-hover:text-primary transition-colors">
-                    {project.title}
-                  </h3>
-                  <div className="flex gap-2 shrink-0">
-                    <a
-                      href={project.repoUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="text-muted-foreground hover:text-primary transition-colors"
-                    >
-                      <Github className="w-5 h-5" />
-                    </a>
-                    {project.liveUrl !== "#" && (
-                      <a
-                        href={project.liveUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-muted-foreground hover:text-primary transition-colors"
-                      >
-                        <ExternalLink className="w-5 h-5" />
-                      </a>
-                    )}
-                  </div>
-                </div>
-
-                <p className="text-muted-foreground text-sm flex-1">
-                  {project.description}
-                </p>
-
-                <div className="flex flex-wrap gap-2 pt-2">
-                  {project.tags.map(tag => (
-                    <span
-                      key={tag}
-                      className="text-xs font-mono px-2 py-1 bg-secondary text-secondary-foreground rounded border border-border"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-
-                {project.liveUrl !== "#" && (
-                  <div className="pt-2">
-                    <Button
-                      asChild
-                      variant="outline"
-                      className="font-mono text-xs border-primary/30 hover:border-primary hover:text-primary"
-                    >
-                      <a
-                        href={project.liveUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        Visitar site <ExternalLink className="ml-2 w-3 h-3" />
-                      </a>
-                    </Button>
-                  </div>
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
+        <ProjectCarousel
+          activeCategory={activeCategory}
+          projects={filteredProjects}
+        />
       </section>
 
       {/* HABILIDADES */}
