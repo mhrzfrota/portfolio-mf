@@ -40,8 +40,8 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
-  --font-sans: "Inter", sans-serif;
-  --font-mono: "JetBrains Mono", monospace;
+  --font-sans: "Poppins", system-ui, -apple-system, arial, sans-serif;
+  --font-mono: "Poppins", system-ui, -apple-system, arial, sans-serif;
 }
 
 :root {
@@ -193,20 +193,14 @@
     @apply bg-card/50 backdrop-blur-sm border border-border hover:border-primary/50 transition-all duration-300;
   }
 
-  .project-carousel-track {
-    transform: translate3d(0, 0, 0);
-    transition: transform 0.78s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .project-carousel-track.is-dragging {
-    transition: none;
-  }
-
-  .project-carousel-card {
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    -webkit-box-reflect: below 12px
-      linear-gradient(transparent, transparent 72%, rgb(0 0 0 / 0.24));
+  .project-carousel-scroll {
+    -webkit-overflow-scrolling: touch;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    scrollbar-color: color-mix(in oklab, var(--primary) 58%, transparent)
+      transparent;
+    scrollbar-width: thin;
+    scroll-snap-type: x proximity;
   }
 
   .project-carousel-card-title,
@@ -221,18 +215,33 @@
   }
 
   .project-carousel-card-description {
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 2;
   }
 
-  @media (max-width: 640px) {
-    .project-carousel-card {
-      -webkit-box-reflect: unset;
+  .project-carousel-scroll::-webkit-scrollbar {
+    height: 0.5rem;
+  }
+
+  .project-carousel-scroll::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .project-carousel-scroll::-webkit-scrollbar-thumb {
+    background: color-mix(in oklab, var(--primary) 50%, transparent);
+    border-radius: 999px;
+  }
+
+  @media (min-width: 768px) {
+    .project-carousel-scroll {
+      padding-left: 3rem;
+      padding-right: 3rem;
     }
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .project-carousel-track {
-      transition: none;
+  @media (min-width: 1280px) {
+    .project-carousel-scroll {
+      padding-left: max(3rem, calc((100vw - 72rem) / 2 + 3rem));
+      padding-right: max(3rem, calc((100vw - 72rem) / 2 + 3rem));
     }
   }
 

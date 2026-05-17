@@ -1,21 +1,17 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  ArrowRight,
-  Calendar,
-  Download,
-  ExternalLink,
-  MessageCircle,
-} from "lucide-react";
+import { ArrowRight, Calendar, Download, MessageCircle } from "lucide-react";
 import { WHATSAPP_BUDGET_URL } from "@/const";
 import ProjectCarousel from "@/components/ProjectCarousel";
-import {
-  categories,
-  featuredProject,
-  projects,
-  projectStats,
-} from "@/data/projects";
-import { Link } from "wouter";
+import { categories, projects, projectStats } from "@/data/projects";
+import { cn } from "@/lib/utils";
+
+const projectMetricPanels = [
+  "bg-primary/15 text-foreground",
+  "bg-black text-foreground",
+  "bg-primary text-primary-foreground",
+  "bg-zinc-200 text-zinc-950",
+];
 
 const skillCategories = [
   {
@@ -119,14 +115,13 @@ export default function Home() {
     activeCategory === "Todos"
       ? projects
       : projects.filter(p => p.category === activeCategory);
-  const featuredCase = featuredProject?.caseStudy;
 
   return (
     <div className="flex flex-col">
       {/* HERO */}
       <section
         id="inicio"
-        className="flex flex-col-reverse lg:flex-row items-center gap-12 py-16 md:py-24 min-h-[calc(100vh-4rem)]"
+        className="flex min-h-[calc(84vh-4rem)] flex-col-reverse items-center gap-12 pt-8 pb-10 md:min-h-[calc(78vh-4rem)] md:pt-10 md:pb-12 lg:min-h-[calc(74vh-4rem)] lg:flex-row lg:items-start lg:pt-12 lg:pb-14"
       >
         <div className="flex-1 space-y-6">
           <h1 className="text-[1.6875rem] md:text-[2.8125rem] lg:text-[3.375rem] font-bold tracking-tight leading-tight">
@@ -203,161 +198,89 @@ export default function Home() {
       </section>
 
       {/* PROJETOS */}
-      <section id="projetos" className="space-y-8 py-16 md:py-24 scroll-mt-20">
-        <div className="space-y-4">
-          <h2 className="text-3xl md:text-4xl font-bold font-mono tracking-tight">
-            <span className="text-primary">01.</span> Projetos
-          </h2>
-          <p className="text-muted-foreground max-w-2xl">
-            Uma seleção de projetos recentes em backend, dados e web.
-          </p>
-        </div>
-
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {projectStats.map(stat => (
-            <div
-              key={stat.label}
-              className="border border-border bg-card/50 p-4 transition-colors hover:border-primary/40"
-            >
-              <span className="font-mono text-3xl font-bold text-primary">
-                {stat.value}
+      <section
+        id="projetos"
+        className="relative left-1/2 w-screen -translate-x-1/2 scroll-mt-20 border-y border-border/60 bg-background/85 py-10 md:py-12"
+      >
+        <div className="mx-auto max-w-6xl space-y-7 px-6 md:px-12">
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-2xl space-y-4">
+              <span className="inline-flex border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-medium uppercase tracking-normal text-primary">
+                Portfólio selecionado
               </span>
-              <h3 className="mt-3 font-mono text-sm font-bold uppercase tracking-normal">
-                {stat.label}
-              </h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                {stat.detail}
-              </p>
-            </div>
-          ))}
-        </div>
-
-        {featuredProject && featuredCase && (
-          <div className="grid gap-6 border border-primary/20 bg-primary/5 p-4 md:grid-cols-[0.9fr_1.1fr] md:p-6">
-            <div className="relative min-h-64 overflow-hidden border border-border bg-card">
-              <img
-                src={featuredProject.image}
-                alt={featuredProject.title}
-                className="h-full w-full object-cover"
-              />
-              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-background to-transparent p-4">
-                <span className="font-mono text-xs text-primary">
-                  exemplo de case completo
-                </span>
-              </div>
-            </div>
-
-            <div className="flex flex-col gap-5">
-              <div className="space-y-2">
-                <span className="border border-primary/30 bg-primary/10 px-2 py-1 font-mono text-xs uppercase tracking-normal text-primary">
-                  {featuredProject.category}
-                </span>
-                <h3 className="text-2xl font-bold leading-tight md:text-3xl">
-                  {featuredProject.title}
-                </h3>
-                <p className="text-sm leading-relaxed text-muted-foreground md:text-base">
-                  {featuredProject.description}
+              <div className="space-y-3">
+                <h2 className="text-3xl font-bold tracking-normal md:text-5xl">
+                  Projetos recentes
+                </h2>
+                <p className="text-muted-foreground leading-relaxed">
+                  Navegue por sistemas, dashboards e landing pages. A faixa
+                  horizontal mostra mais trabalhos de uma vez e deixa o fluxo
+                  mais direto.
                 </p>
               </div>
+            </div>
 
-              <div className="grid gap-4 md:grid-cols-3">
-                <div>
-                  <h4 className="font-mono text-xs font-bold uppercase tracking-normal text-primary">
-                    problema
-                  </h4>
-                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                    {featuredCase.clientProblem}
-                  </p>
-                </div>
-                <div>
-                  <h4 className="font-mono text-xs font-bold uppercase tracking-normal text-primary">
-                    solução
-                  </h4>
-                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                    {featuredCase.solution}
-                  </p>
-                </div>
-                <div>
-                  <h4 className="font-mono text-xs font-bold uppercase tracking-normal text-primary">
-                    benefício
-                  </h4>
-                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                    {featuredCase.benefit}
-                  </p>
-                </div>
-              </div>
+            <div className="flex flex-wrap gap-2">
+              {categories.map(cat => {
+                const isActive = activeCategory === cat;
 
-              <div className="flex flex-wrap gap-2">
-                {featuredProject.tags.map(tag => (
-                  <span
-                    key={tag}
-                    className="border border-border bg-secondary px-2 py-1 font-mono text-[0.68rem] text-secondary-foreground"
+                return (
+                  <button
+                    key={cat}
+                    onClick={() => setActiveCategory(cat)}
+                    className={cn(
+                      "border px-4 py-2 text-sm font-medium transition-all",
+                      isActive
+                        ? "border-primary bg-primary text-primary-foreground"
+                        : "border-border bg-card/60 text-muted-foreground hover:border-primary/60 hover:text-foreground"
+                    )}
                   >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-
-              <div className="flex flex-col gap-3 sm:flex-row">
-                <Button
-                  asChild
-                  className="rounded-none bg-primary font-mono text-primary-foreground hover:bg-primary/90"
-                >
-                  <Link href={`/projetos/${featuredProject.slug}`}>
-                    Ver página do projeto <ArrowRight className="h-4 w-4" />
-                  </Link>
-                </Button>
-                <Button
-                  asChild
-                  variant="outline"
-                  className="rounded-none border-primary/30 font-mono hover:text-primary"
-                >
-                  <a
-                    href={featuredProject.liveUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    Abrir link <ExternalLink className="h-4 w-4" />
-                  </a>
-                </Button>
-                <Button
-                  asChild
-                  variant="outline"
-                  className="rounded-none border-primary/30 font-mono hover:text-primary"
-                >
-                  <a
-                    href={WHATSAPP_BUDGET_URL}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    {featuredCase.ctaLabel}
-                  </a>
-                </Button>
-              </div>
+                    {cat}
+                  </button>
+                );
+              })}
             </div>
           </div>
-        )}
-
-        <div className="flex flex-wrap gap-2 border-b border-border pb-4">
-          {categories.map(cat => (
-            <button
-              key={cat}
-              onClick={() => setActiveCategory(cat)}
-              className={`px-4 py-2 text-sm font-mono transition-all ${
-                activeCategory === cat
-                  ? "text-primary border-b-2 border-primary -mb-[17px]"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
         </div>
 
-        <ProjectCarousel
-          activeCategory={activeCategory}
-          projects={filteredProjects}
-        />
+        <div className="mt-8">
+          <ProjectCarousel
+            activeCategory={activeCategory}
+            projects={filteredProjects}
+          />
+        </div>
+
+        <div className="mt-10 grid overflow-hidden border-y border-border/70 sm:grid-cols-2 lg:grid-cols-4">
+          {projectStats.map((stat, index) => {
+            const metricValue =
+              index === 0 || index === projectStats.length - 1
+                ? `${Number(stat.value)}+`
+                : stat.value;
+
+            return (
+              <div
+                key={stat.label}
+                className={cn(
+                  "group relative flex min-h-44 items-center justify-center overflow-hidden border-border/70 px-5 py-10 text-center sm:border-r lg:min-h-56",
+                  projectMetricPanels[index % projectMetricPanels.length]
+                )}
+              >
+                <span className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[5rem] font-bold uppercase leading-none text-current opacity-[0.055] transition-transform duration-500 group-hover:scale-105 md:text-[6.5rem] lg:text-[7.5rem]">
+                  Dados
+                </span>
+
+                <div className="relative z-10">
+                  <span className="block text-5xl font-bold leading-none tracking-normal md:text-6xl">
+                    {metricValue}
+                  </span>
+                  <h3 className="mt-5 text-sm font-bold uppercase tracking-normal md:text-base">
+                    {stat.label}
+                  </h3>
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </section>
 
       {/* HABILIDADES */}
