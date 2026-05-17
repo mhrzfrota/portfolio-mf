@@ -1,11 +1,19 @@
 import { useEffect, useRef, useState } from "react";
-import { ChevronLeft, ChevronRight, ExternalLink, Github } from "lucide-react";
+import {
+  ArrowRight,
+  ChevronLeft,
+  ChevronRight,
+  ExternalLink,
+  Github,
+} from "lucide-react";
+import { Link } from "wouter";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 export type ProjectCarouselItem = {
   id: number;
+  slug?: string;
   title: string;
   description: string;
   tags: string[];
@@ -33,12 +41,16 @@ export default function ProjectCarousel({
     axis: null as "x" | "y" | null,
     hasDragged: false,
     lastX: 0,
+    lastMoveTime: 0,
     startAngle: 0,
     startX: 0,
     startY: 0,
+    velocity: 0,
   });
+  const animationFrameRef = useRef<number | null>(null);
   const currentAngleRef = useRef(0);
   const currentIndexRef = useRef(0);
+  const pendingDragAngleRef = useRef<number | null>(null);
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [dragAngle, setDragAngle] = useState<number | null>(null);
@@ -53,13 +65,41 @@ export default function ProjectCarousel({
     totalItems > 0 ? normalizeIndex(currentIndex, totalItems) : 0;
   const activeProject = projects[activeIndex];
 
+  const getSlideWidth = () =>
+    Math.min(180, Math.max(96, (sceneRef.current?.offsetWidth ?? 320) * 0.42));
+
+  const cancelPendingDragFrame = () => {
+    if (animationFrameRef.current === null) return;
+
+    cancelAnimationFrame(animationFrameRef.current);
+    animationFrameRef.current = null;
+    pendingDragAngleRef.current = null;
+  };
+
+  const scheduleDragAngle = (angle: number) => {
+    pendingDragAngleRef.current = angle;
+
+    if (animationFrameRef.current !== null) return;
+
+    animationFrameRef.current = requestAnimationFrame(() => {
+      animationFrameRef.current = null;
+      if (pendingDragAngleRef.current === null) return;
+
+      setDragAngle(pendingDragAngleRef.current);
+      pendingDragAngleRef.current = null;
+    });
+  };
+
   useEffect(() => {
+    cancelPendingDragFrame();
     setCurrentIndex(0);
     setDragAngle(null);
     setIsDragging(false);
     currentIndexRef.current = 0;
     currentAngleRef.current = 0;
   }, [activeCategory, totalItems]);
+
+  useEffect(() => () => cancelPendingDragFrame(), []);
 
   useEffect(() => {
     currentIndexRef.current = currentIndex;
@@ -108,14 +148,18 @@ export default function ProjectCarousel({
       return;
     }
 
+    cancelPendingDragFrame();
+
     dragState.current = {
       active: true,
       axis: null,
       hasDragged: false,
       lastX: event.clientX,
+      lastMoveTime: performance.now(),
       startAngle: currentAngleRef.current,
       startX: event.clientX,
       startY: event.clientY,
+      velocity: 0,
     };
 
     setIsDragging(true);
@@ -136,7 +180,8 @@ export default function ProjectCarousel({
 
     if (dragState.current.axis === "y") return;
 
-    const walk = dragDistanceX * 0.5;
+    const anglePerPixel = theta / getSlideWidth();
+    const walk = dragDistanceX * anglePerPixel;
     const nextAngle = dragState.current.startAngle + walk;
 
     if (absX > 6) {
@@ -144,27 +189,36 @@ export default function ProjectCarousel({
       event.preventDefault();
     }
 
+    const now = performance.now();
+    const elapsed = Math.max(16, now - dragState.current.lastMoveTime);
+    const instantVelocity = (event.clientX - dragState.current.lastX) / elapsed;
+
+    dragState.current.velocity =
+      dragState.current.velocity * 0.65 + instantVelocity * 0.35;
     dragState.current.lastX = event.clientX;
+    dragState.current.lastMoveTime = now;
     currentAngleRef.current = nextAngle;
-    setDragAngle(nextAngle);
+    scheduleDragAngle(nextAngle);
   };
 
   const finishDrag = (event: React.PointerEvent<HTMLDivElement>) => {
     if (!dragState.current.active) return;
 
+    cancelPendingDragFrame();
+
     const dragDistance = dragState.current.lastX - dragState.current.startX;
-    const slideWidth = Math.min(
-      150,
-      Math.max(78, (sceneRef.current?.offsetWidth ?? 320) * 0.34)
-    );
-    const rawSlides = -dragDistance / slideWidth;
+    const projectedDistance = dragDistance + dragState.current.velocity * 180;
+    const rawSlides = -projectedDistance / getSlideWidth();
     const shouldChangeSlide =
-      dragState.current.hasDragged && Math.abs(dragDistance) > 26;
+      dragState.current.hasDragged &&
+      (Math.abs(dragDistance) > 24 || Math.abs(projectedDistance) > 42);
     let slidesToMove = 0;
 
     if (shouldChangeSlide) {
+      const direction = Math.sign(rawSlides) || -Math.sign(dragDistance);
+
       slidesToMove =
-        Math.sign(rawSlides) * Math.max(1, Math.round(Math.abs(rawSlides)));
+        direction * Math.min(3, Math.max(1, Math.round(Math.abs(rawSlides))));
     }
 
     dragState.current.active = false;
@@ -209,7 +263,7 @@ export default function ProjectCarousel({
     <div className="space-y-8">
       <div
         ref={sceneRef}
-        className="relative mx-auto h-[32rem] w-[min(84vw,20rem)] touch-pan-y outline-none [perspective:1400px] focus-visible:ring-2 focus-visible:ring-primary/60 sm:h-[34rem] sm:w-[22rem] md:w-[23rem]"
+        className="relative mx-auto h-[34rem] w-[min(84vw,20rem)] touch-pan-y outline-none [perspective:1400px] focus-visible:ring-2 focus-visible:ring-primary/60 sm:h-[36rem] sm:w-[22rem] md:w-[23rem]"
         aria-label="Carrossel de projetos"
         role="region"
         tabIndex={0}
@@ -239,7 +293,7 @@ export default function ProjectCarousel({
                 key={project.id}
                 aria-hidden={!isActive}
                 className={cn(
-                  "project-carousel-card group absolute left-0 top-0 flex h-[29rem] w-full flex-col overflow-hidden border border-border bg-card/80 shadow-2xl shadow-black/40 backdrop-blur-md transition-opacity duration-300",
+                  "project-carousel-card group absolute left-0 top-0 flex h-[31rem] w-full flex-col overflow-hidden border border-border bg-card/80 shadow-2xl shadow-black/40 backdrop-blur-md transition-opacity duration-300",
                   isActive
                     ? "pointer-events-auto opacity-100"
                     : "pointer-events-none opacity-70"
@@ -314,6 +368,20 @@ export default function ProjectCarousel({
                         </span>
                       )}
                     </div>
+
+                    {project.slug && (
+                      <Button
+                        asChild
+                        className="w-full rounded-none bg-primary font-mono text-xs text-primary-foreground hover:bg-primary/90"
+                      >
+                        <Link
+                          href={`/projetos/${project.slug}`}
+                          tabIndex={isActive ? 0 : -1}
+                        >
+                          Ver detalhes <ArrowRight className="h-3 w-3" />
+                        </Link>
+                      </Button>
+                    )}
 
                     {project.liveUrl !== "#" && (
                       <Button

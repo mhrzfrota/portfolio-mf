@@ -194,7 +194,8 @@
   }
 
   .project-carousel-track {
-    transition: transform 0.65s cubic-bezier(0.25, 1, 0.5, 1);
+    transform: translate3d(0, 0, 0);
+    transition: transform 0.78s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .project-carousel-track.is-dragging {

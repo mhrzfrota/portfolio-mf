@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Github, Linkedin, MessageCircle, Menu, X } from "lucide-react";
+import { useLocation } from "wouter";
 import { cn } from "@/lib/utils";
 import { WHATSAPP_BUDGET_URL } from "@/const";
 
@@ -15,6 +16,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const [activeSection, setActiveSection] = useState("inicio");
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [location, setLocation] = useLocation();
 
   useEffect(() => {
     const sections = navItems
@@ -34,7 +36,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
     sections.forEach(section => observer.observe(section));
     return () => observer.disconnect();
-  }, []);
+  }, [location]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -50,9 +52,19 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const handleNavClick = (id: string) => {
     setMobileOpen(false);
     const el = document.getElementById(id);
+
     if (el) {
       el.scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
     }
+
+    setLocation("/");
+    window.setTimeout(() => {
+      document.getElementById(id)?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }, 0);
   };
 
   return (

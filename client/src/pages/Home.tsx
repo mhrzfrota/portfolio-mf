@@ -1,138 +1,21 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Calendar, Download, MessageCircle } from "lucide-react";
+import {
+  ArrowRight,
+  Calendar,
+  Download,
+  ExternalLink,
+  MessageCircle,
+} from "lucide-react";
 import { WHATSAPP_BUDGET_URL } from "@/const";
 import ProjectCarousel from "@/components/ProjectCarousel";
-
-const projects = [
-  {
-    id: 1,
-    title: "Dashboard Meta Analytics",
-    description:
-      "Sistema de monitoramento de métricas do Facebook e Instagram, integrado à Meta Graph API e PostgreSQL, com visualização de KPIs em tempo quase real.",
-    tags: ["Python", "Flask", "React", "PostgreSQL", "Meta Graph API"],
-    image: "/images/image1.webp",
-    liveUrl: "https://monitor.mslestrategia.com.br",
-    repoUrl: "https://github.com/mhrzfrota",
-    category: "Web",
-  },
-  {
-    id: 2,
-    title: "Cícero Experience - Inteligência de Visitação do Horto",
-    description:
-      "Sistema para a gestão ambiental do Horto do Padre Cícero, com check-in via QR Code e dashboard integrado para contabilizar visitantes e apoiar melhorias na infraestrutura e no fluxo de entrada.",
-    tags: [
-      "Python",
-      "Django",
-      "Django REST Framework",
-      "PostgreSQL",
-      "Dashboard",
-      "QR Code",
-    ],
-    image: "/images/imager5.webp",
-    liveUrl: "https://ciceroexperience.vercel.app",
-    repoUrl: "https://github.com/helionlf/ciceroExperience_api",
-    category: "Web",
-  },
-  {
-    id: 3,
-    title: "Landing Page E-book Virtual",
-    description:
-      'Landing page em HTML, CSS e JavaScript para o livro "A criança e as novas tecnologias", com foco em conversão e visual limpo.',
-    tags: ["HTML", "CSS", "JavaScript"],
-    image: "/images/image6.webp",
-    liveUrl: "https://albertocid.com.br/",
-    repoUrl: "https://github.com/mhrzfrota",
-    category: "Landing Page",
-  },
-  {
-    id: 4,
-    title: "Clipradio",
-    description:
-      "Plataforma para gestão de rádios com agendamentos e gravações automatizadas, usando React/Vite no frontend e Flask no backend, com streaming HLS e transcrição de áudio por IA.",
-    tags: [
-      "React",
-      "Vite",
-      "Flask",
-      "PostgreSQL",
-      "Socket.IO",
-      "HLS.js",
-      "Docker",
-    ],
-    image: "/images/image2.webp",
-    liveUrl: "#",
-    repoUrl: "https://github.com/Ambiente-MSL/clipradio",
-    category: "Web",
-  },
-  {
-    id: 5,
-    title: "Mar&Mov - Moda Praia",
-    description:
-      "E-commerce front-end para loja de roupas com vitrine de produtos, destaques de coleções e navegação SPA, desenvolvido com React e TypeScript.",
-    tags: ["React", "TypeScript", "Vite", "Tailwind CSS", "React Router DOM"],
-    image: "/images/image3.webp",
-    liveUrl: "https://maremovsuamoda.vercel.app/",
-    repoUrl: "https://github.com/mhrzfrota/site-dropshipping",
-    category: "Web",
-  },
-  {
-    id: 6,
-    title: "MG Aldeota - Landing Page",
-    description:
-      "Landing page institucional para comunicação e captação de clientes, com seção de serviços, apresentação da marca e CTA para contato.",
-    tags: ["HTML", "CSS", "Landing Page", "UI Responsiva"],
-    image: "/images/image4.webp",
-    liveUrl: "https://mgaldeota.vercel.app/",
-    repoUrl: "https://github.com/mhrzfrota/mgaldeota",
-    category: "Landing Page",
-  },
-  {
-    id: 7,
-    title: "BarretoFit - Landing Page",
-    description:
-      "Landing page institucional com catálogo e-commerce, desenvolvida para fortalecer a comunicação da marca e captar novos clientes.",
-    tags: ["HTML", "CSS"],
-    image: "/images/image7.webp",
-    liveUrl: "https://barretofit.vercel.app/",
-    repoUrl: "https://github.com/mhrzfrota",
-    category: "Landing Page",
-  },
-  {
-    id: 8,
-    title: "Lyre Store - Site Ecommerce",
-    description:
-      "Site e-commerce em HTML e CSS para uma marca de moda feminina, com vitrine de coleções, navegação por categorias e CTA de compra em destaque.",
-    tags: ["HTML", "CSS", "E-commerce"],
-    image: "/images/image8.webp",
-    liveUrl: "#",
-    repoUrl: "https://github.com/mhrzfrota",
-    category: "Web",
-  },
-  {
-    id: 9,
-    title: "FERPRO Contabilidade - Landing Page",
-    description:
-      "Landing page institucional para escritório de contabilidade, com apresentação de serviços, diferenciais, depoimentos e CTA para atendimento via WhatsApp.",
-    tags: ["HTML", "CSS"],
-    image: "/images/image9.jpg",
-    liveUrl: "https://www.ferprocontabilidade.com.br/",
-    repoUrl: "https://github.com/mhrzfrota/ferpro",
-    category: "Landing Page",
-  },
-  {
-    id: 10,
-    title: "TZ Produções - Landing Page",
-    description:
-      "Landing page institucional para produtora de eventos, com apresentação da marca, serviços, portfólio visual e CTA para contato.",
-    tags: ["HTML", "CSS", "JavaScript"],
-    image: "/images/image10.png",
-    liveUrl: "https://www.tzproducoes.com.br/",
-    repoUrl: "https://github.com/mhrzfrota",
-    category: "Landing Page",
-  },
-];
-
-const categories = ["Todos", "Web", "Landing Page"];
+import {
+  categories,
+  featuredProject,
+  projects,
+  projectStats,
+} from "@/data/projects";
+import { Link } from "wouter";
 
 const skillCategories = [
   {
@@ -236,6 +119,7 @@ export default function Home() {
     activeCategory === "Todos"
       ? projects
       : projects.filter(p => p.category === activeCategory);
+  const featuredCase = featuredProject?.caseStudy;
 
   return (
     <div className="flex flex-col">
@@ -328,6 +212,131 @@ export default function Home() {
             Uma seleção de projetos recentes em backend, dados e web.
           </p>
         </div>
+
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {projectStats.map(stat => (
+            <div
+              key={stat.label}
+              className="border border-border bg-card/50 p-4 transition-colors hover:border-primary/40"
+            >
+              <span className="font-mono text-3xl font-bold text-primary">
+                {stat.value}
+              </span>
+              <h3 className="mt-3 font-mono text-sm font-bold uppercase tracking-normal">
+                {stat.label}
+              </h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                {stat.detail}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        {featuredProject && featuredCase && (
+          <div className="grid gap-6 border border-primary/20 bg-primary/5 p-4 md:grid-cols-[0.9fr_1.1fr] md:p-6">
+            <div className="relative min-h-64 overflow-hidden border border-border bg-card">
+              <img
+                src={featuredProject.image}
+                alt={featuredProject.title}
+                className="h-full w-full object-cover"
+              />
+              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-background to-transparent p-4">
+                <span className="font-mono text-xs text-primary">
+                  exemplo de case completo
+                </span>
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-5">
+              <div className="space-y-2">
+                <span className="border border-primary/30 bg-primary/10 px-2 py-1 font-mono text-xs uppercase tracking-normal text-primary">
+                  {featuredProject.category}
+                </span>
+                <h3 className="text-2xl font-bold leading-tight md:text-3xl">
+                  {featuredProject.title}
+                </h3>
+                <p className="text-sm leading-relaxed text-muted-foreground md:text-base">
+                  {featuredProject.description}
+                </p>
+              </div>
+
+              <div className="grid gap-4 md:grid-cols-3">
+                <div>
+                  <h4 className="font-mono text-xs font-bold uppercase tracking-normal text-primary">
+                    problema
+                  </h4>
+                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                    {featuredCase.clientProblem}
+                  </p>
+                </div>
+                <div>
+                  <h4 className="font-mono text-xs font-bold uppercase tracking-normal text-primary">
+                    solução
+                  </h4>
+                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                    {featuredCase.solution}
+                  </p>
+                </div>
+                <div>
+                  <h4 className="font-mono text-xs font-bold uppercase tracking-normal text-primary">
+                    benefício
+                  </h4>
+                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                    {featuredCase.benefit}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex flex-wrap gap-2">
+                {featuredProject.tags.map(tag => (
+                  <span
+                    key={tag}
+                    className="border border-border bg-secondary px-2 py-1 font-mono text-[0.68rem] text-secondary-foreground"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <Button
+                  asChild
+                  className="rounded-none bg-primary font-mono text-primary-foreground hover:bg-primary/90"
+                >
+                  <Link href={`/projetos/${featuredProject.slug}`}>
+                    Ver página do projeto <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </Button>
+                <Button
+                  asChild
+                  variant="outline"
+                  className="rounded-none border-primary/30 font-mono hover:text-primary"
+                >
+                  <a
+                    href={featuredProject.liveUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Abrir link <ExternalLink className="h-4 w-4" />
+                  </a>
+                </Button>
+                <Button
+                  asChild
+                  variant="outline"
+                  className="rounded-none border-primary/30 font-mono hover:text-primary"
+                >
+                  <a
+                    href={WHATSAPP_BUDGET_URL}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {featuredCase.ctaLabel}
+                  </a>
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
 
         <div className="flex flex-wrap gap-2 border-b border-border pb-4">
           {categories.map(cat => (
