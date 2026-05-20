@@ -1,8 +1,17 @@
 import { useEffect, useState } from "react";
-import { Github, Linkedin, MessageCircle, Menu, X } from "lucide-react";
+import {
+  Github,
+  Linkedin,
+  MessageCircle,
+  Menu,
+  Moon,
+  Sun,
+  X,
+} from "lucide-react";
 import { useLocation } from "wouter";
 import { cn } from "@/lib/utils";
 import { WHATSAPP_BUDGET_URL } from "@/const";
+import { useTheme } from "@/contexts/ThemeContext";
 
 const navItems = [
   { label: "início", id: "inicio" },
@@ -17,6 +26,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [location, setLocation] = useLocation();
+  const { theme, toggleTheme } = useTheme();
+  const isDark = theme === "dark";
 
   useEffect(() => {
     const sections = navItems
@@ -68,51 +79,61 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground font-sans selection:bg-primary/20 selection:text-primary">
-      {/* Floating Topbar */}
+    <div className="min-h-screen bg-background text-foreground font-sans selection:bg-[var(--brand-blue)]/15 selection:text-[var(--brand-blue)]">
+      {/* Nike-style top navbar */}
       <header
         className={cn(
-          "fixed left-1/2 z-50 w-[95%] -translate-x-1/2 transition-all duration-300",
-          scrolled ? "top-0 w-full max-w-none" : "top-5 max-w-[1200px]"
+          "fixed inset-x-0 top-0 z-50 transition-all duration-300",
+          scrolled
+            ? "bg-background/95 backdrop-blur border-b border-border shadow-[0_1px_0_rgba(0,0,0,0.04)]"
+            : "bg-background border-b border-border/60"
         )}
       >
-        <div
-          className={cn(
-            "flex items-center justify-between border border-white/[0.03] bg-zinc-900/60 px-5 py-3 shadow-[0_4px_30px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.05)] backdrop-blur-2xl transition-all duration-300 md:px-6",
-            scrolled ? "rounded-none border-x-0 border-t-0" : "rounded-full"
-          )}
-        >
+        <div className="mx-auto flex max-w-[1400px] items-center justify-between px-5 py-4 md:px-10">
           <button
             onClick={() => handleNavClick("inicio")}
-            className="flex items-center font-mono text-lg font-semibold tracking-tight text-foreground transition-colors hover:text-primary md:text-xl"
+            className="flex items-center text-lg font-extrabold uppercase tracking-tight text-foreground transition-colors hover:text-[var(--brand-blue)] md:text-xl"
           >
-            matheus<span className="text-primary">.frota_</span>
+            matheus
+            <span className="text-[var(--brand-blue)]">.frota</span>
+            <span className="text-[var(--brand-green)]">_</span>
           </button>
 
           {/* Desktop Nav */}
-          <nav className="hidden items-center gap-2 md:flex">
-            {navItems.map(item => (
-              <button
-                key={item.id}
-                onClick={() => handleNavClick(item.id)}
-                className={cn(
-                  "flex items-center rounded-full px-4 py-2 text-sm font-medium text-muted-foreground transition-all duration-300",
-                  activeSection === item.id
-                    ? "bg-primary/10 text-primary"
-                    : "hover:bg-white/[0.08] hover:text-foreground"
-                )}
-              >
-                <span>{item.label}</span>
-              </button>
-            ))}
+          <nav className="hidden items-center gap-1 md:flex">
+            {navItems.map(item => {
+              const isActive = activeSection === item.id;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => handleNavClick(item.id)}
+                  className={cn(
+                    "relative px-4 py-2 text-sm font-bold uppercase tracking-tight transition-colors",
+                    isActive
+                      ? "text-[var(--brand-blue)]"
+                      : "text-foreground/70 hover:text-foreground"
+                  )}
+                >
+                  <span>{item.label}</span>
+                  <span
+                    className={cn(
+                      "absolute bottom-1 left-1/2 h-[2px] -translate-x-1/2 transition-all duration-300",
+                      isActive
+                        ? "w-6 bg-[var(--brand-green)]"
+                        : "w-0 bg-transparent"
+                    )}
+                  />
+                </button>
+              );
+            })}
           </nav>
 
-          <div className="ml-2 hidden items-center gap-3 border-l border-white/10 pl-4 md:flex">
+          <div className="ml-2 hidden items-center gap-2 border-l border-border pl-4 md:flex">
             <a
               href="https://github.com/mhrzfrota"
               target="_blank"
               rel="noreferrer"
-              className="flex h-9 w-9 items-center justify-center rounded-full text-muted-foreground transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/[0.08] hover:text-foreground"
+              className="flex h-9 w-9 items-center justify-center rounded-full text-foreground/70 transition-all duration-300 hover:-translate-y-0.5 hover:bg-secondary hover:text-[var(--brand-blue)]"
               aria-label="GitHub"
             >
               <Github className="w-4 h-4" />
@@ -121,7 +142,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               href="https://www.linkedin.com/in/matheusfrt"
               target="_blank"
               rel="noreferrer"
-              className="flex h-9 w-9 items-center justify-center rounded-full text-muted-foreground transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/[0.08] hover:text-foreground"
+              className="flex h-9 w-9 items-center justify-center rounded-full text-foreground/70 transition-all duration-300 hover:-translate-y-0.5 hover:bg-secondary hover:text-[var(--brand-blue)]"
               aria-label="LinkedIn"
             >
               <Linkedin className="w-4 h-4" />
@@ -130,55 +151,80 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               href={WHATSAPP_BUDGET_URL}
               target="_blank"
               rel="noreferrer"
-              className="flex h-9 w-9 items-center justify-center rounded-full text-muted-foreground transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/[0.08] hover:text-foreground"
+              className="flex h-9 w-9 items-center justify-center rounded-full text-foreground/70 transition-all duration-300 hover:-translate-y-0.5 hover:bg-secondary hover:text-[var(--brand-green)]"
               aria-label="WhatsApp"
             >
               <MessageCircle className="w-4 h-4" />
             </a>
+            <button
+              type="button"
+              onClick={() => toggleTheme?.()}
+              aria-label={isDark ? "Ativar modo claro" : "Ativar modo escuro"}
+              title={isDark ? "Modo claro" : "Modo escuro"}
+              className="flex h-9 w-9 items-center justify-center rounded-full text-foreground/70 transition-all duration-300 hover:-translate-y-0.5 hover:bg-secondary hover:text-[var(--brand-blue)]"
+            >
+              {isDark ? (
+                <Sun className="w-4 h-4" />
+              ) : (
+                <Moon className="w-4 h-4" />
+              )}
+            </button>
           </div>
 
-          <button
-            onClick={() => setMobileOpen(v => !v)}
-            className="rounded-full p-2 text-foreground transition-colors hover:bg-white/[0.08] md:hidden"
-            aria-label="Abrir menu"
-          >
-            {mobileOpen ? (
-              <X className="w-6 h-6" />
-            ) : (
-              <Menu className="w-6 h-6" />
-            )}
-          </button>
+          <div className="flex items-center gap-1 md:hidden">
+            <button
+              type="button"
+              onClick={() => toggleTheme?.()}
+              aria-label={isDark ? "Ativar modo claro" : "Ativar modo escuro"}
+              className="rounded-full p-2 text-foreground transition-colors hover:bg-secondary"
+            >
+              {isDark ? (
+                <Sun className="w-5 h-5" />
+              ) : (
+                <Moon className="w-5 h-5" />
+              )}
+            </button>
+            <button
+              onClick={() => setMobileOpen(v => !v)}
+              className="rounded-full p-2 text-foreground transition-colors hover:bg-secondary"
+              aria-label="Abrir menu"
+            >
+              {mobileOpen ? (
+                <X className="w-6 h-6" />
+              ) : (
+                <Menu className="w-6 h-6" />
+              )}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Menu Drawer */}
         {mobileOpen && (
-          <div
-            className={cn(
-              "mt-2 overflow-hidden border border-white/[0.05] bg-zinc-900/90 shadow-[0_18px_60px_rgba(0,0,0,0.45)] backdrop-blur-2xl md:hidden",
-              scrolled ? "rounded-b-3xl border-t-0" : "rounded-3xl"
-            )}
-          >
+          <div className="border-t border-border bg-background md:hidden">
             <nav className="flex flex-col p-4 gap-1">
-              {navItems.map(item => (
-                <button
-                  key={item.id}
-                  onClick={() => handleNavClick(item.id)}
-                  className={cn(
-                    "flex items-center gap-2 rounded-full px-4 py-3 text-left text-sm font-medium transition-all",
-                    activeSection === item.id
-                      ? "bg-primary/10 text-primary"
-                      : "text-muted-foreground hover:bg-white/[0.08] hover:text-foreground"
-                  )}
-                >
-                  <span>{item.label}</span>
-                </button>
-              ))}
-              <div className="mt-2 flex justify-center gap-4 border-t border-white/10 pt-4">
+              {navItems.map(item => {
+                const isActive = activeSection === item.id;
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() => handleNavClick(item.id)}
+                    className={cn(
+                      "flex items-center gap-2 px-4 py-3 text-left text-sm font-bold uppercase tracking-tight transition-all",
+                      isActive
+                        ? "border-l-2 border-[var(--brand-green)] bg-secondary text-[var(--brand-blue)]"
+                        : "text-foreground/70 hover:bg-secondary hover:text-foreground"
+                    )}
+                  >
+                    <span>{item.label}</span>
+                  </button>
+                );
+              })}
+              <div className="mt-2 flex justify-center gap-4 border-t border-border pt-4">
                 <a
                   href="https://github.com/mhrzfrota"
                   target="_blank"
                   rel="noreferrer"
-                  className="flex h-10 w-10 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-white/[0.08] hover:text-foreground"
+                  className="flex h-10 w-10 items-center justify-center rounded-full text-foreground/70 transition-colors hover:bg-secondary hover:text-[var(--brand-blue)]"
                   aria-label="GitHub"
                 >
                   <Github className="w-5 h-5" />
@@ -187,7 +233,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   href="https://www.linkedin.com/in/matheusfrt"
                   target="_blank"
                   rel="noreferrer"
-                  className="flex h-10 w-10 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-white/[0.08] hover:text-foreground"
+                  className="flex h-10 w-10 items-center justify-center rounded-full text-foreground/70 transition-colors hover:bg-secondary hover:text-[var(--brand-blue)]"
                   aria-label="LinkedIn"
                 >
                   <Linkedin className="w-5 h-5" />
@@ -196,7 +242,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   href={WHATSAPP_BUDGET_URL}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex h-10 w-10 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-white/[0.08] hover:text-foreground"
+                  className="flex h-10 w-10 items-center justify-center rounded-full text-foreground/70 transition-colors hover:bg-secondary hover:text-[var(--brand-green)]"
                   aria-label="WhatsApp"
                 >
                   <MessageCircle className="w-5 h-5" />
@@ -209,16 +255,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
       {/* Main Content */}
       <main className="relative pt-24 md:pt-28">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none z-0"></div>
         <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-12">
           {children}
         </div>
       </main>
 
       {/* Footer */}
-      <footer className="relative z-10 border-t border-border mt-16">
+      <footer className="relative z-10 border-t border-border bg-secondary/40 mt-16">
         <div className="max-w-6xl mx-auto px-6 md:px-12 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-xs font-mono text-muted-foreground">
+          <p className="text-xs font-bold uppercase tracking-tight text-muted-foreground">
             © {new Date().getFullYear()} matheus.frota_ — Desenvolvedor de
             Software
           </p>
@@ -227,7 +272,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               href="https://github.com/mhrzfrota"
               target="_blank"
               rel="noreferrer"
-              className="text-muted-foreground hover:text-primary transition-colors"
+              className="text-muted-foreground hover:text-[var(--brand-blue)] transition-colors"
             >
               <Github className="w-4 h-4" />
             </a>
@@ -235,7 +280,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               href="https://www.linkedin.com/in/matheusfrt"
               target="_blank"
               rel="noreferrer"
-              className="text-muted-foreground hover:text-primary transition-colors"
+              className="text-muted-foreground hover:text-[var(--brand-blue)] transition-colors"
             >
               <Linkedin className="w-4 h-4" />
             </a>
@@ -243,7 +288,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               href={WHATSAPP_BUDGET_URL}
               target="_blank"
               rel="noreferrer"
-              className="text-muted-foreground hover:text-primary transition-colors"
+              className="text-muted-foreground hover:text-[var(--brand-green)] transition-colors"
             >
               <MessageCircle className="w-4 h-4" />
             </a>

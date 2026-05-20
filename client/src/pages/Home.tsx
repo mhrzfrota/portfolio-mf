@@ -1,16 +1,15 @@
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Calendar, Download, MessageCircle } from "lucide-react";
 import { WHATSAPP_BUDGET_URL } from "@/const";
-import ProjectCarousel from "@/components/ProjectCarousel";
-import { categories, projects, projectStats } from "@/data/projects";
+import ProjectsCategoryPage from "@/components/ProjectsCategoryPage";
+import { projectStats } from "@/data/projects";
 import { cn } from "@/lib/utils";
 
 const projectMetricPanels = [
-  "bg-primary/15 text-foreground",
-  "bg-black text-foreground",
-  "bg-primary text-primary-foreground",
-  "bg-zinc-200 text-zinc-950",
+  "bg-card text-foreground border border-border",
+  "bg-[var(--brand-ink)] text-white",
+  "bg-[var(--brand-blue)] text-white",
+  "bg-[var(--brand-green)] text-[var(--brand-ink)]",
 ];
 
 const skillCategories = [
@@ -110,12 +109,6 @@ function scrollToId(id: string) {
 }
 
 export default function Home() {
-  const [activeCategory, setActiveCategory] = useState("Todos");
-  const filteredProjects =
-    activeCategory === "Todos"
-      ? projects
-      : projects.filter(p => p.category === activeCategory);
-
   return (
     <div className="flex flex-col">
       {/* HERO */}
@@ -124,12 +117,18 @@ export default function Home() {
         className="flex min-h-[calc(84vh-4rem)] flex-col-reverse items-center gap-12 pt-8 pb-10 md:min-h-[calc(78vh-4rem)] md:pt-10 md:pb-12 lg:min-h-[calc(74vh-4rem)] lg:flex-row lg:items-start lg:pt-12 lg:pb-14"
       >
         <div className="flex-1 space-y-6">
-          <h1 className="text-[1.6875rem] md:text-[2.8125rem] lg:text-[3.375rem] font-bold tracking-tight leading-tight">
-            Criando soluções <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/50">
-              digitais e dados
-            </span>
-            <br /> que fazem diferença.
+          <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-[var(--brand-blue)]">
+            <span className="h-2 w-2 rounded-full bg-[var(--brand-green)]" />
+            Just Code It.
+          </span>
+
+          <h1 className="font-display text-[3.25rem] leading-[0.9] tracking-tight md:text-[5.5rem] lg:text-[7rem]">
+            Criando soluções
+            <br />
+            <span className="text-[var(--brand-blue)]">digitais e dados</span>
+            <br />
+            que fazem{" "}
+            <span className="text-[var(--brand-green)]">diferença.</span>
           </h1>
 
           <p className="text-lg text-muted-foreground max-w-xl leading-relaxed">
@@ -141,7 +140,7 @@ export default function Home() {
             <Button
               size="lg"
               onClick={() => scrollToId("projetos")}
-              className="bg-primary text-primary-foreground hover:bg-primary/90 font-mono rounded-none border border-transparent"
+              className="nike-pill h-12 bg-[var(--brand-ink)] px-7 text-sm font-bold uppercase tracking-wide text-white hover:bg-[var(--brand-blue)]"
             >
               Ver projetos <ArrowRight className="ml-2 w-4 h-4" />
             </Button>
@@ -149,7 +148,7 @@ export default function Home() {
               asChild
               variant="outline"
               size="lg"
-              className="font-mono rounded-none border-primary/30 hover:bg-primary/10 hover:text-primary"
+              className="nike-pill h-12 border-2 border-foreground bg-transparent px-7 text-sm font-bold uppercase tracking-wide text-foreground hover:bg-[var(--brand-green)] hover:text-[var(--brand-ink)]"
             >
               <a href={WHATSAPP_BUDGET_URL} target="_blank" rel="noreferrer">
                 Envie uma mensagem
@@ -159,98 +158,51 @@ export default function Home() {
         </div>
 
         <div className="flex-1 w-full max-w-md lg:max-w-full relative group">
-          <div className="absolute -inset-1 bg-gradient-to-r from-primary to-blue-600 rounded-lg blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></div>
-          <div className="relative aspect-square md:aspect-[4/3] overflow-hidden rounded-lg border border-border bg-card">
+          <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-[var(--brand-blue)] to-[var(--brand-green)] opacity-25 blur-xl group-hover:opacity-45 transition duration-1000 group-hover:duration-200" />
+          <div className="relative aspect-square md:aspect-[4/3] overflow-hidden rounded-2xl border border-border bg-card shadow-[0_20px_60px_rgba(13,30,80,0.15)]">
             <img
               src="/images/hero-bg.webp"
               alt="Arte digital abstrata"
-              className="w-full h-full object-cover opacity-80 hover:scale-105 transition-transform duration-700"
+              className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-[var(--brand-ink)]/35 via-transparent to-transparent" />
 
-            <div className="absolute bottom-4 left-4 right-4 p-4 bg-black/80 backdrop-blur border border-white/10 rounded font-mono text-xs text-green-400 overflow-hidden">
+            <div className="absolute bottom-4 left-4 right-4 p-4 bg-[var(--brand-ink)]/90 backdrop-blur rounded-xl border border-white/10 font-mono text-xs text-[var(--brand-green)] overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.35)]">
               <div className="flex gap-2 mb-2 border-b border-white/10 pb-2">
                 <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
+                <div className="w-3 h-3 rounded-full bg-emerald-400"></div>
               </div>
               <p>
-                <span className="text-purple-400">const</span>{" "}
-                <span className="text-blue-400">desenvolvedor</span> ={" "}
-                <span className="text-yellow-300">{"{"}</span>
+                <span className="text-fuchsia-300">const</span>{" "}
+                <span className="text-sky-300">desenvolvedor</span> ={" "}
+                <span className="text-yellow-200">{"{"}</span>
               </p>
               <p className="pl-4">
-                nome: <span className="text-orange-300">"Matheus Frota"</span>,
+                nome:{" "}
+                <span className="text-orange-200">"Matheus Frota"</span>,
               </p>
               <p className="pl-4">
-                cargo: <span className="text-orange-300">"Dev Full Stack"</span>
-                ,
+                cargo:{" "}
+                <span className="text-orange-200">"Dev Full Stack"</span>,
               </p>
               <p className="pl-4">
-                status: <span className="text-orange-300">"Disponível"</span>
+                status:{" "}
+                <span className="text-orange-200">"Disponível"</span>
               </p>
               <p>
-                <span className="text-yellow-300">{"}"}</span>;
+                <span className="text-yellow-200">{"}"}</span>;
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* PROJETOS */}
-      <section
-        id="projetos"
-        className="relative left-1/2 w-screen -translate-x-1/2 scroll-mt-20 border-y border-border/60 bg-background/85 py-10 md:py-12"
-      >
-        <div className="mx-auto max-w-6xl space-y-7 px-6 md:px-12">
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-            <div className="max-w-2xl space-y-4">
-              <span className="inline-flex border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-medium uppercase tracking-normal text-primary">
-                Portfólio selecionado
-              </span>
-              <div className="space-y-3">
-                <h2 className="text-3xl font-bold tracking-normal md:text-5xl">
-                  Projetos recentes
-                </h2>
-                <p className="text-muted-foreground leading-relaxed">
-                  Navegue por sistemas, dashboards e landing pages. A faixa
-                  horizontal mostra mais trabalhos de uma vez e deixa o fluxo
-                  mais direto.
-                </p>
-              </div>
-            </div>
+      {/* PROJETOS — Nike-style category page */}
+      <section id="projetos" className="scroll-mt-20">
+        <ProjectsCategoryPage />
 
-            <div className="flex flex-wrap gap-2">
-              {categories.map(cat => {
-                const isActive = activeCategory === cat;
-
-                return (
-                  <button
-                    key={cat}
-                    onClick={() => setActiveCategory(cat)}
-                    className={cn(
-                      "border px-4 py-2 text-sm font-medium transition-all",
-                      isActive
-                        ? "border-primary bg-primary text-primary-foreground"
-                        : "border-border bg-card/60 text-muted-foreground hover:border-primary/60 hover:text-foreground"
-                    )}
-                  >
-                    {cat}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-8">
-          <ProjectCarousel
-            activeCategory={activeCategory}
-            projects={filteredProjects}
-          />
-        </div>
-
-        <div className="mt-10 grid overflow-hidden border-y border-border/70 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="relative left-1/2 w-screen -translate-x-1/2 grid overflow-hidden border-y border-border sm:grid-cols-2 lg:grid-cols-4">
           {projectStats.map((stat, index) => {
             const metricValue =
               index === 0 || index === projectStats.length - 1
@@ -261,19 +213,19 @@ export default function Home() {
               <div
                 key={stat.label}
                 className={cn(
-                  "group relative flex min-h-44 items-center justify-center overflow-hidden border-border/70 px-5 py-10 text-center sm:border-r lg:min-h-56",
+                  "group relative flex min-h-44 items-center justify-center overflow-hidden border-border px-5 py-10 text-center sm:border-r lg:min-h-56",
                   projectMetricPanels[index % projectMetricPanels.length]
                 )}
               >
-                <span className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[5rem] font-bold uppercase leading-none text-current opacity-[0.055] transition-transform duration-500 group-hover:scale-105 md:text-[6.5rem] lg:text-[7.5rem]">
+                <span className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-display text-[6rem] uppercase leading-none text-current opacity-[0.08] transition-transform duration-500 group-hover:scale-105 md:text-[8rem] lg:text-[9rem]">
                   Dados
                 </span>
 
                 <div className="relative z-10">
-                  <span className="block text-5xl font-bold leading-none tracking-normal md:text-6xl">
+                  <span className="block font-display text-6xl leading-none tracking-tight md:text-7xl">
                     {metricValue}
                   </span>
-                  <h3 className="mt-5 text-sm font-bold uppercase tracking-normal md:text-base">
+                  <h3 className="mt-5 text-xs font-bold uppercase tracking-[0.18em] md:text-sm">
                     {stat.label}
                   </h3>
                 </div>
@@ -286,11 +238,15 @@ export default function Home() {
       {/* HABILIDADES */}
       <section
         id="habilidades"
-        className="space-y-8 py-16 md:py-24 scroll-mt-20"
+        className="space-y-10 py-20 md:py-28 scroll-mt-20"
       >
         <div className="space-y-4">
-          <h2 className="text-3xl md:text-4xl font-bold font-mono tracking-tight">
-            <span className="text-primary">02.</span> Habilidades
+          <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-[var(--brand-green)]">
+            <span className="h-2 w-2 rounded-full bg-[var(--brand-blue)]" />
+            02 · Habilidades
+          </span>
+          <h2 className="font-display text-4xl md:text-6xl tracking-tight">
+            Stack & ferramentas
           </h2>
           <p className="text-muted-foreground max-w-2xl">
             Visão geral das minhas habilidades técnicas com foco em backend e
@@ -298,32 +254,35 @@ export default function Home() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
-          {skillCategories.map(category => (
-            <div key={category.title} className="space-y-6">
-              <h3 className="text-xl font-mono font-bold border-b border-border pb-2 flex items-center gap-2">
-                <span className="w-2 h-2 bg-primary inline-block"></span>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {skillCategories.map((category, idx) => (
+            <div
+              key={category.title}
+              className="space-y-6 rounded-2xl border border-border bg-card p-6 shadow-[0_8px_30px_rgba(13,30,80,0.06)]"
+            >
+              <h3 className="flex items-center gap-2 border-b border-border pb-3 font-display text-2xl tracking-tight">
+                <span
+                  className={cn(
+                    "h-3 w-3 inline-block",
+                    idx % 2 === 0
+                      ? "bg-[var(--brand-blue)]"
+                      : "bg-[var(--brand-green)]"
+                  )}
+                />
                 {category.title}
               </h3>
 
-              <div className="space-y-6">
+              <div className="flex flex-wrap gap-2">
                 {category.skills.map(skill => (
-                  <div key={skill.name} className="space-y-2 group">
-                    <div className="flex justify-between text-sm font-mono">
-                      <span className="group-hover:text-primary transition-colors">
-                        {skill.name}
-                      </span>
-                      <span className="text-muted-foreground">
-                        {skill.level}%
-                      </span>
-                    </div>
-                    <div className="h-2 bg-secondary overflow-hidden rounded-none">
-                      <div
-                        className="h-full bg-primary transition-all duration-1000 ease-out group-hover:bg-primary/80"
-                        style={{ width: `${skill.level}%` }}
-                      ></div>
-                    </div>
-                  </div>
+                  <span
+                    key={skill.name}
+                    className="inline-flex items-center gap-2 rounded-full border-2 border-foreground/15 bg-secondary/50 px-4 py-2 text-xs font-bold uppercase tracking-wide text-foreground transition-all hover:border-[var(--brand-blue)] hover:bg-card hover:text-[var(--brand-blue)]"
+                  >
+                    {skill.name}
+                    <span className="text-[10px] font-bold text-muted-foreground">
+                      {skill.level}%
+                    </span>
+                  </span>
                 ))}
               </div>
             </div>
@@ -331,20 +290,41 @@ export default function Home() {
         </div>
 
         <div className="space-y-6 pt-8">
-          <h3 className="text-xl font-mono font-bold border-b border-border pb-2 flex items-center gap-2">
-            <span className="w-2 h-2 bg-primary inline-block"></span>
+          <h3 className="flex items-center gap-2 border-b border-border pb-3 font-display text-2xl tracking-tight">
+            <span className="h-3 w-3 inline-block bg-[var(--brand-green)]" />
             Formação & Método
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {methodItems.map(item => (
+            {methodItems.map((item, idx) => (
               <div
                 key={item.title}
-                className="p-4 border border-border bg-card/50 hover:border-primary/30 transition-colors"
+                className={cn(
+                  "rounded-2xl border border-border p-5 transition-all hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(13,30,80,0.08)]",
+                  idx % 2 === 0
+                    ? "bg-card"
+                    : "bg-[var(--brand-ink)] text-white"
+                )}
               >
-                <h4 className="font-mono font-bold text-primary mb-2">
+                <h4
+                  className={cn(
+                    "mb-2 font-display text-xl tracking-tight",
+                    idx % 2 === 0
+                      ? "text-[var(--brand-blue)]"
+                      : "text-[var(--brand-green)]"
+                  )}
+                >
                   {item.title}
                 </h4>
-                <p className="text-sm text-muted-foreground">{item.desc}</p>
+                <p
+                  className={cn(
+                    "text-sm",
+                    idx % 2 === 0
+                      ? "text-muted-foreground"
+                      : "text-white/75"
+                  )}
+                >
+                  {item.desc}
+                </p>
               </div>
             ))}
           </div>
@@ -352,10 +332,14 @@ export default function Home() {
       </section>
 
       {/* BLOG */}
-      <section id="blog" className="space-y-8 py-16 md:py-24 scroll-mt-20">
+      <section id="blog" className="space-y-10 py-20 md:py-28 scroll-mt-20">
         <div className="space-y-4">
-          <h2 className="text-3xl md:text-4xl font-bold font-mono tracking-tight">
-            <span className="text-primary">03.</span> Blog
+          <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-[var(--brand-blue)]">
+            <span className="h-2 w-2 rounded-full bg-[var(--brand-green)]" />
+            03 · Blog
+          </span>
+          <h2 className="font-display text-4xl md:text-6xl tracking-tight">
+            Notas & ideias
           </h2>
           <p className="text-muted-foreground max-w-2xl">
             Notas sobre backend, dados e construção de produtos.
@@ -366,34 +350,39 @@ export default function Home() {
           {posts.map(post => (
             <article
               key={post.id}
-              className="group border border-border bg-card hover:border-primary/50 transition-all duration-300 p-6 flex flex-col gap-4"
+              className="group flex flex-col gap-4 overflow-hidden rounded-2xl border border-border bg-card p-6 transition-all duration-300 hover:-translate-y-1 hover:border-[var(--brand-blue)]/60 hover:shadow-[0_18px_40px_rgba(13,30,80,0.1)]"
             >
-              <div className="flex items-center gap-4 text-xs font-mono text-muted-foreground">
+              <div className="flex items-center gap-4 text-xs font-bold uppercase tracking-wide text-muted-foreground">
                 <span className="flex items-center gap-1">
                   <Calendar className="w-3 h-3" /> {post.date}
                 </span>
               </div>
 
-              <h3 className="text-lg font-bold group-hover:text-primary transition-colors leading-snug">
+              <h3 className="font-display text-2xl tracking-tight leading-tight transition-colors group-hover:text-[var(--brand-blue)]">
                 {post.title}
               </h3>
 
-              <p className="text-muted-foreground text-sm flex-1 leading-relaxed">
+              <p className="text-sm leading-relaxed text-muted-foreground flex-1">
                 {post.excerpt}
               </p>
 
               <div className="flex flex-wrap gap-2">
-                {post.tags.map(tag => (
+                {post.tags.map((tag, idx) => (
                   <span
                     key={tag}
-                    className="text-xs font-mono px-2 py-1 bg-secondary text-secondary-foreground rounded"
+                    className={cn(
+                      "rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wide",
+                      idx % 2 === 0
+                        ? "bg-[var(--brand-blue)]/10 text-[var(--brand-blue)]"
+                        : "bg-[var(--brand-green)]/15 text-[var(--brand-green-dark)]"
+                    )}
                   >
-                    #{tag}
+                    {tag}
                   </span>
                 ))}
               </div>
 
-              <span className="text-xs font-mono text-muted-foreground pt-2 border-t border-border">
+              <span className="inline-flex w-fit items-center gap-2 rounded-full bg-[var(--brand-ink)] px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-white">
                 Em breve
               </span>
             </article>
@@ -402,10 +391,14 @@ export default function Home() {
       </section>
 
       {/* CONTATO */}
-      <section id="contato" className="py-16 md:py-24 scroll-mt-20">
+      <section id="contato" className="py-20 md:py-28 scroll-mt-20">
         <div className="space-y-4 mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold font-mono tracking-tight">
-            <span className="text-primary">04.</span> Contato
+          <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-[var(--brand-green)]">
+            <span className="h-2 w-2 rounded-full bg-[var(--brand-blue)]" />
+            04 · Contato
+          </span>
+          <h2 className="font-display text-4xl md:text-6xl tracking-tight">
+            Vamos construir juntos.
           </h2>
           <p className="text-muted-foreground max-w-2xl">
             Tem um projeto em mente ou quer conversar? Estou aberto a novas
@@ -414,20 +407,22 @@ export default function Home() {
         </div>
 
         <div className="grid lg:grid-cols-[1.2fr_0.8fr] gap-8 items-start">
-          <div className="relative overflow-hidden py-2 md:py-4">
-            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-primary via-primary/40 to-transparent" />
+          <div className="relative overflow-hidden rounded-2xl bg-[var(--brand-ink)] p-8 md:p-12 text-white">
+            <div className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-[var(--brand-blue)]/40 blur-3xl" />
+            <div className="absolute -left-20 -bottom-20 h-56 w-56 rounded-full bg-[var(--brand-green)]/30 blur-3xl" />
 
-            <div className="relative space-y-8 pt-8">
-              <div className="inline-flex items-center gap-2 border border-primary/30 bg-primary/10 px-3 py-1 font-mono text-xs text-primary">
-                <span className="h-2 w-2 bg-primary" />
+            <div className="relative space-y-8">
+              <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-bold uppercase tracking-wide text-[var(--brand-green)]">
+                <span className="h-2 w-2 rounded-full bg-[var(--brand-green)]" />
                 atendimento direto
               </div>
 
               <div className="space-y-4">
-                <h3 className="max-w-2xl text-3xl font-bold leading-tight md:text-5xl">
-                  Vamos conversar pelo WhatsApp.
+                <h3 className="max-w-2xl font-display text-4xl leading-[0.95] tracking-tight md:text-6xl">
+                  Vamos conversar pelo{" "}
+                  <span className="text-[var(--brand-green)]">WhatsApp</span>.
                 </h3>
-                <p className="max-w-xl text-muted-foreground leading-relaxed">
+                <p className="max-w-xl leading-relaxed text-white/70">
                   Clique no botão abaixo para abrir uma conversa com a mensagem
                   de orçamento já preenchida.
                 </p>
@@ -436,7 +431,7 @@ export default function Home() {
               <Button
                 asChild
                 size="lg"
-                className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-mono rounded-none sm:w-auto"
+                className="nike-pill h-12 w-full bg-[var(--brand-green)] px-7 text-sm font-bold uppercase tracking-wide text-[var(--brand-ink)] hover:bg-white sm:w-auto"
               >
                 <a href={WHATSAPP_BUDGET_URL} target="_blank" rel="noreferrer">
                   Enviar mensagem <MessageCircle className="w-4 h-4" />
@@ -447,16 +442,15 @@ export default function Home() {
                 {contactHighlights.map((item, index) => (
                   <div
                     key={item.title}
-                    className="group relative min-h-36 border border-border px-4 py-5 transition-colors hover:border-primary/70"
+                    className="group relative min-h-36 rounded-xl border border-white/10 bg-white/[0.04] px-4 py-5 transition-colors hover:border-[var(--brand-green)]/70 hover:bg-white/[0.07]"
                   >
-                    <div className="absolute inset-x-0 top-0 h-px bg-primary/0 transition-colors group-hover:bg-primary/80" />
-                    <span className="font-mono text-xs text-primary/70">
+                    <span className="text-xs font-bold uppercase tracking-wide text-[var(--brand-blue)]">
                       0{index + 1}
                     </span>
-                    <h4 className="mt-3 font-mono text-base font-bold text-foreground group-hover:text-primary transition-colors">
+                    <h4 className="mt-3 font-display text-xl tracking-tight text-white transition-colors group-hover:text-[var(--brand-green)]">
                       {item.title}
                     </h4>
-                    <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                    <p className="mt-3 text-sm leading-relaxed text-white/60">
                       {item.description}
                     </p>
                   </div>
@@ -465,25 +459,25 @@ export default function Home() {
             </div>
           </div>
 
-          <aside className="space-y-8 lg:pl-12 lg:border-l border-border/50">
-            <div className="space-y-4">
-              <h3 className="text-xl font-bold font-mono">
+          <aside className="space-y-6 lg:pl-4">
+            <div className="rounded-2xl border border-border bg-card p-6 shadow-[0_8px_30px_rgba(13,30,80,0.06)]">
+              <h3 className="font-display text-2xl tracking-tight">
                 Informações de contato
               </h3>
-              <div className="space-y-4">
+              <div className="mt-5 space-y-4">
                 <div className="flex items-start gap-4">
-                  <div className="p-2 bg-primary/10 rounded text-primary">
+                  <div className="rounded-full bg-[var(--brand-green)]/15 p-3 text-[var(--brand-green-dark)]">
                     <MessageCircle className="w-5 h-5" />
                   </div>
                   <div>
-                    <p className="text-sm font-mono text-muted-foreground">
+                    <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
                       WhatsApp
                     </p>
                     <a
                       href={WHATSAPP_BUDGET_URL}
                       target="_blank"
                       rel="noreferrer"
-                      className="hover:text-primary transition-colors"
+                      className="font-bold text-foreground transition-colors hover:text-[var(--brand-blue)]"
                     >
                       (85) 99637-0080
                     </a>
@@ -492,17 +486,17 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="p-6 border border-primary/20 bg-primary/5 rounded-none">
-              <h4 className="font-mono font-bold text-primary mb-2">
+            <div className="rounded-2xl border-2 border-[var(--brand-blue)] bg-[var(--brand-blue)] p-6 text-white">
+              <h4 className="font-display text-2xl tracking-tight">
                 Baixar currículo
               </h4>
-              <p className="text-sm text-muted-foreground mb-4">
+              <p className="mt-2 text-sm text-white/80">
                 Um resumo da minha experiência, formação e habilidades técnicas.
               </p>
               <Button
                 asChild
                 variant="outline"
-                className="w-full border-primary/30 hover:bg-primary hover:text-primary-foreground font-mono rounded-none"
+                className="nike-pill mt-5 h-11 w-full border-2 border-white bg-transparent px-6 text-sm font-bold uppercase tracking-wide text-white hover:bg-white hover:text-[var(--brand-blue)]"
               >
                 <a href="/curriculo.pdf" download="Curriculo-Matheus-Frota.pdf">
                   Baixar PDF <Download className="w-4 h-4" />

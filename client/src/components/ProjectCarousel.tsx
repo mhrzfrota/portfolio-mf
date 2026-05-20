@@ -128,7 +128,7 @@ export default function ProjectCarousel({
 
   if (projects.length === 0) {
     return (
-      <div className="border border-border bg-background/40 px-6 py-10 text-center text-sm text-muted-foreground">
+      <div className="rounded-2xl border border-border bg-white px-6 py-10 text-center text-sm text-muted-foreground">
         Nenhum projeto encontrado nessa categoria.
       </div>
     );
@@ -137,7 +137,7 @@ export default function ProjectCarousel({
   return (
     <div className="space-y-5">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 md:px-12">
-        <p className="text-sm text-muted-foreground">
+        <p className="text-xs font-bold uppercase tracking-[0.18em] text-muted-foreground">
           {projects.length} projetos nesta seleção
         </p>
 
@@ -146,7 +146,7 @@ export default function ProjectCarousel({
             type="button"
             variant="outline"
             size="icon"
-            className="rounded-full border-primary/30 bg-background/60 hover:border-primary hover:text-primary disabled:opacity-30"
+            className="rounded-full border-2 border-[var(--brand-ink)] bg-white text-[var(--brand-ink)] hover:bg-[var(--brand-ink)] hover:text-white disabled:opacity-30"
             aria-label="Projetos anteriores"
             disabled={!canScrollPrevious}
             onClick={() => scrollByPage("previous")}
@@ -157,7 +157,7 @@ export default function ProjectCarousel({
             type="button"
             variant="outline"
             size="icon"
-            className="rounded-full border-primary/30 bg-background/60 hover:border-primary hover:text-primary disabled:opacity-30"
+            className="rounded-full border-2 border-[var(--brand-ink)] bg-white text-[var(--brand-ink)] hover:bg-[var(--brand-ink)] hover:text-white disabled:opacity-30"
             aria-label="Próximos projetos"
             disabled={!canScrollNext}
             onClick={() => scrollByPage("next")}
@@ -168,8 +168,8 @@ export default function ProjectCarousel({
       </div>
 
       <div className="relative">
-        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 hidden w-20 bg-gradient-to-r from-background via-background/80 to-transparent md:block" />
-        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 hidden w-20 bg-gradient-to-l from-background via-background/80 to-transparent md:block" />
+        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 hidden w-20 bg-gradient-to-r from-white via-white/85 to-transparent md:block" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 hidden w-20 bg-gradient-to-l from-white via-white/85 to-transparent md:block" />
 
         <div
           ref={trackRef}
@@ -209,7 +209,7 @@ export default function ProjectCarousel({
             return (
               <article
                 key={project.id}
-                className="group flex min-h-[24.5rem] w-[min(82vw,20rem)] shrink-0 snap-start flex-col overflow-hidden border border-primary/15 bg-card shadow-[0_18px_48px_rgba(0,0,0,0.34)] ring-1 ring-white/5 transition-all duration-300 hover:-translate-y-1 hover:border-primary/70 sm:w-[21rem] xl:w-[22rem]"
+                className="group flex min-h-[24.5rem] w-[min(82vw,20rem)] shrink-0 snap-start flex-col overflow-hidden rounded-2xl border border-border bg-white shadow-[0_12px_36px_rgba(13,30,80,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-[var(--brand-blue)]/60 hover:shadow-[0_22px_50px_rgba(13,30,80,0.14)] sm:w-[21rem] xl:w-[22rem]"
               >
                 <div className="relative h-48 overflow-hidden border-b border-border bg-secondary">
                   <img
@@ -218,9 +218,9 @@ export default function ProjectCarousel({
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                     draggable={false}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-background/65 via-transparent to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[var(--brand-ink)]/45 via-transparent to-transparent" />
                   <div className="absolute left-4 top-4">
-                    <span className="border border-primary/30 bg-background/85 px-2 py-1 text-[0.65rem] font-medium uppercase tracking-normal text-primary backdrop-blur">
+                    <span className="rounded-full bg-[var(--brand-ink)] px-3 py-1 text-[0.65rem] font-bold uppercase tracking-[0.16em] text-white">
                       {project.category}
                     </span>
                   </div>
@@ -228,7 +228,7 @@ export default function ProjectCarousel({
 
                 <div className="flex flex-1 flex-col gap-5 p-5">
                   <div className="space-y-3">
-                    <h3 className="project-carousel-card-title text-xl font-semibold leading-snug transition-colors group-hover:text-primary">
+                    <h3 className="project-carousel-card-title font-display text-2xl tracking-tight leading-tight transition-colors group-hover:text-[var(--brand-blue)]">
                       {project.title}
                     </h3>
                     <p className="project-carousel-card-description text-sm leading-relaxed text-muted-foreground">
@@ -239,7 +239,7 @@ export default function ProjectCarousel({
                   {hasProjectPage ? (
                     <Button
                       asChild
-                      className="mt-auto w-full rounded-none bg-primary text-primary-foreground hover:bg-primary/90"
+                      className="nike-pill mt-auto h-11 w-full bg-[var(--brand-ink)] text-sm font-bold uppercase tracking-wide text-white hover:bg-[var(--brand-blue)]"
                     >
                       <Link href={actionHref}>
                         {actionLabel} {actionIcon}
@@ -249,7 +249,7 @@ export default function ProjectCarousel({
                     <Button
                       asChild
                       variant="outline"
-                      className="mt-auto w-full rounded-none border-primary/30 hover:border-primary hover:text-primary"
+                      className="nike-pill mt-auto h-11 w-full border-2 border-[var(--brand-ink)] bg-transparent text-sm font-bold uppercase tracking-wide text-[var(--brand-ink)] hover:bg-[var(--brand-green)] hover:text-[var(--brand-ink)]"
                     >
                       <a href={actionHref} target="_blank" rel="noreferrer">
                         {actionLabel} {actionIcon}
