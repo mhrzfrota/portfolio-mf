@@ -92,11 +92,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="mx-auto flex max-w-[1400px] items-center justify-between px-5 py-4 md:px-10">
           <button
             onClick={() => handleNavClick("inicio")}
-            className="flex items-center text-lg font-extrabold uppercase tracking-tight text-foreground transition-colors hover:text-[var(--brand-blue)] md:text-xl"
+            className="flex items-center transition-opacity hover:opacity-80"
+            aria-label="MF Services — voltar ao início"
           >
-            matheus
-            <span className="text-[var(--brand-blue)]">.frota</span>
-            <span className="text-[var(--brand-green)]">_</span>
+            <img
+              src="/logotopbar.png"
+              alt="MF Services"
+              className="h-7 w-auto md:h-8 dark:brightness-0 dark:invert"
+            />
           </button>
 
           {/* Desktop Nav */}
@@ -263,10 +266,18 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       {/* Footer */}
       <footer className="relative z-10 border-t border-border bg-secondary/40 mt-16">
         <div className="max-w-6xl mx-auto px-6 md:px-12 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-xs font-bold uppercase tracking-tight text-muted-foreground">
-            © {new Date().getFullYear()} matheus.frota_ — Desenvolvedor de
-            Software
-          </p>
+          <div className="flex items-center gap-3">
+            <img
+              src="/logo.png"
+              alt="MF Services"
+              className="h-11 w-auto dark:brightness-0 dark:invert"
+            />
+            <p className="text-xs font-bold uppercase tracking-tight text-muted-foreground">
+              © {new Date().getFullYear()} MF Services — Matheus Frota
+              <br className="hidden sm:block" />
+              Desenvolvedor de Software
+            </p>
+          </div>
           <div className="flex gap-4">
             <a
               href="https://github.com/mhrzfrota"
