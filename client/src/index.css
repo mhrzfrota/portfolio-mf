@@ -216,6 +216,54 @@
     border-radius: 9999px;
   }
 
+  /* Figueiredo-style hero headline (heavy grotesque, tight) */
+  .hero-headline {
+    font-family: var(--font-sans);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    line-height: 0.98;
+    text-wrap: balance;
+  }
+
+  /* Hero logo/tech marquee */
+  .hero-marquee-track {
+    display: flex;
+    width: max-content;
+    animation: hero-marquee 32s linear infinite;
+  }
+
+  .hero-marquee-mask {
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent,
+      #000 7%,
+      #000 93%,
+      transparent
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      #000 7%,
+      #000 93%,
+      transparent
+    );
+  }
+
+  @keyframes hero-marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-marquee-track {
+      animation: none;
+    }
+  }
+
   /* Brand utilities */
   .brand-border {
     @apply border border-[var(--brand-blue)]/30 hover:border-[var(--brand-blue)] transition-colors duration-300;

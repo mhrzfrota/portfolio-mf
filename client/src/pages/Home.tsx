@@ -12,6 +12,26 @@ const projectMetricPanels = [
   "bg-[var(--brand-green)] text-[var(--brand-ink)]",
 ];
 
+const heroServices = [
+  "Sistemas Web",
+  "Landing Pages",
+  "Dashboards & Dados",
+  "APIs & Integrações",
+];
+
+const heroMarquee = [
+  "React",
+  "Node.js",
+  "TypeScript",
+  "Python",
+  "PostgreSQL",
+  "Tailwind CSS",
+  "Supabase",
+  "Docker",
+  "AWS",
+  "Java",
+];
+
 const skillCategories = [
   {
     title: "Backend",
@@ -111,32 +131,55 @@ function scrollToId(id: string) {
 export default function Home() {
   return (
     <div className="flex flex-col">
-      {/* HERO */}
+      {/* HERO — figueiredoneto-style */}
       <section
         id="inicio"
-        className="flex min-h-[calc(84vh-4rem)] flex-col-reverse items-center gap-12 pt-8 pb-10 md:min-h-[calc(78vh-4rem)] md:pt-10 md:pb-12 lg:min-h-[calc(74vh-4rem)] lg:flex-row lg:items-start lg:pt-12 lg:pb-14"
+        className="grid items-center gap-10 pt-4 pb-12 lg:grid-cols-12 lg:gap-12 lg:pt-8 lg:pb-16"
       >
-        <div className="flex-1 space-y-6">
-          <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-[var(--brand-blue)]">
-            <span className="h-2 w-2 rounded-full bg-[var(--brand-green)]" />
-            Just Code It.
+        {/* Coluna de texto */}
+        <div className="space-y-7 lg:col-span-7">
+          <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs font-bold uppercase tracking-[0.18em] text-muted-foreground">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--brand-green)] opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--brand-green)]" />
+            </span>
+            Disponível para novos projetos
           </span>
 
-          <h1 className="font-display text-[3.25rem] leading-[0.9] tracking-tight md:text-[5.5rem] lg:text-[7rem]">
-            Criando soluções
-            <br />
-            <span className="text-[var(--brand-blue)]">digitais e dados</span>
-            <br />
-            que fazem{" "}
-            <span className="text-[var(--brand-green)]">diferença.</span>
+          <h1 className="hero-headline text-[2.6rem] sm:text-5xl lg:text-[4.25rem]">
+            Desenvolvedor de software. Construo aplicações com código limpo e
+            dados precisos para{" "}
+            <span className="text-[var(--brand-blue)]">gerar resultado.</span>
           </h1>
 
-          <p className="text-lg text-muted-foreground max-w-xl leading-relaxed">
-            Sou Matheus Frota, desenvolvedor de software focado em backend,
-            dados e web.
+          <p className="max-w-xl text-base leading-relaxed text-muted-foreground md:text-lg">
+            Cada produto tem um desafio único. Sou Matheus Frota e uno backend,
+            dados e web para transformar ideias em soluções que funcionam de
+            verdade.
           </p>
 
-          <div className="flex flex-wrap gap-4 pt-4">
+          {/* Estatísticas inline */}
+          <div className="flex flex-wrap items-center gap-x-8 gap-y-3 border-t border-border pt-6">
+            <div>
+              <span className="font-display text-3xl leading-none tracking-tight md:text-4xl">
+                {Number(projectStats[0].value)}+
+              </span>
+              <span className="ml-2 text-sm font-bold uppercase tracking-wide text-muted-foreground">
+                projetos entregues
+              </span>
+            </div>
+            <div>
+              <span className="font-display text-3xl leading-none tracking-tight md:text-4xl">
+                {Number(projectStats[3].value)}+
+              </span>
+              <span className="ml-2 text-sm font-bold uppercase tracking-wide text-muted-foreground">
+                tecnologias
+              </span>
+            </div>
+          </div>
+
+          {/* CTAs */}
+          <div className="flex flex-wrap gap-3">
             <Button
               size="lg"
               onClick={() => scrollToId("projetos")}
@@ -151,52 +194,72 @@ export default function Home() {
               className="nike-pill h-12 border-2 border-foreground bg-transparent px-7 text-sm font-bold uppercase tracking-wide text-foreground hover:bg-[var(--brand-green)] hover:text-[var(--brand-ink)]"
             >
               <a href={WHATSAPP_BUDGET_URL} target="_blank" rel="noreferrer">
-                Envie uma mensagem
+                Iniciar projeto
               </a>
             </Button>
           </div>
+
+          {/* Pílulas de categorias */}
+          <div className="flex flex-wrap gap-2 pt-1">
+            {heroServices.map(service => (
+              <button
+                key={service}
+                onClick={() => scrollToId("projetos")}
+                className="rounded-full border border-border bg-card px-4 py-2 text-xs font-bold uppercase tracking-wide text-foreground/70 transition-all hover:border-[var(--brand-blue)] hover:text-[var(--brand-blue)]"
+              >
+                {service}
+              </button>
+            ))}
+          </div>
         </div>
 
-        <div className="flex-1 w-full max-w-md lg:max-w-full relative group">
-          <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-[var(--brand-blue)] to-[var(--brand-green)] opacity-25 blur-xl group-hover:opacity-45 transition duration-1000 group-hover:duration-200" />
-          <div className="relative aspect-square md:aspect-[4/3] overflow-hidden rounded-2xl border border-border bg-card shadow-[0_20px_60px_rgba(13,30,80,0.15)]">
-            <img
-              src="/images/hero-bg.webp"
-              alt="Arte digital abstrata"
-              className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-[var(--brand-ink)]/35 via-transparent to-transparent" />
+        {/* Coluna da imagem */}
+        <div className="lg:col-span-5">
+          <div className="group relative">
+            <div className="absolute -inset-1 rounded-3xl bg-gradient-to-br from-[var(--brand-blue)] to-[var(--brand-green)] opacity-20 blur-xl transition duration-700 group-hover:opacity-35" />
+            <div className="relative aspect-[4/5] overflow-hidden rounded-3xl border border-border bg-card shadow-[0_24px_70px_rgba(13,30,80,0.18)]">
+              <img
+                src="/images/hero-bg.webp"
+                alt="Matheus Frota — Desenvolvedor de Software"
+                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[var(--brand-ink)]/55 via-transparent to-transparent" />
 
-            <div className="absolute bottom-4 left-4 right-4 p-4 bg-[var(--brand-ink)]/90 backdrop-blur rounded-xl border border-white/10 font-mono text-xs text-[var(--brand-green)] overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.35)]">
-              <div className="flex gap-2 mb-2 border-b border-white/10 pb-2">
-                <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
-                <div className="w-3 h-3 rounded-full bg-emerald-400"></div>
+              {/* Cartão flutuante de identidade */}
+              <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-[var(--brand-ink)]/85 px-4 py-3 backdrop-blur">
+                <div>
+                  <p className="font-display text-lg leading-none tracking-tight text-white">
+                    Matheus Frota
+                  </p>
+                  <p className="mt-1 text-xs font-bold uppercase tracking-wide text-[var(--brand-green)]">
+                    Dev Full Stack · Backend & Dados
+                  </p>
+                </div>
+                <span className="rounded-full bg-[var(--brand-green)] px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-[var(--brand-ink)]">
+                  Online
+                </span>
               </div>
-              <p>
-                <span className="text-fuchsia-300">const</span>{" "}
-                <span className="text-sky-300">desenvolvedor</span> ={" "}
-                <span className="text-yellow-200">{"{"}</span>
-              </p>
-              <p className="pl-4">
-                nome:{" "}
-                <span className="text-orange-200">"Matheus Frota"</span>,
-              </p>
-              <p className="pl-4">
-                cargo:{" "}
-                <span className="text-orange-200">"Dev Full Stack"</span>,
-              </p>
-              <p className="pl-4">
-                status:{" "}
-                <span className="text-orange-200">"Disponível"</span>
-              </p>
-              <p>
-                <span className="text-yellow-200">{"}"}</span>;
-              </p>
             </div>
           </div>
         </div>
       </section>
+
+      {/* Marquee de tecnologias (estilo faixa de logos) */}
+      <div className="relative left-1/2 w-screen -translate-x-1/2 border-y border-border bg-secondary/30 py-5">
+        <div className="hero-marquee-mask overflow-hidden">
+          <div className="hero-marquee-track">
+            {[...heroMarquee, ...heroMarquee].map((tech, index) => (
+              <span
+                key={`${tech}-${index}`}
+                className="flex items-center whitespace-nowrap px-8 font-display text-2xl uppercase tracking-tight text-muted-foreground/70 md:text-3xl"
+              >
+                {tech}
+                <span className="ml-8 h-1.5 w-1.5 rounded-full bg-[var(--brand-blue)]/40" />
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
 
       {/* PROJETOS — Nike-style category page */}
       <section id="projetos" className="scroll-mt-20">
