@@ -98,7 +98,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <img
               src="/logotopbar.png"
               alt="MF Services"
-              className="h-7 w-auto md:h-8 dark:brightness-0 dark:invert"
+              className="h-auto w-48 sm:w-52 md:w-56 lg:w-64 xl:h-14 xl:w-auto dark:brightness-0 dark:invert"
             />
           </button>
 
