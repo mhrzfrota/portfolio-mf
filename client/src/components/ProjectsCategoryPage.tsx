@@ -1,564 +1,299 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import {
   ArrowRight,
-  ChevronDown,
-  Heart,
-  SlidersHorizontal,
-  X,
+  ChevronLeft,
+  ChevronRight,
+  ExternalLink,
+  Github,
+  Layers,
 } from "lucide-react";
 import { Link } from "wouter";
-import { cn } from "@/lib/utils";
+
 import {
   categories,
   projects as allProjects,
   type Project,
 } from "@/data/projects";
+import { cn } from "@/lib/utils";
 
-const sortOptions = [
-  { value: "featured", label: "Em destaque" },
-  { value: "newest", label: "Mais recentes" },
-  { value: "name", label: "Nome A–Z" },
+const cardThemes = [
+  "from-[#edf8ff] via-[#9fcde8] to-[#3275cf]",
+  "from-[#f3fbff] via-[#abd8ea] to-[#366fbb]",
+  "from-[#eef7ff] via-[#9ec9df] to-[#4d84c9]",
+  "from-[#f5fbff] via-[#b5d9eb] to-[#2f87b7]",
 ];
 
 export default function ProjectsCategoryPage() {
-  const [activeCategory, setActiveCategory] = useState<string>("Todos");
-  const [activeTech, setActiveTech] = useState<string[]>([]);
-  const [sortBy, setSortBy] = useState("featured");
-  const [filtersOpen, setFiltersOpen] = useState(true);
-  const [sortOpen, setSortOpen] = useState(false);
-  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
-  const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({
-    categoria: true,
-    stack: true,
-  });
-  const sortRef = useRef<HTMLDivElement>(null);
+  const [activeCategory, setActiveCategory] = useState("Todos");
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const visibleProjects = useMemo(() => {
+    if (activeCategory === "Todos") return allProjects;
+    return allProjects.filter(project => project.category === activeCategory);
+  }, [activeCategory]);
+
+  const safeIndex = visibleProjects.length
+    ? Math.min(activeIndex, visibleProjects.length - 1)
+    : 0;
+  const activeProject = visibleProjects[safeIndex] ?? allProjects[0];
+  const theme = cardThemes[activeProject.id % cardThemes.length];
+  const primaryAction = getProjectAction(activeProject);
 
   useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (sortRef.current && !sortRef.current.contains(e.target as Node)) {
-        setSortOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+    setActiveIndex(0);
+  }, [activeCategory]);
 
-  const availableTechs = useMemo(
-    () => Array.from(new Set(allProjects.flatMap(p => p.tags))).sort(),
-    []
-  );
-
-  const filtered = useMemo(() => {
-    let list = allProjects;
-
-    if (activeCategory !== "Todos") {
-      list = list.filter(p => p.category === activeCategory);
-    }
-    if (activeTech.length > 0) {
-      list = list.filter(p => activeTech.some(t => p.tags.includes(t)));
-    }
-
-    if (sortBy === "name") {
-      list = [...list].sort((a, b) => a.title.localeCompare(b.title));
-    } else if (sortBy === "newest") {
-      list = [...list].sort((a, b) => b.id - a.id);
-    } else {
-      // featured: caseStudy first, then by id
-      list = [...list].sort((a, b) => {
-        const af = a.caseStudy ? 0 : 1;
-        const bf = b.caseStudy ? 0 : 1;
-        if (af !== bf) return af - bf;
-        return a.id - b.id;
-      });
-    }
-
-    return list;
-  }, [activeCategory, activeTech, sortBy]);
-
-  const toggleTech = (tech: string) => {
-    setActiveTech(prev =>
-      prev.includes(tech) ? prev.filter(t => t !== tech) : [...prev, tech]
-    );
+  const goToProject = (index: number) => {
+    setActiveIndex(index);
   };
 
-  const clearAll = () => {
-    setActiveCategory("Todos");
-    setActiveTech([]);
+  const shiftProject = (direction: "previous" | "next") => {
+    setActiveIndex(current => {
+      const total = visibleProjects.length;
+      if (!total) return 0;
+      const normalized = Math.min(current, total - 1);
+      return direction === "next"
+        ? (normalized + 1) % total
+        : (normalized - 1 + total) % total;
+    });
   };
-
-  const toggleGroup = (key: string) => {
-    setOpenGroups(prev => ({ ...prev, [key]: !prev[key] }));
-  };
-
-  const totalFilters =
-    (activeCategory !== "Todos" ? 1 : 0) + activeTech.length;
-  const currentSortLabel =
-    sortOptions.find(o => o.value === sortBy)?.label ?? "Em destaque";
 
   return (
-    <div className="relative left-1/2 w-screen -translate-x-1/2 scroll-mt-20 bg-background">
-      {/* Top header bar — breadcrumb + title + count */}
-      <div className="border-b border-border">
-        <div className="mx-auto max-w-[1440px] px-5 pt-6 pb-4 md:px-10">
-          <nav className="flex items-center gap-1.5 text-xs text-muted-foreground">
-            <button
-              onClick={() =>
-                document
-                  .getElementById("inicio")
-                  ?.scrollIntoView({ behavior: "smooth" })
-              }
-              className="hover:text-foreground transition-colors"
-            >
-              Início
-            </button>
-            <span>/</span>
-            <span className="font-semibold text-foreground">Projetos</span>
-          </nav>
-
-          <h2 className="mt-3 font-display text-3xl tracking-tight md:text-4xl">
-            Projetos{" "}
-            <span className="text-muted-foreground">({filtered.length})</span>
-          </h2>
-        </div>
-      </div>
-
-      {/* Sticky filter / sort toolbar */}
-      <div className="sticky top-[64px] z-20 border-b border-border bg-background/95 backdrop-blur md:top-[72px]">
-        <div className="mx-auto flex max-w-[1440px] items-center justify-between px-5 py-3 md:px-10">
-          <button
-            onClick={() => {
-              if (window.innerWidth < 1024) {
-                setMobileFiltersOpen(true);
-              } else {
-                setFiltersOpen(v => !v);
-              }
-            }}
-            className="flex items-center gap-2 text-sm font-bold uppercase tracking-tight text-foreground transition-colors hover:text-[var(--brand-blue)]"
-          >
-            <span className="hidden md:inline">
-              {filtersOpen ? "Ocultar filtros" : "Mostrar filtros"}
+    <div className="relative left-1/2 w-screen -translate-x-1/2 overflow-hidden border-y border-border bg-background py-16 md:py-20">
+      <div className="mx-auto max-w-6xl px-5 md:px-10">
+        <div className="mb-8 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
+          <div className="max-w-2xl space-y-3">
+            <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-[var(--brand-blue)]">
+              <span className="h-2 w-2 rounded-full bg-[var(--brand-green)]" />
+              01 · Projetos
             </span>
-            <span className="md:hidden">Filtrar</span>
-            <SlidersHorizontal className="h-4 w-4" />
-            {totalFilters > 0 && (
-              <span className="ml-1 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-[var(--brand-blue)] px-1.5 text-[10px] font-bold text-white">
-                {totalFilters}
-              </span>
-            )}
-          </button>
-
-          <div className="relative" ref={sortRef}>
-            <button
-              onClick={() => setSortOpen(v => !v)}
-              className="flex items-center gap-2 text-sm font-bold uppercase tracking-tight text-foreground transition-colors hover:text-[var(--brand-blue)]"
-            >
-              Ordenar:{" "}
-              <span className="text-foreground/70">{currentSortLabel}</span>
-              <ChevronDown
-                className={cn(
-                  "h-4 w-4 transition-transform",
-                  sortOpen && "rotate-180"
-                )}
-              />
-            </button>
-
-            {sortOpen && (
-              <div className="absolute right-0 top-full z-30 mt-2 w-56 overflow-hidden rounded-lg border border-border bg-popover shadow-[0_18px_50px_rgba(13,30,80,0.18)]">
-                {sortOptions.map(opt => (
-                  <button
-                    key={opt.value}
-                    onClick={() => {
-                      setSortBy(opt.value);
-                      setSortOpen(false);
-                    }}
-                    className={cn(
-                      "block w-full px-4 py-3 text-left text-sm font-semibold transition-colors",
-                      sortBy === opt.value
-                        ? "bg-secondary/60 text-[var(--brand-blue)]"
-                        : "text-foreground hover:bg-secondary/40"
-                    )}
-                  >
-                    {opt.label}
-                  </button>
-                ))}
-              </div>
-            )}
+            <h2 className="font-display text-4xl tracking-tight md:text-6xl">
+              Cases em destaque
+            </h2>
+            <p className="text-base leading-relaxed text-muted-foreground">
+              Cards diretos, com foco no resultado de cada entrega.
+            </p>
           </div>
-        </div>
-      </div>
 
-      {/* Body: sidebar + grid */}
-      <div className="mx-auto max-w-[1440px] px-5 pb-16 md:px-10">
-        <div className="flex gap-6 pt-6 lg:gap-10">
-          {/* Desktop sidebar */}
-          {filtersOpen && (
-            <aside className="sticky top-[140px] hidden h-[calc(100vh-10rem)] w-[260px] shrink-0 self-start overflow-y-auto pr-3 lg:block">
-              <FilterSidebar
-                categories={categories}
-                activeCategory={activeCategory}
-                onCategoryChange={setActiveCategory}
-                availableTechs={availableTechs}
-                activeTech={activeTech}
-                onToggleTech={toggleTech}
-                onClearAll={clearAll}
-                totalFilters={totalFilters}
-                openGroups={openGroups}
-                onToggleGroup={toggleGroup}
-              />
-            </aside>
-          )}
+          <div className="flex flex-wrap gap-2">
+            {categories.map(category => {
+              const active = activeCategory === category;
 
-          {/* Grid */}
-          <div className="flex-1 min-w-0">
-            {totalFilters > 0 && (
-              <div className="mb-5 flex flex-wrap items-center gap-2">
-                {activeCategory !== "Todos" && (
-                  <button
-                    onClick={() => setActiveCategory("Todos")}
-                    className="inline-flex items-center gap-2 rounded-full border border-foreground/20 bg-card px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-foreground transition-colors hover:border-foreground"
-                  >
-                    {activeCategory}
-                    <X className="h-3 w-3" />
-                  </button>
-                )}
-                {activeTech.map(t => (
-                  <button
-                    key={t}
-                    onClick={() => toggleTech(t)}
-                    className="inline-flex items-center gap-2 rounded-full border border-foreground/20 bg-card px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-foreground transition-colors hover:border-foreground"
-                  >
-                    {t}
-                    <X className="h-3 w-3" />
-                  </button>
-                ))}
+              return (
                 <button
-                  onClick={clearAll}
-                  className="ml-2 text-xs font-bold uppercase tracking-wide text-[var(--brand-blue)] underline-offset-4 hover:underline"
-                >
-                  Limpar tudo
-                </button>
-              </div>
-            )}
-
-            {filtered.length === 0 ? (
-              <div className="rounded-2xl border border-border bg-secondary/40 p-12 text-center">
-                <p className="font-display text-2xl tracking-tight">
-                  Nenhum projeto encontrado
-                </p>
-                <p className="mt-2 text-sm text-muted-foreground">
-                  Tente remover alguns filtros para ver mais resultados.
-                </p>
-                <button
-                  onClick={clearAll}
-                  className="nike-pill mt-6 inline-flex h-11 items-center gap-2 bg-[var(--brand-ink)] px-6 text-sm font-bold uppercase tracking-wide text-white transition-colors hover:bg-[var(--brand-blue)]"
-                >
-                  Limpar filtros
-                </button>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 gap-x-3 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
-                {filtered.map(project => (
-                  <ProductCard key={project.id} project={project} />
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* Mobile filter drawer */}
-      {mobileFiltersOpen && (
-        <div className="fixed inset-0 z-[60] lg:hidden">
-          <div
-            role="button"
-            tabIndex={0}
-            aria-label="Fechar filtros"
-            className="absolute inset-0 bg-black/40"
-            onClick={() => setMobileFiltersOpen(false)}
-            onKeyDown={e => {
-              if (e.key === "Enter" || e.key === " ") {
-                setMobileFiltersOpen(false);
-              }
-            }}
-          />
-          <div className="absolute inset-y-0 right-0 flex w-[88%] max-w-sm flex-col bg-background shadow-2xl">
-            <div className="flex items-center justify-between border-b border-border px-5 py-4">
-              <h3 className="font-display text-2xl tracking-tight">Filtros</h3>
-              <button
-                onClick={() => setMobileFiltersOpen(false)}
-                aria-label="Fechar"
-                className="rounded-full p-2 hover:bg-secondary"
-              >
-                <X className="h-5 w-5" />
-              </button>
-            </div>
-            <div className="flex-1 overflow-y-auto px-5">
-              <FilterSidebar
-                categories={categories}
-                activeCategory={activeCategory}
-                onCategoryChange={setActiveCategory}
-                availableTechs={availableTechs}
-                activeTech={activeTech}
-                onToggleTech={toggleTech}
-                onClearAll={clearAll}
-                totalFilters={totalFilters}
-                openGroups={openGroups}
-                onToggleGroup={toggleGroup}
-              />
-            </div>
-            <div className="border-t border-border p-4">
-              <button
-                onClick={() => setMobileFiltersOpen(false)}
-                className="nike-pill flex h-12 w-full items-center justify-center bg-[var(--brand-ink)] text-sm font-bold uppercase tracking-wide text-white hover:bg-[var(--brand-blue)]"
-              >
-                Ver {filtered.length} projetos
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
-
-type FilterSidebarProps = {
-  categories: string[];
-  activeCategory: string;
-  onCategoryChange: (cat: string) => void;
-  availableTechs: string[];
-  activeTech: string[];
-  onToggleTech: (tech: string) => void;
-  onClearAll: () => void;
-  totalFilters: number;
-  openGroups: Record<string, boolean>;
-  onToggleGroup: (key: string) => void;
-};
-
-function FilterSidebar({
-  categories,
-  activeCategory,
-  onCategoryChange,
-  availableTechs,
-  activeTech,
-  onToggleTech,
-  onClearAll,
-  totalFilters,
-  openGroups,
-  onToggleGroup,
-}: FilterSidebarProps) {
-  return (
-    <div className="space-y-0 pb-6">
-      <FilterGroup
-        title="Categoria"
-        groupKey="categoria"
-        open={openGroups.categoria}
-        onToggle={onToggleGroup}
-      >
-        <ul className="space-y-3">
-          {categories.map(cat => {
-            const active = activeCategory === cat;
-            return (
-              <li key={cat}>
-                <button
-                  onClick={() => onCategoryChange(cat)}
+                  key={category}
+                  type="button"
+                  onClick={() => setActiveCategory(category)}
                   className={cn(
-                    "w-full text-left text-sm transition-colors",
+                    "rounded-full border px-4 py-2 text-xs font-bold uppercase tracking-wide transition-all",
                     active
-                      ? "font-bold text-[var(--brand-blue)]"
-                      : "text-foreground/80 hover:text-foreground"
+                      ? "border-[var(--brand-ink)] bg-[var(--brand-ink)] text-white"
+                      : "border-border bg-card text-foreground/70 hover:border-[var(--brand-blue)] hover:text-[var(--brand-blue)]"
                   )}
                 >
-                  {cat}
+                  {category}
                 </button>
-              </li>
-            );
-          })}
-        </ul>
-      </FilterGroup>
+              );
+            })}
+          </div>
+        </div>
 
-      <FilterGroup
-        title="Stack"
-        groupKey="stack"
-        open={openGroups.stack}
-        onToggle={onToggleGroup}
-      >
-        <ul className="space-y-3">
-          {availableTechs.map(tech => {
-            const checked = activeTech.includes(tech);
-            return (
-              <li key={tech}>
-                <label className="group flex cursor-pointer items-center gap-3">
-                  <input
-                    type="checkbox"
-                    className="sr-only"
-                    checked={checked}
-                    onChange={() => onToggleTech(tech)}
-                  />
-                  <span
-                    className={cn(
-                      "flex h-5 w-5 shrink-0 items-center justify-center rounded-sm border-2 transition-colors",
-                      checked
-                        ? "border-[var(--brand-blue)] bg-[var(--brand-blue)]"
-                        : "border-foreground/30 group-hover:border-foreground"
-                    )}
-                  >
-                    {checked && (
-                      <svg
-                        viewBox="0 0 16 16"
-                        className="h-3 w-3 text-white"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="3"
-                      >
-                        <path d="M3 8l3 3 7-7" />
-                      </svg>
-                    )}
-                  </span>
-                  <span
-                    className={cn(
-                      "text-sm transition-colors",
-                      checked
-                        ? "font-semibold text-foreground"
-                        : "text-foreground/80 group-hover:text-foreground"
-                    )}
-                  >
-                    {tech}
-                  </span>
-                </label>
-              </li>
-            );
-          })}
-        </ul>
-      </FilterGroup>
-
-      {totalFilters > 0 && (
-        <button
-          onClick={onClearAll}
-          className="mt-5 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-[var(--brand-blue)] underline-offset-4 hover:underline"
+        <article
+          className={cn(
+            "project-showcase-card relative min-h-[46rem] overflow-hidden rounded-[2rem] border border-white/60 bg-gradient-to-br p-5 text-white shadow-[0_24px_80px_rgba(13,30,80,0.16)] sm:min-h-[43rem] md:h-[36rem] md:min-h-0 md:p-8 lg:h-[34rem]",
+            theme
+          )}
+          aria-live="polite"
         >
-          Limpar todos os filtros <X className="h-3 w-3" />
-        </button>
-      )}
+          <img
+            key={`bg-${activeProject.id}`}
+            src={activeProject.image}
+            alt=""
+            className="project-showcase-bg absolute inset-0 h-full w-full scale-110 object-cover opacity-40 blur-2xl"
+            aria-hidden="true"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#102033]/82 via-[#2f74ae]/34 to-white/18" />
+          <div className="absolute inset-0 bg-[linear-gradient(125deg,rgba(255,255,255,0.08)_0%,rgba(255,255,255,0.28)_46%,rgba(255,255,255,0.42)_100%)]" />
+
+          <div
+            key={`content-${activeProject.id}`}
+            className="project-showcase-fade relative z-10 grid h-full gap-8 md:grid-cols-[0.92fr_1.08fr] md:items-center md:pb-16"
+          >
+            <div className="flex h-full min-w-0 flex-col justify-between gap-8">
+              <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <span className="flex h-14 w-14 items-center justify-center rounded-full bg-[var(--brand-ink)] text-lg font-black text-white shadow-[0_14px_34px_rgba(0,0,0,0.22)]">
+                  {getCategoryMark(activeProject.category)}
+                </span>
+                <span className="max-w-full break-words rounded-full bg-white/75 px-4 py-2 text-xs font-semibold text-[var(--brand-ink)] backdrop-blur">
+                  @{activeProject.tags[0]} · {activeProject.category}
+                </span>
+              </div>
+
+              <div className="min-w-0 max-w-md space-y-4">
+                <p className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-white/75">
+                  <Layers className="h-4 w-4" />
+                  {String(safeIndex + 1).padStart(2, "0")} de{" "}
+                  {String(visibleProjects.length).padStart(2, "0")}
+                </p>
+                <h3 className="project-showcase-title break-words font-display text-2xl font-black leading-tight sm:text-3xl md:text-5xl">
+                  {activeProject.title}
+                </h3>
+                <p className="project-showcase-description break-words text-sm leading-relaxed text-white/82 md:text-base">
+                  {activeProject.description}
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {activeProject.tags.slice(0, 4).map(tag => (
+                    <span
+                      key={tag}
+                      className="max-w-full break-words rounded-full border border-white/20 bg-white/12 px-3 py-1 text-[0.68rem] font-bold uppercase tracking-wide text-white/90 backdrop-blur"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-3">
+                <ProjectLink
+                  project={activeProject}
+                  className="inline-flex h-11 items-center justify-center gap-2 rounded-full bg-[var(--brand-ink)] px-7 text-sm font-bold text-white shadow-[0_14px_30px_rgba(0,0,0,0.2)] transition-all hover:-translate-y-0.5 hover:bg-white hover:text-[var(--brand-ink)]"
+                >
+                  {primaryAction.label}
+                  {primaryAction.external ? (
+                    <ExternalLink className="h-4 w-4" />
+                  ) : (
+                    <ArrowRight className="h-4 w-4" />
+                  )}
+                </ProjectLink>
+
+                <a
+                  href={activeProject.repoUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex h-11 w-11 items-center justify-center rounded-full bg-white/18 text-white backdrop-blur transition-all hover:-translate-y-0.5 hover:bg-white hover:text-[var(--brand-ink)]"
+                  aria-label={`Abrir repositório de ${activeProject.title}`}
+                >
+                  <Github className="h-4 w-4" />
+                </a>
+              </div>
+            </div>
+
+            <div className="relative flex items-center justify-center md:justify-end">
+              <ProjectLink
+                project={activeProject}
+                className="project-showcase-image group relative w-full max-w-[34rem] overflow-hidden rounded-[1.6rem] border-[10px] border-white bg-white shadow-[0_26px_70px_rgba(0,0,0,0.22)]"
+              >
+                <span className="absolute left-4 top-4 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-[var(--brand-ink)] shadow-lg backdrop-blur transition-transform group-hover:scale-105">
+                  {primaryAction.external ? (
+                    <ExternalLink className="h-4 w-4" />
+                  ) : (
+                    <ArrowRight className="h-4 w-4" />
+                  )}
+                </span>
+                <img
+                  src={activeProject.image}
+                  alt={activeProject.title}
+                  className="aspect-[4/3] h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  loading="lazy"
+                />
+              </ProjectLink>
+            </div>
+          </div>
+
+          <div className="relative z-20 mt-6 flex flex-wrap items-center justify-between gap-4 md:absolute md:bottom-8 md:left-8 md:right-8 md:mt-0">
+            <div className="flex items-center gap-2">
+              {visibleProjects.map((project, index) => (
+                <button
+                  key={project.id}
+                  type="button"
+                  onClick={() => goToProject(index)}
+                  className={cn(
+                    "h-2.5 rounded-full transition-all",
+                    index === safeIndex
+                      ? "w-8 bg-white"
+                      : "w-2.5 bg-white/45 hover:bg-white/70"
+                  )}
+                  aria-label={`Mostrar projeto ${project.title}`}
+                  aria-current={index === safeIndex}
+                />
+              ))}
+            </div>
+
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => shiftProject("previous")}
+                className="flex h-11 w-11 items-center justify-center rounded-full bg-white/16 text-white backdrop-blur transition-all hover:bg-white hover:text-[var(--brand-ink)]"
+                aria-label="Projeto anterior"
+              >
+                <ChevronLeft className="h-5 w-5" />
+              </button>
+              <button
+                type="button"
+                onClick={() => shiftProject("next")}
+                className="flex h-11 w-11 items-center justify-center rounded-full bg-white/16 text-white backdrop-blur transition-all hover:bg-white hover:text-[var(--brand-ink)]"
+                aria-label="Próximo projeto"
+              >
+                <ChevronRight className="h-5 w-5" />
+              </button>
+            </div>
+          </div>
+        </article>
+      </div>
     </div>
   );
 }
 
-function FilterGroup({
-  title,
-  groupKey,
-  open,
-  onToggle,
+function getProjectAction(project: Project) {
+  if (project.slug) {
+    return {
+      external: false,
+      href: `/projetos/${project.slug}`,
+      label: "Ver case",
+    };
+  }
+
+  if (project.liveUrl !== "#") {
+    return {
+      external: true,
+      href: project.liveUrl,
+      label: "Exibir",
+    };
+  }
+
+  return {
+    external: true,
+    href: project.repoUrl,
+    label: "Código",
+  };
+}
+
+function getCategoryMark(category: Project["category"]) {
+  return category === "Landing Page" ? "LP" : "W";
+}
+
+function ProjectLink({
   children,
+  className,
+  project,
 }: {
-  title: string;
-  groupKey: string;
-  open: boolean;
-  onToggle: (key: string) => void;
-  children: React.ReactNode;
+  children: ReactNode;
+  className: string;
+  project: Project;
 }) {
-  return (
-    <div className="border-b border-border py-5">
-      <button
-        onClick={() => onToggle(groupKey)}
-        className="mb-4 flex w-full items-center justify-between text-base font-bold text-foreground"
-      >
-        {title}
-        <ChevronDown
-          className={cn(
-            "h-4 w-4 transition-transform",
-            !open && "-rotate-90"
-          )}
-        />
-      </button>
-      {open && children}
-    </div>
-  );
-}
+  const action = getProjectAction(project);
 
-function ProductCard({ project }: { project: Project }) {
-  const hasPage = Boolean(project.slug);
-  const isExternalActive = !hasPage && project.liveUrl !== "#";
-  const href = hasPage
-    ? `/projetos/${project.slug}`
-    : isExternalActive
-      ? project.liveUrl
-      : project.repoUrl;
-  const isFeatured = Boolean(project.caseStudy);
-
-  const inner = (
-    <article className="group flex flex-col">
-      <div className="relative aspect-square overflow-hidden bg-secondary">
-        <img
-          src={project.image}
-          alt={project.title}
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
-          loading="lazy"
-        />
-
-        {isFeatured && (
-          <span className="absolute left-3 top-3 inline-flex items-center rounded-sm bg-[var(--brand-green)] px-2 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--brand-ink)]">
-            Em destaque
-          </span>
-        )}
-
-        <button
-          type="button"
-          className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-background/85 text-foreground opacity-0 backdrop-blur transition-all hover:bg-background hover:text-[var(--brand-blue)] group-hover:opacity-100"
-          aria-label="Favoritar"
-          onClick={e => {
-            e.preventDefault();
-            e.stopPropagation();
-          }}
-        >
-          <Heart className="h-4 w-4" />
-        </button>
-
-        <span className="absolute bottom-3 left-3 inline-flex items-center rounded-full bg-background/90 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-foreground opacity-0 backdrop-blur transition-all group-hover:opacity-100">
-          {project.category}
-        </span>
-      </div>
-
-      <div className="mt-4 flex flex-col gap-1">
-        <p
-          className={cn(
-            "text-xs font-bold uppercase tracking-[0.18em]",
-            isFeatured
-              ? "text-[var(--brand-green-dark)]"
-              : "text-[var(--brand-blue)]"
-          )}
-        >
-          {isFeatured ? "Em destaque" : "Novo"}
-        </p>
-        <h3 className="text-base font-bold leading-snug text-foreground line-clamp-2">
-          {project.title}
-        </h3>
-        <p className="text-sm text-muted-foreground">{project.category}</p>
-        <p className="text-sm text-foreground/70">
-          {project.tags.length} tecnologias
-        </p>
-        <p className="mt-1 inline-flex items-center gap-1 text-sm font-bold text-foreground transition-colors group-hover:text-[var(--brand-blue)]">
-          {hasPage
-            ? "Ver case"
-            : isExternalActive
-              ? "Abrir projeto"
-              : "Ver repositório"}{" "}
-          <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
-        </p>
-      </div>
-    </article>
-  );
-
-  if (hasPage) {
+  if (!action.external) {
     return (
-      <Link href={href} className="block">
-        {inner}
+      <Link href={action.href} className={className}>
+        {children}
       </Link>
     );
   }
 
   return (
-    <a href={href} target="_blank" rel="noreferrer" className="block">
-      {inner}
+    <a href={action.href} target="_blank" rel="noreferrer" className={className}>
+      {children}
     </a>
   );
 }
