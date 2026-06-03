@@ -5,16 +5,16 @@ import ProjectsCategoryPage from "@/components/ProjectsCategoryPage";
 import { cn } from "@/lib/utils";
 
 const heroMarquee = [
-  "React",
-  "Node.js",
-  "TypeScript",
-  "Python",
-  "PostgreSQL",
-  "Tailwind CSS",
-  "Supabase",
-  "Docker",
-  "AWS",
-  "Java",
+  { name: "React", logo: "/logos/stack/react.svg" },
+  { name: "Node.js", logo: "/logos/stack/nodejs.svg" },
+  { name: "TypeScript", logo: "/logos/stack/typescript.svg" },
+  { name: "Python", logo: "/logos/stack/python.svg" },
+  { name: "PostgreSQL", logo: "/logos/stack/postgresql.svg" },
+  { name: "Tailwind CSS", logo: "/logos/stack/tailwindcss.svg" },
+  { name: "Supabase", logo: "/logos/stack/supabase.svg" },
+  { name: "Docker", logo: "/logos/stack/docker.svg" },
+  { name: "AWS", logo: "/logos/stack/aws.svg" },
+  { name: "Java", logo: "/logos/stack/java.svg" },
 ];
 
 const skillCategories = [
@@ -137,13 +137,23 @@ export default function Home() {
         <div className="hero-marquee-mask overflow-hidden">
           <div className="hero-marquee-track">
             {[...heroMarquee, ...heroMarquee].map((tech, index) => (
-              <span
-                key={`${tech}-${index}`}
-                className="flex items-center whitespace-nowrap px-8 font-display text-2xl uppercase tracking-tight text-muted-foreground/70 md:text-3xl"
+              <div
+                key={`${tech.name}-${index}`}
+                className="flex items-center px-6 md:px-8"
+                aria-label={tech.name}
               >
-                {tech}
-                <span className="ml-8 h-1.5 w-1.5 rounded-full bg-[var(--brand-blue)]/40" />
-              </span>
+                <img
+                  src={tech.logo}
+                  alt={tech.name}
+                  className="h-10 w-24 object-contain md:h-12 md:w-28"
+                  draggable={false}
+                  loading="lazy"
+                />
+                <span
+                  className="ml-6 h-1.5 w-1.5 rounded-full bg-[var(--brand-blue)]/30 md:ml-8"
+                  aria-hidden="true"
+                />
+              </div>
             ))}
           </div>
         </div>
