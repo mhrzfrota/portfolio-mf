@@ -27,6 +27,13 @@ type ProjectCarouselProps = {
   projects: ProjectCarouselItem[];
 };
 
+const cardThemes = [
+  "from-[#edf8ff] via-[#9fcde8] to-[#3275cf]",
+  "from-[#f3fbff] via-[#abd8ea] to-[#366fbb]",
+  "from-[#eef7ff] via-[#9ec9df] to-[#4d84c9]",
+  "from-[#f5fbff] via-[#b5d9eb] to-[#2f87b7]",
+];
+
 export default function ProjectCarousel({
   activeCategory,
   projects,
@@ -168,8 +175,8 @@ export default function ProjectCarousel({
       </div>
 
       <div className="relative">
-        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 hidden w-20 bg-gradient-to-r from-white via-white/85 to-transparent md:block" />
-        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 hidden w-20 bg-gradient-to-l from-white via-white/85 to-transparent md:block" />
+        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 hidden w-20 bg-gradient-to-r from-background via-background/85 to-transparent md:block" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 hidden w-20 bg-gradient-to-l from-background via-background/85 to-transparent md:block" />
 
         <div
           ref={trackRef}
@@ -205,22 +212,26 @@ export default function ProjectCarousel({
             ) : (
               <ExternalLink className="h-4 w-4" />
             );
+            const theme = cardThemes[project.id % cardThemes.length];
 
             return (
               <article
                 key={project.id}
-                className="group flex min-h-[24.5rem] w-[min(82vw,20rem)] shrink-0 snap-start flex-col overflow-hidden rounded-2xl border border-border bg-white shadow-[0_12px_36px_rgba(13,30,80,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-[var(--brand-blue)]/60 hover:shadow-[0_22px_50px_rgba(13,30,80,0.14)] sm:w-[21rem] xl:w-[22rem]"
+                className={cn(
+                  "group flex min-h-[24.5rem] w-[min(82vw,20rem)] shrink-0 snap-start flex-col overflow-hidden rounded-2xl border border-white/30 bg-gradient-to-br shadow-[0_12px_36px_rgba(13,30,80,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-white/60 hover:shadow-[0_22px_50px_rgba(13,30,80,0.14)] sm:w-[21rem] xl:w-[22rem] text-white",
+                  theme
+                )}
               >
-                <div className="relative h-48 overflow-hidden border-b border-border bg-secondary">
+                <div className="relative h-48 overflow-hidden border-b border-white/20 bg-secondary">
                   <img
                     src={project.image}
                     alt={project.title}
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                     draggable={false}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[var(--brand-ink)]/45 via-transparent to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[rgba(16,32,51,0.45)] via-transparent to-transparent" />
                   <div className="absolute left-4 top-4">
-                    <span className="rounded-full bg-[var(--brand-ink)] px-3 py-1 text-[0.65rem] font-bold uppercase tracking-[0.16em] text-white">
+                    <span className="rounded-full bg-white/20 px-3 py-1 text-[0.65rem] font-bold uppercase tracking-[0.16em] text-white backdrop-blur">
                       {project.category}
                     </span>
                   </div>
@@ -228,10 +239,10 @@ export default function ProjectCarousel({
 
                 <div className="flex flex-1 flex-col gap-5 p-5">
                   <div className="space-y-3">
-                    <h3 className="project-carousel-card-title font-display text-2xl tracking-tight leading-tight transition-colors group-hover:text-[var(--brand-blue)]">
+                    <h3 className="project-carousel-card-title font-display text-2xl tracking-tight leading-tight transition-colors group-hover:text-white">
                       {project.title}
                     </h3>
-                    <p className="project-carousel-card-description text-sm leading-relaxed text-muted-foreground">
+                    <p className="project-carousel-card-description text-sm leading-relaxed text-white/85">
                       {project.description}
                     </p>
                   </div>
@@ -239,7 +250,7 @@ export default function ProjectCarousel({
                   {hasProjectPage ? (
                     <Button
                       asChild
-                      className="nike-pill mt-auto h-11 w-full bg-[var(--brand-ink)] text-sm font-bold uppercase tracking-wide text-white hover:bg-[var(--brand-blue)]"
+                      className="nike-pill mt-auto h-11 w-full bg-white/15 text-sm font-bold uppercase tracking-wide text-white hover:bg-white/25 backdrop-blur border border-white/20"
                     >
                       <Link href={actionHref}>
                         {actionLabel} {actionIcon}
@@ -248,8 +259,7 @@ export default function ProjectCarousel({
                   ) : (
                     <Button
                       asChild
-                      variant="outline"
-                      className="nike-pill mt-auto h-11 w-full border-2 border-[var(--brand-ink)] bg-transparent text-sm font-bold uppercase tracking-wide text-[var(--brand-ink)] hover:bg-[var(--brand-green)] hover:text-[var(--brand-ink)]"
+                      className="nike-pill mt-auto h-11 w-full border-2 border-white/30 bg-white/10 text-sm font-bold uppercase tracking-wide text-white hover:bg-white/20 backdrop-blur"
                     >
                       <a href={actionHref} target="_blank" rel="noreferrer">
                         {actionLabel} {actionIcon}

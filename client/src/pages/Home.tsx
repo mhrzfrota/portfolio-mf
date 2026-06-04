@@ -132,6 +132,11 @@ export default function Home() {
         </div>
       </section>
 
+      {/* PROJETOS — modern showcase cards */}
+      <section id="projetos" className="scroll-mt-20">
+        <ProjectsCategoryPage />
+      </section>
+
       {/* Marquee de tecnologias (estilo faixa de logos) */}
       <div className="relative left-1/2 w-screen -translate-x-1/2 border-y border-border bg-secondary/30 py-5">
         <div className="hero-marquee-mask overflow-hidden">
@@ -158,11 +163,6 @@ export default function Home() {
           </div>
         </div>
       </div>
-
-      {/* PROJETOS — modern showcase cards */}
-      <section id="projetos" className="scroll-mt-20">
-        <ProjectsCategoryPage />
-      </section>
 
       {/* HABILIDADES */}
       <section
