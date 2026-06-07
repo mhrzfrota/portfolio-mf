@@ -141,7 +141,7 @@ export default function Home() {
               className="nike-pill h-16 w-full min-w-0 bg-[#0C2AFE] px-8 text-xl font-semibold text-white shadow-none hover:bg-[#001fdd] sm:w-auto sm:min-w-72 md:h-[72px] md:min-w-[360px] md:px-14 md:text-[1.65rem] lg:min-w-[430px]"
             >
               <a href={WHATSAPP_BUDGET_URL} target="_blank" rel="noreferrer">
-                Falar com Especialista <ArrowRight className="ml-3 w-5 h-5" />
+                Solicitar orçamento <ArrowRight className="ml-3 w-5 h-5" />
               </a>
             </Button>
 
@@ -152,8 +152,8 @@ export default function Home() {
               className="nike-pill h-16 w-full min-w-0 border-2 border-[#343a5a] bg-transparent px-8 text-xl font-semibold text-foreground shadow-none hover:border-[#4c557e] hover:bg-[#0C2AFE]/10 hover:text-[var(--brand-blue)] dark:text-white sm:w-auto sm:min-w-72 md:h-[72px] md:min-w-[360px] md:px-14 md:text-[1.65rem] lg:min-w-[430px]"
             >
               <a href="#projetos">
-                <Play className="mr-3 w-4 h-4 fill-current" /> Assistir
-                Demonstração
+                <Play className="mr-3 w-4 h-4 fill-current" /> Ver
+                projetos
               </a>
             </Button>
           </div>
