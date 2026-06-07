@@ -45,9 +45,9 @@
   --color-brand-green: var(--brand-green);
   --color-brand-green-dark: var(--brand-green-dark);
   --color-brand-ink: var(--brand-ink);
-  --font-sans: "Inter", system-ui, -apple-system, arial, sans-serif;
-  --font-display: "Inter", system-ui, -apple-system, arial, sans-serif;
-  --font-mono: "Inter", system-ui, -apple-system, arial, sans-serif;
+  --font-sans: "Titillium Web", system-ui, -apple-system, arial, sans-serif;
+  --font-display: "Titillium Web", system-ui, -apple-system, arial, sans-serif;
+  --font-mono: "Titillium Web", system-ui, -apple-system, arial, sans-serif;
   --font-weight-thin: 100;
   --font-weight-extralight: 200;
   --font-weight-light: 300;
@@ -229,7 +229,7 @@
 
   /* Figueiredo-style hero headline (heavy grotesque, tight) */
   .hero-headline {
-    font-family: var(--font-sans);
+    font-family: var(--font-display);
     font-weight: var(--font-weight-black);
     letter-spacing: 0;
     line-height: 1.05;

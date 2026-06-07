@@ -1,5 +1,11 @@
 import { Button } from "@/components/ui/button";
-import { Calendar, Download, MessageCircle } from "lucide-react";
+import {
+  ArrowRight,
+  Calendar,
+  Download,
+  MessageCircle,
+  Play,
+} from "lucide-react";
 import { WHATSAPP_BUDGET_URL } from "@/const";
 import ProjectsCategoryPage from "@/components/ProjectsCategoryPage";
 import { cn } from "@/lib/utils";
@@ -117,18 +123,40 @@ export default function Home() {
         id="inicio"
         className="flex min-h-[68vh] items-center justify-center py-24 text-center md:min-h-[74vh] md:py-32"
       >
-        <div className="mx-auto max-w-4xl space-y-6">
+        <div className="mx-auto flex max-w-5xl flex-col items-center space-y-6">
           <h1 className="hero-headline break-words text-[2.15rem] sm:text-5xl lg:text-[4.6rem]">
             <span className="block">Software simples.</span>
             <span className="block">Rápido.</span>
-            <span className="block text-[var(--brand-blue)]">
-              Resultado.
-            </span>
+            <span className="block text-[var(--brand-blue)]">Resultado.</span>
           </h1>
 
           <p className="mx-auto max-w-2xl break-words text-base leading-relaxed text-muted-foreground md:text-lg">
             Backend, dados e web.
           </p>
+
+          <div className="flex w-full flex-col items-center justify-center gap-6 pt-4 sm:w-auto sm:flex-row">
+            <Button
+              asChild
+              size="lg"
+              className="nike-pill h-16 w-full min-w-0 bg-[#0C2AFE] px-8 text-xl font-semibold text-white shadow-none hover:bg-[#001fdd] sm:w-auto sm:min-w-72 md:h-[72px] md:min-w-[360px] md:px-14 md:text-[1.65rem] lg:min-w-[430px]"
+            >
+              <a href={WHATSAPP_BUDGET_URL} target="_blank" rel="noreferrer">
+                Falar com Especialista <ArrowRight className="ml-3 w-5 h-5" />
+              </a>
+            </Button>
+
+            <Button
+              asChild
+              variant="outline"
+              size="lg"
+              className="nike-pill h-16 w-full min-w-0 border-2 border-[#343a5a] bg-transparent px-8 text-xl font-semibold text-foreground shadow-none hover:border-[#4c557e] hover:bg-[#0C2AFE]/10 hover:text-[var(--brand-blue)] dark:text-white sm:w-auto sm:min-w-72 md:h-[72px] md:min-w-[360px] md:px-14 md:text-[1.65rem] lg:min-w-[430px]"
+            >
+              <a href="#projetos">
+                <Play className="mr-3 w-4 h-4 fill-current" /> Assistir
+                Demonstração
+              </a>
+            </Button>
+          </div>
         </div>
       </section>
 
