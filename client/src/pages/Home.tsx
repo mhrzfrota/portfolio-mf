@@ -121,38 +121,38 @@ export default function Home() {
       {/* HERO */}
       <section
         id="inicio"
-        className="relative left-1/2 flex min-h-[68vh] w-screen -translate-x-1/2 items-center justify-center overflow-hidden bg-[#020613] px-5 py-20 text-center text-white md:min-h-[74vh] md:px-10 md:py-28"
+        className="relative left-1/2 flex min-h-[58vh] w-screen -translate-x-1/2 items-center justify-center overflow-hidden bg-[#020613] px-5 py-14 text-center text-white md:min-h-[63vh] md:px-10 md:py-20"
       >
         <div
           className="absolute inset-0 bg-[radial-gradient(circle_at_50%_32%,rgba(12,42,254,0.2),transparent_34%),linear-gradient(180deg,#020613_0%,#040a24_52%,#020613_100%)]"
           aria-hidden="true"
         />
 
-        <div className="relative z-10 mx-auto flex max-w-[92rem] flex-col items-center">
-          <span className="mb-7 inline-flex h-8 items-center justify-center rounded-full border border-white/15 bg-white/[0.04] px-5 text-[0.65rem] font-bold uppercase tracking-[0.28em] text-white/60">
+        <div className="relative z-10 mx-auto flex max-w-[78rem] -translate-y-4 flex-col items-center md:-translate-y-7">
+          <span className="mb-5 inline-flex h-7 items-center justify-center rounded-full border border-white/15 bg-white/[0.04] px-4 text-[0.56rem] font-bold uppercase tracking-[0.24em] text-white/60">
             desenvolvimento web e dados
           </span>
 
-          <h1 className="hero-headline max-w-[88rem] break-words text-[2.42rem] text-white sm:text-[3.2rem] md:text-[4.04rem] lg:text-[4.9rem] xl:text-[5.57rem]">
+          <h1 className="hero-headline max-w-[75rem] break-words text-[2.05rem] text-white sm:text-[2.72rem] md:text-[3.43rem] lg:text-[4.16rem] xl:text-[4.73rem]">
             <span className="block">
               A plataforma criada para apresentar
             </span>
             <span className="block">os melhores projetos digitais</span>
           </h1>
 
-          <p className="mx-auto mt-7 max-w-2xl break-words text-base leading-relaxed text-white/55 md:text-lg">
+          <p className="mx-auto mt-5 max-w-xl break-words text-sm leading-relaxed text-white/55 md:text-base">
             Backend, dados, interfaces e automações para transformar ideias em
             produtos digitais claros, rápidos e fáceis de usar.
           </p>
 
-          <div className="mt-9 flex w-full flex-col items-center justify-center gap-4 sm:w-auto sm:flex-row md:gap-5">
+          <div className="mt-7 flex w-full flex-col items-center justify-center gap-3 sm:w-auto sm:flex-row md:gap-4">
             <Button
               asChild
               size="lg"
-              className="nike-pill h-14 w-full min-w-0 bg-[#0C2AFE] px-8 text-base font-semibold text-white shadow-none hover:bg-[#001fdd] sm:w-auto sm:min-w-[260px] md:h-16 md:min-w-[290px] md:px-9 md:text-lg"
+              className="nike-pill h-12 w-full min-w-0 bg-[#0C2AFE] px-7 text-sm font-semibold text-white shadow-none hover:bg-[#001fdd] sm:w-auto sm:min-w-[220px] md:h-14 md:min-w-[246px] md:px-8 md:text-base"
             >
               <a href={WHATSAPP_BUDGET_URL} target="_blank" rel="noreferrer">
-                Solicitar orçamento <ArrowRight className="ml-2 h-5 w-5" />
+                Solicitar orçamento <ArrowRight className="ml-2 h-4 w-4" />
               </a>
             </Button>
 
@@ -160,7 +160,7 @@ export default function Home() {
               asChild
               variant="outline"
               size="lg"
-              className="nike-pill h-14 w-full min-w-0 border-2 border-[#313852] bg-transparent px-8 text-base font-semibold text-white shadow-none hover:border-[#4a5478] hover:bg-white/[0.04] hover:text-white sm:w-auto sm:min-w-[260px] md:h-16 md:min-w-[290px] md:px-9 md:text-lg"
+              className="nike-pill h-12 w-full min-w-0 border-2 border-[#313852] bg-transparent px-7 text-sm font-semibold text-white shadow-none hover:border-[#4a5478] hover:bg-white/[0.04] hover:text-white sm:w-auto sm:min-w-[220px] md:h-14 md:min-w-[246px] md:px-8 md:text-base"
             >
               <a href="#projetos">
                 <Play className="mr-2 h-4 w-4 fill-current" /> Ver projetos
