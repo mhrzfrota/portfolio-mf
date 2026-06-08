@@ -121,7 +121,7 @@ export default function Home() {
       {/* HERO */}
       <section
         id="inicio"
-        className="relative left-1/2 flex min-h-[58vh] w-screen -translate-x-1/2 items-center justify-center overflow-hidden bg-[#020613] px-5 py-14 text-center text-white md:min-h-[63vh] md:px-10 md:py-20"
+        className="relative left-1/2 flex min-h-screen w-screen -translate-x-1/2 items-center justify-center overflow-hidden bg-[#020613] px-5 py-14 text-center text-white md:px-10 md:py-20"
       >
         <div
           className="absolute inset-0 bg-[radial-gradient(circle_at_50%_32%,rgba(12,42,254,0.2),transparent_34%),linear-gradient(180deg,#020613_0%,#040a24_52%,#020613_100%)]"
@@ -131,9 +131,9 @@ export default function Home() {
         <div className="relative z-10 mx-auto flex max-w-[78rem] -translate-y-4 flex-col items-center md:-translate-y-7">
           <h1 className="hero-headline max-w-[75rem] break-words text-[2.05rem] text-white sm:text-[2.72rem] md:text-[3.43rem] lg:text-[4.16rem] xl:text-[4.73rem]">
             <span className="block">
-              A plataforma criada para apresentar
+              Transformo ideias em soluções digitais
             </span>
-            <span className="block">os melhores projetos digitais</span>
+            <span className="block">que vendem, organizam e economizam tempo.</span>
           </h1>
 
           <p className="mx-auto mt-5 max-w-xl break-words text-sm leading-relaxed text-white/55 md:text-base">
