@@ -62,9 +62,7 @@ export default function ProjectsCategoryPage() {
             <h2 className="font-display text-4xl tracking-tight md:text-6xl">
               Cases em destaque
             </h2>
-            <p className="text-base leading-relaxed text-muted-foreground">
-              Cards diretos, com foco no resultado de cada entrega.
-            </p>
+
           </div>
 
           <div className="flex flex-wrap gap-2">
