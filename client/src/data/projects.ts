@@ -168,6 +168,17 @@ export const projects: Project[] = [
     repoUrl: "https://github.com/mhrzfrota",
     category: "Landing Page",
   },
+  {
+    id: 11,
+    title: "Ramires Barbosa - Desafio 30 Dias",
+    description:
+      "Landing page para personal trainer com proposta de desafio fitness, seções de transformação, método, benefícios e CTA para entrada na comunidade pelo WhatsApp.",
+    tags: ["HTML", "CSS", "JavaScript", "Landing Page"],
+    image: "/images/ramires-personal.jpg",
+    liveUrl: "https://lp-ramirespersonal.vercel.app/",
+    repoUrl: "https://github.com/mhrzfrota",
+    category: "Landing Page",
+  },
 ];
 
 const uniqueTechnologies = new Set(projects.flatMap(project => project.tags));
