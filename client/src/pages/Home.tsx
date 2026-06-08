@@ -170,37 +170,39 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Tecnologias em carrossel */}
+      <section className="relative left-1/2 w-screen -translate-x-1/2 bg-[#020613] px-5 pb-12 text-center text-white md:pb-16">
+        <p className="mb-6 text-sm font-semibold text-white/45 md:text-base">
+          Stack usada nos principais projetos do portfólio
+        </p>
+
+        <div className="mx-auto max-w-5xl overflow-hidden bg-[#01040d] py-5">
+          <div className="hero-marquee-mask overflow-hidden">
+            <div className="hero-marquee-track">
+              {[...heroMarquee, ...heroMarquee].map((tech, index) => (
+                <div
+                  key={`${tech.name}-${index}`}
+                  className="flex min-w-40 items-center justify-center px-8 md:min-w-48 md:px-10"
+                  aria-label={tech.name}
+                >
+                  <img
+                    src={tech.logo}
+                    alt={tech.name}
+                    className="h-9 w-24 object-contain opacity-90 transition-opacity hover:opacity-100 md:h-10 md:w-28"
+                    draggable={false}
+                    loading="lazy"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* PROJETOS — modern showcase cards */}
       <section id="projetos" className="scroll-mt-20">
         <ProjectsCategoryPage />
       </section>
-
-      {/* Marquee de tecnologias (estilo faixa de logos) */}
-      <div className="relative left-1/2 w-screen -translate-x-1/2 border-y border-border bg-secondary/30 py-5">
-        <div className="hero-marquee-mask overflow-hidden">
-          <div className="hero-marquee-track">
-            {[...heroMarquee, ...heroMarquee].map((tech, index) => (
-              <div
-                key={`${tech.name}-${index}`}
-                className="flex items-center px-6 md:px-8"
-                aria-label={tech.name}
-              >
-                <img
-                  src={tech.logo}
-                  alt={tech.name}
-                  className="h-10 w-24 object-contain md:h-12 md:w-28"
-                  draggable={false}
-                  loading="lazy"
-                />
-                <span
-                  className="ml-6 h-1.5 w-1.5 rounded-full bg-[var(--brand-blue)]/30 md:ml-8"
-                  aria-hidden="true"
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
 
       {/* HABILIDADES */}
       <section

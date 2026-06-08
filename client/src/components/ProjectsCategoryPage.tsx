@@ -16,13 +16,6 @@ import {
 } from "@/data/projects";
 import { cn } from "@/lib/utils";
 
-const cardThemes = [
-  "from-[#edf8ff] via-[#9fcde8] to-[#3275cf]",
-  "from-[#f3fbff] via-[#abd8ea] to-[#366fbb]",
-  "from-[#eef7ff] via-[#9ec9df] to-[#4d84c9]",
-  "from-[#f5fbff] via-[#b5d9eb] to-[#2f87b7]",
-];
-
 export default function ProjectsCategoryPage() {
   const [activeCategory, setActiveCategory] = useState("Todos");
   const [activeIndex, setActiveIndex] = useState(0);
@@ -36,7 +29,6 @@ export default function ProjectsCategoryPage() {
     ? Math.min(activeIndex, visibleProjects.length - 1)
     : 0;
   const activeProject = visibleProjects[safeIndex] ?? allProjects[0];
-  const theme = cardThemes[activeProject.id % cardThemes.length];
   const primaryAction = getProjectAction(activeProject);
 
   useEffect(() => {
@@ -99,21 +91,11 @@ export default function ProjectsCategoryPage() {
         </div>
 
         <article
-          className={cn(
-            "project-showcase-card relative min-h-[46rem] overflow-hidden rounded-[2rem] border border-white/60 bg-gradient-to-br p-5 text-white shadow-[0_24px_80px_rgba(13,30,80,0.16)] sm:min-h-[43rem] md:h-[36rem] md:min-h-0 md:p-8 lg:h-[34rem]",
-            theme
-          )}
+          className="project-showcase-card relative min-h-[46rem] overflow-hidden rounded-[2rem] border border-white/10 bg-[var(--brand-ink)] p-5 text-white shadow-[0_24px_80px_rgba(13,30,80,0.16)] sm:min-h-[43rem] md:h-[36rem] md:min-h-0 md:p-8 lg:h-[34rem]"
           aria-live="polite"
         >
-          <img
-            key={`bg-${activeProject.id}`}
-            src={activeProject.image}
-            alt=""
-            className="project-showcase-bg absolute inset-0 h-full w-full scale-110 object-cover opacity-40 blur-2xl"
-            aria-hidden="true"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#102033]/82 via-[#2f74ae]/34 to-white/18" />
-          <div className="absolute inset-0 bg-[linear-gradient(125deg,rgba(255,255,255,0.08)_0%,rgba(255,255,255,0.28)_46%,rgba(255,255,255,0.42)_100%)]" />
+          <div className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-[var(--brand-blue)]/40 blur-3xl" />
+          <div className="absolute -left-20 -bottom-20 h-56 w-56 rounded-full bg-[var(--brand-green)]/30 blur-3xl" />
 
           <div
             key={`content-${activeProject.id}`}
