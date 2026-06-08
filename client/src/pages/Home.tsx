@@ -121,75 +121,77 @@ export default function Home() {
       {/* HERO */}
       <section
         id="inicio"
-        className="relative left-1/2 flex min-h-screen w-screen -translate-x-1/2 items-center justify-center overflow-hidden bg-[#020613] px-5 py-14 text-center text-white md:px-10 md:py-20"
+        className="relative left-1/2 flex w-screen -translate-x-1/2 overflow-hidden bg-[#020613] text-center text-white"
       >
         <div
           className="absolute inset-0 bg-[radial-gradient(circle_at_50%_32%,rgba(12,42,254,0.2),transparent_34%),linear-gradient(180deg,#020613_0%,#040a24_52%,#020613_100%)]"
           aria-hidden="true"
         />
 
-        <div className="relative z-10 mx-auto flex max-w-[78rem] -translate-y-4 flex-col items-center md:-translate-y-7">
-          <h1 className="hero-headline max-w-[75rem] break-words text-[1.7rem] text-white sm:text-[2.2rem] md:text-[2.8rem] lg:text-[3.4rem] xl:text-[3.9rem]">
-            <span className="block">
-              Transformo ideias em soluções digitais
-            </span>
-            <span className="block">que vendem, organizam e economizam tempo.</span>
-          </h1>
+        <div className="relative z-10 mx-auto flex w-full max-w-[78rem] flex-col items-center px-5 pt-14 pb-2 md:px-10 md:pt-20 md:pb-4">
+          <div className="flex flex-col items-center">
+            <h1 className="hero-headline max-w-[75rem] break-words text-[1.7rem] text-white sm:text-[2.2rem] md:text-[2.8rem] lg:text-[3.4rem] xl:text-[3.9rem]">
+              <span className="block">
+                Transformo ideias em soluções digitais
+              </span>
+              <span className="block text-[0.78em]">
+                que vendem, organizam e economizam tempo.
+              </span>
+            </h1>
 
-          <p className="mx-auto mt-5 max-w-xl break-words text-sm leading-relaxed text-white/55 md:text-base">
-            Backend, dados, interfaces e automações para transformar ideias em
-            produtos digitais claros, rápidos e fáceis de usar.
-          </p>
+            <p className="mx-auto mt-2 max-w-xl break-words text-sm leading-relaxed text-white/55 md:text-base">
+              Backend, dados, interfaces e automações para transformar ideias em
+              produtos digitais claros, rápidos e fáceis de usar.
+            </p>
 
-          <div className="mt-7 flex w-full flex-col items-center justify-center gap-3 sm:w-auto sm:flex-row md:gap-4">
-            <Button
-              asChild
-              size="lg"
-              className="nike-pill h-12 w-full min-w-0 bg-[#0C2AFE] px-7 text-sm font-semibold text-white shadow-none hover:bg-[#001fdd] sm:w-auto sm:min-w-[220px] md:h-14 md:min-w-[246px] md:px-8 md:text-base"
-            >
-              <a href={WHATSAPP_BUDGET_URL} target="_blank" rel="noreferrer">
-                Solicitar orçamento <ArrowRight className="ml-2 h-4 w-4" />
-              </a>
-            </Button>
+            <div className="mt-3 flex w-full flex-col items-center justify-center gap-3 sm:w-auto sm:flex-row md:gap-4">
+              <Button
+                asChild
+                size="lg"
+                className="nike-pill h-12 w-full min-w-0 bg-[#0C2AFE] px-7 text-sm font-semibold text-white shadow-none hover:bg-[#001fdd] sm:w-auto sm:min-w-[220px] md:h-14 md:min-w-[246px] md:px-8 md:text-base"
+              >
+                <a href={WHATSAPP_BUDGET_URL} target="_blank" rel="noreferrer">
+                  Solicitar orçamento <ArrowRight className="ml-2 h-4 w-4" />
+                </a>
+              </Button>
 
-            <Button
-              asChild
-              variant="outline"
-              size="lg"
-              className="nike-pill h-12 w-full min-w-0 border-2 border-[#313852] bg-transparent px-7 text-sm font-semibold text-white shadow-none hover:border-[#4a5478] hover:bg-white/[0.04] hover:text-white sm:w-auto sm:min-w-[220px] md:h-14 md:min-w-[246px] md:px-8 md:text-base"
-            >
-              <a href="#projetos">
-                <Play className="mr-2 h-4 w-4 fill-current" /> Ver projetos
-              </a>
-            </Button>
+              <Button
+                asChild
+                variant="outline"
+                size="lg"
+                className="nike-pill h-12 w-full min-w-0 border-2 border-[#313852] bg-transparent px-7 text-sm font-semibold text-white shadow-none hover:border-[#4a5478] hover:bg-white/[0.04] hover:text-white sm:w-auto sm:min-w-[220px] md:h-14 md:min-w-[246px] md:px-8 md:text-base"
+              >
+                <a href="#projetos">
+                  <Play className="mr-2 h-4 w-4 fill-current" /> Ver projetos
+                </a>
+              </Button>
+            </div>
           </div>
-        </div>
-      </section>
 
-      {/* Tecnologias em carrossel */}
-      <section className="relative left-1/2 w-screen -translate-x-1/2 bg-[#020613] px-5 pb-12 text-center text-white md:pb-16">
-        <p className="mb-6 text-sm font-semibold text-white/45 md:text-base">
-          Stack usada nos principais projetos do portfólio
-        </p>
-
-        <div className="mx-auto max-w-5xl overflow-hidden bg-[#01040d] py-5">
-          <div className="hero-marquee-mask overflow-hidden">
-            <div className="hero-marquee-track">
-              {[...heroMarquee, ...heroMarquee].map((tech, index) => (
-                <div
-                  key={`${tech.name}-${index}`}
-                  className="flex min-w-40 items-center justify-center px-8 md:min-w-48 md:px-10"
-                  aria-label={tech.name}
-                >
-                  <img
-                    src={tech.logo}
-                    alt={tech.name}
-                    className="h-9 w-24 object-contain opacity-90 transition-opacity hover:opacity-100 md:h-10 md:w-28"
-                    draggable={false}
-                    loading="lazy"
-                  />
+          <div className="mt-12 md:mt-16">
+            <p className="mb-2 text-[0.6rem] font-semibold text-white/45 md:text-xs">
+              Stack usada nos principais projetos do portfólio
+            </p>
+            <div className="mx-auto max-w-5xl overflow-hidden pt-4">
+              <div className="hero-marquee-mask overflow-hidden">
+                <div className="hero-marquee-track">
+                  {[...heroMarquee, ...heroMarquee].map((tech, index) => (
+                    <div
+                      key={`${tech.name}-${index}`}
+                      className="flex min-w-40 items-center justify-center px-8 md:min-w-48 md:px-10"
+                      aria-label={tech.name}
+                    >
+                      <img
+                        src={tech.logo}
+                        alt={tech.name}
+                        className="h-9 w-24 object-contain opacity-90 transition-opacity hover:opacity-100 md:h-10 md:w-28"
+                        draggable={false}
+                        loading="lazy"
+                      />
+                    </div>
+                  ))}
                 </div>
-              ))}
+              </div>
             </div>
           </div>
         </div>
