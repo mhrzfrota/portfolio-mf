@@ -129,7 +129,7 @@ export default function Home() {
         />
 
         <div className="relative z-10 mx-auto flex max-w-[78rem] -translate-y-4 flex-col items-center md:-translate-y-7">
-          <h1 className="hero-headline max-w-[75rem] break-words text-[2.05rem] text-white sm:text-[2.72rem] md:text-[3.43rem] lg:text-[4.16rem] xl:text-[4.73rem]">
+          <h1 className="hero-headline max-w-[75rem] break-words text-[1.7rem] text-white sm:text-[2.2rem] md:text-[2.8rem] lg:text-[3.4rem] xl:text-[3.9rem]">
             <span className="block">
               Transformo ideias em soluções digitais
             </span>
