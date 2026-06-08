@@ -179,6 +179,17 @@ export const projects: Project[] = [
     repoUrl: "https://github.com/mhrzfrota",
     category: "Landing Page",
   },
+  {
+    id: 12,
+    title: "Via Shopping Car",
+    description:
+      "Plataforma web para o Via Shopping Car, shopping de carros em Fortaleza, com apresentação de estoque, informações institucionais e canais de contato para visitas presenciais.",
+    tags: ["React", "Vite", "TypeScript", "CSS"],
+    image: "/images/vsc.png",
+    liveUrl: "https://viashoppingcar.vercel.app/",
+    repoUrl: "https://github.com/mhrzfrota",
+    category: "Web",
+  },
 ];
 
 const uniqueTechnologies = new Set(projects.flatMap(project => project.tags));
