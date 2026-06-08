@@ -230,9 +230,9 @@
   /* Figueiredo-style hero headline (heavy grotesque, tight) */
   .hero-headline {
     font-family: var(--font-display);
-    font-weight: var(--font-weight-black);
+    font-weight: 700;
     letter-spacing: 0;
-    line-height: 1.05;
+    line-height: 0.98;
     text-wrap: balance;
   }
 

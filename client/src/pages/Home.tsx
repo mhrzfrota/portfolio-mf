@@ -121,27 +121,38 @@ export default function Home() {
       {/* HERO */}
       <section
         id="inicio"
-        className="flex min-h-[68vh] items-center justify-center py-24 text-center md:min-h-[74vh] md:py-32"
+        className="relative left-1/2 flex min-h-[68vh] w-screen -translate-x-1/2 items-center justify-center overflow-hidden bg-[#020613] px-5 py-20 text-center text-white md:min-h-[74vh] md:px-10 md:py-28"
       >
-        <div className="mx-auto flex max-w-5xl flex-col items-center space-y-6">
-          <h1 className="hero-headline break-words text-[2.15rem] sm:text-5xl lg:text-[4.6rem]">
-            <span className="block">Software simples.</span>
-            <span className="block">Rápido.</span>
-            <span className="block text-[var(--brand-blue)]">Resultado.</span>
+        <div
+          className="absolute inset-0 bg-[radial-gradient(circle_at_50%_32%,rgba(12,42,254,0.2),transparent_34%),linear-gradient(180deg,#020613_0%,#040a24_52%,#020613_100%)]"
+          aria-hidden="true"
+        />
+
+        <div className="relative z-10 mx-auto flex max-w-[92rem] flex-col items-center">
+          <span className="mb-7 inline-flex h-8 items-center justify-center rounded-full border border-white/15 bg-white/[0.04] px-5 text-[0.65rem] font-bold uppercase tracking-[0.28em] text-white/60">
+            desenvolvimento web e dados
+          </span>
+
+          <h1 className="hero-headline max-w-[88rem] break-words text-[2.42rem] text-white sm:text-[3.2rem] md:text-[4.04rem] lg:text-[4.9rem] xl:text-[5.57rem]">
+            <span className="block">
+              A plataforma criada para apresentar
+            </span>
+            <span className="block">os melhores projetos digitais</span>
           </h1>
 
-          <p className="mx-auto max-w-2xl break-words text-base leading-relaxed text-muted-foreground md:text-lg">
-            Backend, dados e web.
+          <p className="mx-auto mt-7 max-w-2xl break-words text-base leading-relaxed text-white/55 md:text-lg">
+            Backend, dados, interfaces e automações para transformar ideias em
+            produtos digitais claros, rápidos e fáceis de usar.
           </p>
 
-          <div className="flex w-full flex-col items-center justify-center gap-6 pt-4 sm:w-auto sm:flex-row">
+          <div className="mt-9 flex w-full flex-col items-center justify-center gap-4 sm:w-auto sm:flex-row md:gap-5">
             <Button
               asChild
               size="lg"
-              className="nike-pill h-16 w-full min-w-0 bg-[#0C2AFE] px-8 text-xl font-semibold text-white shadow-none hover:bg-[#001fdd] sm:w-auto sm:min-w-72 md:h-[72px] md:min-w-[360px] md:px-14 md:text-[1.65rem] lg:min-w-[430px]"
+              className="nike-pill h-14 w-full min-w-0 bg-[#0C2AFE] px-8 text-base font-semibold text-white shadow-none hover:bg-[#001fdd] sm:w-auto sm:min-w-[260px] md:h-16 md:min-w-[290px] md:px-9 md:text-lg"
             >
               <a href={WHATSAPP_BUDGET_URL} target="_blank" rel="noreferrer">
-                Solicitar orçamento <ArrowRight className="ml-3 w-5 h-5" />
+                Solicitar orçamento <ArrowRight className="ml-2 h-5 w-5" />
               </a>
             </Button>
 
@@ -149,11 +160,10 @@ export default function Home() {
               asChild
               variant="outline"
               size="lg"
-              className="nike-pill h-16 w-full min-w-0 border-2 border-[#343a5a] bg-transparent px-8 text-xl font-semibold text-foreground shadow-none hover:border-[#4c557e] hover:bg-[#0C2AFE]/10 hover:text-[var(--brand-blue)] dark:text-white sm:w-auto sm:min-w-72 md:h-[72px] md:min-w-[360px] md:px-14 md:text-[1.65rem] lg:min-w-[430px]"
+              className="nike-pill h-14 w-full min-w-0 border-2 border-[#313852] bg-transparent px-8 text-base font-semibold text-white shadow-none hover:border-[#4a5478] hover:bg-white/[0.04] hover:text-white sm:w-auto sm:min-w-[260px] md:h-16 md:min-w-[290px] md:px-9 md:text-lg"
             >
               <a href="#projetos">
-                <Play className="mr-3 w-4 h-4 fill-current" /> Ver
-                projetos
+                <Play className="mr-2 h-4 w-4 fill-current" /> Ver projetos
               </a>
             </Button>
           </div>
