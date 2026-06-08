@@ -129,10 +129,6 @@ export default function Home() {
         />
 
         <div className="relative z-10 mx-auto flex max-w-[78rem] -translate-y-4 flex-col items-center md:-translate-y-7">
-          <span className="mb-5 inline-flex h-7 items-center justify-center rounded-full border border-white/15 bg-white/[0.04] px-4 text-[0.56rem] font-bold uppercase tracking-[0.24em] text-white/60">
-            desenvolvimento web e dados
-          </span>
-
           <h1 className="hero-headline max-w-[75rem] break-words text-[2.05rem] text-white sm:text-[2.72rem] md:text-[3.43rem] lg:text-[4.16rem] xl:text-[4.73rem]">
             <span className="block">
               A plataforma criada para apresentar

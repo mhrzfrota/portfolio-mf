@@ -134,15 +134,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </nav>
 
           <div className="ml-4 hidden items-center gap-3 md:flex">
-            <a
-              href={WHATSAPP_BUDGET_URL}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex h-14 items-center justify-center gap-3 rounded-xl bg-[#0C2AFE] px-7 text-sm font-bold text-white transition-colors hover:bg-[#001fdd]"
-            >
-              Solicitar orçamento
-              <ArrowRight className="h-4 w-4" />
-            </a>
             <button
               type="button"
               onClick={() => toggleTheme?.()}
