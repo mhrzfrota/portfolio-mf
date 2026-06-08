@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import {
+  ArrowRight,
   Github,
   Linkedin,
   MessageCircle,
@@ -14,11 +15,11 @@ import { WHATSAPP_BUDGET_URL } from "@/const";
 import { useTheme } from "@/contexts/ThemeContext";
 
 const navItems = [
-  { label: "início", id: "inicio" },
-  { label: "projetos", id: "projetos" },
-  { label: "habilidades", id: "habilidades" },
-  { label: "blog", id: "blog" },
-  { label: "contato", id: "contato" },
+  { label: "Início", id: "inicio" },
+  { label: "Projetos", id: "projetos" },
+  { label: "Habilidades", id: "habilidades" },
+  { label: "Blog", id: "blog" },
+  { label: "Contato", id: "contato" },
 ];
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -28,6 +29,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const [location, setLocation] = useLocation();
   const { theme, toggleTheme } = useTheme();
   const isDark = theme === "dark";
+  const topbarIsLight = isDark;
 
   useEffect(() => {
     const sections = navItems
@@ -80,16 +82,17 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen bg-background text-foreground font-sans selection:bg-[var(--brand-blue)]/15 selection:text-[var(--brand-blue)]">
-      {/* Nike-style top navbar */}
+      {/* Reference-style top navbar */}
       <header
         className={cn(
-          "fixed inset-x-0 top-0 z-50 transition-all duration-300",
-          scrolled
-            ? "bg-background/95 backdrop-blur border-b border-border shadow-[0_1px_0_rgba(0,0,0,0.04)]"
-            : "bg-background border-b border-border/60"
+          "fixed inset-x-0 top-0 z-50 border-b transition-all duration-300",
+          topbarIsLight
+            ? "border-slate-200 bg-white text-slate-950 shadow-[0_1px_0_rgba(15,23,42,0.04)]"
+            : "border-white/10 bg-[#020613] text-white shadow-[0_1px_0_rgba(255,255,255,0.04)]",
+          scrolled && "backdrop-blur"
         )}
       >
-        <div className="mx-auto flex max-w-[1400px] items-center justify-between px-5 py-4 md:px-10">
+        <div className="mx-auto flex h-20 max-w-[1500px] items-center justify-between px-5 md:px-10">
           <button
             onClick={() => handleNavClick("inicio")}
             className="flex items-center transition-opacity hover:opacity-80"
@@ -98,12 +101,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <img
               src="/logotopbar.png"
               alt="MF Services"
-              className="h-auto w-48 sm:w-52 md:w-56 lg:w-64 xl:h-14 xl:w-auto dark:brightness-0 dark:invert"
+              className={cn(
+                "h-auto w-44 transition-all sm:w-48 md:w-52 lg:w-60 xl:h-12 xl:w-auto",
+                topbarIsLight ? "" : "brightness-0 invert"
+              )}
             />
           </button>
 
           {/* Desktop Nav */}
-          <nav className="hidden items-center gap-1 md:flex">
+          <nav className="hidden items-center gap-8 md:flex">
             {navItems.map(item => {
               const isActive = activeSection === item.id;
               return (
@@ -111,60 +117,43 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   key={item.id}
                   onClick={() => handleNavClick(item.id)}
                   className={cn(
-                    "relative px-4 py-2 text-sm font-bold uppercase tracking-tight transition-colors",
-                    isActive
-                      ? "text-[var(--brand-blue)]"
-                      : "text-foreground/70 hover:text-foreground"
+                    "relative py-2 text-[0.98rem] font-semibold tracking-normal transition-colors",
+                    topbarIsLight
+                      ? isActive
+                        ? "text-[#0C2AFE]"
+                        : "text-slate-700 hover:text-[#0C2AFE]"
+                      : isActive
+                        ? "text-white"
+                        : "text-white/72 hover:text-white"
                   )}
                 >
                   <span>{item.label}</span>
-                  <span
-                    className={cn(
-                      "absolute bottom-1 left-1/2 h-[2px] -translate-x-1/2 transition-all duration-300",
-                      isActive
-                        ? "w-6 bg-[var(--brand-green)]"
-                        : "w-0 bg-transparent"
-                    )}
-                  />
                 </button>
               );
             })}
           </nav>
 
-          <div className="ml-2 hidden items-center gap-2 border-l border-border pl-4 md:flex">
-            <a
-              href="https://github.com/mhrzfrota"
-              target="_blank"
-              rel="noreferrer"
-              className="flex h-9 w-9 items-center justify-center rounded-full text-foreground/70 transition-all duration-300 hover:-translate-y-0.5 hover:bg-secondary hover:text-[var(--brand-blue)]"
-              aria-label="GitHub"
-            >
-              <Github className="w-4 h-4" />
-            </a>
-            <a
-              href="https://www.linkedin.com/in/matheusfrt"
-              target="_blank"
-              rel="noreferrer"
-              className="flex h-9 w-9 items-center justify-center rounded-full text-foreground/70 transition-all duration-300 hover:-translate-y-0.5 hover:bg-secondary hover:text-[var(--brand-blue)]"
-              aria-label="LinkedIn"
-            >
-              <Linkedin className="w-4 h-4" />
-            </a>
+          <div className="ml-4 hidden items-center gap-3 md:flex">
             <a
               href={WHATSAPP_BUDGET_URL}
               target="_blank"
               rel="noreferrer"
-              className="flex h-9 w-9 items-center justify-center rounded-full text-foreground/70 transition-all duration-300 hover:-translate-y-0.5 hover:bg-secondary hover:text-[var(--brand-green)]"
-              aria-label="WhatsApp"
+              className="inline-flex h-14 items-center justify-center gap-3 rounded-xl bg-[#0C2AFE] px-7 text-sm font-bold text-white transition-colors hover:bg-[#001fdd]"
             >
-              <MessageCircle className="w-4 h-4" />
+              Solicitar orçamento
+              <ArrowRight className="h-4 w-4" />
             </a>
             <button
               type="button"
               onClick={() => toggleTheme?.()}
               aria-label={isDark ? "Ativar modo claro" : "Ativar modo escuro"}
               title={isDark ? "Modo claro" : "Modo escuro"}
-              className="flex h-9 w-9 items-center justify-center rounded-full text-foreground/70 transition-all duration-300 hover:-translate-y-0.5 hover:bg-secondary hover:text-[var(--brand-blue)]"
+              className={cn(
+                "flex h-11 w-11 items-center justify-center rounded-full border transition-all duration-300 hover:-translate-y-0.5",
+                topbarIsLight
+                  ? "border-slate-200 text-slate-700 hover:border-[#0C2AFE] hover:text-[#0C2AFE]"
+                  : "border-white/15 text-white/75 hover:border-white/35 hover:text-white"
+              )}
             >
               {isDark ? (
                 <Sun className="w-4 h-4" />
@@ -179,7 +168,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               type="button"
               onClick={() => toggleTheme?.()}
               aria-label={isDark ? "Ativar modo claro" : "Ativar modo escuro"}
-              className="rounded-full p-2 text-foreground transition-colors hover:bg-secondary"
+              className={cn(
+                "rounded-full p-2 transition-colors",
+                topbarIsLight
+                  ? "text-slate-800 hover:bg-slate-100"
+                  : "text-white hover:bg-white/10"
+              )}
             >
               {isDark ? (
                 <Sun className="w-5 h-5" />
@@ -189,7 +183,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </button>
             <button
               onClick={() => setMobileOpen(v => !v)}
-              className="rounded-full p-2 text-foreground transition-colors hover:bg-secondary"
+              className={cn(
+                "rounded-full p-2 transition-colors",
+                topbarIsLight
+                  ? "text-slate-800 hover:bg-slate-100"
+                  : "text-white hover:bg-white/10"
+              )}
               aria-label="Abrir menu"
             >
               {mobileOpen ? (
@@ -203,7 +202,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
         {/* Mobile Menu Drawer */}
         {mobileOpen && (
-          <div className="border-t border-border bg-background md:hidden">
+          <div
+            className={cn(
+              "border-t md:hidden",
+              topbarIsLight
+                ? "border-slate-200 bg-white text-slate-950"
+                : "border-white/10 bg-[#020613] text-white"
+            )}
+          >
             <nav className="flex flex-col p-4 gap-1">
               {navItems.map(item => {
                 const isActive = activeSection === item.id;
@@ -213,21 +219,35 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     onClick={() => handleNavClick(item.id)}
                     className={cn(
                       "flex items-center gap-2 px-4 py-3 text-left text-sm font-bold uppercase tracking-tight transition-all",
-                      isActive
-                        ? "border-l-2 border-[var(--brand-green)] bg-secondary text-[var(--brand-blue)]"
-                        : "text-foreground/70 hover:bg-secondary hover:text-foreground"
+                      topbarIsLight
+                        ? isActive
+                          ? "border-l-2 border-[#0C2AFE] bg-slate-100 text-[#0C2AFE]"
+                          : "text-slate-700 hover:bg-slate-100 hover:text-slate-950"
+                        : isActive
+                          ? "border-l-2 border-[#0C2AFE] bg-white/10 text-white"
+                          : "text-white/70 hover:bg-white/10 hover:text-white"
                     )}
                   >
                     <span>{item.label}</span>
                   </button>
                 );
               })}
-              <div className="mt-2 flex justify-center gap-4 border-t border-border pt-4">
+              <div
+                className={cn(
+                  "mt-2 flex justify-center gap-4 border-t pt-4",
+                  topbarIsLight ? "border-slate-200" : "border-white/10"
+                )}
+              >
                 <a
                   href="https://github.com/mhrzfrota"
                   target="_blank"
                   rel="noreferrer"
-                  className="flex h-10 w-10 items-center justify-center rounded-full text-foreground/70 transition-colors hover:bg-secondary hover:text-[var(--brand-blue)]"
+                  className={cn(
+                    "flex h-10 w-10 items-center justify-center rounded-full transition-colors",
+                    topbarIsLight
+                      ? "text-slate-700 hover:bg-slate-100 hover:text-[#0C2AFE]"
+                      : "text-white/70 hover:bg-white/10 hover:text-white"
+                  )}
                   aria-label="GitHub"
                 >
                   <Github className="w-5 h-5" />
@@ -236,7 +256,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   href="https://www.linkedin.com/in/matheusfrt"
                   target="_blank"
                   rel="noreferrer"
-                  className="flex h-10 w-10 items-center justify-center rounded-full text-foreground/70 transition-colors hover:bg-secondary hover:text-[var(--brand-blue)]"
+                  className={cn(
+                    "flex h-10 w-10 items-center justify-center rounded-full transition-colors",
+                    topbarIsLight
+                      ? "text-slate-700 hover:bg-slate-100 hover:text-[#0C2AFE]"
+                      : "text-white/70 hover:bg-white/10 hover:text-white"
+                  )}
                   aria-label="LinkedIn"
                 >
                   <Linkedin className="w-5 h-5" />
@@ -245,7 +270,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   href={WHATSAPP_BUDGET_URL}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex h-10 w-10 items-center justify-center rounded-full text-foreground/70 transition-colors hover:bg-secondary hover:text-[var(--brand-green)]"
+                  className={cn(
+                    "flex h-10 w-10 items-center justify-center rounded-full transition-colors",
+                    topbarIsLight
+                      ? "text-slate-700 hover:bg-slate-100 hover:text-[#0C2AFE]"
+                      : "text-white/70 hover:bg-white/10 hover:text-white"
+                  )}
                   aria-label="WhatsApp"
                 >
                   <MessageCircle className="w-5 h-5" />
@@ -257,7 +287,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </header>
 
       {/* Main Content */}
-      <main className="relative pt-24 md:pt-28">
+      <main className="relative pt-20">
         <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-12">
           {children}
         </div>
