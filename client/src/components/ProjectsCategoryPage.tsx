@@ -90,25 +90,20 @@ export default function ProjectsCategoryPage() {
           </div>
         </div>
 
-        <article
-          className="project-showcase-card relative min-h-[46rem] overflow-hidden rounded-[2rem] border border-white/10 bg-[var(--brand-ink)] p-5 text-white shadow-[0_24px_80px_rgba(13,30,80,0.16)] sm:min-h-[43rem] md:h-[36rem] md:min-h-0 md:p-8 lg:h-[34rem]"
-          aria-live="polite"
-        >
-          <div className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-[var(--brand-blue)]/40 blur-3xl" />
-          <div className="absolute -left-20 -bottom-20 h-56 w-56 rounded-full bg-[var(--brand-green)]/30 blur-3xl" />
-
-          <div
-            key={`content-${activeProject.id}`}
-            className="project-showcase-fade relative z-10 grid h-full gap-8 md:grid-cols-[0.92fr_1.08fr] md:items-center md:pb-16"
+        <div className="relative">
+          <article
+            className="project-showcase-card relative min-h-[46rem] overflow-hidden rounded-[2rem] border border-white/10 bg-[var(--brand-ink)] p-5 text-white shadow-[0_24px_80px_rgba(13,30,80,0.16)] sm:min-h-[43rem] md:h-[36rem] md:min-h-0 md:p-8 lg:h-[34rem]"
+            aria-live="polite"
           >
+            <div className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-[var(--brand-blue)]/40 blur-3xl" />
+            <div className="absolute -left-20 -bottom-20 h-56 w-56 rounded-full bg-[var(--brand-green)]/30 blur-3xl" />
+
+            <div
+              key={`content-${activeProject.id}`}
+              className="project-showcase-fade relative z-10 grid h-full gap-8 md:grid-cols-[0.92fr_1.08fr] md:items-center md:pb-16"
+            >
             <div className="flex h-full min-w-0 flex-col justify-between gap-8">
               <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
-                <span className="flex h-14 w-14 items-center justify-center rounded-full bg-[var(--brand-ink)] text-lg font-black text-white shadow-[0_14px_34px_rgba(0,0,0,0.22)]">
-                  {getCategoryMark(activeProject.category)}
-                </span>
-                <span className="max-w-full break-words rounded-full bg-white/75 px-4 py-2 text-xs font-semibold text-[var(--brand-ink)] backdrop-blur">
-                  @{activeProject.tags[0]} · {activeProject.category}
-                </span>
               </div>
 
               <div className="min-w-0 max-w-md space-y-4">
@@ -182,7 +177,7 @@ export default function ProjectsCategoryPage() {
             </div>
           </div>
 
-          <div className="relative z-20 mt-6 flex flex-wrap items-center justify-between gap-4 md:absolute md:bottom-8 md:left-8 md:right-8 md:mt-0">
+          <div className="relative z-20 mt-6 flex flex-wrap items-center justify-center gap-4 md:absolute md:bottom-8 md:left-8 md:right-8 md:mt-0">
             <div className="flex items-center gap-2">
               {visibleProjects.map((project, index) => (
                 <button
@@ -200,27 +195,26 @@ export default function ProjectsCategoryPage() {
                 />
               ))}
             </div>
-
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={() => shiftProject("previous")}
-                className="flex h-11 w-11 items-center justify-center rounded-full bg-white/16 text-white backdrop-blur transition-all hover:bg-white hover:text-[var(--brand-ink)]"
-                aria-label="Projeto anterior"
-              >
-                <ChevronLeft className="h-5 w-5" />
-              </button>
-              <button
-                type="button"
-                onClick={() => shiftProject("next")}
-                className="flex h-11 w-11 items-center justify-center rounded-full bg-white/16 text-white backdrop-blur transition-all hover:bg-white hover:text-[var(--brand-ink)]"
-                aria-label="Próximo projeto"
-              >
-                <ChevronRight className="h-5 w-5" />
-              </button>
-            </div>
           </div>
-        </article>
+          </article>
+
+          <button
+            type="button"
+            onClick={() => shiftProject("previous")}
+            className="absolute left-0 top-1/2 z-30 flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white/16 text-white backdrop-blur transition-all hover:bg-white hover:text-[var(--brand-ink)]"
+            aria-label="Projeto anterior"
+          >
+            <ChevronLeft className="h-5 w-5" />
+          </button>
+          <button
+            type="button"
+            onClick={() => shiftProject("next")}
+            className="absolute right-0 top-1/2 z-30 flex h-11 w-11 translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white/16 text-white backdrop-blur transition-all hover:bg-white hover:text-[var(--brand-ink)]"
+            aria-label="Próximo projeto"
+          >
+            <ChevronRight className="h-5 w-5" />
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -248,10 +242,6 @@ function getProjectAction(project: Project) {
     href: project.repoUrl,
     label: "Código",
   };
-}
-
-function getCategoryMark(category: Project["category"]) {
-  return category === "Landing Page" ? "LP" : "W";
 }
 
 function ProjectLink({
