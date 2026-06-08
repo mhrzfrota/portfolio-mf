@@ -199,7 +199,7 @@ export default function ProjectsCategoryPage() {
           <button
             type="button"
             onClick={() => shiftProject("previous")}
-            className="absolute left-0 top-1/2 z-30 flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white/16 text-white backdrop-blur transition-all hover:bg-white hover:text-[var(--brand-ink)]"
+            className="absolute -left-5 top-1/2 z-30 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/16 text-white backdrop-blur transition-all hover:bg-white hover:text-[var(--brand-ink)]"
             aria-label="Projeto anterior"
           >
             <ChevronLeft className="h-5 w-5" />
@@ -207,7 +207,7 @@ export default function ProjectsCategoryPage() {
           <button
             type="button"
             onClick={() => shiftProject("next")}
-            className="absolute right-0 top-1/2 z-30 flex h-11 w-11 translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white/16 text-white backdrop-blur transition-all hover:bg-white hover:text-[var(--brand-ink)]"
+            className="absolute -right-5 top-1/2 z-30 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/16 text-white backdrop-blur transition-all hover:bg-white hover:text-[var(--brand-ink)]"
             aria-label="Próximo projeto"
           >
             <ChevronRight className="h-5 w-5" />

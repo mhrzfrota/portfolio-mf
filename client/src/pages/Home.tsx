@@ -130,21 +130,18 @@ export default function Home() {
 
         <div className="relative z-10 mx-auto flex w-full max-w-[78rem] flex-col items-center px-5 pt-14 pb-2 md:px-10 md:pt-20 md:pb-4">
           <div className="flex flex-col items-center">
-            <h1 className="hero-headline max-w-[75rem] break-words text-[1.7rem] text-white sm:text-[2.2rem] md:text-[2.8rem] lg:text-[3.4rem] xl:text-[3.9rem]">
-              <span className="block">
-                Transformo ideias em soluções digitais
-              </span>
-              <span className="block text-[0.78em]">
-                que vendem, organizam e economizam tempo.
+            <h1 className="hero-headline max-w-[75rem] text-[1.7rem] text-white sm:text-[2.2rem] md:text-[2.8rem] lg:text-[3.4rem] xl:text-[3.9rem]">
+              <span>
+                Soluções digitais que vendem, organizam e economizam tempo.
               </span>
             </h1>
 
-            <p className="mx-auto mt-2 max-w-xl break-words text-sm leading-relaxed text-white/55 md:text-base">
+            <p className="mx-auto mt-5 max-w-xl break-words text-sm leading-relaxed text-white/55 md:text-base">
               Backend, dados, interfaces e automações para transformar ideias em
               produtos digitais claros, rápidos e fáceis de usar.
             </p>
 
-            <div className="mt-3 flex w-full flex-col items-center justify-center gap-3 sm:w-auto sm:flex-row md:gap-4">
+            <div className="mt-7 flex w-full flex-col items-center justify-center gap-3 sm:w-auto sm:flex-row md:gap-4">
               <Button
                 asChild
                 size="lg"
@@ -168,7 +165,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="mt-12 md:mt-16">
+          <div className="mt-16 md:mt-20">
             <p className="mb-2 text-[0.6rem] font-semibold text-white/45 md:text-xs">
               Stack usada nos principais projetos do portfólio
             </p>
