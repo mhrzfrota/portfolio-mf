@@ -16,19 +16,21 @@ import {
 } from "@/data/projects";
 import { cn } from "@/lib/utils";
 
+const projectsByNewest = [...allProjects].reverse();
+
 export default function ProjectsCategoryPage() {
   const [activeCategory, setActiveCategory] = useState("Todos");
   const [activeIndex, setActiveIndex] = useState(0);
 
   const visibleProjects = useMemo(() => {
-    if (activeCategory === "Todos") return allProjects;
-    return allProjects.filter(project => project.category === activeCategory);
+    if (activeCategory === "Todos") return projectsByNewest;
+    return projectsByNewest.filter(project => project.category === activeCategory);
   }, [activeCategory]);
 
   const safeIndex = visibleProjects.length
     ? Math.min(activeIndex, visibleProjects.length - 1)
     : 0;
-  const activeProject = visibleProjects[safeIndex] ?? allProjects[0];
+  const activeProject = visibleProjects[safeIndex] ?? projectsByNewest[0];
   const primaryAction = getProjectAction(activeProject);
 
   useEffect(() => {
