@@ -102,7 +102,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               src="/logotopbar2-removebg-preview.png"
               alt="MF Services"
               className={cn(
-                "h-auto w-52 transition-all sm:w-56 md:w-60 lg:w-64 xl:h-14 xl:w-auto",
+                "h-auto w-64 transition-all sm:w-72 md:w-80 lg:w-96 xl:h-20 xl:w-auto",
                 topbarIsLight ? "" : "brightness-0 invert"
               )}
             />
