@@ -99,10 +99,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             aria-label="MF Services — voltar ao início"
           >
             <img
-              src="/logotopbar.png"
+              src="/logotopbar2-removebg-preview.png"
               alt="MF Services"
               className={cn(
-                "h-auto w-44 transition-all sm:w-48 md:w-52 lg:w-60 xl:h-12 xl:w-auto",
+                "h-auto w-52 transition-all sm:w-56 md:w-60 lg:w-64 xl:h-14 xl:w-auto",
                 topbarIsLight ? "" : "brightness-0 invert"
               )}
             />
@@ -289,7 +289,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="max-w-6xl mx-auto px-6 md:px-12 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <img
-              src="/logo.png"
+              src="/logo2-removebg-preview.png"
               alt="MF Services"
               className="h-11 w-auto dark:brightness-0 dark:invert"
             />
