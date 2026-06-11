@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import {
   ArrowRight,
   Github,
+  Instagram,
   Linkedin,
   MessageCircle,
   Menu,
@@ -140,18 +141,32 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               aria-label={isDark ? "Ativar modo claro" : "Ativar modo escuro"}
               title={isDark ? "Modo claro" : "Modo escuro"}
               className={cn(
-                "flex h-11 w-11 items-center justify-center rounded-full border transition-all duration-300 hover:-translate-y-0.5",
+                "flex h-12 w-12 items-center justify-center rounded-full transition-all duration-300 hover:-translate-y-0.5",
                 topbarIsLight
-                  ? "border-slate-200 text-slate-700 hover:border-[#0C2AFE] hover:text-[#0C2AFE]"
-                  : "border-white/15 text-white/75 hover:border-white/35 hover:text-white"
+                  ? "text-slate-700 hover:bg-slate-100 hover:text-[#0C2AFE]"
+                  : "text-white/75 hover:bg-white/10 hover:text-white"
               )}
             >
               {isDark ? (
-                <Sun className="w-4 h-4" />
+                <Sun className="w-5 h-5" />
               ) : (
-                <Moon className="w-4 h-4" />
+                <Moon className="w-5 h-5" />
               )}
             </button>
+            <a
+              href="https://www.instagram.com/emefeservices"
+              target="_blank"
+              rel="noreferrer"
+              className={cn(
+                "flex h-12 w-12 items-center justify-center rounded-full transition-all duration-300 hover:-translate-y-0.5",
+                topbarIsLight
+                  ? "text-slate-700 hover:bg-slate-100 hover:text-[#0C2AFE]"
+                  : "text-white/75 hover:bg-white/10 hover:text-white"
+              )}
+              aria-label="Instagram"
+            >
+              <Instagram className="w-5 h-5" />
+            </a>
           </div>
 
           <div className="flex items-center gap-1 md:hidden">
@@ -160,16 +175,16 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               onClick={() => toggleTheme?.()}
               aria-label={isDark ? "Ativar modo claro" : "Ativar modo escuro"}
               className={cn(
-                "rounded-full p-2 transition-colors",
+                "rounded-full p-3 transition-all duration-300 hover:-translate-y-0.5",
                 topbarIsLight
-                  ? "text-slate-800 hover:bg-slate-100"
-                  : "text-white hover:bg-white/10"
+                  ? "text-slate-800 hover:bg-slate-100 hover:text-[#0C2AFE]"
+                  : "text-white hover:bg-white/10 hover:text-white"
               )}
             >
               {isDark ? (
-                <Sun className="w-5 h-5" />
+                <Sun className="w-6 h-6" />
               ) : (
-                <Moon className="w-5 h-5" />
+                <Moon className="w-6 h-6" />
               )}
             </button>
             <button
@@ -258,6 +273,20 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   <Linkedin className="w-5 h-5" />
                 </a>
                 <a
+                  href="https://www.instagram.com/emefeservices"
+                  target="_blank"
+                  rel="noreferrer"
+                  className={cn(
+                    "flex h-10 w-10 items-center justify-center rounded-full transition-colors",
+                    topbarIsLight
+                      ? "text-slate-700 hover:bg-slate-100 hover:text-[#0C2AFE]"
+                      : "text-white/70 hover:bg-white/10 hover:text-white"
+                  )}
+                  aria-label="Instagram"
+                >
+                  <Instagram className="w-5 h-5" />
+                </a>
+                <a
                   href={WHATSAPP_BUDGET_URL}
                   target="_blank"
                   rel="noreferrer"
@@ -315,6 +344,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               className="text-muted-foreground hover:text-[var(--brand-blue)] transition-colors"
             >
               <Linkedin className="w-4 h-4" />
+            </a>
+            <a
+              href="https://www.instagram.com/emefeservices"
+              target="_blank"
+              rel="noreferrer"
+              className="text-muted-foreground hover:text-[var(--brand-green)] transition-colors"
+            >
+              <Instagram className="w-4 h-4" />
             </a>
             <a
               href={WHATSAPP_BUDGET_URL}

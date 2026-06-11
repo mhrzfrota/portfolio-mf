@@ -27,6 +27,25 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    id: 4,
+    title: "Clipradio",
+    description:
+      "Plataforma para gestão de rádios com agendamentos e gravações automatizadas, usando React/Vite no frontend e Flask no backend, com streaming HLS e transcrição de áudio por IA.",
+    tags: [
+      "React",
+      "Vite",
+      "Flask",
+      "PostgreSQL",
+      "Socket.IO",
+      "HLS.js",
+      "Docker",
+    ],
+    image: "/images/image2.webp",
+    liveUrl: "#",
+    repoUrl: "https://github.com/Ambiente-MSL/clipradio",
+    category: "Web",
+  },
+  {
     id: 1,
     slug: "dashboard-meta-analytics",
     title: "Dashboard Meta Analytics",
@@ -82,25 +101,6 @@ export const projects: Project[] = [
     liveUrl: "https://albertocid.com.br/",
     repoUrl: "https://github.com/mhrzfrota",
     category: "Landing Page",
-  },
-  {
-    id: 4,
-    title: "Clipradio",
-    description:
-      "Plataforma para gestão de rádios com agendamentos e gravações automatizadas, usando React/Vite no frontend e Flask no backend, com streaming HLS e transcrição de áudio por IA.",
-    tags: [
-      "React",
-      "Vite",
-      "Flask",
-      "PostgreSQL",
-      "Socket.IO",
-      "HLS.js",
-      "Docker",
-    ],
-    image: "/images/image2.webp",
-    liveUrl: "#",
-    repoUrl: "https://github.com/Ambiente-MSL/clipradio",
-    category: "Web",
   },
   {
     id: 5,
