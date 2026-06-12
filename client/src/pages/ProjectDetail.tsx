@@ -1,15 +1,10 @@
 import { useEffect } from "react";
 import type { RouteComponentProps } from "wouter";
 import { Link } from "wouter";
-import {
-  ArrowLeft,
-  ArrowRight,
-  ExternalLink,
-  Github,
-  MessageCircle,
-} from "lucide-react";
+import { ArrowLeft, ExternalLink, Github } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import RollButton from "@/components/RollButton";
 import { WHATSAPP_BUDGET_URL } from "@/const";
 import { getProjectBySlug } from "@/data/projects";
 
@@ -29,18 +24,20 @@ export default function ProjectDetail({
 
   if (!project || !caseStudy) {
     return (
-      <section className="min-h-[60vh] py-20">
-        <div className="max-w-2xl space-y-5 border border-border bg-card/60 p-6">
-          <span className="font-mono text-sm text-primary">
-            case não encontrado
+      <section className="mx-auto min-h-[60vh] w-full max-w-[1200px] px-5 pb-16 pt-32 sm:px-8 lg:px-12">
+        <div className="max-w-2xl space-y-5 rounded-2xl border border-border bg-card p-7">
+          <span className="inline-flex rounded-full border border-border px-3 py-1 text-[12px] font-medium text-[#0C2AFE]">
+            Case não encontrado
           </span>
-          <h1 className="text-3xl font-bold">Projeto indisponível</h1>
+          <h1 className="text-3xl font-medium tracking-[-0.02em]">
+            Projeto indisponível
+          </h1>
           <p className="text-muted-foreground">
             Ainda não existe uma página completa para esse projeto.
           </p>
           <Button
             asChild
-            className="rounded-none bg-primary font-mono text-primary-foreground hover:bg-primary/90"
+            className="rounded-full bg-[#0C2AFE] text-white hover:bg-[#001FDD]"
           >
             <Link href="/">Voltar ao portfólio</Link>
           </Button>
@@ -50,13 +47,13 @@ export default function ProjectDetail({
   }
 
   return (
-    <div className="space-y-16 py-10 md:py-16">
+    <div className="mx-auto w-full max-w-[1200px] space-y-16 px-5 pb-16 pt-28 sm:px-8 md:pt-32 lg:px-12">
       <section className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
         <div className="space-y-6">
           <Button
             asChild
             variant="outline"
-            className="rounded-none border-primary/30 font-mono text-xs hover:text-primary"
+            className="rounded-full border-border text-[13px] font-medium hover:text-[#0C2AFE]"
           >
             <a href="/#projetos">
               <ArrowLeft className="h-4 w-4" />
@@ -65,10 +62,10 @@ export default function ProjectDetail({
           </Button>
 
           <div className="space-y-4">
-            <span className="inline-flex border border-primary/30 bg-primary/10 px-3 py-1 font-mono text-xs uppercase tracking-normal text-primary">
+            <span className="inline-flex rounded-full border border-border px-3 py-1 text-[12px] font-medium text-[#0C2AFE]">
               {project.category}
             </span>
-            <h1 className="text-3xl font-bold leading-tight md:text-5xl">
+            <h1 className="text-3xl font-medium leading-[1.1] tracking-[-0.02em] md:text-5xl">
               {project.title}
             </h1>
             <p className="max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
@@ -76,22 +73,19 @@ export default function ProjectDetail({
             </p>
           </div>
 
-          <div className="flex flex-col gap-3 sm:flex-row">
-            <Button
-              asChild
-              size="lg"
-              className="rounded-none bg-primary font-mono text-primary-foreground hover:bg-primary/90"
-            >
-              <a href={WHATSAPP_BUDGET_URL} target="_blank" rel="noreferrer">
-                {caseStudy.ctaLabel}
-                <MessageCircle className="h-4 w-4" />
-              </a>
-            </Button>
+          <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center">
+            <RollButton
+              variant="blue"
+              size="md"
+              label={caseStudy.ctaLabel}
+              href={WHATSAPP_BUDGET_URL}
+              external
+            />
             <Button
               asChild
               size="lg"
               variant="outline"
-              className="rounded-none border-primary/30 font-mono hover:text-primary"
+              className="rounded-full border-border text-[13px] font-medium hover:text-[#0C2AFE]"
             >
               <a href={project.liveUrl} target="_blank" rel="noreferrer">
                 Ver projeto online
@@ -101,27 +95,26 @@ export default function ProjectDetail({
           </div>
         </div>
 
-        <div className="relative overflow-hidden border border-border bg-card">
+        <div className="relative overflow-hidden rounded-2xl border border-border bg-card">
           <img
             src={project.image}
             alt={project.title}
             className="aspect-[4/3] w-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-transparent" />
         </div>
       </section>
 
       <section className="grid gap-8 lg:grid-cols-[0.75fr_1.25fr]">
-        <aside className="space-y-6">
-          <div className="border border-border bg-card/50 p-5">
-            <h2 className="font-mono text-sm font-bold uppercase tracking-normal text-primary">
+        <aside className="space-y-5">
+          <div className="rounded-2xl border border-border bg-card p-6">
+            <h2 className="text-[13px] font-semibold uppercase tracking-wide text-[#0C2AFE]">
               Tecnologias usadas
             </h2>
             <div className="mt-4 flex flex-wrap gap-2">
               {project.tags.map(tag => (
                 <span
                   key={tag}
-                  className="border border-border bg-secondary px-2 py-1 font-mono text-xs text-secondary-foreground"
+                  className="rounded-full border border-border px-3 py-1 text-[12px] font-medium text-muted-foreground"
                 >
                   {tag}
                 </span>
@@ -129,8 +122,8 @@ export default function ProjectDetail({
             </div>
           </div>
 
-          <div className="border border-border bg-card/50 p-5">
-            <h2 className="font-mono text-sm font-bold uppercase tracking-normal text-primary">
+          <div className="rounded-2xl border border-border bg-card p-6">
+            <h2 className="text-[13px] font-semibold uppercase tracking-wide text-[#0C2AFE]">
               Links
             </h2>
             <div className="mt-4 grid gap-3">
@@ -138,7 +131,7 @@ export default function ProjectDetail({
                 href={project.liveUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center justify-between border border-border px-3 py-3 text-sm transition-colors hover:border-primary hover:text-primary"
+                className="flex items-center justify-between rounded-xl border border-border px-4 py-3 text-sm transition-colors hover:border-[#0C2AFE] hover:text-[#0C2AFE]"
               >
                 Projeto online <ExternalLink className="h-4 w-4" />
               </a>
@@ -146,34 +139,31 @@ export default function ProjectDetail({
                 href={project.repoUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center justify-between border border-border px-3 py-3 text-sm transition-colors hover:border-primary hover:text-primary"
+                className="flex items-center justify-between rounded-xl border border-border px-4 py-3 text-sm transition-colors hover:border-[#0C2AFE] hover:text-[#0C2AFE]"
               >
                 Repositório <Github className="h-4 w-4" />
               </a>
             </div>
           </div>
 
-          <div className="border border-primary/30 bg-primary/10 p-5">
-            <h2 className="font-mono text-lg font-bold text-primary">
-              Quer algo parecido?
-            </h2>
-            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+          <div className="rounded-2xl bg-[var(--brand-ink)] p-6 text-white">
+            <h2 className="text-[17px] font-semibold">Quer algo parecido?</h2>
+            <p className="mt-3 text-sm leading-relaxed text-white/70">
               Me chame para transformar um problema parecido em uma solução web
               com painel, automação ou página de conversão.
             </p>
-            <Button
-              asChild
-              className="mt-5 w-full rounded-none bg-primary font-mono text-primary-foreground hover:bg-primary/90"
-            >
-              <a href={WHATSAPP_BUDGET_URL} target="_blank" rel="noreferrer">
-                Pedir orçamento
-                <ArrowRight className="h-4 w-4" />
-              </a>
-            </Button>
+            <RollButton
+              className="mt-5 w-full"
+              variant="white"
+              size="sm"
+              label="Pedir orçamento"
+              href={WHATSAPP_BUDGET_URL}
+              external
+            />
           </div>
         </aside>
 
-        <div className="space-y-6">
+        <div className="space-y-5">
           {[
             ["Nome do projeto", project.title],
             ["Problema do cliente", caseStudy.clientProblem],
@@ -182,9 +172,9 @@ export default function ProjectDetail({
           ].map(([label, value]) => (
             <article
               key={label}
-              className="border border-border bg-card/50 p-5 transition-colors hover:border-primary/30"
+              className="rounded-2xl border border-border bg-card p-6 transition-colors hover:border-[#0C2AFE]/40"
             >
-              <h2 className="font-mono text-sm font-bold uppercase tracking-normal text-primary">
+              <h2 className="text-[13px] font-semibold uppercase tracking-wide text-[#0C2AFE]">
                 {label}
               </h2>
               <p className="mt-3 leading-relaxed text-muted-foreground">
@@ -197,7 +187,9 @@ export default function ProjectDetail({
 
       <section className="space-y-5">
         <div>
-          <h2 className="text-2xl font-bold">Imagens do projeto</h2>
+          <h2 className="text-2xl font-medium tracking-[-0.02em]">
+            Imagens do projeto
+          </h2>
           <p className="mt-2 text-sm text-muted-foreground">
             Espaço preparado para ampliar o case com mais telas quando houver
             novas capturas.
@@ -208,7 +200,7 @@ export default function ProjectDetail({
           {caseStudy.images.map(image => (
             <figure
               key={image.src}
-              className="overflow-hidden border border-border bg-card/50"
+              className="overflow-hidden rounded-2xl border border-border bg-card"
             >
               <img
                 src={image.src}

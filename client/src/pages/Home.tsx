@@ -1,13 +1,10 @@
-import { Button } from "@/components/ui/button";
-import {
-  ArrowRight,
-  Calendar,
-  Download,
-  MessageCircle,
-  Play,
-} from "lucide-react";
+import { Calendar, MessageCircle } from "lucide-react";
 import { WHATSAPP_BUDGET_URL } from "@/const";
+import { useTheme } from "@/contexts/ThemeContext";
 import ProjectsCategoryPage from "@/components/ProjectsCategoryPage";
+import HeroShader from "@/components/HeroShader";
+import RollButton from "@/components/RollButton";
+import SectionBadge from "@/components/SectionBadge";
 import { cn } from "@/lib/utils";
 
 const heroMarquee = [
@@ -115,86 +112,103 @@ const contactHighlights = [
   },
 ];
 
+function StarburstIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 100 100"
+      className={className}
+    >
+      <path d="m19.6 66.5 19.7-11 .3-1-.3-.5h-1l-3.3-.2-11.2-.3L14 53l-9.5-.5-2.4-.5L0 49l.2-1.5 2-1.3 2.9.2 6.3.5 9.5.6 6.9.4L38 49.1h1.6l.2-.7-.5-.4-.4-.4L29 41l-10.6-7-5.6-4.1-3-2-1.5-2-.6-4.2 2.7-3 3.7.3.9.2 3.7 2.9 8 6.1L37 36l1.5 1.2.6-.4.1-.3-.7-1.1L33 25l-6-10.4-2.7-4.3-.7-2.6c-.3-1-.4-2-.4-3l3-4.2L28 0l4.2.6L33.8 2l2.6 6 4.1 9.3L47 29.9l2 3.8 1 3.4.3 1h.7v-.5l.5-7.2 1-8.7 1-11.2.3-3.2 1.6-3.8 3-2L61 2.6l2 2.9-.3 1.8-1.1 7.7L59 27.1l-1.5 8.2h.9l1-1.1 4.1-5.4 6.9-8.6 3-3.5L77 13l2.3-1.8h4.3l3.1 4.7-1.4 4.9-4.4 5.6-3.7 4.7-5.3 7.1-3.2 5.7.3.4h.7l12-2.6 6.4-1.1 7.6-1.3 3.5 1.6.4 1.6-1.4 3.4-8.2 2-9.6 2-14.3 3.3-.2.1.2.3 6.4.6 2.8.2h6.8l12.6 1 3.3 2 1.9 2.7-.3 2-5.1 2.6-6.8-1.6-16-3.8-5.4-1.3h-.8v.4l4.6 4.5 8.3 7.5L89 80.1l.5 2.4-1.3 2-1.4-.2-9.2-7-3.6-3-8-6.8h-.5v.7l1.8 2.7 9.8 14.7.5 4.5-.7 1.4-2.6 1-2.7-.6-5.8-8-6-9-4.7-8.2-.5.4-2.9 30.2-1.3 1.5-3 1.2-2.5-2-1.4-3 1.4-6.2 1.6-8 1.3-6.4 1.2-7.9.7-2.6v-.2H49L43 72l-9 12.3-7.2 7.6-1.7.7-3-1.5.3-2.8L24 86l10-12.8 6-7.9 4-4.6-.1-.5h-.3L17.2 77.4l-4.7.6-2-2 .2-3 1-1 8-5.5Z" />
+    </svg>
+  );
+}
+
 export default function Home() {
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
+
   return (
     <div className="flex flex-col">
       {/* HERO */}
       <section
         id="inicio"
-        className="relative left-1/2 flex w-screen -translate-x-1/2 overflow-hidden bg-[#020613] text-center text-white"
+        className="relative flex min-h-svh flex-col overflow-hidden bg-[#EFEFEF] dark:bg-[#05080F]"
       >
-        <div
-          className="absolute inset-0 bg-[radial-gradient(circle_at_50%_32%,rgba(12,42,254,0.2),transparent_34%),linear-gradient(180deg,#020613_0%,#040a24_52%,#020613_100%)]"
-          aria-hidden="true"
-        />
+        <HeroShader isDark={isDark} />
 
-        <div className="relative z-10 mx-auto flex w-full max-w-[78rem] flex-col items-center px-5 pt-14 pb-2 md:px-10 md:pt-20 md:pb-4">
-          <div className="flex flex-col items-center">
-            <h1 className="hero-headline max-w-[75rem] text-[1.7rem] text-white sm:text-[2.2rem] md:text-[2.8rem] lg:text-[3.4rem] xl:text-[3.9rem]">
-              <span>
-                Soluções digitais que vendem, organizam e economizam tempo.
+        <div className="flex-1" />
+
+        <div className="relative z-20 mx-auto w-full max-w-[1440px] px-5 pb-14 sm:px-8 sm:pb-16 lg:px-12 lg:pb-20">
+          <p className="mb-5 text-[13px] tracking-wide text-foreground sm:mb-8 sm:text-[14px]">
+            MF Services — Matheus Frota
+          </p>
+
+          <h1 className="text-[clamp(1.75rem,7vw,4.2rem)] font-medium leading-[1.08] tracking-[-0.03em] text-foreground sm:text-[clamp(2.5rem,5vw,4.2rem)]">
+            Soluções digitais que vendem,
+            <br className="hidden sm:block" />
+            <span className="sm:hidden"> </span>
+            organizam e economizam tempo.
+          </h1>
+
+          <p className="mt-5 max-w-xl text-[14px] leading-relaxed text-muted-foreground sm:text-[15px]">
+            Backend, dados, interfaces e automações para transformar ideias em
+            produtos digitais claros, rápidos e fáceis de usar.
+          </p>
+
+          <div className="mt-8 flex flex-col items-start gap-4 sm:mt-12 sm:flex-row sm:items-center sm:gap-5">
+            <RollButton
+              variant="blue"
+              size="md"
+              label="Solicitar orçamento"
+              href={WHATSAPP_BUDGET_URL}
+              external
+            />
+            <RollButton
+              variant="white"
+              size="md"
+              label="Ver projetos"
+              href="#projetos"
+            />
+            <div className="inline-flex w-fit items-center gap-2 rounded-[4px] bg-white px-3 py-2 shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-shadow duration-300 hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)]">
+              <StarburstIcon className="h-5 w-5 fill-current text-[#0C2AFE] sm:h-6 sm:w-6" />
+              <span className="text-[13px] font-medium text-gray-900 sm:text-[14px]">
+                Matheus Frota
               </span>
-            </h1>
-
-            <p className="mx-auto mt-5 max-w-xl break-words text-sm leading-relaxed text-white/55 md:text-base">
-              Backend, dados, interfaces e automações para transformar ideias em
-              produtos digitais claros, rápidos e fáceis de usar.
-            </p>
-
-            <div className="mt-7 flex w-full flex-col items-center justify-center gap-3 sm:w-auto sm:flex-row md:gap-4">
-              <Button
-                asChild
-                size="lg"
-                className="nike-pill h-12 w-full min-w-0 bg-[#0C2AFE] px-7 text-sm font-semibold text-white shadow-none hover:bg-[#001fdd] sm:w-auto sm:min-w-[220px] md:h-14 md:min-w-[246px] md:px-8 md:text-base"
-              >
-                <a href={WHATSAPP_BUDGET_URL} target="_blank" rel="noreferrer">
-                  Solicitar orçamento <ArrowRight className="ml-2 h-4 w-4" />
-                </a>
-              </Button>
-
-              <Button
-                asChild
-                variant="outline"
-                size="lg"
-                className="nike-pill h-12 w-full min-w-0 border-2 border-[#313852] bg-transparent px-7 text-sm font-semibold text-white shadow-none hover:border-[#4a5478] hover:bg-white/[0.04] hover:text-white sm:w-auto sm:min-w-[220px] md:h-14 md:min-w-[246px] md:px-8 md:text-base"
-              >
-                <a href="#projetos">
-                  <Play className="mr-2 h-4 w-4 fill-current" /> Ver projetos
-                </a>
-              </Button>
+              <span className="rounded bg-[var(--brand-ink)] px-1.5 py-0.5 text-[10px] text-white sm:px-2 sm:text-[11px]">
+                Fullstack
+              </span>
             </div>
           </div>
 
-          <div className="mt-16 md:mt-20">
-            <p className="mb-2 text-[0.6rem] font-semibold text-white/45 md:text-xs">
+          <div className="mt-12 sm:mt-16">
+            <p className="mb-2 text-[11px] font-semibold tracking-wide text-muted-foreground">
               Stack usada nos principais projetos do portfólio
             </p>
-            <div className="mx-auto max-w-5xl overflow-hidden pt-4">
-              <div className="hero-marquee-mask overflow-hidden">
-                <div className="hero-marquee-track">
-                  {[...heroMarquee, ...heroMarquee].map((tech, index) => (
-                    <div
-                      key={`${tech.name}-${index}`}
-                      className="flex min-w-40 items-center justify-center px-8 md:min-w-48 md:px-10"
-                      aria-label={tech.name}
-                    >
-                      <img
-                        src={tech.logo}
-                        alt={tech.name}
-                        className="h-9 w-24 object-contain opacity-90 transition-opacity hover:opacity-100 md:h-10 md:w-28"
-                        draggable={false}
-                        loading="lazy"
-                      />
-                    </div>
-                  ))}
-                </div>
+            <div className="hero-marquee-mask max-w-4xl overflow-hidden">
+              <div className="hero-marquee-track">
+                {[...heroMarquee, ...heroMarquee].map((tech, index) => (
+                  <div
+                    key={`${tech.name}-${index}`}
+                    className="flex min-w-32 items-center justify-center px-6 md:min-w-40"
+                    aria-label={tech.name}
+                  >
+                    <img
+                      src={tech.logo}
+                      alt={tech.name}
+                      className="h-7 w-20 object-contain opacity-80 transition-opacity hover:opacity-100 md:h-8 md:w-24"
+                      draggable={false}
+                      loading="lazy"
+                    />
+                  </div>
+                ))}
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* PROJETOS — modern showcase cards */}
+      {/* PROJETOS */}
       <section id="projetos" className="scroll-mt-20">
         <ProjectsCategoryPage />
       </section>
@@ -202,272 +216,251 @@ export default function Home() {
       {/* HABILIDADES */}
       <section
         id="habilidades"
-        className="space-y-10 py-20 md:py-28 scroll-mt-20"
+        className="scroll-mt-20 bg-background pb-12 pt-16 sm:pb-16 sm:pt-20 lg:pb-24 lg:pt-32"
       >
-        <div className="space-y-4">
-          <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-[var(--brand-green)]">
-            <span className="h-2 w-2 rounded-full bg-[var(--brand-blue)]" />
-            02 · Habilidades
-          </span>
-          <h2 className="font-display text-4xl md:text-6xl tracking-tight">
+        <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
+          <SectionBadge number="2" label="Habilidades" />
+
+          <h2 className="text-[clamp(1.5rem,4vw,3.2rem)] font-medium leading-[1.12] tracking-[-0.02em] text-foreground">
             Stack & ferramentas
           </h2>
-          <p className="text-muted-foreground max-w-2xl">
+          <p className="mt-4 max-w-2xl text-[14px] leading-relaxed text-muted-foreground sm:text-[15px]">
             Visão geral das minhas habilidades técnicas com foco em backend e
             dados.
           </p>
-        </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {skillCategories.map((category, idx) => (
-            <div
-              key={category.title}
-              className="space-y-6 rounded-2xl border border-border bg-card p-6 shadow-[0_8px_30px_rgba(13,30,80,0.06)]"
-            >
-              <h3 className="flex items-center gap-2 border-b border-border pb-3 font-display text-2xl tracking-tight">
-                <span
-                  className={cn(
-                    "h-3 w-3 inline-block",
-                    idx % 2 === 0
-                      ? "bg-[var(--brand-blue)]"
-                      : "bg-[var(--brand-green)]"
-                  )}
-                />
-                {category.title}
-              </h3>
-
-              <div className="flex flex-wrap gap-2">
-                {category.skills.map(skill => (
-                  <span
-                    key={skill.name}
-                    className="inline-flex items-center gap-2 rounded-full border-2 border-foreground/15 bg-secondary/50 px-4 py-2 text-xs font-bold uppercase tracking-wide text-foreground transition-all hover:border-[var(--brand-blue)] hover:bg-card hover:text-[var(--brand-blue)]"
-                  >
-                    {skill.name}
-                    <span className="text-[10px] font-bold text-muted-foreground">
-                      {skill.level}%
-                    </span>
-                  </span>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="space-y-6 pt-8">
-          <h3 className="flex items-center gap-2 border-b border-border pb-3 font-display text-2xl tracking-tight">
-            <span className="h-3 w-3 inline-block bg-[var(--brand-green)]" />
-            Formação & Método
-          </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {methodItems.map((item, idx) => (
+          <div className="mt-10 grid gap-5 sm:mt-14 md:grid-cols-2 lg:grid-cols-3">
+            {skillCategories.map((category, idx) => (
               <div
-                key={item.title}
-                className={cn(
-                  "rounded-2xl border border-border p-5 transition-all hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(13,30,80,0.08)]",
-                  idx % 2 === 0
-                    ? "bg-card"
-                    : "bg-[var(--brand-ink)] text-white"
-                )}
+                key={category.title}
+                className="rounded-2xl border border-border bg-card p-6 sm:p-7"
               >
-                <h4
-                  className={cn(
-                    "mb-2 font-display text-xl tracking-tight",
-                    idx % 2 === 0
-                      ? "text-[var(--brand-blue)]"
-                      : "text-[var(--brand-green)]"
-                  )}
-                >
-                  {item.title}
-                </h4>
-                <p
-                  className={cn(
-                    "text-sm",
-                    idx % 2 === 0
-                      ? "text-muted-foreground"
-                      : "text-white/75"
-                  )}
-                >
-                  {item.desc}
-                </p>
+                <h3 className="mb-5 flex items-center gap-2.5 text-[15px] font-semibold text-foreground">
+                  <span
+                    className={cn(
+                      "h-2 w-2 rounded-full",
+                      idx % 2 === 0 ? "bg-[#0C2AFE]" : "bg-[#7C8CFF]"
+                    )}
+                  />
+                  {category.title}
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {category.skills.map(skill => (
+                    <span
+                      key={skill.name}
+                      className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-3.5 py-1.5 text-[12px] font-medium text-foreground transition-colors duration-300 hover:border-[#0C2AFE] hover:text-[#0C2AFE]"
+                    >
+                      {skill.name}
+                      <span className="text-[10px] text-muted-foreground">
+                        {skill.level}%
+                      </span>
+                    </span>
+                  ))}
+                </div>
               </div>
             ))}
+          </div>
+
+          <div className="mt-12 sm:mt-16">
+            <h3 className="mb-6 text-[clamp(1.25rem,2.5vw,1.9rem)] font-medium tracking-[-0.02em] text-foreground">
+              Formação & Método
+            </h3>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4">
+              {methodItems.map((item, idx) => (
+                <div
+                  key={item.title}
+                  className={cn(
+                    "rounded-2xl p-5 transition-transform duration-300 hover:-translate-y-1 sm:p-6",
+                    idx % 2 === 0
+                      ? "border border-border bg-card"
+                      : "bg-[var(--brand-ink)] text-white"
+                  )}
+                >
+                  <h4
+                    className={cn(
+                      "mb-2 text-[15px] font-semibold",
+                      idx % 2 === 0 ? "text-foreground" : "text-white"
+                    )}
+                  >
+                    {item.title}
+                  </h4>
+                  <p
+                    className={cn(
+                      "text-[13px] leading-relaxed",
+                      idx % 2 === 0 ? "text-muted-foreground" : "text-white/70"
+                    )}
+                  >
+                    {item.desc}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
       {/* BLOG */}
-      <section id="blog" className="space-y-10 py-20 md:py-28 scroll-mt-20">
-        <div className="space-y-4">
-          <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-[var(--brand-blue)]">
-            <span className="h-2 w-2 rounded-full bg-[var(--brand-green)]" />
-            03 · Blog
-          </span>
-          <h2 className="font-display text-4xl md:text-6xl tracking-tight">
+      <section
+        id="blog"
+        className="scroll-mt-20 bg-muted py-16 sm:py-20 lg:py-28"
+      >
+        <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
+          <SectionBadge number="3" label="Blog" />
+
+          <h2 className="text-[clamp(1.5rem,4vw,3.2rem)] font-medium leading-[1.12] tracking-[-0.02em] text-foreground">
             Notas & ideias
           </h2>
-          <p className="text-muted-foreground max-w-2xl">
+          <p className="mt-4 max-w-2xl text-[14px] leading-relaxed text-muted-foreground sm:text-[15px]">
             Notas sobre backend, dados e construção de produtos.
           </p>
-        </div>
 
-        <div className="grid md:grid-cols-3 gap-6">
-          {posts.map(post => (
-            <article
-              key={post.id}
-              className="group flex flex-col gap-4 overflow-hidden rounded-2xl border border-border bg-card p-6 transition-all duration-300 hover:-translate-y-1 hover:border-[var(--brand-blue)]/60 hover:shadow-[0_18px_40px_rgba(13,30,80,0.1)]"
-            >
-              <div className="flex items-center gap-4 text-xs font-bold uppercase tracking-wide text-muted-foreground">
-                <span className="flex items-center gap-1">
-                  <Calendar className="w-3 h-3" /> {post.date}
+          <div className="mt-10 grid gap-5 sm:mt-14 md:grid-cols-3 lg:gap-6">
+            {posts.map(post => (
+              <article
+                key={post.id}
+                className="group flex flex-col gap-4 rounded-2xl border border-border bg-card p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(13,30,80,0.1)] sm:p-7"
+              >
+                <span className="flex items-center gap-1.5 text-[12px] text-muted-foreground">
+                  <Calendar size={13} /> {post.date}
                 </span>
-              </div>
 
-              <h3 className="font-display text-2xl tracking-tight leading-tight transition-colors group-hover:text-[var(--brand-blue)]">
-                {post.title}
-              </h3>
+                <h3 className="text-[18px] font-semibold leading-snug tracking-[-0.01em] text-foreground transition-colors duration-300 group-hover:text-[#0C2AFE] sm:text-[19px]">
+                  {post.title}
+                </h3>
 
-              <p className="text-sm leading-relaxed text-muted-foreground flex-1">
-                {post.excerpt}
-              </p>
+                <p className="flex-1 text-[13px] leading-relaxed text-muted-foreground sm:text-[14px]">
+                  {post.excerpt}
+                </p>
 
-              <div className="flex flex-wrap gap-2">
-                {post.tags.map((tag, idx) => (
-                  <span
-                    key={tag}
-                    className={cn(
-                      "rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wide",
-                      idx % 2 === 0
-                        ? "bg-[var(--brand-blue)]/10 text-[var(--brand-blue)]"
-                        : "bg-[var(--brand-green)]/15 text-[var(--brand-green-dark)]"
-                    )}
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
+                <div className="flex flex-wrap gap-1.5">
+                  {post.tags.map(tag => (
+                    <span
+                      key={tag}
+                      className="rounded-full border border-border px-2.5 py-1 text-[11px] font-medium text-muted-foreground"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
 
-              <span className="inline-flex w-fit items-center gap-2 rounded-full bg-[var(--brand-ink)] px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-white">
-                Em breve
-              </span>
-            </article>
-          ))}
+                <span className="w-fit rounded-full bg-[var(--brand-ink)] px-3 py-1 text-[11px] font-medium text-white dark:bg-white dark:text-[var(--brand-ink)]">
+                  Em breve
+                </span>
+              </article>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* CONTATO */}
-      <section id="contato" className="py-20 md:py-28 scroll-mt-20">
-        <div className="space-y-4 mb-12">
-          <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-[var(--brand-green)]">
-            <span className="h-2 w-2 rounded-full bg-[var(--brand-blue)]" />
-            04 · Contato
-          </span>
-          <h2 className="font-display text-4xl md:text-6xl tracking-tight">
+      <section
+        id="contato"
+        className="scroll-mt-20 bg-background py-16 sm:py-20 lg:py-28"
+      >
+        <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
+          <SectionBadge number="4" label="Contato" />
+
+          <h2 className="text-[clamp(1.5rem,4vw,3.2rem)] font-medium leading-[1.12] tracking-[-0.02em] text-foreground">
             Vamos construir juntos.
           </h2>
-          <p className="text-muted-foreground max-w-2xl">
+          <p className="mt-4 max-w-2xl text-[14px] leading-relaxed text-muted-foreground sm:text-[15px]">
             Tem um projeto em mente ou quer conversar? Estou aberto a novas
             oportunidades.
           </p>
-        </div>
 
-        <div className="grid lg:grid-cols-[1.2fr_0.8fr] gap-8 items-start">
-          <div className="relative overflow-hidden rounded-2xl bg-[var(--brand-ink)] p-8 md:p-12 text-white">
-            <div className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-[var(--brand-blue)]/40 blur-3xl" />
-            <div className="absolute -left-20 -bottom-20 h-56 w-56 rounded-full bg-[var(--brand-green)]/30 blur-3xl" />
+          <div className="mt-10 grid items-start gap-6 sm:mt-14 lg:grid-cols-[1.2fr_0.8fr] lg:gap-8">
+            <div className="relative overflow-hidden rounded-2xl bg-[var(--brand-ink)] p-7 text-white sm:rounded-[2rem] sm:p-10 lg:p-12">
+              <div className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-[#0C2AFE]/40 blur-3xl" />
+              <div className="absolute -bottom-20 -left-20 h-56 w-56 rounded-full bg-[#5B7CFF]/20 blur-3xl" />
 
-            <div className="relative space-y-8">
-              <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-bold uppercase tracking-wide text-[var(--brand-green)]">
-                <span className="h-2 w-2 rounded-full bg-[var(--brand-green)]" />
-                atendimento direto
-              </div>
+              <div className="relative space-y-7">
+                <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3.5 py-1.5 text-[12px] font-medium text-white/80">
+                  <span className="h-2 w-2 rounded-full bg-[#7C8CFF]" />
+                  Atendimento direto
+                </span>
 
-              <div className="space-y-4">
-                <h3 className="max-w-2xl font-display text-4xl leading-[0.95] tracking-tight md:text-6xl">
-                  Vamos conversar pelo{" "}
-                  <span className="text-[var(--brand-green)]">WhatsApp</span>.
-                </h3>
-                <p className="max-w-xl leading-relaxed text-white/70">
-                  Clique no botão abaixo para abrir uma conversa com a mensagem
-                  de orçamento já preenchida.
-                </p>
-              </div>
+                <div className="space-y-4">
+                  <h3 className="max-w-2xl text-[clamp(1.6rem,4vw,3rem)] font-medium leading-[1.1] tracking-[-0.02em]">
+                    Vamos conversar pelo{" "}
+                    <span className="text-[#7C8CFF]">WhatsApp</span>.
+                  </h3>
+                  <p className="max-w-xl text-[14px] leading-relaxed text-white/65 sm:text-[15px]">
+                    Clique no botão abaixo para abrir uma conversa com a
+                    mensagem de orçamento já preenchida.
+                  </p>
+                </div>
 
-              <Button
-                asChild
-                size="lg"
-                className="nike-pill h-12 w-full bg-[var(--brand-green)] px-7 text-sm font-bold uppercase tracking-wide text-[var(--brand-ink)] hover:bg-white sm:w-auto"
-              >
-                <a href={WHATSAPP_BUDGET_URL} target="_blank" rel="noreferrer">
-                  Enviar mensagem <MessageCircle className="w-4 h-4" />
-                </a>
-              </Button>
+                <RollButton
+                  variant="white"
+                  size="md"
+                  label="Enviar mensagem"
+                  href={WHATSAPP_BUDGET_URL}
+                  external
+                />
 
-              <div className="grid gap-4 pt-2 sm:grid-cols-3">
-                {contactHighlights.map((item, index) => (
-                  <div
-                    key={item.title}
-                    className="group relative min-h-36 rounded-xl border border-white/10 bg-white/[0.04] px-4 py-5 transition-colors hover:border-[var(--brand-green)]/70 hover:bg-white/[0.07]"
-                  >
-                    <span className="text-xs font-bold uppercase tracking-wide text-[var(--brand-blue)]">
-                      0{index + 1}
-                    </span>
-                    <h4 className="mt-3 font-display text-xl tracking-tight text-white transition-colors group-hover:text-[var(--brand-green)]">
-                      {item.title}
-                    </h4>
-                    <p className="mt-3 text-sm leading-relaxed text-white/60">
-                      {item.description}
-                    </p>
-                  </div>
-                ))}
+                <div className="grid gap-4 pt-2 sm:grid-cols-3">
+                  {contactHighlights.map((item, index) => (
+                    <div
+                      key={item.title}
+                      className="rounded-xl border border-white/10 bg-white/[0.04] px-4 py-5 transition-colors duration-300 hover:border-[#7C8CFF]/60 hover:bg-white/[0.07]"
+                    >
+                      <span className="text-[11px] font-semibold text-[#7C8CFF]">
+                        0{index + 1}
+                      </span>
+                      <h4 className="mt-3 text-[15px] font-semibold text-white">
+                        {item.title}
+                      </h4>
+                      <p className="mt-2 text-[13px] leading-relaxed text-white/60">
+                        {item.description}
+                      </p>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
 
-          <aside className="space-y-6 lg:pl-4">
-            <div className="rounded-2xl border border-border bg-card p-6 shadow-[0_8px_30px_rgba(13,30,80,0.06)]">
-              <h3 className="font-display text-2xl tracking-tight">
-                Informações de contato
-              </h3>
-              <div className="mt-5 space-y-4">
-                <div className="flex items-start gap-4">
-                  <div className="rounded-full bg-[var(--brand-green)]/15 p-3 text-[var(--brand-green-dark)]">
-                    <MessageCircle className="w-5 h-5" />
+            <aside className="space-y-5">
+              <div className="rounded-2xl border border-border bg-card p-6 sm:p-7">
+                <h3 className="text-[17px] font-semibold text-foreground">
+                  Informações de contato
+                </h3>
+                <div className="mt-5 flex items-start gap-4">
+                  <div className="rounded-full bg-[#0C2AFE]/10 p-3 text-[#0C2AFE] dark:text-[#7C8CFF]">
+                    <MessageCircle className="h-5 w-5" />
                   </div>
                   <div>
-                    <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
+                    <p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
                       WhatsApp
                     </p>
                     <a
                       href={WHATSAPP_BUDGET_URL}
                       target="_blank"
                       rel="noreferrer"
-                      className="font-bold text-foreground transition-colors hover:text-[var(--brand-blue)]"
+                      className="text-[15px] font-semibold text-foreground transition-colors hover:text-[#0C2AFE]"
                     >
                       (85) 99637-0080
                     </a>
                   </div>
                 </div>
               </div>
-            </div>
 
-            <div className="rounded-2xl border-2 border-[var(--brand-blue)] bg-[var(--brand-blue)] p-6 text-white">
-              <h4 className="font-display text-2xl tracking-tight">
-                Baixar currículo
-              </h4>
-              <p className="mt-2 text-sm text-white/80">
-                Um resumo da minha experiência, formação e habilidades técnicas.
-              </p>
-              <Button
-                asChild
-                variant="outline"
-                className="nike-pill mt-5 h-11 w-full border-2 border-white bg-transparent px-6 text-sm font-bold uppercase tracking-wide text-white hover:bg-white hover:text-[var(--brand-blue)]"
-              >
-                <a href="/curriculo.pdf" download="Curriculo-Matheus-Frota.pdf">
-                  Baixar PDF <Download className="w-4 h-4" />
-                </a>
-              </Button>
-            </div>
-          </aside>
+              <div className="rounded-2xl bg-[#0C2AFE] p-6 text-white sm:p-7">
+                <h4 className="text-[17px] font-semibold">Baixar currículo</h4>
+                <p className="mt-2 text-[13px] leading-relaxed text-white/75">
+                  Um resumo da minha experiência, formação e habilidades
+                  técnicas.
+                </p>
+                <RollButton
+                  className="mt-5"
+                  variant="white"
+                  size="sm"
+                  label="Baixar PDF"
+                  href="/curriculo.pdf"
+                  download="Curriculo-Matheus-Frota.pdf"
+                />
+              </div>
+            </aside>
+          </div>
         </div>
       </section>
     </div>

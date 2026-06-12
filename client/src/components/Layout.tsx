@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import {
-  ArrowRight,
+  Clock,
   Github,
   Instagram,
   Linkedin,
-  MessageCircle,
   Menu,
+  MessageCircle,
   Moon,
   Sun,
   X,
@@ -14,6 +14,7 @@ import { useLocation } from "wouter";
 import { cn } from "@/lib/utils";
 import { WHATSAPP_BUDGET_URL } from "@/const";
 import { useTheme } from "@/contexts/ThemeContext";
+import RollButton from "@/components/RollButton";
 
 const navItems = [
   { label: "Início", id: "inicio" },
@@ -23,14 +24,47 @@ const navItems = [
   { label: "Contato", id: "contato" },
 ];
 
+const socials = [
+  { href: "https://github.com/mhrzfrota", label: "GitHub", Icon: Github },
+  {
+    href: "https://www.linkedin.com/in/matheusfrt",
+    label: "LinkedIn",
+    Icon: Linkedin,
+  },
+  {
+    href: "https://www.instagram.com/emefeservices",
+    label: "Instagram",
+    Icon: Instagram,
+  },
+  { href: WHATSAPP_BUDGET_URL, label: "WhatsApp", Icon: MessageCircle },
+];
+
+const timeFormatter = new Intl.DateTimeFormat("pt-BR", {
+  hour: "2-digit",
+  minute: "2-digit",
+  timeZone: "America/Fortaleza",
+});
+
+function useFortalezaTime() {
+  const [time, setTime] = useState(() => timeFormatter.format(new Date()));
+
+  useEffect(() => {
+    const id = window.setInterval(() => {
+      setTime(timeFormatter.format(new Date()));
+    }, 1000);
+    return () => window.clearInterval(id);
+  }, []);
+
+  return time;
+}
+
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [activeSection, setActiveSection] = useState("inicio");
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const [location, setLocation] = useLocation();
   const { theme, toggleTheme } = useTheme();
   const isDark = theme === "dark";
-  const topbarIsLight = isDark;
+  const time = useFortalezaTime();
 
   useEffect(() => {
     const sections = navItems
@@ -52,17 +86,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     return () => observer.disconnect();
   }, [location]);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
-
-    handleScroll();
-    window.addEventListener("scroll", handleScroll, { passive: true });
-
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   const handleNavClick = (id: string) => {
     setMobileOpen(false);
     const el = document.getElementById(id);
@@ -82,285 +105,208 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground font-sans selection:bg-[var(--brand-blue)]/15 selection:text-[var(--brand-blue)]">
-      {/* Reference-style top navbar */}
-      <header
-        className={cn(
-          "fixed inset-x-0 top-0 z-50 border-b transition-all duration-300",
-          topbarIsLight
-            ? "border-slate-200 bg-white text-slate-950 shadow-[0_1px_0_rgba(15,23,42,0.04)]"
-            : "border-white/10 bg-[#020613] text-white shadow-[0_1px_0_rgba(255,255,255,0.04)]",
-          scrolled && "backdrop-blur"
-        )}
-      >
-        <div className="mx-auto flex h-20 max-w-[1500px] items-center justify-between px-5 md:px-10">
-          <button
-            onClick={() => handleNavClick("inicio")}
-            className="flex items-center transition-opacity hover:opacity-80"
-            aria-label="MF Services — voltar ao início"
-          >
-            <img
-              src="/logotopbar2-removebg-preview.png"
-              alt="MF Services"
-              className={cn(
-                "h-auto w-64 transition-all sm:w-72 md:w-80 lg:w-96 xl:h-20 xl:w-auto",
-                topbarIsLight ? "" : "brightness-0 invert"
-              )}
-            />
-          </button>
+    <div className="min-h-screen bg-background font-sans text-foreground selection:bg-[#0C2AFE]/15 selection:text-[#0C2AFE]">
+      {/* Navbar pill flutuante */}
+      <header className="fixed inset-x-0 top-0 z-40">
+        <div className="mx-auto max-w-[1440px] p-2 sm:p-3">
+          <div className="flex items-center justify-between rounded-full bg-card p-[5px] shadow-[0_2px_12px_rgba(2,6,19,0.08)] ring-1 ring-black/[0.04] dark:ring-white/10">
+            <div className="flex items-center gap-4">
+              <button
+                onClick={() => handleNavClick("inicio")}
+                className="flex items-center gap-2.5 transition-opacity hover:opacity-80"
+                aria-label="MF Services — voltar ao início"
+              >
+                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--brand-ink)] text-[10px] font-bold tracking-tight text-white sm:h-10 sm:w-10 sm:text-[11px] dark:bg-white dark:text-[var(--brand-ink)]">
+                  MF
+                </span>
+                <span className="hidden text-[13px] font-semibold tracking-tight sm:block md:hidden lg:block">
+                  MF Services
+                </span>
+              </button>
 
-          {/* Desktop Nav */}
-          <nav className="hidden items-center gap-8 md:flex">
-            {navItems.map(item => {
-              const isActive = activeSection === item.id;
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => handleNavClick(item.id)}
-                  className={cn(
-                    "relative py-2 text-[0.98rem] font-semibold tracking-normal transition-colors",
-                    topbarIsLight
-                      ? isActive
-                        ? "text-[#0C2AFE]"
-                        : "text-slate-700 hover:text-[#0C2AFE]"
-                      : isActive
-                        ? "text-white"
-                        : "text-white/72 hover:text-white"
-                  )}
-                >
-                  <span>{item.label}</span>
-                </button>
-              );
-            })}
-          </nav>
-
-          <div className="ml-4 hidden items-center gap-3 md:flex">
-            <button
-              type="button"
-              onClick={() => toggleTheme?.()}
-              aria-label={isDark ? "Ativar modo claro" : "Ativar modo escuro"}
-              title={isDark ? "Modo claro" : "Modo escuro"}
-              className={cn(
-                "flex h-12 w-12 items-center justify-center rounded-full transition-all duration-300 hover:-translate-y-0.5",
-                topbarIsLight
-                  ? "text-slate-700 hover:bg-slate-100 hover:text-[#0C2AFE]"
-                  : "text-white/75 hover:bg-white/10 hover:text-white"
-              )}
-            >
-              {isDark ? (
-                <Sun className="w-5 h-5" />
-              ) : (
-                <Moon className="w-5 h-5" />
-              )}
-            </button>
-            <a
-              href="https://www.instagram.com/emefeservices"
-              target="_blank"
-              rel="noreferrer"
-              className={cn(
-                "flex h-12 w-12 items-center justify-center rounded-full transition-all duration-300 hover:-translate-y-0.5",
-                topbarIsLight
-                  ? "text-slate-700 hover:bg-slate-100 hover:text-[#0C2AFE]"
-                  : "text-white/75 hover:bg-white/10 hover:text-white"
-              )}
-              aria-label="Instagram"
-            >
-              <Instagram className="w-5 h-5" />
-            </a>
-          </div>
-
-          <div className="flex items-center gap-1 md:hidden">
-            <button
-              type="button"
-              onClick={() => toggleTheme?.()}
-              aria-label={isDark ? "Ativar modo claro" : "Ativar modo escuro"}
-              className={cn(
-                "rounded-full p-3 transition-all duration-300 hover:-translate-y-0.5",
-                topbarIsLight
-                  ? "text-slate-800 hover:bg-slate-100 hover:text-[#0C2AFE]"
-                  : "text-white hover:bg-white/10 hover:text-white"
-              )}
-            >
-              {isDark ? (
-                <Sun className="w-6 h-6" />
-              ) : (
-                <Moon className="w-6 h-6" />
-              )}
-            </button>
-            <button
-              onClick={() => setMobileOpen(v => !v)}
-              className={cn(
-                "rounded-full p-2 transition-colors",
-                topbarIsLight
-                  ? "text-slate-800 hover:bg-slate-100"
-                  : "text-white hover:bg-white/10"
-              )}
-              aria-label="Abrir menu"
-            >
-              {mobileOpen ? (
-                <X className="w-6 h-6" />
-              ) : (
-                <Menu className="w-6 h-6" />
-              )}
-            </button>
-          </div>
-        </div>
-
-        {/* Mobile Menu Drawer */}
-        {mobileOpen && (
-          <div
-            className={cn(
-              "border-t md:hidden",
-              topbarIsLight
-                ? "border-slate-200 bg-white text-slate-950"
-                : "border-white/10 bg-[#020613] text-white"
-            )}
-          >
-            <nav className="flex flex-col p-4 gap-1">
-              {navItems.map(item => {
-                const isActive = activeSection === item.id;
-                return (
+              {/* Nav desktop */}
+              <nav className="hidden items-center gap-6 md:flex">
+                {navItems.map(item => (
                   <button
                     key={item.id}
                     onClick={() => handleNavClick(item.id)}
                     className={cn(
-                      "flex items-center gap-2 px-4 py-3 text-left text-sm font-bold uppercase tracking-tight transition-all",
-                      topbarIsLight
-                        ? isActive
-                          ? "border-l-2 border-[#0C2AFE] bg-slate-100 text-[#0C2AFE]"
-                          : "text-slate-700 hover:bg-slate-100 hover:text-slate-950"
-                        : isActive
-                          ? "border-l-2 border-[#0C2AFE] bg-white/10 text-white"
-                          : "text-white/70 hover:bg-white/10 hover:text-white"
+                      "text-[14px] transition-colors duration-300",
+                      activeSection === item.id
+                        ? "text-[#0C2AFE] dark:text-[#7C8CFF]"
+                        : "text-foreground hover:text-muted-foreground"
                     )}
                   >
-                    <span>{item.label}</span>
+                    {item.label}
                   </button>
-                );
-              })}
-              <div
-                className={cn(
-                  "mt-2 flex justify-center gap-4 border-t pt-4",
-                  topbarIsLight ? "border-slate-200" : "border-white/10"
-                )}
+                ))}
+              </nav>
+            </div>
+
+            <div className="hidden items-center gap-4 md:flex">
+              <span className="hidden text-[13px] text-muted-foreground xl:block">
+                Aberto a novos projetos
+              </span>
+              <span className="hidden items-center gap-1.5 text-[13px] text-muted-foreground lg:flex">
+                <Clock size={14} />
+                {time} em Fortaleza
+              </span>
+              <button
+                type="button"
+                onClick={() => toggleTheme?.()}
+                aria-label={isDark ? "Ativar modo claro" : "Ativar modo escuro"}
+                title={isDark ? "Modo claro" : "Modo escuro"}
+                className="flex h-9 w-9 items-center justify-center rounded-full text-muted-foreground transition-colors duration-300 hover:bg-muted hover:text-foreground"
               >
-                <a
-                  href="https://github.com/mhrzfrota"
-                  target="_blank"
-                  rel="noreferrer"
-                  className={cn(
-                    "flex h-10 w-10 items-center justify-center rounded-full transition-colors",
-                    topbarIsLight
-                      ? "text-slate-700 hover:bg-slate-100 hover:text-[#0C2AFE]"
-                      : "text-white/70 hover:bg-white/10 hover:text-white"
-                  )}
-                  aria-label="GitHub"
-                >
-                  <Github className="w-5 h-5" />
-                </a>
-                <a
-                  href="https://www.linkedin.com/in/matheusfrt"
-                  target="_blank"
-                  rel="noreferrer"
-                  className={cn(
-                    "flex h-10 w-10 items-center justify-center rounded-full transition-colors",
-                    topbarIsLight
-                      ? "text-slate-700 hover:bg-slate-100 hover:text-[#0C2AFE]"
-                      : "text-white/70 hover:bg-white/10 hover:text-white"
-                  )}
-                  aria-label="LinkedIn"
-                >
-                  <Linkedin className="w-5 h-5" />
-                </a>
-                <a
-                  href="https://www.instagram.com/emefeservices"
-                  target="_blank"
-                  rel="noreferrer"
-                  className={cn(
-                    "flex h-10 w-10 items-center justify-center rounded-full transition-colors",
-                    topbarIsLight
-                      ? "text-slate-700 hover:bg-slate-100 hover:text-[#0C2AFE]"
-                      : "text-white/70 hover:bg-white/10 hover:text-white"
-                  )}
-                  aria-label="Instagram"
-                >
-                  <Instagram className="w-5 h-5" />
-                </a>
-                <a
-                  href={WHATSAPP_BUDGET_URL}
-                  target="_blank"
-                  rel="noreferrer"
-                  className={cn(
-                    "flex h-10 w-10 items-center justify-center rounded-full transition-colors",
-                    topbarIsLight
-                      ? "text-slate-700 hover:bg-slate-100 hover:text-[#0C2AFE]"
-                      : "text-white/70 hover:bg-white/10 hover:text-white"
-                  )}
-                  aria-label="WhatsApp"
-                >
-                  <MessageCircle className="w-5 h-5" />
-                </a>
-              </div>
-            </nav>
+                {isDark ? (
+                  <Sun className="h-4 w-4" />
+                ) : (
+                  <Moon className="h-4 w-4" />
+                )}
+              </button>
+              <RollButton
+                size="sm"
+                variant="dark"
+                label="Solicitar orçamento"
+                href={WHATSAPP_BUDGET_URL}
+                external
+              />
+            </div>
+
+            {/* Ações mobile */}
+            <div className="flex items-center gap-1.5 md:hidden">
+              <button
+                type="button"
+                onClick={() => toggleTheme?.()}
+                aria-label={isDark ? "Ativar modo claro" : "Ativar modo escuro"}
+                className="flex h-9 w-9 items-center justify-center rounded-full text-muted-foreground transition-colors duration-300 hover:bg-muted hover:text-foreground"
+              >
+                {isDark ? (
+                  <Sun className="h-4 w-4" />
+                ) : (
+                  <Moon className="h-4 w-4" />
+                )}
+              </button>
+              <button
+                onClick={() => setMobileOpen(true)}
+                className="flex items-center gap-1.5 rounded-full bg-[var(--brand-ink)] px-4 py-2.5 text-[13px] font-medium text-white dark:bg-white dark:text-[var(--brand-ink)]"
+                aria-label="Abrir menu"
+              >
+                Menu <Menu size={14} />
+              </button>
+            </div>
           </div>
-        )}
+        </div>
       </header>
 
-      {/* Main Content */}
-      <main className="relative pt-20">
-        <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-12">
-          {children}
+      {/* Menu mobile — bottom sheet */}
+      <div
+        className={cn(
+          "fixed inset-0 z-50 md:hidden",
+          mobileOpen ? "" : "pointer-events-none"
+        )}
+        aria-hidden={!mobileOpen}
+      >
+        <div
+          className={cn(
+            "absolute inset-0 bg-black/60 transition-opacity duration-500",
+            mobileOpen ? "opacity-100" : "opacity-0"
+          )}
+          onClick={() => setMobileOpen(false)}
+        />
+        <div
+          className={cn(
+            "absolute inset-x-0 bottom-0 mx-3 mb-3 rounded-2xl bg-card p-5 transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]",
+            mobileOpen ? "translate-y-0" : "translate-y-[110%]"
+          )}
+        >
+          <div className="flex items-center justify-between">
+            <span className="flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-[12px] text-muted-foreground">
+              <Clock size={13} />
+              {time} em Fortaleza
+            </span>
+            <button
+              onClick={() => setMobileOpen(false)}
+              className="flex items-center gap-1.5 rounded-full bg-[var(--brand-ink)] px-4 py-2.5 text-[13px] font-medium text-white dark:bg-white dark:text-[var(--brand-ink)]"
+              aria-label="Fechar menu"
+            >
+              Fechar <X size={14} />
+            </button>
+          </div>
+
+          <nav className="mt-6 flex flex-col gap-1">
+            {navItems.map(item => (
+              <button
+                key={item.id}
+                onClick={() => handleNavClick(item.id)}
+                className={cn(
+                  "py-2 text-left text-[28px] font-medium leading-[32px] tracking-tight transition-colors",
+                  activeSection === item.id
+                    ? "text-[#0C2AFE] dark:text-[#7C8CFF]"
+                    : "text-foreground"
+                )}
+              >
+                {item.label}
+              </button>
+            ))}
+          </nav>
+
+          <div className="mt-6 flex items-center gap-2">
+            {socials.map(({ href, label, Icon }) => (
+              <a
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noreferrer"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:border-[#0C2AFE] hover:text-[#0C2AFE]"
+                aria-label={label}
+              >
+                <Icon className="h-4 w-4" />
+              </a>
+            ))}
+          </div>
+
+          <RollButton
+            className="mt-6 w-full"
+            size="md"
+            variant="blue"
+            label="Solicitar orçamento"
+            href={WHATSAPP_BUDGET_URL}
+            external
+          />
         </div>
-      </main>
+      </div>
+
+      {/* Conteúdo */}
+      <main className="relative">{children}</main>
 
       {/* Footer */}
-      <footer className="relative z-10 border-t border-border bg-secondary/40 mt-16">
-        <div className="max-w-6xl mx-auto px-6 md:px-12 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
+      <footer className="border-t border-border bg-background">
+        <div className="mx-auto flex max-w-[1440px] flex-col items-center justify-between gap-5 px-5 py-8 sm:px-8 md:flex-row lg:px-12">
+          <div className="flex items-center gap-4">
             <img
               src="/logo2-removebg-preview.png"
               alt="MF Services"
-              className="h-11 w-auto dark:brightness-0 dark:invert"
+              className="h-10 w-auto dark:brightness-0 dark:invert"
             />
-            <p className="text-xs font-bold uppercase tracking-tight text-muted-foreground">
+            <p className="text-[12px] leading-relaxed text-muted-foreground">
               © {new Date().getFullYear()} MF Services — Matheus Frota
-              <br className="hidden sm:block" />
-              Desenvolvedor de Software
+              <br className="hidden sm:block" /> Desenvolvedor de Software
             </p>
           </div>
-          <div className="flex gap-4">
-            <a
-              href="https://github.com/mhrzfrota"
-              target="_blank"
-              rel="noreferrer"
-              className="text-muted-foreground hover:text-[var(--brand-blue)] transition-colors"
-            >
-              <Github className="w-4 h-4" />
-            </a>
-            <a
-              href="https://www.linkedin.com/in/matheusfrt"
-              target="_blank"
-              rel="noreferrer"
-              className="text-muted-foreground hover:text-[var(--brand-blue)] transition-colors"
-            >
-              <Linkedin className="w-4 h-4" />
-            </a>
-            <a
-              href="https://www.instagram.com/emefeservices"
-              target="_blank"
-              rel="noreferrer"
-              className="text-muted-foreground hover:text-[var(--brand-green)] transition-colors"
-            >
-              <Instagram className="w-4 h-4" />
-            </a>
-            <a
-              href={WHATSAPP_BUDGET_URL}
-              target="_blank"
-              rel="noreferrer"
-              className="text-muted-foreground hover:text-[var(--brand-green)] transition-colors"
-            >
-              <MessageCircle className="w-4 h-4" />
-            </a>
+          <div className="flex gap-2">
+            {socials.map(({ href, label, Icon }) => (
+              <a
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noreferrer"
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:border-[#0C2AFE] hover:text-[#0C2AFE]"
+                aria-label={label}
+              >
+                <Icon className="h-4 w-4" />
+              </a>
+            ))}
           </div>
         </div>
       </footer>
