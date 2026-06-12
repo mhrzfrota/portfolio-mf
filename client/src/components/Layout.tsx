@@ -113,15 +113,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <div className="flex items-center gap-4">
               <button
                 onClick={() => handleNavClick("inicio")}
-                className="flex items-center gap-2.5 transition-opacity hover:opacity-80"
+                className="flex items-center pl-3 transition-opacity hover:opacity-80"
                 aria-label="MF Services — voltar ao início"
               >
-                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--brand-ink)] text-[10px] font-bold tracking-tight text-white sm:h-10 sm:w-10 sm:text-[11px] dark:bg-white dark:text-[var(--brand-ink)]">
-                  MF
-                </span>
-                <span className="hidden text-[13px] font-semibold tracking-tight sm:block md:hidden lg:block">
-                  MF Services
-                </span>
+                <img
+                  src="/logo-topbar.png"
+                  alt="MF Services"
+                  className="h-6 w-auto sm:h-7 dark:brightness-0 dark:invert"
+                />
               </button>
 
               {/* Nav desktop */}
