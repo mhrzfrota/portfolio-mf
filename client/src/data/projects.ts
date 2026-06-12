@@ -21,7 +21,7 @@ export type Project = {
   image: string;
   liveUrl: string;
   repoUrl: string;
-  category: "Web" | "Landing Page";
+  category: "Web" | "Landing Page" | "Plataformas";
   caseStudy?: ProjectCaseStudy;
 };
 
@@ -43,7 +43,7 @@ export const projects: Project[] = [
     image: "/images/image2.webp",
     liveUrl: "#",
     repoUrl: "https://github.com/Ambiente-MSL/clipradio",
-    category: "Web",
+    category: "Plataformas",
   },
   {
     id: 1,
@@ -55,7 +55,7 @@ export const projects: Project[] = [
     image: "/images/image1.webp",
     liveUrl: "https://monitor.mslestrategia.com.br",
     repoUrl: "https://github.com/mhrzfrota",
-    category: "Web",
+    category: "Plataformas",
     caseStudy: {
       clientProblem:
         "O cliente precisava acompanhar campanhas e perfis da Meta sem depender de consultas manuais, planilhas soltas ou leituras demoradas em diferentes telas.",
@@ -89,7 +89,7 @@ export const projects: Project[] = [
     image: "/images/imager5.webp",
     liveUrl: "https://ciceroexperience.vercel.app",
     repoUrl: "https://github.com/helionlf/ciceroExperience_api",
-    category: "Web",
+    category: "Plataformas",
   },
   {
     id: 3,
@@ -193,12 +193,14 @@ export const projects: Project[] = [
 ];
 
 const uniqueTechnologies = new Set(projects.flatMap(project => project.tags));
-const webProjects = projects.filter(project => project.category === "Web");
+const platformProjects = projects.filter(
+  project => project.category === "Plataformas"
+);
 const landingPages = projects.filter(
   project => project.category === "Landing Page"
 );
 
-export const categories = ["Todos", "Web", "Landing Page"];
+export const categories = ["Todos", "Web", "Plataformas", "Landing Page"];
 
 export const projectStats = [
   {
@@ -207,9 +209,9 @@ export const projectStats = [
     detail: "Sistemas, landing pages e vitrines digitais.",
   },
   {
-    value: String(webProjects.length).padStart(2, "0"),
-    label: "sistemas web",
-    detail: "Dashboards, e-commerce e plataformas internas.",
+    value: String(platformProjects.length).padStart(2, "0"),
+    label: "plataformas e sistemas",
+    detail: "Dashboards e sistemas internos sob medida.",
   },
   {
     value: String(landingPages.length).padStart(2, "0"),
