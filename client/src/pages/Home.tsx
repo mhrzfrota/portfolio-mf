@@ -1,4 +1,11 @@
-import { Calendar, MessageCircle } from "lucide-react";
+import {
+  Calendar,
+  Database,
+  GraduationCap,
+  MessageCircle,
+  Plug,
+  Workflow,
+} from "lucide-react";
 import { WHATSAPP_BUDGET_URL } from "@/const";
 import { useTheme } from "@/contexts/ThemeContext";
 import ProjectsCategoryPage from "@/components/ProjectsCategoryPage";
@@ -52,18 +59,22 @@ const skillCategories = [
 
 const methodItems = [
   {
+    icon: GraduationCap,
     title: "Formação",
     desc: "ADS na UNIFOR (conclusão prevista: dez/2025).",
   },
   {
+    icon: Workflow,
     title: "Metodologias Ágeis",
     desc: "Experiência com Scrum, Agile e DevOps em times colaborativos.",
   },
   {
+    icon: Plug,
     title: "Integração de APIs",
     desc: "Integro serviços externos com foco em segurança e desempenho.",
   },
   {
+    icon: Database,
     title: "Dados & Automação",
     desc: "Tratamento de dados, dashboards e rotinas automatizadas.",
   },
@@ -95,6 +106,12 @@ const posts = [
     date: "2025-10-12",
     tags: ["Dados", "APIs", "Dashboard"],
   },
+];
+
+const postCovers = [
+  "bg-gradient-to-br from-[#0C2AFE] via-[#1B3BFF] to-[#020A2E]",
+  "bg-gradient-to-br from-[#0B1020] via-[#101A3A] to-[#0C2AFE]",
+  "bg-gradient-to-br from-[#5B7CFF] via-[#2C50FF] to-[#0A1B66]",
 ];
 
 const contactHighlights = [
@@ -233,28 +250,34 @@ export default function Home() {
             {skillCategories.map((category, idx) => (
               <div
                 key={category.title}
-                className="rounded-2xl border border-border bg-card p-6 sm:p-7"
+                className="group rounded-2xl border border-border bg-card p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(13,30,80,0.08)] sm:p-7"
               >
-                <h3 className="mb-5 flex items-center gap-2.5 text-[15px] font-semibold text-foreground">
-                  <span
-                    className={cn(
-                      "h-2 w-2 rounded-full",
-                      idx % 2 === 0 ? "bg-[#0C2AFE]" : "bg-[#7C8CFF]"
-                    )}
-                  />
-                  {category.title}
-                </h3>
-                <div className="flex flex-wrap gap-2">
+                <div className="mb-6 flex items-center justify-between">
+                  <h3 className="text-[16px] font-semibold tracking-[-0.01em] text-foreground">
+                    {category.title}
+                  </h3>
+                  <span className="flex h-7 w-7 items-center justify-center rounded-full border border-border text-[11px] font-semibold text-[#0C2AFE] transition-colors duration-300 group-hover:border-[#0C2AFE] dark:text-[#7C8CFF]">
+                    0{idx + 1}
+                  </span>
+                </div>
+                <div className="space-y-4">
                   {category.skills.map(skill => (
-                    <span
-                      key={skill.name}
-                      className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-3.5 py-1.5 text-[12px] font-medium text-foreground transition-colors duration-300 hover:border-[#0C2AFE] hover:text-[#0C2AFE]"
-                    >
-                      {skill.name}
-                      <span className="text-[10px] text-muted-foreground">
-                        {skill.level}%
-                      </span>
-                    </span>
+                    <div key={skill.name}>
+                      <div className="mb-1.5 flex items-baseline justify-between">
+                        <span className="text-[13px] font-medium text-foreground">
+                          {skill.name}
+                        </span>
+                        <span className="text-[12px] text-muted-foreground">
+                          {skill.level}%
+                        </span>
+                      </div>
+                      <div className="h-1.5 overflow-hidden rounded-full bg-border/60">
+                        <div
+                          className="h-full rounded-full bg-gradient-to-r from-[#0C2AFE] to-[#5B7CFF]"
+                          style={{ width: `${skill.level}%` }}
+                        />
+                      </div>
+                    </div>
                   ))}
                 </div>
               </div>
@@ -270,12 +293,22 @@ export default function Home() {
                 <div
                   key={item.title}
                   className={cn(
-                    "rounded-2xl p-5 transition-transform duration-300 hover:-translate-y-1 sm:p-6",
+                    "rounded-2xl p-5 transition-all duration-300 hover:-translate-y-1 sm:p-6",
                     idx % 2 === 0
-                      ? "border border-border bg-card"
-                      : "bg-[var(--brand-ink)] text-white"
+                      ? "border border-border bg-card hover:shadow-[0_18px_40px_rgba(13,30,80,0.08)]"
+                      : "bg-[var(--brand-ink)] text-white hover:shadow-[0_18px_40px_rgba(2,6,19,0.3)]"
                   )}
                 >
+                  <span
+                    className={cn(
+                      "mb-4 flex h-10 w-10 items-center justify-center rounded-xl",
+                      idx % 2 === 0
+                        ? "bg-[#0C2AFE]/10 text-[#0C2AFE] dark:text-[#7C8CFF]"
+                        : "bg-white/10 text-[#7C8CFF]"
+                    )}
+                  >
+                    <item.icon className="h-5 w-5" />
+                  </span>
                   <h4
                     className={cn(
                       "mb-2 text-[15px] font-semibold",
@@ -315,37 +348,50 @@ export default function Home() {
           </p>
 
           <div className="mt-10 grid gap-5 sm:mt-14 md:grid-cols-3 lg:gap-6">
-            {posts.map(post => (
+            {posts.map((post, index) => (
               <article
                 key={post.id}
-                className="group flex flex-col gap-4 rounded-2xl border border-border bg-card p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(13,30,80,0.1)] sm:p-7"
+                className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(13,30,80,0.12)]"
               >
-                <span className="flex items-center gap-1.5 text-[12px] text-muted-foreground">
-                  <Calendar size={13} /> {post.date}
-                </span>
-
-                <h3 className="text-[18px] font-semibold leading-snug tracking-[-0.01em] text-foreground transition-colors duration-300 group-hover:text-[#0C2AFE] sm:text-[19px]">
-                  {post.title}
-                </h3>
-
-                <p className="flex-1 text-[13px] leading-relaxed text-muted-foreground sm:text-[14px]">
-                  {post.excerpt}
-                </p>
-
-                <div className="flex flex-wrap gap-1.5">
-                  {post.tags.map(tag => (
-                    <span
-                      key={tag}
-                      className="rounded-full border border-border px-2.5 py-1 text-[11px] font-medium text-muted-foreground"
-                    >
-                      {tag}
-                    </span>
-                  ))}
+                <div
+                  className={cn(
+                    "relative flex h-40 items-end justify-between overflow-hidden p-5 sm:h-44",
+                    postCovers[index % postCovers.length]
+                  )}
+                >
+                  <StarburstIcon className="absolute -right-7 -top-7 h-32 w-32 rotate-12 fill-current text-white/10 transition-transform duration-700 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:rotate-45" />
+                  <span className="relative text-[44px] font-medium leading-none tracking-[-0.02em] text-white/90">
+                    0{index + 1}
+                  </span>
+                  <span className="relative rounded-full bg-white/15 px-3 py-1 text-[11px] font-medium text-white backdrop-blur">
+                    Em breve
+                  </span>
                 </div>
 
-                <span className="w-fit rounded-full bg-[var(--brand-ink)] px-3 py-1 text-[11px] font-medium text-white dark:bg-white dark:text-[var(--brand-ink)]">
-                  Em breve
-                </span>
+                <div className="flex flex-1 flex-col gap-3 p-6 sm:p-7">
+                  <span className="flex items-center gap-1.5 text-[12px] text-muted-foreground">
+                    <Calendar size={13} /> {post.date}
+                  </span>
+
+                  <h3 className="text-[18px] font-semibold leading-snug tracking-[-0.01em] text-foreground transition-colors duration-300 group-hover:text-[#0C2AFE] sm:text-[19px]">
+                    {post.title}
+                  </h3>
+
+                  <p className="flex-1 text-[13px] leading-relaxed text-muted-foreground sm:text-[14px]">
+                    {post.excerpt}
+                  </p>
+
+                  <div className="flex flex-wrap gap-1.5">
+                    {post.tags.map(tag => (
+                      <span
+                        key={tag}
+                        className="rounded-full border border-border px-2.5 py-1 text-[11px] font-medium text-muted-foreground"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
               </article>
             ))}
           </div>

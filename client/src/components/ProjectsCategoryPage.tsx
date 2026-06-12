@@ -8,19 +8,42 @@ import {
   type Project,
 } from "@/data/projects";
 import SectionBadge from "@/components/SectionBadge";
+import RollButton from "@/components/RollButton";
 import { cn } from "@/lib/utils";
 
 const projectsByNewest = [...allProjects].reverse();
 
+const INITIAL_COUNT = 4;
+
 export default function ProjectsCategoryPage() {
   const [activeCategory, setActiveCategory] = useState("Todos");
+  const [showAll, setShowAll] = useState(false);
 
-  const visibleProjects = useMemo(() => {
+  const filteredProjects = useMemo(() => {
     if (activeCategory === "Todos") return projectsByNewest;
     return projectsByNewest.filter(
       project => project.category === activeCategory
     );
   }, [activeCategory]);
+
+  const visibleProjects = showAll
+    ? filteredProjects
+    : filteredProjects.slice(0, INITIAL_COUNT);
+  const hiddenCount = filteredProjects.length - INITIAL_COUNT;
+
+  const selectCategory = (category: string) => {
+    setActiveCategory(category);
+    setShowAll(false);
+  };
+
+  const toggleShowAll = () => {
+    if (showAll) {
+      document
+        .getElementById("projetos")
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+    setShowAll(!showAll);
+  };
 
   return (
     <div className="bg-muted pb-16 pt-16 sm:pb-20 sm:pt-20 lg:pb-28 lg:pt-28">
@@ -39,7 +62,7 @@ export default function ProjectsCategoryPage() {
                 <button
                   key={category}
                   type="button"
-                  onClick={() => setActiveCategory(category)}
+                  onClick={() => selectCategory(category)}
                   className={cn(
                     "rounded-full border px-4 py-2 text-[13px] font-medium transition-colors duration-300",
                     active
@@ -63,6 +86,19 @@ export default function ProjectsCategoryPage() {
             />
           ))}
         </div>
+
+        {hiddenCount > 0 && (
+          <div className="mt-10 flex justify-center sm:mt-14">
+            <RollButton
+              variant="dark"
+              size="md"
+              label={
+                showAll ? "Ver menos" : `Ver mais projetos (${hiddenCount})`
+              }
+              onClick={toggleShowAll}
+            />
+          </div>
+        )}
       </div>
     </div>
   );
