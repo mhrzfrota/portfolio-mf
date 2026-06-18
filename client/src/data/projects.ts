@@ -28,6 +28,7 @@ export type Project = {
 export const projects: Project[] = [
   {
     id: 4,
+    slug: "clipradio",
     title: "Clipradio",
     description:
       "Plataforma para gestão de rádios com agendamentos e gravações automatizadas, usando React/Vite no frontend e Flask no backend, com streaming HLS e transcrição de áudio por IA.",
@@ -44,33 +45,22 @@ export const projects: Project[] = [
     liveUrl: "#",
     repoUrl: "https://github.com/Ambiente-MSL/clipradio",
     category: "Plataformas",
-  },
-  {
-    id: 1,
-    slug: "dashboard-meta-analytics",
-    title: "Dashboard Meta Analytics",
-    description:
-      "Sistema de monitoramento de métricas do Facebook e Instagram, integrado à Meta Graph API e PostgreSQL, com visualização de KPIs em tempo quase real.",
-    tags: ["Python", "Flask", "React", "PostgreSQL", "Meta Graph API"],
-    image: "/images/image1.webp",
-    liveUrl: "https://monitor.mslestrategia.com.br",
-    repoUrl: "https://github.com/mhrzfrota",
-    category: "Plataformas",
     caseStudy: {
       clientProblem:
-        "O cliente precisava acompanhar campanhas e perfis da Meta sem depender de consultas manuais, planilhas soltas ou leituras demoradas em diferentes telas.",
+        "A equipe precisava monitorar e gravar transmissões de rádio de forma confiável, sem depender de captações manuais e com acesso rápido ao conteúdo veiculado para conferência e clipagem.",
       solution:
-        "Criei um dashboard web integrado à Meta Graph API, com backend em Flask, persistência em PostgreSQL e interface em React para centralizar KPIs, filtros e visualizações.",
+        "Desenvolvi uma plataforma com frontend em React/Vite e backend em Flask, com agendamento e gravação automatizada das emissoras, streaming HLS para reprodução, atualizações em tempo real via Socket.IO e transcrição de áudio por IA, tudo containerizado com Docker.",
       benefit:
-        "A operação passa a consultar indicadores em um único painel, ganha mais clareza para tomada de decisão e reduz o tempo gasto com acompanhamento manual.",
+        "A operação passa a contar com gravações automáticas e organizadas, acesso ágil às transmissões e transcrições que agilizam a clipagem, reduzindo o esforço manual e o risco de perder conteúdo veiculado.",
       images: [
         {
-          src: "/images/image1.webp",
-          alt: "Tela do Dashboard Meta Analytics",
-          caption: "Painel principal com métricas e visualização dos KPIs.",
+          src: "/images/image2.webp",
+          alt: "Tela da plataforma Clipradio",
+          caption:
+            "Painel de gestão de rádios com agendamentos e reprodução das gravações.",
         },
       ],
-      ctaLabel: "Quero um dashboard parecido",
+      ctaLabel: "Quero uma plataforma parecida",
     },
   },
   {
@@ -131,7 +121,7 @@ export const projects: Project[] = [
       "Landing page institucional com catálogo e-commerce, desenvolvida para fortalecer a comunicação da marca e captar novos clientes.",
     tags: ["HTML", "CSS"],
     image: "/images/image7.webp",
-    liveUrl: "https://barretofit.vercel.app/",
+    liveUrl: "https://barretofit.com.br",
     repoUrl: "https://github.com/mhrzfrota",
     category: "Landing Page",
   },
@@ -142,7 +132,7 @@ export const projects: Project[] = [
       "Site e-commerce em HTML e CSS para uma marca de moda feminina, com vitrine de coleções, navegação por categorias e CTA de compra em destaque.",
     tags: ["HTML", "CSS", "E-commerce"],
     image: "/images/image8.webp",
-    liveUrl: "#",
+    liveUrl: "https://lyrestore.vercel.app",
     repoUrl: "https://github.com/mhrzfrota",
     category: "Web",
   },
@@ -186,9 +176,37 @@ export const projects: Project[] = [
       "Plataforma web para o Via Shopping Car, shopping de carros em Fortaleza, com apresentação de estoque, informações institucionais e canais de contato para visitas presenciais.",
     tags: ["React", "Vite", "TypeScript", "CSS"],
     image: "/images/vsc.png",
-    liveUrl: "https://viashoppingcar.vercel.app/",
+    liveUrl: "https://viashoppingcar.com.br",
     repoUrl: "https://github.com/mhrzfrota",
     category: "Web",
+  },
+  {
+    id: 1,
+    slug: "dashboard-meta-analytics",
+    title: "Dashboard Meta Analytics",
+    description:
+      "Sistema de monitoramento de métricas do Facebook e Instagram, integrado à Meta Graph API e PostgreSQL, com visualização de KPIs em tempo quase real.",
+    tags: ["Python", "Flask", "React", "PostgreSQL", "Meta Graph API"],
+    image: "/images/image1.webp",
+    liveUrl: "https://monitor.mslestrategia.com.br",
+    repoUrl: "https://github.com/mhrzfrota",
+    category: "Plataformas",
+    caseStudy: {
+      clientProblem:
+        "O cliente precisava acompanhar campanhas e perfis da Meta sem depender de consultas manuais, planilhas soltas ou leituras demoradas em diferentes telas.",
+      solution:
+        "Criei um dashboard web integrado à Meta Graph API, com backend em Flask, persistência em PostgreSQL e interface em React para centralizar KPIs, filtros e visualizações.",
+      benefit:
+        "A operação passa a consultar indicadores em um único painel, ganha mais clareza para tomada de decisão e reduz o tempo gasto com acompanhamento manual.",
+      images: [
+        {
+          src: "/images/image1.webp",
+          alt: "Tela do Dashboard Meta Analytics",
+          caption: "Painel principal com métricas e visualização dos KPIs.",
+        },
+      ],
+      ctaLabel: "Quero um dashboard parecido",
+    },
   },
 ];
 
