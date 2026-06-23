@@ -90,6 +90,7 @@ const combos = [
   {
     icon: Rocket,
     name: "Presença Digital",
+    price: "R$ 500",
     tagline: "Para colocar seu negócio no ar com uma página que converte.",
     features: [
       "Landing page responsiva e rápida",
@@ -440,6 +441,29 @@ export default function Home() {
                 >
                   {combo.tagline}
                 </p>
+
+                {combo.price && (
+                  <div className="mt-6 flex items-baseline gap-1.5">
+                    <span
+                      className={cn(
+                        "text-[12px] font-medium",
+                        combo.featured
+                          ? "text-white/60"
+                          : "text-muted-foreground"
+                      )}
+                    >
+                      a partir de
+                    </span>
+                    <span
+                      className={cn(
+                        "text-[26px] font-semibold tracking-[-0.02em] sm:text-[28px]",
+                        combo.featured ? "text-white" : "text-foreground"
+                      )}
+                    >
+                      {combo.price}
+                    </span>
+                  </div>
+                )}
 
                 <div
                   className={cn(
