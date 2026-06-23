@@ -1,9 +1,13 @@
 import {
+  BarChart3,
   Calendar,
+  Check,
   Database,
   GraduationCap,
+  Layers,
   MessageCircle,
   Plug,
+  Rocket,
   Workflow,
 } from "lucide-react";
 import { WHATSAPP_BUDGET_URL } from "@/const";
@@ -77,6 +81,50 @@ const methodItems = [
     icon: Database,
     title: "Dados & Automação",
     desc: "Tratamento de dados, dashboards e rotinas automatizadas.",
+  },
+];
+
+const WHATSAPP_BASE = "https://wa.me/5585996370080?text=";
+
+const combos = [
+  {
+    icon: Rocket,
+    name: "Presença Digital",
+    tagline: "Para colocar seu negócio no ar com uma página que converte.",
+    features: [
+      "Landing page responsiva e rápida",
+      "Design e textos focados em conversão",
+      "Formulário e botão de WhatsApp",
+      "Domínio, deploy e SEO básico",
+    ],
+    href: `${WHATSAPP_BASE}Ol%C3%A1!%20Tenho%20interesse%20no%20combo%20Presen%C3%A7a%20Digital.`,
+    featured: false,
+  },
+  {
+    icon: BarChart3,
+    name: "Operação & Dados",
+    tagline: "Para quem já vende e quer organizar dados e ganhar tempo.",
+    features: [
+      "Dashboard de métricas em tempo quase real",
+      "Integração de APIs (Meta, planilhas, etc.)",
+      "Automação de rotinas repetitivas",
+      "Tratamento e organização de dados",
+    ],
+    href: `${WHATSAPP_BASE}Ol%C3%A1!%20Tenho%20interesse%20no%20combo%20Opera%C3%A7%C3%A3o%20%26%20Dados.`,
+    featured: true,
+  },
+  {
+    icon: Layers,
+    name: "Produto Completo",
+    tagline: "Para tirar uma ideia do papel como um sistema sob medida.",
+    features: [
+      "Aplicação fullstack (back + front)",
+      "Banco de dados e autenticação",
+      "Painel administrativo sob medida",
+      "Deploy, monitoramento e suporte",
+    ],
+    href: `${WHATSAPP_BASE}Ol%C3%A1!%20Tenho%20interesse%20no%20combo%20Produto%20Completo.`,
+    featured: false,
   },
 ];
 
@@ -332,13 +380,115 @@ export default function Home() {
         </div>
       </section>
 
-      {/* BLOG */}
+      {/* COMBOS */}
       <section
-        id="blog"
+        id="combos"
         className="scroll-mt-20 bg-muted py-16 sm:py-20 lg:py-28"
       >
         <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
-          <SectionBadge number="3" label="Blog" />
+          <SectionBadge number="3" label="Combos" />
+
+          <h2 className="text-[clamp(1.5rem,4vw,3.2rem)] font-medium leading-[1.12] tracking-[-0.02em] text-foreground">
+            Combos de serviços
+          </h2>
+          <p className="mt-4 max-w-2xl text-[14px] leading-relaxed text-muted-foreground sm:text-[15px]">
+            Pacotes pensados para diferentes momentos do seu negócio. Não achou o
+            ideal? Monto um escopo sob medida.
+          </p>
+
+          <div className="mt-10 grid items-stretch gap-5 sm:mt-14 md:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+            {combos.map(combo => (
+              <div
+                key={combo.name}
+                className={cn(
+                  "group relative flex flex-col rounded-2xl p-7 transition-all duration-300 hover:-translate-y-1 sm:p-8",
+                  combo.featured
+                    ? "bg-[var(--brand-ink)] text-white hover:shadow-[0_24px_50px_rgba(2,6,19,0.35)]"
+                    : "border border-border bg-card hover:shadow-[0_18px_40px_rgba(13,30,80,0.1)]"
+                )}
+              >
+                {combo.featured && (
+                  <span className="absolute right-6 top-7 rounded-full bg-[#0C2AFE] px-3 py-1 text-[11px] font-semibold text-white">
+                    Mais escolhido
+                  </span>
+                )}
+
+                <span
+                  className={cn(
+                    "mb-6 flex h-12 w-12 items-center justify-center rounded-xl",
+                    combo.featured
+                      ? "bg-white/10 text-[#7C8CFF]"
+                      : "bg-[#0C2AFE]/10 text-[#0C2AFE] dark:text-[#7C8CFF]"
+                  )}
+                >
+                  <combo.icon className="h-6 w-6" />
+                </span>
+
+                <h3
+                  className={cn(
+                    "text-[20px] font-semibold tracking-[-0.01em]",
+                    combo.featured ? "text-white" : "text-foreground"
+                  )}
+                >
+                  {combo.name}
+                </h3>
+                <p
+                  className={cn(
+                    "mt-2 text-[13px] leading-relaxed sm:text-[14px]",
+                    combo.featured ? "text-white/70" : "text-muted-foreground"
+                  )}
+                >
+                  {combo.tagline}
+                </p>
+
+                <div
+                  className={cn(
+                    "my-6 h-px w-full",
+                    combo.featured ? "bg-white/15" : "bg-border"
+                  )}
+                />
+
+                <ul className="flex flex-1 flex-col gap-3">
+                  {combo.features.map(feature => (
+                    <li
+                      key={feature}
+                      className={cn(
+                        "flex items-start gap-2.5 text-[13px] leading-snug sm:text-[14px]",
+                        combo.featured ? "text-white/85" : "text-foreground"
+                      )}
+                    >
+                      <Check
+                        className={cn(
+                          "mt-0.5 h-4 w-4 shrink-0",
+                          combo.featured ? "text-[#7C8CFF]" : "text-[#0C2AFE]"
+                        )}
+                      />
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+
+                <RollButton
+                  className="mt-8 w-full"
+                  size="md"
+                  variant={combo.featured ? "white" : "blue"}
+                  label="Quero este combo"
+                  href={combo.href}
+                  external
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* BLOG */}
+      <section
+        id="blog"
+        className="scroll-mt-20 bg-background py-16 sm:py-20 lg:py-28"
+      >
+        <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
+          <SectionBadge number="4" label="Blog" />
 
           <h2 className="text-[clamp(1.5rem,4vw,3.2rem)] font-medium leading-[1.12] tracking-[-0.02em] text-foreground">
             Notas & ideias
@@ -401,10 +551,10 @@ export default function Home() {
       {/* CONTATO */}
       <section
         id="contato"
-        className="scroll-mt-20 bg-background py-16 sm:py-20 lg:py-28"
+        className="scroll-mt-20 bg-muted py-16 sm:py-20 lg:py-28"
       >
         <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
-          <SectionBadge number="4" label="Contato" />
+          <SectionBadge number="5" label="Contato" />
 
           <h2 className="text-[clamp(1.5rem,4vw,3.2rem)] font-medium leading-[1.12] tracking-[-0.02em] text-foreground">
             Vamos construir juntos.
