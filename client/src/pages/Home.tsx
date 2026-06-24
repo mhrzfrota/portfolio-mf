@@ -206,21 +206,12 @@ export default function Home() {
         <div className="flex-1" />
 
         <div className="relative z-20 mx-auto w-full max-w-[1440px] px-5 pb-14 sm:px-8 sm:pb-16 lg:px-12 lg:pb-20">
-          <p className="mb-5 text-[13px] tracking-wide text-foreground sm:mb-8 sm:text-[14px]">
-            MF Services — Matheus Frota
-          </p>
-
           <h1 className="text-[clamp(1.75rem,7vw,4.2rem)] font-medium leading-[1.08] tracking-[-0.03em] text-foreground sm:text-[clamp(2.5rem,5vw,4.2rem)]">
             Soluções digitais que vendem,
             <br className="hidden sm:block" />
             <span className="sm:hidden"> </span>
             organizam e economizam tempo.
           </h1>
-
-          <p className="mt-5 max-w-xl text-[14px] leading-relaxed text-muted-foreground sm:text-[15px]">
-            Backend, dados, interfaces e automações para transformar ideias em
-            produtos digitais claros, rápidos e fáceis de usar.
-          </p>
 
           <div className="mt-8 flex flex-col items-start gap-4 sm:mt-12 sm:flex-row sm:items-center sm:gap-5">
             <RollButton
