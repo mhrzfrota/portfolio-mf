@@ -1,4 +1,5 @@
 import {
+  ArrowRight,
   BarChart3,
   Calendar,
   Check,
@@ -10,7 +11,9 @@ import {
   Rocket,
   Workflow,
 } from "lucide-react";
+import { Link } from "wouter";
 import { WHATSAPP_BUDGET_URL } from "@/const";
+import { posts } from "@/data/posts";
 import { useTheme } from "@/contexts/ThemeContext";
 import ProjectsCategoryPage from "@/components/ProjectsCategoryPage";
 import HeroShader from "@/components/HeroShader";
@@ -127,40 +130,6 @@ const combos = [
     href: `${WHATSAPP_BASE}Ol%C3%A1!%20Tenho%20interesse%20no%20combo%20Produto%20Completo.`,
     featured: false,
   },
-];
-
-const posts = [
-  {
-    id: 1,
-    title:
-      "Deploy moderno de aplicações Fullstack: do desenvolvimento à produção",
-    excerpt:
-      "Uma visão prática sobre hospedagem, CI/CD, banco de dados, ambientes e monitoramento para aplicações modernas.",
-    date: "2026-05-07",
-    tags: ["Deploy", "Fullstack", "CI/CD"],
-  },
-  {
-    id: 2,
-    title: "Como a IA está mudando a forma de criar softwares",
-    excerpt:
-      "Entenda como a inteligência artificial está ajudando desenvolvedores a criar sistemas mais rápido, automatizar tarefas e melhorar aplicações do dia a dia.",
-    date: "2026-05-07",
-    tags: ["IA", "Produtividade", "Software"],
-  },
-  {
-    id: 3,
-    title: "Dashboards com Meta Graph API: do dado ao KPI",
-    excerpt:
-      "Como estruturar coleta e tratamento de métricas do Facebook e Instagram para visualização em tempo quase real.",
-    date: "2025-10-12",
-    tags: ["Dados", "APIs", "Dashboard"],
-  },
-];
-
-const postCovers = [
-  "bg-gradient-to-br from-[#0C2AFE] via-[#1B3BFF] to-[#020A2E]",
-  "bg-gradient-to-br from-[#0B1020] via-[#101A3A] to-[#0C2AFE]",
-  "bg-gradient-to-br from-[#5B7CFF] via-[#2C50FF] to-[#0A1B66]",
 ];
 
 const contactHighlights = [
@@ -514,14 +483,15 @@ export default function Home() {
 
           <div className="mt-10 grid gap-5 sm:mt-14 md:grid-cols-3 lg:gap-6">
             {posts.map((post, index) => (
-              <article
+              <Link
                 key={post.id}
+                href={`/blog/${post.slug}`}
                 className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(13,30,80,0.12)]"
               >
                 <div
                   className={cn(
                     "relative flex h-40 items-end justify-between overflow-hidden p-5 sm:h-44",
-                    postCovers[index % postCovers.length]
+                    post.cover
                   )}
                 >
                   <StarburstIcon className="absolute -right-7 -top-7 h-32 w-32 rotate-12 fill-current text-white/10 transition-transform duration-700 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:rotate-45" />
@@ -529,7 +499,7 @@ export default function Home() {
                     0{index + 1}
                   </span>
                   <span className="relative rounded-full bg-white/15 px-3 py-1 text-[11px] font-medium text-white backdrop-blur">
-                    Em breve
+                    {post.readTime}
                   </span>
                 </div>
 
@@ -556,8 +526,13 @@ export default function Home() {
                       </span>
                     ))}
                   </div>
+
+                  <span className="mt-1 flex items-center gap-1.5 text-[13px] font-semibold text-[#0C2AFE]">
+                    Ler artigo
+                    <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                  </span>
                 </div>
-              </article>
+              </Link>
             ))}
           </div>
         </div>
