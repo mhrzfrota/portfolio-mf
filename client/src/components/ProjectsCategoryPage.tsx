@@ -135,7 +135,10 @@ function ProjectCard({ project, dark }: { project: Project; dark: boolean }) {
     <div>
       <ActionLink
         action={action}
-        className="group relative block aspect-[4/3] cursor-pointer overflow-hidden rounded-2xl bg-card"
+        className={cn(
+          "group relative block cursor-pointer overflow-hidden rounded-2xl bg-card",
+          project.video ? "aspect-[1920/826]" : "aspect-[4/3]"
+        )}
         ariaLabel={`${action.label}: ${project.title}`}
       >
         {project.video ? (
