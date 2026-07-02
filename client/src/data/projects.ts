@@ -19,6 +19,7 @@ export type Project = {
   description: string;
   tags: string[];
   image: string;
+  video?: string;
   liveUrl: string;
   repoUrl: string;
   category: "Web" | "Landing Page" | "Plataformas";
@@ -188,6 +189,7 @@ export const projects: Project[] = [
       "Sistema de monitoramento de métricas do Facebook e Instagram, integrado à Meta Graph API e PostgreSQL, com visualização de KPIs em tempo quase real.",
     tags: ["Python", "Flask", "React", "PostgreSQL", "Meta Graph API"],
     image: "/images/image1.webp",
+    video: "/videos/monitor-dashboard.mp4",
     liveUrl: "https://monitor.mslestrategia.com.br",
     repoUrl: "https://github.com/mhrzfrota",
     category: "Plataformas",

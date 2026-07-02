@@ -138,12 +138,25 @@ function ProjectCard({ project, dark }: { project: Project; dark: boolean }) {
         className="group relative block aspect-[4/3] cursor-pointer overflow-hidden rounded-2xl bg-card"
         ariaLabel={`${action.label}: ${project.title}`}
       >
-        <img
-          src={project.image}
-          alt={project.title}
-          loading="lazy"
-          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
-        />
+        {project.video ? (
+          <video
+            src={project.video}
+            poster={project.image}
+            autoPlay
+            loop
+            muted
+            playsInline
+            aria-label={project.title}
+            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+          />
+        ) : (
+          <img
+            src={project.image}
+            alt={project.title}
+            loading="lazy"
+            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+          />
+        )}
 
         {/* Botão circular que expande no hover */}
         <span
