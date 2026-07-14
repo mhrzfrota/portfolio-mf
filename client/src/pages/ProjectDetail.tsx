@@ -104,6 +104,33 @@ export default function ProjectDetail({
         </div>
       </section>
 
+      {project.video && (
+        <section className="space-y-5">
+          <div>
+            <h2 className="text-2xl font-medium tracking-[-0.02em]">
+              Projeto em movimento
+            </h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Uma visão completa da experiência e das principais seções do site.
+            </p>
+          </div>
+
+          <div className="overflow-hidden rounded-2xl border border-border bg-black shadow-[0_18px_50px_rgba(13,30,80,0.12)]">
+            <video
+              src={project.video}
+              poster={project.image}
+              controls
+              loop
+              muted
+              playsInline
+              preload="metadata"
+              aria-label={`Demonstração em vídeo do projeto ${project.title}`}
+              className="aspect-[1920/828] w-full object-cover"
+            />
+          </div>
+        </section>
+      )}
+
       <section className="grid gap-8 lg:grid-cols-[0.75fr_1.25fr]">
         <aside className="space-y-5">
           <div className="rounded-2xl border border-border bg-card p-6">

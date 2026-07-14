@@ -213,6 +213,48 @@ export const projects: Project[] = [
       ctaLabel: "Quero um dashboard parecido",
     },
   },
+  {
+    id: 13,
+    slug: "montadora-fenix",
+    title: "Montadora Fênix",
+    description:
+      "Site institucional para uma empresa de arquitetura de eventos e montagem de stands promocionais, com apresentação da marca, indicadores, portfólio visual e contato direto para orçamento.",
+    tags: ["HTML", "CSS", "JavaScript", "UI Responsiva"],
+    image: "/images/montadora-fenix/tela-1.jpg",
+    video: "/videos/montadora-fenix.mp4",
+    liveUrl: "https://montadorafenix.com.br",
+    repoUrl: "https://github.com/mhrzfrota",
+    category: "Web",
+    caseStudy: {
+      clientProblem:
+        "A Montadora Fênix precisava renovar sua presença digital para comunicar melhor sua experiência em arquitetura de eventos, apresentar a qualidade dos stands já produzidos e facilitar o primeiro contato de novos clientes.",
+      solution:
+        "Desenvolvi um site institucional responsivo com identidade visual alinhada à marca, hero em vídeo, apresentação da empresa, indicadores de experiência, portfólio de projetos e chamadas estratégicas para solicitação de orçamento pelo WhatsApp.",
+      benefit:
+        "A empresa passou a contar com uma vitrine digital mais atual e convincente, capaz de reunir seus principais diferenciais, valorizar visualmente os trabalhos realizados e encurtar o caminho entre a visita ao site e o pedido de orçamento.",
+      images: [
+        {
+          src: "/images/montadora-fenix/tela-1.jpg",
+          alt: "Página inicial do site da Montadora Fênix",
+          caption:
+            "Hero institucional com proposta de valor e chamadas para orçamento e portfólio.",
+        },
+        {
+          src: "/images/montadora-fenix/tela-2.jpg",
+          alt: "Seção institucional e indicadores da Montadora Fênix",
+          caption:
+            "Apresentação da história, forma de trabalho, valores e indicadores da empresa.",
+        },
+        {
+          src: "/images/montadora-fenix/tela-3.jpg",
+          alt: "Portfólio de stands no site da Montadora Fênix",
+          caption:
+            "Galeria visual que destaca projetos de stands executados pela Montadora Fênix.",
+        },
+      ],
+      ctaLabel: "Quero um site institucional",
+    },
+  },
 ];
 
 const uniqueTechnologies = new Set(projects.flatMap(project => project.tags));
