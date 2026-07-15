@@ -6,7 +6,7 @@ import {
   type PointerEvent,
   type ReactNode,
 } from "react";
-import { ArrowRight, Github } from "lucide-react";
+import { ArrowRight, ExternalLink, Github } from "lucide-react";
 import { Link } from "wouter";
 
 import {
@@ -124,7 +124,11 @@ function ProjectRow({
   const onPointerMove = (event: PointerEvent<HTMLDivElement>) => {
     if (!drag.current.active) return;
     const distance = event.clientX - drag.current.startX;
-    if (Math.abs(distance) > 6) drag.current.moved = true;
+    if (Math.abs(distance) > 6) {
+      drag.current.moved = true;
+      // Evita que o navegador tente arrastar o link ou a mídia do card.
+      event.preventDefault();
+    }
     event.currentTarget.scrollLeft = drag.current.scrollLeft - distance;
   };
 
@@ -134,6 +138,14 @@ function ProjectRow({
     setIsDragging(false);
     if (event.currentTarget.hasPointerCapture(event.pointerId)) {
       event.currentTarget.releasePointerCapture(event.pointerId);
+    }
+
+    // O click gerado logo após o pointerup ainda enxerga `moved`; depois dele,
+    // libera o próximo clique normal mesmo se o ponteiro terminou fora do card.
+    if (drag.current.moved) {
+      window.setTimeout(() => {
+        drag.current.moved = false;
+      }, 0);
     }
   };
 
@@ -157,9 +169,9 @@ function ProjectRow({
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
       onPointerUp={onPointerEnd}
-      onPointerLeave={onPointerEnd}
       onPointerCancel={onPointerEnd}
       onClickCapture={onClickCapture}
+      onDragStart={event => event.preventDefault()}
     >
       {projects.map((project, index) => (
         <ProjectCard
@@ -224,6 +236,7 @@ function ProjectCard({ project, dark }: { project: Project; dark: boolean }) {
             loop
             muted
             playsInline
+            draggable={false}
             aria-label={project.title}
             className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
           />
@@ -271,15 +284,32 @@ function ProjectCard({ project, dark }: { project: Project; dark: boolean }) {
           </div>
         </div>
 
-        <a
-          href={project.repoUrl}
-          target="_blank"
-          rel="noreferrer"
-          className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors duration-300 hover:border-[#0C2AFE] hover:text-[#0C2AFE]"
-          aria-label={`${t.projects.openRepo} ${project.title}`}
-        >
-          <Github size={15} />
-        </a>
+        <div className="mt-0.5 flex shrink-0 gap-2">
+          {project.liveUrl !== "#" && (
+            <a
+              href={project.liveUrl}
+              target="_blank"
+              rel="noreferrer"
+              draggable={false}
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors duration-300 hover:border-[#0C2AFE] hover:text-[#0C2AFE]"
+              aria-label={`${t.projects.visitProject}: ${project.title}`}
+            >
+              <ExternalLink size={15} />
+            </a>
+          )}
+          {project.repoUrl !== "#" && (
+            <a
+              href={project.repoUrl}
+              target="_blank"
+              rel="noreferrer"
+              draggable={false}
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors duration-300 hover:border-[#0C2AFE] hover:text-[#0C2AFE]"
+              aria-label={`${t.projects.openRepo} ${project.title}`}
+            >
+              <Github size={15} />
+            </a>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -298,7 +328,12 @@ function ActionLink({
 }) {
   if (!action.external) {
     return (
-      <Link href={action.href} className={className} aria-label={ariaLabel}>
+      <Link
+        href={action.href}
+        className={className}
+        aria-label={ariaLabel}
+        draggable={false}
+      >
         {children}
       </Link>
     );
@@ -311,6 +346,7 @@ function ActionLink({
       rel="noreferrer"
       className={className}
       aria-label={ariaLabel}
+      draggable={false}
     >
       {children}
     </a>

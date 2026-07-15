@@ -642,6 +642,12 @@
     scroll-snap-type: x proximity;
   }
 
+  .project-row a,
+  .project-row img,
+  .project-row video {
+    -webkit-user-drag: none;
+  }
+
   .project-row > * {
     scroll-snap-align: start;
   }
