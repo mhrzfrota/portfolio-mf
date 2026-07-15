@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import RollButton from "@/components/RollButton";
 import { WHATSAPP_BUDGET_URL } from "@/const";
 import { getProjectBySlug } from "@/data/projects";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { getStrings } from "@/i18n/strings";
 
 type ProjectDetailParams = {
   slug: string;
@@ -17,6 +19,8 @@ export default function ProjectDetail({
 }: RouteComponentProps<ProjectDetailParams>) {
   const project = getProjectBySlug(params.slug);
   const caseStudy = project?.caseStudy;
+  const { lang } = useLanguage();
+  const t = getStrings(lang);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -27,24 +31,31 @@ export default function ProjectDetail({
       <section className="mx-auto min-h-[60vh] w-full max-w-[1200px] px-5 pb-16 pt-32 sm:px-8 lg:px-12">
         <div className="max-w-2xl space-y-5 rounded-2xl border border-border bg-card p-7">
           <span className="inline-flex rounded-full border border-border px-3 py-1 text-[12px] font-medium text-[#0C2AFE]">
-            Case não encontrado
+            {t.projectDetail.notFoundBadge}
           </span>
           <h1 className="text-3xl font-medium tracking-[-0.02em]">
-            Projeto indisponível
+            {t.projectDetail.notFoundTitle}
           </h1>
           <p className="text-muted-foreground">
-            Ainda não existe uma página completa para esse projeto.
+            {t.projectDetail.notFoundText}
           </p>
           <Button
             asChild
             className="rounded-full bg-[#0C2AFE] text-white hover:bg-[#001FDD]"
           >
-            <Link href="/">Voltar ao portfólio</Link>
+            <Link href="/">{t.projectDetail.backToPortfolio}</Link>
           </Button>
         </div>
       </section>
     );
   }
+
+  const caseFacts: Array<[string, string]> = [
+    [t.projectDetail.labelName, project.title],
+    [t.projectDetail.labelProblem, caseStudy.clientProblem[lang]],
+    [t.projectDetail.labelSolution, caseStudy.solution[lang]],
+    [t.projectDetail.labelBenefit, caseStudy.benefit[lang]],
+  ];
 
   return (
     <div className="mx-auto w-full max-w-[1200px] space-y-16 px-5 pb-16 pt-28 sm:px-8 md:pt-32 lg:px-12">
@@ -57,19 +68,19 @@ export default function ProjectDetail({
           >
             <a href="/#projetos">
               <ArrowLeft className="h-4 w-4" />
-              Voltar aos projetos
+              {t.projectDetail.backToProjects}
             </a>
           </Button>
 
           <div className="space-y-4">
             <span className="inline-flex rounded-full border border-border px-3 py-1 text-[12px] font-medium text-[#0C2AFE]">
-              {project.category}
+              {t.projects.categories[project.category] ?? project.category}
             </span>
             <h1 className="text-3xl font-medium leading-[1.1] tracking-[-0.02em] md:text-5xl">
               {project.title}
             </h1>
             <p className="max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
-              {project.description}
+              {project.description[lang]}
             </p>
           </div>
 
@@ -77,7 +88,7 @@ export default function ProjectDetail({
             <RollButton
               variant="blue"
               size="md"
-              label={caseStudy.ctaLabel}
+              label={caseStudy.ctaLabel[lang]}
               href={WHATSAPP_BUDGET_URL}
               external
             />
@@ -88,7 +99,7 @@ export default function ProjectDetail({
               className="rounded-full border-border text-[13px] font-medium hover:text-[#0C2AFE]"
             >
               <a href={project.liveUrl} target="_blank" rel="noreferrer">
-                Ver projeto online
+                {t.projectDetail.viewLive}
                 <ExternalLink className="h-4 w-4" />
               </a>
             </Button>
@@ -108,10 +119,10 @@ export default function ProjectDetail({
         <section className="space-y-5">
           <div>
             <h2 className="text-2xl font-medium tracking-[-0.02em]">
-              Projeto em movimento
+              {t.projectDetail.inMotionTitle}
             </h2>
             <p className="mt-2 text-sm text-muted-foreground">
-              Uma visão completa da experiência e das principais seções do site.
+              {t.projectDetail.inMotionSubtitle}
             </p>
           </div>
 
@@ -124,7 +135,7 @@ export default function ProjectDetail({
               muted
               playsInline
               preload="metadata"
-              aria-label={`Demonstração em vídeo do projeto ${project.title}`}
+              aria-label={`${t.projectDetail.videoAria} ${project.title}`}
               className="aspect-[1920/828] w-full object-cover"
             />
           </div>
@@ -135,7 +146,7 @@ export default function ProjectDetail({
         <aside className="space-y-5">
           <div className="rounded-2xl border border-border bg-card p-6">
             <h2 className="text-[13px] font-semibold uppercase tracking-wide text-[#0C2AFE]">
-              Tecnologias usadas
+              {t.projectDetail.techUsed}
             </h2>
             <div className="mt-4 flex flex-wrap gap-2">
               {project.tags.map(tag => (
@@ -151,7 +162,7 @@ export default function ProjectDetail({
 
           <div className="rounded-2xl border border-border bg-card p-6">
             <h2 className="text-[13px] font-semibold uppercase tracking-wide text-[#0C2AFE]">
-              Links
+              {t.projectDetail.links}
             </h2>
             <div className="mt-4 grid gap-3">
               <a
@@ -160,7 +171,7 @@ export default function ProjectDetail({
                 rel="noreferrer"
                 className="flex items-center justify-between rounded-xl border border-border px-4 py-3 text-sm transition-colors hover:border-[#0C2AFE] hover:text-[#0C2AFE]"
               >
-                Projeto online <ExternalLink className="h-4 w-4" />
+                {t.projectDetail.liveLink} <ExternalLink className="h-4 w-4" />
               </a>
               <a
                 href={project.repoUrl}
@@ -168,22 +179,23 @@ export default function ProjectDetail({
                 rel="noreferrer"
                 className="flex items-center justify-between rounded-xl border border-border px-4 py-3 text-sm transition-colors hover:border-[#0C2AFE] hover:text-[#0C2AFE]"
               >
-                Repositório <Github className="h-4 w-4" />
+                {t.projectDetail.repository} <Github className="h-4 w-4" />
               </a>
             </div>
           </div>
 
           <div className="rounded-2xl bg-[var(--brand-ink)] p-6 text-white">
-            <h2 className="text-[17px] font-semibold">Quer algo parecido?</h2>
+            <h2 className="text-[17px] font-semibold">
+              {t.projectDetail.similarTitle}
+            </h2>
             <p className="mt-3 text-sm leading-relaxed text-white/70">
-              Me chame para transformar um problema parecido em uma solução web
-              com painel, automação ou página de conversão.
+              {t.projectDetail.similarText}
             </p>
             <RollButton
               className="mt-5 w-full"
               variant="white"
               size="sm"
-              label="Pedir orçamento"
+              label={t.projectDetail.requestQuote}
               href={WHATSAPP_BUDGET_URL}
               external
             />
@@ -191,12 +203,7 @@ export default function ProjectDetail({
         </aside>
 
         <div className="space-y-5">
-          {[
-            ["Nome do projeto", project.title],
-            ["Problema do cliente", caseStudy.clientProblem],
-            ["Solução criada", caseStudy.solution],
-            ["Resultado ou benefício", caseStudy.benefit],
-          ].map(([label, value]) => (
+          {caseFacts.map(([label, value]) => (
             <article
               key={label}
               className="rounded-2xl border border-border bg-card p-6 transition-colors hover:border-[#0C2AFE]/40"
@@ -215,11 +222,10 @@ export default function ProjectDetail({
       <section className="space-y-5">
         <div>
           <h2 className="text-2xl font-medium tracking-[-0.02em]">
-            Imagens do projeto
+            {t.projectDetail.imagesTitle}
           </h2>
           <p className="mt-2 text-sm text-muted-foreground">
-            Espaço preparado para ampliar o case com mais telas quando houver
-            novas capturas.
+            {t.projectDetail.imagesSubtitle}
           </p>
         </div>
 
@@ -231,11 +237,11 @@ export default function ProjectDetail({
             >
               <img
                 src={image.src}
-                alt={image.alt}
+                alt={image.alt[lang]}
                 className="aspect-[16/10] w-full object-cover"
               />
               <figcaption className="border-t border-border px-4 py-3 text-sm text-muted-foreground">
-                {image.caption}
+                {image.caption[lang]}
               </figcaption>
             </figure>
           ))}

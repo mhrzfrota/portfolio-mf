@@ -1,3 +1,5 @@
+import type { Lang } from "@/contexts/LanguageContext";
+
 export type PostContentBlock =
   | { type: "paragraph"; text: string }
   | { type: "list"; items: string[] };
@@ -20,7 +22,7 @@ export type Post = {
   sections: PostSection[];
 };
 
-export const posts: Post[] = [
+const postsPt: Post[] = [
   {
     id: 1,
     slug: "deploy-moderno-fullstack",
@@ -262,6 +264,253 @@ export const posts: Post[] = [
   },
 ];
 
-export function getPostBySlug(slug: string) {
-  return posts.find(post => post.slug === slug);
+const postsEn: Post[] = [
+  {
+    id: 1,
+    slug: "deploy-moderno-fullstack",
+    title: "Modern fullstack deployment: from development to production",
+    excerpt:
+      "A practical look at hosting, CI/CD, databases, environments and monitoring for modern applications.",
+    date: "2026-05-07",
+    readTime: "8 min read",
+    tags: ["Deploy", "Fullstack", "CI/CD"],
+    cover: "bg-gradient-to-br from-[#0C2AFE] via-[#1B3BFF] to-[#020A2E]",
+    lead: "Shipping an application is no longer a final, isolated step. Today, deployment is a continuous process that starts at the first commit and follows the product through its whole life. This guide gathers the practical decisions that get a fullstack application to production in a stable, fast and maintainable way.",
+    sections: [
+      {
+        heading: "From code to environment",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "Before thinking about servers, it's worth clearly separating the environments the application will run in. Each one has its own role and prevents a change from breaking something that already worked.",
+          },
+          {
+            type: "list",
+            items: [
+              "Development: where code is born, with test data and fast reloads.",
+              "Staging: a faithful copy of production to validate before publishing.",
+              "Production: the real environment, serving users and demanding maximum stability.",
+            ],
+          },
+          {
+            type: "paragraph",
+            text: "Keeping these environments similar reduces surprises. Environment variables, runtime versions and dependencies should be the same across all of them, changing only credentials and data.",
+          },
+        ],
+      },
+      {
+        heading: "CI/CD: automating the path to production",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "Continuous integration and delivery turn deployment into a predictable routine. On every push, a pipeline runs the tests, builds the app and publishes it without manual intervention.",
+          },
+          {
+            type: "list",
+            items: [
+              "Build: compiles the frontend and packages the backend reproducibly.",
+              "Tests: ensure changes don't break what already works.",
+              "Automatic deploy: publishes to staging on every merge and to production on every release.",
+            ],
+          },
+          {
+            type: "paragraph",
+            text: "The gain isn't just speed. A well-built pipeline documents how the application is built and published, making the process independent of whoever is at the keyboard.",
+          },
+        ],
+      },
+      {
+        heading: "Databases and migrations",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "The database is the most delicate part of any deployment, because it holds the product's real state. Schema changes need to be versioned and applied in a controlled way, with migrations that can be rolled back if something goes wrong.",
+          },
+          {
+            type: "paragraph",
+            text: "Automatic backups and restore tests are as important as the deployment itself. Publishing fast is useless if a mistake can compromise data that has no copy.",
+          },
+        ],
+      },
+      {
+        heading: "Observability and monitoring",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "Once the application is live, the work continues. Structured logs, usage metrics and alerts let you see problems before users notice them.",
+          },
+          {
+            type: "list",
+            items: [
+              "Logs: record what happened and help investigate incidents.",
+              "Metrics: show performance, resource usage and response times.",
+              "Alerts: notify the team when something goes off track.",
+            ],
+          },
+        ],
+      },
+      {
+        heading: "In short",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "Modern deployment is less about a specific tool and more about discipline: consistent environments, reliable automation, care with data and continuous visibility. With these pieces in place, publishing stops being a moment of tension and becomes just another natural step of development.",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 2,
+    slug: "ia-mudando-criacao-de-software",
+    title: "How AI is changing the way software is built",
+    excerpt:
+      "Understand how artificial intelligence is helping developers build systems faster, automate tasks and improve everyday applications.",
+    date: "2026-05-07",
+    readTime: "6 min read",
+    tags: ["AI", "Productivity", "Software"],
+    cover: "bg-gradient-to-br from-[#0B1020] via-[#101A3A] to-[#0C2AFE]",
+    lead: "Artificial intelligence stopped being a distant promise and became part of the daily life of anyone who builds software. More than writing code, it is changing how we think, test and ship digital products. It's worth understanding what really changes and what remains a human responsibility.",
+    sections: [
+      {
+        heading: "A new development flow",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "The classic write-test-review cycle still exists, but it gained a copilot. AI suggests code snippets, explains unfamiliar functions and helps navigate large codebases in seconds. Developers spend more time deciding what to build and less time stuck on repetitive details.",
+          },
+        ],
+      },
+      {
+        heading: "Where AI really speeds things up",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "The most consistent gains show up in tasks that consume time without demanding big architectural decisions.",
+          },
+          {
+            type: "list",
+            items: [
+              "Generating repetitive code, tests and documentation from examples.",
+              "Turning a natural-language intent into a first working version.",
+              "Finding bugs and suggesting fixes from error messages.",
+              "Refactoring and modernizing legacy code more safely.",
+            ],
+          },
+        ],
+      },
+      {
+        heading: "The developer's role",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "AI is fast, but it doesn't understand business context or the consequences of a decision. It's up to the developer to define requirements, weigh trade-offs, ensure security and review everything that's generated. The tool amplifies those who already know what they're doing; it doesn't replace judgment.",
+          },
+        ],
+      },
+      {
+        heading: "Cautions and limits",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "Blindly trusting what AI produces is a risk. Generated code can contain subtle bugs, repeat bad practices or expose sensitive data. The healthy path is to treat AI as a qualified suggestion, always validated by tests and human review.",
+          },
+        ],
+      },
+      {
+        heading: "Where this is heading",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "The trend isn't AI writing software on its own, but each developer producing more, with higher quality. Those who learn to collaborate with these tools today build better products, faster, and free up time for what really matters: solving people's real problems.",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 3,
+    slug: "dashboards-meta-graph-api",
+    title: "Dashboards with the Meta Graph API: from data to KPI",
+    excerpt:
+      "How to structure the collection and processing of Facebook and Instagram metrics for near real-time visualization.",
+    date: "2025-10-12",
+    readTime: "7 min read",
+    tags: ["Data", "APIs", "Dashboard"],
+    cover: "bg-gradient-to-br from-[#5B7CFF] via-[#2C50FF] to-[#0A1B66]",
+    lead: "Social media metrics only become decisions when they are organized, processed and presented clearly. The Meta Graph API gives access to Facebook and Instagram data, but turning those numbers into a useful panel takes more than a simple request. This is the path from raw data to a KPI that helps you decide.",
+    sections: [
+      {
+        heading: "Data collection",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "Everything starts with the Meta Graph API integration. You need to handle authentication, token renewal and the request limits imposed by the platform. Collecting on a schedule, instead of on demand, avoids blowing through quotas and keeps history always available.",
+          },
+          {
+            type: "list",
+            items: [
+              "Authentication with long-lived tokens and automatic renewal.",
+              "Scheduled collection to respect API limits.",
+              "Storing raw data before any transformation.",
+            ],
+          },
+        ],
+      },
+      {
+        heading: "Processing and modeling",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "Data arriving from the API is rarely ready to use. It needs to be cleaned, standardized and organized into a model that makes sense for the business. Keeping history in a database like PostgreSQL allows comparing periods and calculating trends, instead of just showing the number of the moment.",
+          },
+        ],
+      },
+      {
+        heading: "From data to KPI",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "A KPI is a number with a purpose. Reach, engagement and follower growth only matter when tied to a goal. The calculation layer is where raw data becomes indicators: rates, averages, variations and comparisons that answer real questions.",
+          },
+          {
+            type: "list",
+            items: [
+              "Define which questions the panel needs to answer.",
+              "Turn absolute numbers into rates and comparisons.",
+              "Highlight relevant variations instead of showing everything.",
+            ],
+          },
+        ],
+      },
+      {
+        heading: "Near real-time visualization",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "With data processed and KPIs defined, the panel brings everything together in a clear interface. Near real-time updates — fed by scheduled collection — give the feeling of live tracking without overloading the API. The goal is for anyone to open the dashboard and understand the situation in seconds.",
+          },
+        ],
+      },
+      {
+        heading: "In short",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "Building a dashboard on top of the Meta Graph API is, above all, a data engineering job: collect carefully, process with criteria and present with focus. When these steps are done well, the panel stops being a pile of charts and becomes a decision-making tool.",
+          },
+        ],
+      },
+    ],
+  },
+];
+
+const postsByLang: Record<Lang, Post[]> = { pt: postsPt, en: postsEn };
+
+export function getPosts(lang: Lang) {
+  return postsByLang[lang];
+}
+
+export function getPostBySlug(slug: string, lang: Lang) {
+  return postsByLang[lang].find(post => post.slug === slug);
 }

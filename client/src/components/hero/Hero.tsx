@@ -1,38 +1,16 @@
 import { ArrowRight, MessageCircle } from "lucide-react";
 import { WHATSAPP_BUDGET_URL } from "@/const";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { getStrings } from "@/i18n/strings";
 import HeroMonogram from "./HeroMonogram";
 import RotatingFacts from "./RotatingFacts";
 import TypeCycler from "./TypeCycler";
 
-/* -------------------------------------------------------------------------
- * Conteúdo do hero — trocar por aqui.
- * ---------------------------------------------------------------------- */
-
-/** Palavra fixa da manchete. */
-const HEADLINE = "Desenvolvedor";
-
-/** Áreas que se alternam. Cada uma completa a manchete acima. */
-const AREAS = [
-  "Full Stack.",
-  "Back-end.",
-  "Web.",
-  "de Automações.",
-  "de Soluções Digitais.",
-];
-
-const DESCRIPTION =
-  "Desenvolvo sites, sistemas e automações sob medida para transformar ideias em soluções que vendem, organizam processos e economizam tempo.";
-
-/** Linha de resultados que gira embaixo dos botões. `**assim**` vira destaque. */
-const FACTS = [
-  "Formado em Análise e Desenvolvimento de Sistemas pela UNIFOR.",
-  "Do planejamento ao deploy: projetos com escopo claro, comunicação direta e foco nos resultados do negócio.",
-  "Experiência com React, Node.js, TypeScript, PostgreSQL e integração de APIs.",
-];
-
 export default function Hero() {
   const { theme } = useTheme();
+  const { lang } = useLanguage();
+  const t = getStrings(lang);
   const isDark = theme === "dark";
 
   return (
@@ -47,16 +25,18 @@ export default function Hero() {
         <HeroMonogram isDark={isDark} />
 
         <div className="flex w-full flex-col items-center gap-5 text-center">
-          <h1
-            className="hero-headline"
-            aria-label={`${HEADLINE} fullstack — MF Services`}
-          >
-            <span className="block">{HEADLINE}</span>
-            <TypeCycler texts={AREAS} className="hero-headline-area" />
+          <h1 className="hero-headline" aria-label={t.hero.ariaHeadline}>
+            <span className="block">{t.hero.headline}</span>
+            {/* key={lang}: reinicia o typewriter ao trocar de idioma */}
+            <TypeCycler
+              key={lang}
+              texts={[...t.hero.areas]}
+              className="hero-headline-area"
+            />
           </h1>
 
           <p className="max-w-xl text-balance text-[15px] leading-relaxed text-muted-foreground sm:text-[17px]">
-            {DESCRIPTION}
+            {t.hero.description}
           </p>
 
           <div className="mt-1 flex flex-col items-center gap-3 sm:flex-row sm:gap-4">
@@ -64,20 +44,23 @@ export default function Hero() {
               href={WHATSAPP_BUDGET_URL}
               target="_blank"
               rel="noreferrer"
-              className="hero-btn hero-btn-primary"
+              className="hero-btn hero-btn-primary btn-drain btn-drain-blue"
             >
-              <span>Iniciar um projeto</span>
+              <span>{t.hero.startProject}</span>
               <MessageCircle className="hero-btn-icon" />
             </a>
-            <a href="#projetos" className="hero-btn hero-btn-secondary">
-              <span>Ver projetos</span>
+            <a
+              href="#projetos"
+              className="hero-btn hero-btn-secondary btn-drain btn-drain-white"
+            >
+              <span>{t.hero.viewProjects}</span>
               <span className="hero-btn-circle">
                 <ArrowRight className="hero-btn-arrow" />
               </span>
             </a>
           </div>
 
-          <RotatingFacts facts={FACTS} />
+          <RotatingFacts key={lang} facts={[...t.hero.facts]} />
         </div>
       </div>
     </section>

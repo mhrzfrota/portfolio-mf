@@ -2,6 +2,7 @@ import NotFound from "@/pages/NotFound";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import { LanguageProvider } from "./contexts/LanguageContext";
 import Layout from "./components/Layout";
 import Home from "./pages/Home";
 import ProjectDetail from "./pages/ProjectDetail";
@@ -24,7 +25,9 @@ function App() {
   return (
     <ErrorBoundary>
       <ThemeProvider defaultTheme="light" switchable>
-        <Router />
+        <LanguageProvider>
+          <Router />
+        </LanguageProvider>
       </ThemeProvider>
     </ErrorBoundary>
   );

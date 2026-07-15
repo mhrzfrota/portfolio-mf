@@ -6,28 +6,31 @@ import { ArrowLeft, ArrowRight, Calendar, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import RollButton from "@/components/RollButton";
 import { WHATSAPP_BUDGET_URL } from "@/const";
-import { getPostBySlug, posts } from "@/data/posts";
+import { getPostBySlug, getPosts } from "@/data/posts";
+import { useLanguage, type Lang } from "@/contexts/LanguageContext";
+import { getStrings } from "@/i18n/strings";
 
 type BlogPostParams = {
   slug: string;
 };
 
-const dateFormatter = new Intl.DateTimeFormat("pt-BR", {
-  day: "2-digit",
-  month: "long",
-  year: "numeric",
-});
-
-function formatDate(value: string) {
+function formatDate(value: string, lang: Lang) {
   const parsed = new Date(`${value}T00:00:00`);
   if (Number.isNaN(parsed.getTime())) return value;
-  return dateFormatter.format(parsed);
+  return new Intl.DateTimeFormat(lang === "pt" ? "pt-BR" : "en-US", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  }).format(parsed);
 }
 
 export default function BlogPost({
   params,
 }: RouteComponentProps<BlogPostParams>) {
-  const post = getPostBySlug(params.slug);
+  const { lang } = useLanguage();
+  const t = getStrings(lang);
+  const post = getPostBySlug(params.slug, lang);
+  const posts = getPosts(lang);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -38,19 +41,19 @@ export default function BlogPost({
       <section className="mx-auto flex min-h-[60vh] w-full max-w-[1200px] flex-col items-center px-5 pb-16 pt-32 text-center sm:px-8 lg:px-12">
         <div className="max-w-xl space-y-5">
           <span className="inline-flex rounded-full border border-border px-3 py-1 text-[12px] font-medium text-[#0C2AFE]">
-            Artigo não encontrado
+            {t.blogPost.notFoundBadge}
           </span>
           <h1 className="text-3xl font-bold tracking-[-0.02em]">
-            Esse texto ainda não existe
+            {t.blogPost.notFoundTitle}
           </h1>
           <p className="font-medium text-muted-foreground">
-            O artigo que você procura pode ter mudado de endereço.
+            {t.blogPost.notFoundText}
           </p>
           <Button
             asChild
             className="rounded-full bg-[#0C2AFE] text-white hover:bg-[#001FDD]"
           >
-            <Link href="/#blog">Voltar ao blog</Link>
+            <Link href="/#blog">{t.blogPost.backToBlog}</Link>
           </Button>
         </div>
       </section>
@@ -71,7 +74,7 @@ export default function BlogPost({
       >
         <a href="/#blog">
           <ArrowLeft className="h-4 w-4" />
-          Voltar ao blog
+          {t.blogPost.backToBlog}
         </a>
       </Button>
 
@@ -94,7 +97,7 @@ export default function BlogPost({
 
         <div className="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-[13px] font-medium text-muted-foreground">
           <span className="flex items-center gap-1.5">
-            <Calendar size={14} /> {formatDate(post.date)}
+            <Calendar size={14} /> {formatDate(post.date, lang)}
           </span>
           <span className="flex items-center gap-1.5">
             <Clock size={14} /> {post.readTime}
@@ -152,17 +155,16 @@ export default function BlogPost({
       {/* CTA */}
       <div className="mt-16 rounded-2xl border border-border bg-card p-7 text-center sm:p-9">
         <h2 className="text-[19px] font-bold tracking-[-0.01em] text-foreground">
-          Quer aplicar isso no seu projeto?
+          {t.blogPost.ctaTitle}
         </h2>
         <p className="mx-auto mt-3 max-w-md text-[14px] font-medium leading-relaxed text-muted-foreground">
-          Posso ajudar a transformar essas ideias em uma solução real, do
-          planejamento à produção.
+          {t.blogPost.ctaText}
         </p>
         <div className="mt-6 flex justify-center">
           <RollButton
             variant="blue"
             size="md"
-            label="Conversar no WhatsApp"
+            label={t.blogPost.ctaButton}
             href={WHATSAPP_BUDGET_URL}
             external
           />
@@ -173,7 +175,7 @@ export default function BlogPost({
       {relatedPosts.length > 0 && (
         <div className="mt-16">
           <h2 className="text-center text-[13px] font-semibold uppercase tracking-wide text-muted-foreground">
-            Continue lendo
+            {t.blogPost.keepReading}
           </h2>
           <div className="mt-6 grid gap-4 sm:grid-cols-2">
             {relatedPosts.map(item => (
@@ -183,13 +185,13 @@ export default function BlogPost({
                 className="group flex flex-col rounded-2xl border border-border bg-card p-6 transition-colors hover:border-[#0C2AFE]/50"
               >
                 <span className="text-[12px] font-medium text-muted-foreground">
-                  {formatDate(item.date)}
+                  {formatDate(item.date, lang)}
                 </span>
                 <h3 className="mt-2 text-[16px] font-bold leading-snug tracking-[-0.01em] text-foreground transition-colors group-hover:text-[#0C2AFE]">
                   {item.title}
                 </h3>
                 <span className="mt-4 flex items-center gap-1.5 text-[13px] font-semibold text-[#0C2AFE]">
-                  Ler artigo
+                  {t.blogPost.readArticle}
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </span>
               </Link>

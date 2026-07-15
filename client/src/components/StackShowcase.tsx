@@ -1,3 +1,6 @@
+import { useLanguage } from "@/contexts/LanguageContext";
+import { getStrings } from "@/i18n/strings";
+
 const STACK = [
   { name: "React", logo: "/logos/stack/react.svg" },
   { name: "Node.js", logo: "/logos/stack/nodejs.svg" },
@@ -12,6 +15,9 @@ const STACK = [
 ];
 
 export default function StackShowcase() {
+  const { lang } = useLanguage();
+  const t = getStrings(lang);
+
   return (
     <section
       id="stack"
@@ -19,7 +25,7 @@ export default function StackShowcase() {
     >
       <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
         <p className="mb-8 text-center text-[13px] font-semibold uppercase tracking-[0.16em] text-muted-foreground sm:mb-10 sm:text-[15px]">
-          Tecnologias que uso nos projetos
+          {t.stack.title}
         </p>
 
         <div className="hero-marquee-mask mx-auto max-w-5xl overflow-hidden">

@@ -9,71 +9,47 @@ import {
 } from "lucide-react";
 import { Link } from "wouter";
 import { WHATSAPP_BUDGET_URL } from "@/const";
-import { posts } from "@/data/posts";
+import { getPosts } from "@/data/posts";
+import { useLanguage, type Lang } from "@/contexts/LanguageContext";
+import { getStrings } from "@/i18n/strings";
 import ProjectsCategoryPage from "@/components/ProjectsCategoryPage";
 import StackShowcase from "@/components/StackShowcase";
 import Hero from "@/components/hero/Hero";
 import RollButton from "@/components/RollButton";
-import SectionBadge from "@/components/SectionBadge";
 import { cn } from "@/lib/utils";
 
 const WHATSAPP_BASE = "https://wa.me/5585996370080?text=";
 
-const combos = [
+function formatDate(value: string, lang: Lang) {
+  const parsed = new Date(`${value}T00:00:00`);
+  if (Number.isNaN(parsed.getTime())) return value;
+
+  return new Intl.DateTimeFormat(lang === "pt" ? "pt-BR" : "en-US", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  }).format(parsed);
+}
+
+/** Parte fixa dos combos (ícone, preço, link); textos vêm do dicionário i18n. */
+const comboMeta = [
   {
     icon: Rocket,
-    name: "Presença Digital",
     price: "R$ 500",
-    tagline: "Para colocar seu negócio no ar com uma página que converte.",
-    features: [
-      "Landing page responsiva e rápida",
-      "Design e textos focados em conversão",
-      "Formulário e botão de WhatsApp",
-      "Domínio, deploy e SEO básico",
-    ],
     href: `${WHATSAPP_BASE}Ol%C3%A1!%20Tenho%20interesse%20no%20combo%20Presen%C3%A7a%20Digital.`,
     featured: false,
   },
   {
     icon: BarChart3,
-    name: "Operação & Dados",
-    tagline: "Para quem já vende e quer organizar dados e ganhar tempo.",
-    features: [
-      "Dashboard de métricas em tempo quase real",
-      "Integração de APIs (Meta, planilhas, etc.)",
-      "Automação de rotinas repetitivas",
-      "Tratamento e organização de dados",
-    ],
+    price: null,
     href: `${WHATSAPP_BASE}Ol%C3%A1!%20Tenho%20interesse%20no%20combo%20Opera%C3%A7%C3%A3o%20%26%20Dados.`,
     featured: true,
   },
   {
     icon: Layers,
-    name: "Produto Completo",
-    tagline: "Para tirar uma ideia do papel como um sistema sob medida.",
-    features: [
-      "Aplicação fullstack (back + front)",
-      "Banco de dados e autenticação",
-      "Painel administrativo sob medida",
-      "Deploy, monitoramento e suporte",
-    ],
+    price: null,
     href: `${WHATSAPP_BASE}Ol%C3%A1!%20Tenho%20interesse%20no%20combo%20Produto%20Completo.`,
     featured: false,
-  },
-];
-
-const contactHighlights = [
-  {
-    title: "Orçamentos",
-    description: "Escopo, prazo e próximos passos definidos com clareza.",
-  },
-  {
-    title: "Landing pages",
-    description: "Páginas rápidas, responsivas e focadas em conversão.",
-  },
-  {
-    title: "Dashboards e automações",
-    description: "Dados organizados para operação, análise e decisão.",
   },
 ];
 
@@ -90,6 +66,14 @@ function StarburstIcon({ className }: { className?: string }) {
 }
 
 export default function Home() {
+  const { lang } = useLanguage();
+  const t = getStrings(lang);
+  const posts = getPosts(lang);
+  const combos = comboMeta.map((meta, index) => ({
+    ...meta,
+    ...t.combos.items[index],
+  }));
+
   return (
     <div className="flex flex-col">
       <Hero />
@@ -105,17 +89,14 @@ export default function Home() {
       {/* COMBOS */}
       <section
         id="combos"
-        className="scroll-mt-20 bg-muted py-16 sm:py-20 lg:py-28"
+        className="scroll-mt-20 bg-background py-16 sm:py-20 lg:py-28"
       >
         <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
-          <SectionBadge number="2" label="Combos" />
-
           <h2 className="text-[clamp(1.5rem,4vw,3.2rem)] font-medium leading-[1.12] tracking-[-0.02em] text-foreground">
-            Combos de serviços
+            {t.combos.title}
           </h2>
           <p className="mt-4 max-w-2xl text-[14px] leading-relaxed text-muted-foreground sm:text-[15px]">
-            Pacotes pensados para diferentes momentos do seu negócio. Não achou
-            o ideal? Monto um escopo sob medida.
+            {t.combos.subtitle}
           </p>
 
           <div className="mt-10 grid items-stretch gap-5 sm:mt-14 md:grid-cols-2 lg:grid-cols-3 lg:gap-6">
@@ -131,7 +112,7 @@ export default function Home() {
               >
                 {combo.featured && (
                   <span className="absolute right-6 top-7 rounded-full bg-[#0C2AFE] px-3 py-1 text-[11px] font-semibold text-white">
-                    Mais escolhido
+                    {t.combos.mostChosen}
                   </span>
                 )}
 
@@ -173,7 +154,7 @@ export default function Home() {
                           : "text-muted-foreground"
                       )}
                     >
-                      a partir de
+                      {t.combos.from}
                     </span>
                     <span
                       className={cn(
@@ -217,7 +198,7 @@ export default function Home() {
                   className="mt-8 w-full"
                   size="md"
                   variant={combo.featured ? "white" : "blue"}
-                  label="Quero este combo"
+                  label={t.combos.cta}
                   href={combo.href}
                   external
                 />
@@ -233,13 +214,11 @@ export default function Home() {
         className="scroll-mt-20 bg-background py-16 sm:py-20 lg:py-28"
       >
         <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
-          <SectionBadge number="3" label="Blog" />
-
           <h2 className="text-[clamp(1.5rem,4vw,3.2rem)] font-medium leading-[1.12] tracking-[-0.02em] text-foreground">
-            Notas & ideias
+            {t.blog.title}
           </h2>
           <p className="mt-4 max-w-2xl text-[14px] leading-relaxed text-muted-foreground sm:text-[15px]">
-            Notas sobre backend, dados e construção de produtos.
+            {t.blog.subtitle}
           </p>
 
           <div className="mt-10 grid gap-5 sm:mt-14 md:grid-cols-3 lg:gap-6">
@@ -266,7 +245,7 @@ export default function Home() {
 
                 <div className="flex flex-1 flex-col gap-3 p-6 sm:p-7">
                   <span className="flex items-center gap-1.5 text-[12px] text-muted-foreground">
-                    <Calendar size={13} /> {post.date}
+                    <Calendar size={13} /> {formatDate(post.date, lang)}
                   </span>
 
                   <h3 className="text-[18px] font-semibold leading-snug tracking-[-0.01em] text-foreground transition-colors duration-300 group-hover:text-[#0C2AFE] sm:text-[19px]">
@@ -289,7 +268,7 @@ export default function Home() {
                   </div>
 
                   <span className="mt-1 flex items-center gap-1.5 text-[13px] font-semibold text-[#0C2AFE]">
-                    Ler artigo
+                    {t.blog.readArticle}
                     <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                   </span>
                 </div>
@@ -302,17 +281,14 @@ export default function Home() {
       {/* CONTATO */}
       <section
         id="contato"
-        className="scroll-mt-20 bg-muted py-16 sm:py-20 lg:py-28"
+        className="scroll-mt-20 bg-background py-16 sm:py-20 lg:py-28"
       >
         <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
-          <SectionBadge number="4" label="Contato" />
-
           <h2 className="text-[clamp(1.5rem,4vw,3.2rem)] font-medium leading-[1.12] tracking-[-0.02em] text-foreground">
-            Vamos construir juntos.
+            {t.contact.title}
           </h2>
           <p className="mt-4 max-w-2xl text-[14px] leading-relaxed text-muted-foreground sm:text-[15px]">
-            Tem um projeto em mente ou quer conversar? Estou aberto a novas
-            oportunidades.
+            {t.contact.subtitle}
           </p>
 
           <div className="mt-10 grid items-start gap-6 sm:mt-14 lg:grid-cols-[1.2fr_0.8fr] lg:gap-8">
@@ -323,30 +299,29 @@ export default function Home() {
               <div className="relative space-y-7">
                 <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3.5 py-1.5 text-[12px] font-medium text-white/80">
                   <span className="h-2 w-2 rounded-full bg-[#7C8CFF]" />
-                  Atendimento direto
+                  {t.contact.directBadge}
                 </span>
 
                 <div className="space-y-4">
                   <h3 className="max-w-2xl text-[clamp(1.6rem,4vw,3rem)] font-medium leading-[1.1] tracking-[-0.02em]">
-                    Vamos conversar pelo{" "}
+                    {t.contact.whatsappTitlePrefix}{" "}
                     <span className="text-[#7C8CFF]">WhatsApp</span>.
                   </h3>
                   <p className="max-w-xl text-[14px] leading-relaxed text-white/65 sm:text-[15px]">
-                    Clique no botão abaixo para abrir uma conversa com a
-                    mensagem de orçamento já preenchida.
+                    {t.contact.whatsappParagraph}
                   </p>
                 </div>
 
                 <RollButton
                   variant="white"
                   size="md"
-                  label="Enviar mensagem"
+                  label={t.contact.sendMessage}
                   href={WHATSAPP_BUDGET_URL}
                   external
                 />
 
                 <div className="grid gap-4 pt-2 sm:grid-cols-3">
-                  {contactHighlights.map((item, index) => (
+                  {t.contact.highlights.map((item, index) => (
                     <div
                       key={item.title}
                       className="rounded-xl border border-white/10 bg-white/[0.04] px-4 py-5 transition-colors duration-300 hover:border-[#7C8CFF]/60 hover:bg-white/[0.07]"
@@ -369,7 +344,7 @@ export default function Home() {
             <aside className="space-y-5">
               <div className="rounded-2xl border border-border bg-card p-6 sm:p-7">
                 <h3 className="text-[17px] font-semibold text-foreground">
-                  Informações de contato
+                  {t.contact.contactInfo}
                 </h3>
                 <div className="mt-5 flex items-start gap-4">
                   <div className="rounded-full bg-[#0C2AFE]/10 p-3 text-[#0C2AFE] dark:text-[#7C8CFF]">
@@ -392,16 +367,17 @@ export default function Home() {
               </div>
 
               <div className="rounded-2xl bg-[#0C2AFE] p-6 text-white sm:p-7">
-                <h4 className="text-[17px] font-semibold">Baixar currículo</h4>
+                <h4 className="text-[17px] font-semibold">
+                  {t.contact.resumeTitle}
+                </h4>
                 <p className="mt-2 text-[13px] leading-relaxed text-white/75">
-                  Um resumo da minha experiência, formação e habilidades
-                  técnicas.
+                  {t.contact.resumeParagraph}
                 </p>
                 <RollButton
                   className="mt-5"
                   variant="white"
                   size="sm"
-                  label="Baixar PDF"
+                  label={t.contact.downloadPdf}
                   href="/curriculo.pdf"
                   download="Curriculo-Matheus-Frota.pdf"
                 />

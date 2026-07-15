@@ -83,7 +83,8 @@
 
   --radius: 0.5rem;
 
-  --background: oklch(1 0 0); /* Pure white */
+  /* Mesma cor do ponto final do degradê do hero. */
+  --background: #f2f7ff;
   --foreground: oklch(0.15 0.025 264); /* Metallic charcoal-black */
 
   --card: oklch(0.985 0.004 264);
@@ -131,7 +132,8 @@
   --sidebar-primary: oklch(0.64 0.15 260);
   --sidebar-primary-foreground: oklch(0.05 0.02 264);
 
-  --background: oklch(0.09 0.02 264);
+  /* Mesma cor do ponto final do degradê do hero no tema escuro. */
+  --background: #05080f;
   --foreground: oklch(0.95 0.008 264);
 
   --card: oklch(0.14 0.025 264);

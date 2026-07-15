@@ -14,13 +14,16 @@ import {
   projects as allProjects,
   type Project,
 } from "@/data/projects";
-import SectionBadge from "@/components/SectionBadge";
+import { useLanguage, type Lang } from "@/contexts/LanguageContext";
+import { getStrings } from "@/i18n/strings";
 import { cn } from "@/lib/utils";
 
 const projectsByNewest = [...allProjects].reverse();
 
 export default function ProjectsCategoryPage() {
   const [activeCategory, setActiveCategory] = useState("Todos");
+  const { lang } = useLanguage();
+  const t = getStrings(lang);
 
   const filteredProjects = useMemo(() => {
     if (activeCategory === "Todos") return projectsByNewest;
@@ -35,13 +38,11 @@ export default function ProjectsCategoryPage() {
   const bottomRow = filteredProjects.slice(midpoint);
 
   return (
-    <div className="bg-muted pb-16 pt-16 sm:pb-20 sm:pt-20 lg:pb-28 lg:pt-28">
+    <div className="bg-background pb-16 pt-16 sm:pb-20 sm:pt-20 lg:pb-28 lg:pt-28">
       <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
-        <SectionBadge number="1" label="Projetos em destaque" />
-
         <div className="mb-8 flex flex-col gap-6 sm:mb-10 md:flex-row md:items-end md:justify-between">
           <h2 className="text-[clamp(1.75rem,7vw,4.2rem)] font-medium leading-[1.08] tracking-[-0.03em] text-foreground sm:text-[clamp(2.5rem,5vw,4.2rem)]">
-            Projetos em destaque
+            {t.projects.title}
           </h2>
 
           <div className="flex flex-wrap gap-2 md:pb-3">
@@ -59,7 +60,7 @@ export default function ProjectsCategoryPage() {
                       : "border-border bg-card text-muted-foreground hover:border-[#0C2AFE] hover:text-[#0C2AFE]"
                   )}
                 >
-                  {category}
+                  {t.projects.categories[category] ?? category}
                 </button>
               );
             })}
@@ -70,13 +71,13 @@ export default function ProjectsCategoryPage() {
           <ProjectRow
             projects={topRow}
             resetKey={activeCategory}
-            ariaLabel="Projetos em destaque, primeira fileira"
+            ariaLabel={t.projects.rowTop}
           />
           {bottomRow.length > 0 && (
             <ProjectRow
               projects={bottomRow}
               resetKey={activeCategory}
-              ariaLabel="Projetos em destaque, segunda fileira"
+              ariaLabel={t.projects.rowBottom}
             />
           )}
         </div>
@@ -171,32 +172,40 @@ function ProjectRow({
   );
 }
 
-function getProjectAction(project: Project) {
-  if (project.slug) {
-    return {
-      external: false,
-      href: `/projetos/${project.slug}`,
-      label: "Ver case",
-    };
-  }
+/**
+ * Se o projeto está no ar, o botão leva ao site ("Acessar projeto").
+ * Senão, "Ver projeto" leva à página do case ou, na falta dela, ao repositório.
+ */
+function getProjectAction(project: Project, lang: Lang) {
+  const t = getStrings(lang);
 
   if (project.liveUrl !== "#") {
     return {
       external: true,
       href: project.liveUrl,
-      label: "Ver projeto",
+      label: t.projects.visitProject,
+    };
+  }
+
+  if (project.slug) {
+    return {
+      external: false,
+      href: `/projetos/${project.slug}`,
+      label: t.projects.viewProject,
     };
   }
 
   return {
     external: true,
     href: project.repoUrl,
-    label: "Ver código",
+    label: t.projects.viewProject,
   };
 }
 
 function ProjectCard({ project, dark }: { project: Project; dark: boolean }) {
-  const action = getProjectAction(project);
+  const { lang } = useLanguage();
+  const t = getStrings(lang);
+  const action = getProjectAction(project, lang);
 
   return (
     <div className="w-[85vw] shrink-0 snap-start sm:w-[440px] lg:w-[600px]">
@@ -267,7 +276,7 @@ function ProjectCard({ project, dark }: { project: Project; dark: boolean }) {
           target="_blank"
           rel="noreferrer"
           className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors duration-300 hover:border-[#0C2AFE] hover:text-[#0C2AFE]"
-          aria-label={`Abrir repositório de ${project.title}`}
+          aria-label={`${t.projects.openRepo} ${project.title}`}
         >
           <Github size={15} />
         </a>
