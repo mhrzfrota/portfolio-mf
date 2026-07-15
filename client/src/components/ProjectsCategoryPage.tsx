@@ -1,4 +1,11 @@
-import { useMemo, useState, type ReactNode } from "react";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type PointerEvent,
+  type ReactNode,
+} from "react";
 import { ArrowRight, Github } from "lucide-react";
 import { Link } from "wouter";
 
@@ -8,16 +15,12 @@ import {
   type Project,
 } from "@/data/projects";
 import SectionBadge from "@/components/SectionBadge";
-import RollButton from "@/components/RollButton";
 import { cn } from "@/lib/utils";
 
 const projectsByNewest = [...allProjects].reverse();
 
-const INITIAL_COUNT = 4;
-
 export default function ProjectsCategoryPage() {
   const [activeCategory, setActiveCategory] = useState("Todos");
-  const [showAll, setShowAll] = useState(false);
 
   const filteredProjects = useMemo(() => {
     if (activeCategory === "Todos") return projectsByNewest;
@@ -26,33 +29,19 @@ export default function ProjectsCategoryPage() {
     );
   }, [activeCategory]);
 
-  const visibleProjects = showAll
-    ? filteredProjects
-    : filteredProjects.slice(0, INITIAL_COUNT);
-  const hiddenCount = filteredProjects.length - INITIAL_COUNT;
-
-  const selectCategory = (category: string) => {
-    setActiveCategory(category);
-    setShowAll(false);
-  };
-
-  const toggleShowAll = () => {
-    if (showAll) {
-      document
-        .getElementById("projetos")
-        ?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-    setShowAll(!showAll);
-  };
+  // Divide os projetos em duas fileiras, cada uma seu próprio carrossel.
+  const midpoint = Math.ceil(filteredProjects.length / 2);
+  const topRow = filteredProjects.slice(0, midpoint);
+  const bottomRow = filteredProjects.slice(midpoint);
 
   return (
     <div className="bg-muted pb-16 pt-16 sm:pb-20 sm:pt-20 lg:pb-28 lg:pt-28">
       <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
         <SectionBadge number="1" label="Projetos em destaque" />
 
-        <div className="mb-10 flex flex-col gap-6 sm:mb-14 md:flex-row md:items-end md:justify-between lg:mb-16">
+        <div className="mb-8 flex flex-col gap-6 sm:mb-10 md:flex-row md:items-end md:justify-between">
           <h2 className="text-[clamp(1.75rem,7vw,4.2rem)] font-medium leading-[1.08] tracking-[-0.03em] text-foreground sm:text-[clamp(2.5rem,5vw,4.2rem)]">
-            Cases em destaque
+            Projetos em destaque
           </h2>
 
           <div className="flex flex-wrap gap-2 md:pb-3">
@@ -62,7 +51,7 @@ export default function ProjectsCategoryPage() {
                 <button
                   key={category}
                   type="button"
-                  onClick={() => selectCategory(category)}
+                  onClick={() => setActiveCategory(category)}
                   className={cn(
                     "rounded-full border px-4 py-2 text-[13px] font-medium transition-colors duration-300",
                     active
@@ -77,29 +66,107 @@ export default function ProjectsCategoryPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-x-5 gap-y-10 sm:gap-x-6 md:grid-cols-2 lg:gap-x-7 lg:gap-y-12">
-          {visibleProjects.map((project, index) => (
-            <ProjectCard
-              key={project.id}
-              project={project}
-              dark={index % 2 === 1}
+        <div className="space-y-5 sm:space-y-6">
+          <ProjectRow
+            projects={topRow}
+            resetKey={activeCategory}
+            ariaLabel="Projetos em destaque, primeira fileira"
+          />
+          {bottomRow.length > 0 && (
+            <ProjectRow
+              projects={bottomRow}
+              resetKey={activeCategory}
+              ariaLabel="Projetos em destaque, segunda fileira"
             />
-          ))}
+          )}
         </div>
-
-        {hiddenCount > 0 && (
-          <div className="mt-10 flex justify-center sm:mt-14">
-            <RollButton
-              variant="dark"
-              size="md"
-              label={
-                showAll ? "Ver menos" : `Ver mais projetos (${hiddenCount})`
-              }
-              onClick={toggleShowAll}
-            />
-          </div>
-        )}
       </div>
+    </div>
+  );
+}
+
+function ProjectRow({
+  projects,
+  resetKey,
+  ariaLabel,
+}: {
+  projects: Project[];
+  resetKey: string;
+  ariaLabel: string;
+}) {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const drag = useRef({
+    active: false,
+    moved: false,
+    startX: 0,
+    scrollLeft: 0,
+  });
+  const [isDragging, setIsDragging] = useState(false);
+
+  // Volta ao início quando troca o filtro.
+  useEffect(() => {
+    trackRef.current?.scrollTo({ left: 0 });
+  }, [resetKey]);
+
+  const onPointerDown = (event: PointerEvent<HTMLDivElement>) => {
+    if (event.pointerType !== "mouse" || event.button !== 0) return;
+    drag.current = {
+      active: true,
+      moved: false,
+      startX: event.clientX,
+      scrollLeft: event.currentTarget.scrollLeft,
+    };
+    setIsDragging(true);
+    event.currentTarget.setPointerCapture(event.pointerId);
+  };
+
+  const onPointerMove = (event: PointerEvent<HTMLDivElement>) => {
+    if (!drag.current.active) return;
+    const distance = event.clientX - drag.current.startX;
+    if (Math.abs(distance) > 6) drag.current.moved = true;
+    event.currentTarget.scrollLeft = drag.current.scrollLeft - distance;
+  };
+
+  const onPointerEnd = (event: PointerEvent<HTMLDivElement>) => {
+    if (!drag.current.active) return;
+    drag.current.active = false;
+    setIsDragging(false);
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
+  };
+
+  // Se o clique veio de um arraste, cancela pra não abrir o projeto sem querer.
+  const onClickCapture = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (!drag.current.moved) return;
+    event.preventDefault();
+    event.stopPropagation();
+    drag.current.moved = false;
+  };
+
+  return (
+    <div
+      ref={trackRef}
+      className={cn(
+        "project-row flex gap-5 overflow-x-auto scroll-smooth pb-2",
+        isDragging ? "cursor-grabbing select-none" : "cursor-grab"
+      )}
+      role="region"
+      aria-label={ariaLabel}
+      onPointerDown={onPointerDown}
+      onPointerMove={onPointerMove}
+      onPointerUp={onPointerEnd}
+      onPointerLeave={onPointerEnd}
+      onPointerCancel={onPointerEnd}
+      onClickCapture={onClickCapture}
+    >
+      {projects.map((project, index) => (
+        <ProjectCard
+          key={project.id}
+          project={project}
+          dark={index % 2 === 1}
+        />
+      ))}
     </div>
   );
 }
@@ -132,13 +199,12 @@ function ProjectCard({ project, dark }: { project: Project; dark: boolean }) {
   const action = getProjectAction(project);
 
   return (
-    <div>
+    <div className="w-[85vw] shrink-0 snap-start sm:w-[440px] lg:w-[600px]">
       <ActionLink
         action={action}
-        className={cn(
-          "group relative block cursor-pointer overflow-hidden rounded-2xl bg-card",
-          project.video ? "aspect-[1920/826]" : "aspect-[4/3]"
-        )}
+        // aspect fixo em todos os cards: mídia sempre do mesmo tamanho, seja
+        // vídeo ou imagem — o object-cover recorta o que sobra.
+        className="group relative block aspect-[16/10] cursor-pointer overflow-hidden rounded-2xl bg-card"
         ariaLabel={`${action.label}: ${project.title}`}
       >
         {project.video ? (
@@ -157,6 +223,7 @@ function ProjectCard({ project, dark }: { project: Project; dark: boolean }) {
             src={project.image}
             alt={project.title}
             loading="lazy"
+            draggable={false}
             className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
           />
         )}
@@ -178,16 +245,13 @@ function ProjectCard({ project, dark }: { project: Project; dark: boolean }) {
         </span>
       </ActionLink>
 
-      <div className="mt-4 flex items-start justify-between gap-4">
-        <div>
-          <h3 className="text-[14px] font-semibold text-foreground sm:text-[15px]">
+      <div className="mt-4 flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <h3 className="text-[15px] font-semibold text-foreground sm:text-[16px]">
             {project.title}
           </h3>
-          <p className="mt-1 line-clamp-2 text-[13px] leading-relaxed text-muted-foreground sm:text-[14px]">
-            {project.description}
-          </p>
           <div className="mt-3 flex flex-wrap gap-1.5">
-            {project.tags.slice(0, 4).map(tag => (
+            {project.tags.slice(0, 3).map(tag => (
               <span
                 key={tag}
                 className="rounded-full border border-border px-2.5 py-0.5 text-[11px] font-medium text-muted-foreground"

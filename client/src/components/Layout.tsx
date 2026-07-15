@@ -19,7 +19,6 @@ import RollButton from "@/components/RollButton";
 const navItems = [
   { label: "Início", id: "inicio" },
   { label: "Projetos", id: "projetos" },
-  { label: "Habilidades", id: "habilidades" },
   { label: "Combos", id: "combos" },
   { label: "Blog", id: "blog" },
   { label: "Contato", id: "contato" },
@@ -109,8 +108,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <div className="min-h-screen bg-background font-sans text-foreground selection:bg-[#0C2AFE]/15 selection:text-[#0C2AFE]">
       {/* Navbar pill flutuante */}
       <header className="fixed inset-x-0 top-0 z-40">
-        <div className="mx-auto max-w-[1440px] p-2 sm:p-3">
-          <div className="flex items-center justify-between rounded-full bg-card p-[5px] shadow-[0_2px_12px_rgba(2,6,19,0.08)] ring-1 ring-black/[0.04] dark:ring-white/10">
+        <div className="mx-auto max-w-[1080px] p-2 sm:p-3">
+          <div className="flex items-center justify-between rounded-full bg-card px-[5px] py-2 shadow-[0_2px_12px_rgba(2,6,19,0.08)] ring-1 ring-black/[0.04] dark:ring-white/10">
             <div className="flex items-center gap-4">
               <button
                 onClick={() => handleNavClick("inicio")}
@@ -143,10 +142,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               </nav>
             </div>
 
-            <div className="hidden items-center gap-4 md:flex">
-              <span className="hidden text-[13px] text-muted-foreground xl:block">
-                Aberto a novos projetos
-              </span>
+            <div className="hidden items-center gap-4 pr-2 md:flex">
               <span className="hidden items-center gap-1.5 text-[13px] text-muted-foreground lg:flex">
                 <Clock size={14} />
                 {time} em Fortaleza
@@ -164,13 +160,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   <Moon className="h-4 w-4" />
                 )}
               </button>
-              <RollButton
-                size="sm"
-                variant="dark"
-                label="Solicitar orçamento"
-                href={WHATSAPP_BUDGET_URL}
-                external
-              />
             </div>
 
             {/* Ações mobile */}

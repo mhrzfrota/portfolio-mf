@@ -57,7 +57,9 @@ export default function BlogPost({
     );
   }
 
-  const relatedPosts = posts.filter(item => item.slug !== post.slug).slice(0, 2);
+  const relatedPosts = posts
+    .filter(item => item.slug !== post.slug)
+    .slice(0, 2);
 
   return (
     <article className="mx-auto w-full max-w-[760px] px-5 pb-24 pt-28 sm:px-8 md:pt-32">

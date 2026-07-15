@@ -3,89 +3,19 @@ import {
   BarChart3,
   Calendar,
   Check,
-  Database,
-  GraduationCap,
   Layers,
   MessageCircle,
-  Plug,
   Rocket,
-  Workflow,
 } from "lucide-react";
 import { Link } from "wouter";
 import { WHATSAPP_BUDGET_URL } from "@/const";
 import { posts } from "@/data/posts";
-import { useTheme } from "@/contexts/ThemeContext";
 import ProjectsCategoryPage from "@/components/ProjectsCategoryPage";
-import HeroShader from "@/components/HeroShader";
+import StackShowcase from "@/components/StackShowcase";
+import Hero from "@/components/hero/Hero";
 import RollButton from "@/components/RollButton";
 import SectionBadge from "@/components/SectionBadge";
 import { cn } from "@/lib/utils";
-
-const heroMarquee = [
-  { name: "React", logo: "/logos/stack/react.svg" },
-  { name: "Node.js", logo: "/logos/stack/nodejs.svg" },
-  { name: "TypeScript", logo: "/logos/stack/typescript.svg" },
-  { name: "Python", logo: "/logos/stack/python.svg" },
-  { name: "PostgreSQL", logo: "/logos/stack/postgresql.svg" },
-  { name: "Tailwind CSS", logo: "/logos/stack/tailwindcss.svg" },
-  { name: "Supabase", logo: "/logos/stack/supabase.svg" },
-  { name: "Docker", logo: "/logos/stack/docker.svg" },
-  { name: "AWS", logo: "/logos/stack/aws.svg" },
-  { name: "Java", logo: "/logos/stack/java.svg" },
-];
-
-const skillCategories = [
-  {
-    title: "Backend",
-    skills: [
-      { name: "Node.js", level: 85 },
-      { name: "Express", level: 80 },
-      { name: "Java", level: 75 },
-      { name: "APIs REST", level: 85 },
-    ],
-  },
-  {
-    title: "Frontend",
-    skills: [
-      { name: "React", level: 80 },
-      { name: "Tailwind CSS", level: 80 },
-      { name: "HTML / CSS", level: 85 },
-      { name: "JavaScript", level: 80 },
-    ],
-  },
-  {
-    title: "Dados & Cloud",
-    skills: [
-      { name: "MySQL / PostgreSQL", level: 80 },
-      { name: "Supabase", level: 80 },
-      { name: "AWS", level: 65 },
-      { name: "Docker", level: 70 },
-    ],
-  },
-];
-
-const methodItems = [
-  {
-    icon: GraduationCap,
-    title: "Formação",
-    desc: "ADS na UNIFOR (conclusão prevista: dez/2025).",
-  },
-  {
-    icon: Workflow,
-    title: "Metodologias Ágeis",
-    desc: "Experiência com Scrum, Agile e DevOps em times colaborativos.",
-  },
-  {
-    icon: Plug,
-    title: "Integração de APIs",
-    desc: "Integro serviços externos com foco em segurança e desempenho.",
-  },
-  {
-    icon: Database,
-    title: "Dados & Automação",
-    desc: "Tratamento de dados, dashboards e rotinas automatizadas.",
-  },
-];
 
 const WHATSAPP_BASE = "https://wa.me/5585996370080?text=";
 
@@ -160,186 +90,17 @@ function StarburstIcon({ className }: { className?: string }) {
 }
 
 export default function Home() {
-  const { theme } = useTheme();
-  const isDark = theme === "dark";
-
   return (
     <div className="flex flex-col">
-      {/* HERO */}
-      <section
-        id="inicio"
-        className="relative flex min-h-svh flex-col overflow-hidden bg-[#EFEFEF] dark:bg-[#05080F]"
-      >
-        <HeroShader isDark={isDark} />
-
-        <div className="flex-1" />
-
-        <div className="relative z-20 mx-auto w-full max-w-[1440px] px-5 pb-14 sm:px-8 sm:pb-16 lg:px-12 lg:pb-20">
-          <h1 className="text-[clamp(1.75rem,7vw,4.2rem)] font-medium leading-[1.08] tracking-[-0.03em] text-foreground sm:text-[clamp(2.5rem,5vw,4.2rem)]">
-            Soluções digitais que vendem,
-            <br className="hidden sm:block" />
-            <span className="sm:hidden"> </span>
-            organizam e economizam tempo.
-          </h1>
-
-          <div className="mt-8 flex flex-col items-start gap-4 sm:mt-12 sm:flex-row sm:items-center sm:gap-5">
-            <RollButton
-              variant="blue"
-              size="md"
-              label="Solicitar orçamento"
-              href={WHATSAPP_BUDGET_URL}
-              external
-            />
-            <RollButton
-              variant="white"
-              size="md"
-              label="Ver projetos"
-              href="#projetos"
-            />
-            <div className="inline-flex w-fit items-center gap-2 rounded-[4px] bg-white px-3 py-2 shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-shadow duration-300 hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)]">
-              <StarburstIcon className="h-5 w-5 fill-current text-[#0C2AFE] sm:h-6 sm:w-6" />
-              <span className="text-[13px] font-medium text-gray-900 sm:text-[14px]">
-                Matheus Frota
-              </span>
-              <span className="rounded bg-[var(--brand-ink)] px-1.5 py-0.5 text-[10px] text-white sm:px-2 sm:text-[11px]">
-                Fullstack
-              </span>
-            </div>
-          </div>
-
-          <div className="mt-12 sm:mt-16">
-            <p className="mb-2 text-[11px] font-semibold tracking-wide text-muted-foreground">
-              Stack usada nos principais projetos do portfólio
-            </p>
-            <div className="hero-marquee-mask max-w-4xl overflow-hidden">
-              <div className="hero-marquee-track">
-                {[...heroMarquee, ...heroMarquee].map((tech, index) => (
-                  <div
-                    key={`${tech.name}-${index}`}
-                    className="flex min-w-32 items-center justify-center px-6 md:min-w-40"
-                    aria-label={tech.name}
-                  >
-                    <img
-                      src={tech.logo}
-                      alt={tech.name}
-                      className="h-7 w-20 object-contain opacity-80 transition-opacity hover:opacity-100 md:h-8 md:w-24"
-                      draggable={false}
-                      loading="lazy"
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <Hero />
 
       {/* PROJETOS */}
       <section id="projetos" className="scroll-mt-20">
         <ProjectsCategoryPage />
       </section>
 
-      {/* HABILIDADES */}
-      <section
-        id="habilidades"
-        className="scroll-mt-20 bg-background pb-12 pt-16 sm:pb-16 sm:pt-20 lg:pb-24 lg:pt-32"
-      >
-        <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
-          <SectionBadge number="2" label="Habilidades" />
-
-          <h2 className="text-[clamp(1.5rem,4vw,3.2rem)] font-medium leading-[1.12] tracking-[-0.02em] text-foreground">
-            Stack & ferramentas
-          </h2>
-          <p className="mt-4 max-w-2xl text-[14px] leading-relaxed text-muted-foreground sm:text-[15px]">
-            Visão geral das minhas habilidades técnicas com foco em backend e
-            dados.
-          </p>
-
-          <div className="mt-10 grid gap-5 sm:mt-14 md:grid-cols-2 lg:grid-cols-3">
-            {skillCategories.map((category, idx) => (
-              <div
-                key={category.title}
-                className="group rounded-2xl border border-border bg-card p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(13,30,80,0.08)] sm:p-7"
-              >
-                <div className="mb-6 flex items-center justify-between">
-                  <h3 className="text-[16px] font-semibold tracking-[-0.01em] text-foreground">
-                    {category.title}
-                  </h3>
-                  <span className="flex h-7 w-7 items-center justify-center rounded-full border border-border text-[11px] font-semibold text-[#0C2AFE] transition-colors duration-300 group-hover:border-[#0C2AFE] dark:text-[#7C8CFF]">
-                    0{idx + 1}
-                  </span>
-                </div>
-                <div className="space-y-4">
-                  {category.skills.map(skill => (
-                    <div key={skill.name}>
-                      <div className="mb-1.5 flex items-baseline justify-between">
-                        <span className="text-[13px] font-medium text-foreground">
-                          {skill.name}
-                        </span>
-                        <span className="text-[12px] text-muted-foreground">
-                          {skill.level}%
-                        </span>
-                      </div>
-                      <div className="h-1.5 overflow-hidden rounded-full bg-border/60">
-                        <div
-                          className="h-full rounded-full bg-gradient-to-r from-[#0C2AFE] to-[#5B7CFF]"
-                          style={{ width: `${skill.level}%` }}
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-12 sm:mt-16">
-            <h3 className="mb-6 text-[clamp(1.25rem,2.5vw,1.9rem)] font-medium tracking-[-0.02em] text-foreground">
-              Formação & Método
-            </h3>
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4">
-              {methodItems.map((item, idx) => (
-                <div
-                  key={item.title}
-                  className={cn(
-                    "rounded-2xl p-5 transition-all duration-300 hover:-translate-y-1 sm:p-6",
-                    idx % 2 === 0
-                      ? "border border-border bg-card hover:shadow-[0_18px_40px_rgba(13,30,80,0.08)]"
-                      : "bg-[var(--brand-ink)] text-white hover:shadow-[0_18px_40px_rgba(2,6,19,0.3)]"
-                  )}
-                >
-                  <span
-                    className={cn(
-                      "mb-4 flex h-10 w-10 items-center justify-center rounded-xl",
-                      idx % 2 === 0
-                        ? "bg-[#0C2AFE]/10 text-[#0C2AFE] dark:text-[#7C8CFF]"
-                        : "bg-white/10 text-[#7C8CFF]"
-                    )}
-                  >
-                    <item.icon className="h-5 w-5" />
-                  </span>
-                  <h4
-                    className={cn(
-                      "mb-2 text-[15px] font-semibold",
-                      idx % 2 === 0 ? "text-foreground" : "text-white"
-                    )}
-                  >
-                    {item.title}
-                  </h4>
-                  <p
-                    className={cn(
-                      "text-[13px] leading-relaxed",
-                      idx % 2 === 0 ? "text-muted-foreground" : "text-white/70"
-                    )}
-                  >
-                    {item.desc}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* STACK */}
+      <StackShowcase />
 
       {/* COMBOS */}
       <section
@@ -347,14 +108,14 @@ export default function Home() {
         className="scroll-mt-20 bg-muted py-16 sm:py-20 lg:py-28"
       >
         <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
-          <SectionBadge number="3" label="Combos" />
+          <SectionBadge number="2" label="Combos" />
 
           <h2 className="text-[clamp(1.5rem,4vw,3.2rem)] font-medium leading-[1.12] tracking-[-0.02em] text-foreground">
             Combos de serviços
           </h2>
           <p className="mt-4 max-w-2xl text-[14px] leading-relaxed text-muted-foreground sm:text-[15px]">
-            Pacotes pensados para diferentes momentos do seu negócio. Não achou o
-            ideal? Monto um escopo sob medida.
+            Pacotes pensados para diferentes momentos do seu negócio. Não achou
+            o ideal? Monto um escopo sob medida.
           </p>
 
           <div className="mt-10 grid items-stretch gap-5 sm:mt-14 md:grid-cols-2 lg:grid-cols-3 lg:gap-6">
@@ -472,7 +233,7 @@ export default function Home() {
         className="scroll-mt-20 bg-background py-16 sm:py-20 lg:py-28"
       >
         <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
-          <SectionBadge number="4" label="Blog" />
+          <SectionBadge number="3" label="Blog" />
 
           <h2 className="text-[clamp(1.5rem,4vw,3.2rem)] font-medium leading-[1.12] tracking-[-0.02em] text-foreground">
             Notas & ideias
@@ -544,7 +305,7 @@ export default function Home() {
         className="scroll-mt-20 bg-muted py-16 sm:py-20 lg:py-28"
       >
         <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
-          <SectionBadge number="5" label="Contato" />
+          <SectionBadge number="4" label="Contato" />
 
           <h2 className="text-[clamp(1.5rem,4vw,3.2rem)] font-medium leading-[1.12] tracking-[-0.02em] text-foreground">
             Vamos construir juntos.

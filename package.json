@@ -13,6 +13,8 @@
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.3",
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "^9.6.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "express": "^4.21.2",
@@ -21,6 +23,7 @@
     "react-dom": "^19.2.1",
     "shaders": "^2.5.130",
     "tailwind-merge": "^3.3.1",
+    "three": "^0.185.1",
     "wouter": "^3.3.5"
   },
   "devDependencies": {
@@ -29,6 +32,7 @@
     "@types/node": "^24.7.0",
     "@types/react": "^19.2.1",
     "@types/react-dom": "^19.2.1",
+    "@types/three": "^0.185.1",
     "@vitejs/plugin-react": "^5.0.4",
     "esbuild": "^0.25.0",
     "pnpm": "^10.15.1",
