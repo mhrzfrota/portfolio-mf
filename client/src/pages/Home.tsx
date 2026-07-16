@@ -92,14 +92,23 @@ export default function Home() {
         className="scroll-mt-20 bg-background py-16 sm:py-20 lg:py-28"
       >
         <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
-          <h2 className="text-[clamp(1.5rem,4vw,3.2rem)] font-medium leading-[1.12] tracking-[-0.02em] text-foreground">
+          <h2
+            data-reveal
+            className="text-[clamp(1.5rem,4vw,3.2rem)] font-medium leading-[1.12] tracking-[-0.02em] text-foreground"
+          >
             {t.combos.title}
           </h2>
-          <p className="mt-4 max-w-2xl text-[14px] leading-relaxed text-muted-foreground sm:text-[15px]">
+          <p
+            data-reveal
+            className="reveal-delay-1 mt-4 max-w-2xl text-[14px] leading-relaxed text-muted-foreground sm:text-[15px]"
+          >
             {t.combos.subtitle}
           </p>
 
-          <div className="mt-10 grid items-stretch gap-5 sm:mt-14 md:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+          <div
+            data-reveal
+            className="reveal-delay-2 mt-10 grid items-stretch gap-5 sm:mt-14 md:grid-cols-2 lg:grid-cols-3 lg:gap-6"
+          >
             {combos.map(combo => (
               <div
                 key={combo.name}
@@ -214,14 +223,23 @@ export default function Home() {
         className="scroll-mt-20 bg-background py-16 sm:py-20 lg:py-28"
       >
         <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
-          <h2 className="text-[clamp(1.5rem,4vw,3.2rem)] font-medium leading-[1.12] tracking-[-0.02em] text-foreground">
+          <h2
+            data-reveal
+            className="text-[clamp(1.5rem,4vw,3.2rem)] font-medium leading-[1.12] tracking-[-0.02em] text-foreground"
+          >
             {t.blog.title}
           </h2>
-          <p className="mt-4 max-w-2xl text-[14px] leading-relaxed text-muted-foreground sm:text-[15px]">
+          <p
+            data-reveal
+            className="reveal-delay-1 mt-4 max-w-2xl text-[14px] leading-relaxed text-muted-foreground sm:text-[15px]"
+          >
             {t.blog.subtitle}
           </p>
 
-          <div className="mt-10 grid gap-5 sm:mt-14 md:grid-cols-3 lg:gap-6">
+          <div
+            data-reveal
+            className="reveal-delay-2 mt-10 grid gap-5 sm:mt-14 md:grid-cols-3 lg:gap-6"
+          >
             {posts.map((post, index) => (
               <Link
                 key={post.id}
@@ -284,14 +302,23 @@ export default function Home() {
         className="scroll-mt-20 bg-background py-16 sm:py-20 lg:py-28"
       >
         <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
-          <h2 className="text-[clamp(1.5rem,4vw,3.2rem)] font-medium leading-[1.12] tracking-[-0.02em] text-foreground">
+          <h2
+            data-reveal
+            className="text-[clamp(1.5rem,4vw,3.2rem)] font-medium leading-[1.12] tracking-[-0.02em] text-foreground"
+          >
             {t.contact.title}
           </h2>
-          <p className="mt-4 max-w-2xl text-[14px] leading-relaxed text-muted-foreground sm:text-[15px]">
+          <p
+            data-reveal
+            className="reveal-delay-1 mt-4 max-w-2xl text-[14px] leading-relaxed text-muted-foreground sm:text-[15px]"
+          >
             {t.contact.subtitle}
           </p>
 
-          <div className="mt-10 grid items-start gap-6 sm:mt-14 lg:grid-cols-[1.2fr_0.8fr] lg:gap-8">
+          <div
+            data-reveal
+            className="reveal-delay-2 mt-10 grid items-start gap-6 sm:mt-14 lg:grid-cols-[1.2fr_0.8fr] lg:gap-8"
+          >
             <div className="relative overflow-hidden rounded-2xl bg-[var(--brand-ink)] p-7 text-white sm:rounded-[2rem] sm:p-10 lg:p-12">
               <div className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-[#0C2AFE]/40 blur-3xl" />
               <div className="absolute -bottom-20 -left-20 h-56 w-56 rounded-full bg-[#5B7CFF]/20 blur-3xl" />

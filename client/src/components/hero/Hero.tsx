@@ -25,7 +25,10 @@ export default function Hero() {
         <HeroMonogram isDark={isDark} />
 
         <div className="flex w-full flex-col items-center gap-5 text-center">
-          <h1 className="hero-headline" aria-label={t.hero.ariaHeadline}>
+          <h1
+            className="hero-headline hero-rise"
+            aria-label={t.hero.ariaHeadline}
+          >
             <span className="block">{t.hero.headline}</span>
             {/* key={lang}: reinicia o typewriter ao trocar de idioma */}
             <TypeCycler
@@ -35,11 +38,11 @@ export default function Hero() {
             />
           </h1>
 
-          <p className="max-w-xl text-balance text-[15px] leading-relaxed text-muted-foreground sm:text-[17px]">
+          <p className="hero-rise hero-rise-2 max-w-xl text-balance text-[15px] leading-relaxed text-muted-foreground sm:text-[17px]">
             {t.hero.description}
           </p>
 
-          <div className="mt-1 flex flex-col items-center gap-3 sm:flex-row sm:gap-4">
+          <div className="hero-rise hero-rise-3 mt-1 flex flex-col items-center gap-3 sm:flex-row sm:gap-4">
             <a
               href={WHATSAPP_BUDGET_URL}
               target="_blank"
@@ -60,7 +63,9 @@ export default function Hero() {
             </a>
           </div>
 
-          <RotatingFacts key={lang} facts={[...t.hero.facts]} />
+          <div className="hero-rise hero-rise-4 w-full">
+            <RotatingFacts key={lang} facts={[...t.hero.facts]} />
+          </div>
         </div>
       </div>
     </section>

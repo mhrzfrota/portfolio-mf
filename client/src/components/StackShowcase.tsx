@@ -24,11 +24,17 @@ export default function StackShowcase() {
       className="scroll-mt-20 bg-background py-14 sm:py-16 lg:py-20"
     >
       <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
-        <p className="mb-8 text-center text-[13px] font-semibold uppercase tracking-[0.16em] text-muted-foreground sm:mb-10 sm:text-[15px]">
+        <p
+          data-reveal
+          className="mb-8 text-center text-[13px] font-semibold uppercase tracking-[0.16em] text-muted-foreground sm:mb-10 sm:text-[15px]"
+        >
           {t.stack.title}
         </p>
 
-        <div className="hero-marquee-mask mx-auto max-w-5xl overflow-hidden">
+        <div
+          data-reveal
+          className="reveal-delay-1 hero-marquee-mask mx-auto max-w-5xl overflow-hidden"
+        >
           <div className="hero-marquee-track">
             {[...STACK, ...STACK].map((tech, index) => (
               <div

@@ -16,6 +16,7 @@ import { WHATSAPP_BUDGET_URL } from "@/const";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { getStrings } from "@/i18n/strings";
+import { useRevealOnScroll } from "@/lib/useRevealOnScroll";
 import RollButton from "@/components/RollButton";
 
 const navIds = ["inicio", "projetos", "combos", "blog", "contato"] as const;
@@ -63,6 +64,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const t = getStrings(lang);
   const isDark = theme === "dark";
   const time = useFortalezaTime();
+
+  // Anima os blocos data-reveal da página atual; reexecuta ao trocar de rota.
+  useRevealOnScroll([location]);
 
   const navItems = navIds.map(id => ({ id, label: t.nav[id] }));
 

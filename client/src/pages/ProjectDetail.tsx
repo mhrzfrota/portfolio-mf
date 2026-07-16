@@ -238,6 +238,8 @@ export default function ProjectDetail({
               <img
                 src={image.src}
                 alt={image.alt[lang]}
+                loading="lazy"
+                decoding="async"
                 className="aspect-[16/10] w-full object-cover"
               />
               <figcaption className="border-t border-border px-4 py-3 text-sm text-muted-foreground">

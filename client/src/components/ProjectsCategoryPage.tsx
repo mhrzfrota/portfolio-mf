@@ -40,7 +40,10 @@ export default function ProjectsCategoryPage() {
   return (
     <div className="bg-background pb-16 pt-16 sm:pb-20 sm:pt-20 lg:pb-28 lg:pt-28">
       <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
-        <div className="mb-8 flex flex-col gap-6 sm:mb-10 md:flex-row md:items-end md:justify-between">
+        <div
+          data-reveal
+          className="mb-8 flex flex-col gap-6 sm:mb-10 md:flex-row md:items-end md:justify-between"
+        >
           <h2 className="text-[clamp(1.75rem,7vw,4.2rem)] font-medium leading-[1.08] tracking-[-0.03em] text-foreground sm:text-[clamp(2.5rem,5vw,4.2rem)]">
             {t.projects.title}
           </h2>
@@ -67,7 +70,7 @@ export default function ProjectsCategoryPage() {
           </div>
         </div>
 
-        <div className="space-y-5 sm:space-y-6">
+        <div data-reveal className="reveal-delay-1 space-y-5 sm:space-y-6">
           <ProjectRow
             projects={topRow}
             resetKey={activeCategory}
@@ -108,6 +111,30 @@ function ProjectRow({
   useEffect(() => {
     trackRef.current?.scrollTo({ left: 0 });
   }, [resetKey]);
+
+  // Depois de um scroll lateral, o navegador "prende" o gesto no carrossel
+  // (scroll latching) e a rodinha/trackpad vertical para de descer a página.
+  // Aqui, gesto predominantemente vertical vira scroll da página na hora.
+  // Precisa de listener nativo: o onWheel do React é passivo e não permite
+  // preventDefault.
+  useEffect(() => {
+    const el = trackRef.current;
+    if (!el) return;
+
+    const onWheel = (event: WheelEvent) => {
+      if (event.ctrlKey) return; // pinch-zoom
+      if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
+      event.preventDefault();
+      // deltaMode 1 = linhas (Firefox com mouse); converte pra pixels.
+      const dy = event.deltaMode === 1 ? event.deltaY * 16 : event.deltaY;
+      // "instant": a rodinha nativa é imediata; sem isso o scroll-behavior
+      // smooth global deixa a rolagem elástica só em cima do carrossel.
+      window.scrollBy({ top: dy, behavior: "instant" });
+    };
+
+    el.addEventListener("wheel", onWheel, { passive: false });
+    return () => el.removeEventListener("wheel", onWheel);
+  }, []);
 
   const onPointerDown = (event: PointerEvent<HTMLDivElement>) => {
     if (event.pointerType !== "mouse" || event.button !== 0) return;
@@ -214,6 +241,61 @@ function getProjectAction(project: Project, lang: Lang) {
   };
 }
 
+/**
+ * Vídeo dos cards: só baixa e toca quando o card se aproxima da viewport.
+ * Fora dela o navegador mostra apenas o poster — em vez de baixar e decodificar
+ * os 5 vídeos da home de uma vez (pesado demais no mobile).
+ */
+function LazyVideo({
+  src,
+  poster,
+  title,
+  className,
+}: {
+  src: string;
+  poster: string;
+  title: string;
+  className: string;
+}) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          video.play().catch(() => {});
+        } else {
+          video.pause();
+        }
+      },
+      // Margem generosa: o vídeo começa a carregar um pouco antes de aparecer,
+      // então visualmente continua "sempre tocando" como no autoplay antigo.
+      { rootMargin: "25% 25%" }
+    );
+
+    observer.observe(video);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <video
+      ref={videoRef}
+      src={src}
+      poster={poster}
+      preload="none"
+      loop
+      muted
+      playsInline
+      draggable={false}
+      aria-label={title}
+      className={className}
+    />
+  );
+}
+
 function ProjectCard({ project, dark }: { project: Project; dark: boolean }) {
   const { lang } = useLanguage();
   const t = getStrings(lang);
@@ -229,15 +311,10 @@ function ProjectCard({ project, dark }: { project: Project; dark: boolean }) {
         ariaLabel={`${action.label}: ${project.title}`}
       >
         {project.video ? (
-          <video
+          <LazyVideo
             src={project.video}
             poster={project.image}
-            autoPlay
-            loop
-            muted
-            playsInline
-            draggable={false}
-            aria-label={project.title}
+            title={project.title}
             className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
           />
         ) : (

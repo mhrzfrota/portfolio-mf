@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Environment, Lightformer } from "@react-three/drei";
 import {
@@ -189,6 +189,24 @@ export default function MonogramScene({ isDark, reduced }: MonogramSceneProps) {
     lastX: 0,
   }).current;
 
+  // Quando o hero sai da tela o loop de render para (frameloop="demand"):
+  // rolar a página deixa de custar GPU. O último frame fica congelado e a
+  // animação retoma ao voltar — visualmente nada muda.
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [inView, setInView] = useState(true);
+
+  useEffect(() => {
+    const node = containerRef.current;
+    if (!node) return;
+
+    const observer = new IntersectionObserver(([entry]) => {
+      setInView(entry.isIntersecting);
+    });
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
   const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
     if (reduced) return;
     spin.dragging = true;
@@ -213,6 +231,7 @@ export default function MonogramScene({ isDark, reduced }: MonogramSceneProps) {
 
   return (
     <div
+      ref={containerRef}
       className="h-full w-full cursor-grab active:cursor-grabbing"
       // pan-y devolve o scroll vertical ao navegador: no celular o dedo pra cima
       // rola a página, e só o gesto horizontal gira a peça.
@@ -226,12 +245,15 @@ export default function MonogramScene({ isDark, reduced }: MonogramSceneProps) {
         dpr={[1, 2]}
         camera={{ position: [0, 0, 12], fov: 25 }}
         gl={{
-          antialias: true,
+          // Em telas densas (retina/celular) o MSAA fica imperceptível — os
+          // pixels físicos já suavizam as bordas — mas dobra o custo de GPU.
+          antialias:
+            typeof window === "undefined" || window.devicePixelRatio < 2,
           alpha: true,
           powerPreference: "high-performance",
         }}
         style={{ background: "transparent" }}
-        frameloop={reduced ? "demand" : "always"}
+        frameloop={reduced || !inView ? "demand" : "always"}
       >
         <SkyEnvironment isDark={isDark} />
         <Monogram spin={spin} reduced={reduced} />
