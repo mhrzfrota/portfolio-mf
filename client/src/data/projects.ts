@@ -159,7 +159,7 @@ export const projects: Project[] = [
       en: "Institutional landing page for an accounting firm, presenting services, differentiators, testimonials and a WhatsApp contact CTA.",
     },
     tags: ["HTML", "CSS"],
-    image: "/images/image9.jpg",
+    image: "/images/image9.webp",
     liveUrl: "https://www.ferprocontabilidade.com.br/",
     repoUrl: "https://github.com/mhrzfrota/ferpro",
     category: "Landing Page",
@@ -172,7 +172,7 @@ export const projects: Project[] = [
       en: "Institutional landing page for an event production company, with brand presentation, services, a visual portfolio and a contact CTA.",
     },
     tags: ["HTML", "CSS", "JavaScript"],
-    image: "/images/image10.jpg",
+    image: "/images/image10.webp",
     video: "/videos/tz-producoes.mp4",
     liveUrl: "https://www.tzproducoes.com.br/",
     repoUrl: "https://github.com/mhrzfrota",
@@ -187,7 +187,7 @@ export const projects: Project[] = [
       en: "Landing page for a personal trainer's fitness challenge, with transformation, method and benefits sections and a WhatsApp community CTA.",
     },
     tags: ["HTML", "CSS", "JavaScript", "Landing Page"],
-    image: "/images/ramires-personal.jpg",
+    image: "/images/ramires-personal.webp",
     video: "/videos/ramires.mp4",
     liveUrl: "https://lp-ramirespersonal.vercel.app/",
     repoUrl: "https://github.com/mhrzfrota",
@@ -201,7 +201,7 @@ export const projects: Project[] = [
       en: "Web platform for Via Shopping Car, a car mall in Fortaleza, presenting inventory, institutional information and contact channels for in-person visits.",
     },
     tags: ["React", "Vite", "TypeScript", "CSS"],
-    image: "/images/vsc.jpg",
+    image: "/images/vsc.webp",
     video: "/videos/via-shopping-car.mp4",
     liveUrl: "https://viashoppingcar.com.br",
     repoUrl: "https://github.com/mhrzfrota",
@@ -263,7 +263,7 @@ export const projects: Project[] = [
       en: "Institutional website for an event architecture and promotional stand assembly company, with brand presentation, indicators, a visual portfolio and direct quote contact.",
     },
     tags: ["HTML", "CSS", "JavaScript", "UI Responsiva"],
-    image: "/images/montadora-fenix/tela-1.jpg",
+    image: "/images/montadora-fenix/tela-1.webp",
     video: "/videos/montadora-fenix.mp4",
     liveUrl: "https://montadorafenix.com.br",
     repoUrl: "https://github.com/mhrzfrota",
@@ -284,7 +284,7 @@ export const projects: Project[] = [
       },
       images: [
         {
-          src: "/images/montadora-fenix/tela-1.jpg",
+          src: "/images/montadora-fenix/tela-1.webp",
           alt: {
             pt: "Página inicial do site da Montadora Fênix",
             en: "Montadora Fênix website home page",
@@ -295,7 +295,7 @@ export const projects: Project[] = [
           },
         },
         {
-          src: "/images/montadora-fenix/tela-2.jpg",
+          src: "/images/montadora-fenix/tela-2.webp",
           alt: {
             pt: "Seção institucional e indicadores da Montadora Fênix",
             en: "Montadora Fênix institutional section and indicators",
@@ -306,7 +306,7 @@ export const projects: Project[] = [
           },
         },
         {
-          src: "/images/montadora-fenix/tela-3.jpg",
+          src: "/images/montadora-fenix/tela-3.webp",
           alt: {
             pt: "Portfólio de stands no site da Montadora Fênix",
             en: "Stand portfolio on the Montadora Fênix website",
@@ -331,7 +331,7 @@ export const projects: Project[] = [
       en: "Premium landing page for a 40-year law firm, with the brand identity applied, a mission/vision/values section and partner presentation.",
     },
     tags: ["HTML", "CSS", "JavaScript", "Landing Page"],
-    image: "/images/amsterdam.png",
+    image: "/images/amsterdam.webp",
     liveUrl: "https://amsterdan.vercel.app/",
     repoUrl: "https://github.com/mhrzfrota",
     category: "Landing Page",

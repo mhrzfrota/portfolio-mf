@@ -43,9 +43,6 @@ importers:
       react-dom:
         specifier: ^19.2.1
         version: 19.2.1(react@19.2.1)
-      shaders:
-        specifier: ^2.5.130
-        version: 2.5.130(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       tailwind-merge:
         specifier: ^3.3.1
         version: 3.3.1
@@ -1519,29 +1516,6 @@ packages:
   setprototypeof@1.2.0:
     resolution: {integrity: sha512-E5LDX7Wrp85Kil5bhZv46j8jOeboKq5JMmYM3gVGdGH8xFpPWXUMsNrlODCrkoxMEeNi/XZIwuRvY4XNwYMJpw==}
 
-  shaders@2.5.130:
-    resolution: {integrity: sha512-HpeoBsIjVvEU53iyiv5gjws4P5Dyk7LaZShNe9P06C6jejUlNsPZjLdkT0XPW55+Hkbopb3WeweHpCXRanKscw==}
-    peerDependencies:
-      pixi.js: ^8.0.0
-      react: ^18.0.0 || ^19.0.0
-      react-dom: ^18.0.0 || ^19.0.0
-      solid-js: ^1.8.0
-      svelte: ^5
-      vue: ^3.5.0
-    peerDependenciesMeta:
-      pixi.js:
-        optional: true
-      react:
-        optional: true
-      react-dom:
-        optional: true
-      solid-js:
-        optional: true
-      svelte:
-        optional: true
-      vue:
-        optional: true
-
   shebang-command@2.0.0:
     resolution: {integrity: sha512-kHxr2zZpYtdmrN1qDjrrX/Z1rR1kG8Dx+gkpK1G4eXmvXswmcE1hTWBWYUzlraYw1/yZp6YuDY77YtvbN0dmDA==}
     engines: {node: '>=8'}
@@ -1620,9 +1594,6 @@ packages:
     resolution: {integrity: sha512-XyGQrFmNQ5O/IoKm556ftwKsBg11TIb301MB5dWNicziQBEs2g3gtOYIf7pFiLa0zI2gUwhtCjv9fmjnxKZ1Cg==}
     peerDependencies:
       three: '>=0.128.0'
-
-  three@0.184.0:
-    resolution: {integrity: sha512-wtTRjG92pM5eUg/KuUnHsqSAlPM296brTOcLgMRqEeylYTh/CdtvKUvCyyCQTzFuStieWxvZb8mVTMvdPyUpxg==}
 
   three@0.185.1:
     resolution: {integrity: sha512-5aojFCXKwnjBRZvUnt3WFfEcvUJgkN5LlijRFN95hMy8WVkG4I0QNcJE+OuWvuJ0bOdStrbfXn0pkd6/QyiAlg==}
@@ -3159,13 +3130,6 @@ snapshots:
 
   setprototypeof@1.2.0: {}
 
-  shaders@2.5.130(react-dom@19.2.1(react@19.2.1))(react@19.2.1):
-    dependencies:
-      three: 0.184.0
-    optionalDependencies:
-      react: 19.2.1
-      react-dom: 19.2.1(react@19.2.1)
-
   shebang-command@2.0.0:
     dependencies:
       shebang-regex: 3.0.0
@@ -3248,8 +3212,6 @@ snapshots:
       fflate: 0.6.10
       potpack: 1.0.2
       three: 0.185.1
-
-  three@0.184.0: {}
 
   three@0.185.1: {}
 

@@ -1,3 +1,4 @@
+import { useDeferredValue } from "react";
 import { ArrowRight, MessageCircle } from "lucide-react";
 import { WHATSAPP_BUDGET_URL } from "@/const";
 import { useTheme } from "@/contexts/ThemeContext";
@@ -12,6 +13,10 @@ export default function Hero() {
   const { lang } = useLanguage();
   const t = getStrings(lang);
   const isDark = theme === "dark";
+  // Trocar o tema re-baka o environment do canvas 3D (caro, chega a travar a
+  // UI). Com o valor adiado, o CSS da página troca e pinta primeiro; a peça
+  // 3D acompanha um instante depois, sem segurar o clique.
+  const monogramDark = useDeferredValue(isDark);
 
   return (
     <section
@@ -22,7 +27,7 @@ export default function Hero() {
       <div className="hero-grain" aria-hidden="true" />
 
       <div className="relative z-10 flex w-full max-w-[880px] flex-1 flex-col items-center justify-center px-5 pb-12 pt-24 sm:px-8 sm:pt-28">
-        <HeroMonogram isDark={isDark} />
+        <HeroMonogram isDark={monogramDark} />
 
         <div className="flex w-full flex-col items-center gap-5 text-center">
           <h1

@@ -1,4 +1,11 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 
 type Theme = "light" | "dark";
 
@@ -42,16 +49,23 @@ export function ThemeProvider({
     }
   }, [theme, switchable]);
 
-  const toggleTheme = switchable
-    ? () => {
-        setTheme(prev => (prev === "light" ? "dark" : "light"));
-      }
-    : undefined;
+  const toggleTheme = useCallback(() => {
+    setTheme(prev => (prev === "light" ? "dark" : "light"));
+  }, []);
+
+  // Valor estável: sem o memo, cada render do provider recriava o objeto e
+  // forçava re-render de cada consumidor do contexto.
+  const value = useMemo(
+    () => ({
+      theme,
+      toggleTheme: switchable ? toggleTheme : undefined,
+      switchable,
+    }),
+    [theme, switchable, toggleTheme]
+  );
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme, switchable }}>
-      {children}
-    </ThemeContext.Provider>
+    <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
   );
 }
 
