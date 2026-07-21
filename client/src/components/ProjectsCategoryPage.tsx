@@ -45,7 +45,7 @@ export default function ProjectsCategoryPage() {
           className="mb-8 flex flex-col gap-6 sm:mb-10 md:flex-row md:items-end md:justify-between"
         >
           <h2 className="text-[clamp(1.75rem,7vw,4.2rem)] font-medium leading-[1.08] tracking-[-0.03em] text-foreground sm:text-[clamp(2.5rem,5vw,4.2rem)]">
-            {t.projects.title}
+            {t.projects.allTitle}
           </h2>
 
           <div className="flex flex-wrap gap-2 md:pb-3">
@@ -215,7 +215,7 @@ function ProjectRow({
  * Se o projeto está no ar, o botão leva ao site ("Acessar projeto").
  * Senão, "Ver projeto" leva à página do case ou, na falta dela, ao repositório.
  */
-function getProjectAction(project: Project, lang: Lang) {
+export function getProjectAction(project: Project, lang: Lang) {
   const t = getStrings(lang);
 
   if (project.liveUrl !== "#") {

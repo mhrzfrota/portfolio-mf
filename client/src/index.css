@@ -685,6 +685,51 @@
     }
   }
 
+  /* ---------- Deck de projetos (vitrine empilhada) ---------- */
+
+  /* A perspectiva fica no palco: o rotateX dos cards que entram por baixo
+     só vira inclinação "de verdade" com um ponto de fuga em comum. */
+  .deck-stage {
+    perspective: 1400px;
+  }
+
+  .deck-card {
+    transform-style: preserve-3d;
+    will-change: transform, opacity;
+  }
+
+  /* Véu que escurece o card conforme ele sai de cena; a intensidade vem da
+     variável --deck-dim, atualizada por JS junto com o transform. */
+  .deck-dim {
+    position: absolute;
+    inset: 0;
+    background: #030712;
+    opacity: var(--deck-dim, 0);
+    pointer-events: none;
+  }
+
+  /* Número do contador entra deslizando de baixo a cada troca de card. */
+  .deck-count {
+    animation: deck-count-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  @keyframes deck-count-in {
+    from {
+      opacity: 0;
+      transform: translateY(0.7em);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .deck-count {
+      animation: none;
+    }
+  }
+
   /* Brand utilities */
   .brand-border {
     @apply border border-[var(--brand-blue)]/30 hover:border-[var(--brand-blue)] transition-colors duration-300;

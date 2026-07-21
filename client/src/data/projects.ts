@@ -27,6 +27,8 @@ export type Project = {
   repoUrl: string;
   category: "Web" | "Landing Page" | "Plataformas";
   caseStudy?: ProjectCaseStudy;
+  /** Aparece no deck com scroll da seção "Projetos em destaque". */
+  featured?: boolean;
 };
 
 export const projects: Project[] = [
@@ -84,26 +86,6 @@ export const projects: Project[] = [
     },
   },
   {
-    id: 2,
-    title: "Cícero Experience - Inteligência de Visitação do Horto",
-    description: {
-      pt: "Sistema para a gestão ambiental do Horto do Padre Cícero, com check-in via QR Code e dashboard integrado para contabilizar visitantes e apoiar melhorias na infraestrutura e no fluxo de entrada.",
-      en: "System for the environmental management of the Padre Cícero Horto, with QR Code check-in and an integrated dashboard to count visitors and support improvements in infrastructure and entry flow.",
-    },
-    tags: [
-      "Python",
-      "Django",
-      "Django REST Framework",
-      "PostgreSQL",
-      "Dashboard",
-      "QR Code",
-    ],
-    image: "/images/imager5.webp",
-    liveUrl: "https://ciceroexperience.vercel.app",
-    repoUrl: "https://github.com/helionlf/ciceroExperience_api",
-    category: "Plataformas",
-  },
-  {
     id: 3,
     title: "Landing Page E-book Virtual",
     description: {
@@ -141,6 +123,7 @@ export const projects: Project[] = [
     liveUrl: "https://mgaldeota.vercel.app/",
     repoUrl: "https://github.com/mhrzfrota/mgaldeota",
     category: "Landing Page",
+    featured: true,
   },
   {
     id: 7,
@@ -194,6 +177,7 @@ export const projects: Project[] = [
     liveUrl: "https://www.tzproducoes.com.br/",
     repoUrl: "https://github.com/mhrzfrota",
     category: "Landing Page",
+    featured: true,
   },
   {
     id: 11,
@@ -222,6 +206,7 @@ export const projects: Project[] = [
     liveUrl: "https://viashoppingcar.com.br",
     repoUrl: "https://github.com/mhrzfrota",
     category: "Web",
+    featured: true,
   },
   {
     id: 1,
@@ -283,6 +268,7 @@ export const projects: Project[] = [
     liveUrl: "https://montadorafenix.com.br",
     repoUrl: "https://github.com/mhrzfrota",
     category: "Web",
+    featured: true,
     caseStudy: {
       clientProblem: {
         pt: "A Montadora Fênix precisava renovar sua presença digital para comunicar melhor sua experiência em arquitetura de eventos, apresentar a qualidade dos stands já produzidos e facilitar o primeiro contato de novos clientes.",
@@ -336,6 +322,19 @@ export const projects: Project[] = [
         en: "I want an institutional website",
       },
     },
+  },
+  {
+    id: 14,
+    title: "Amsterdam Advocacia - Landing Page",
+    description: {
+      pt: "Landing page premium para escritório de advocacia com mais de 40 anos de atuação, com identidade de marca aplicada, seção de missão, visão e valores e apresentação dos sócios.",
+      en: "Premium landing page for a 40-year law firm, with the brand identity applied, a mission/vision/values section and partner presentation.",
+    },
+    tags: ["HTML", "CSS", "JavaScript", "Landing Page"],
+    image: "/images/amsterdam.png",
+    liveUrl: "https://amsterdan.vercel.app/",
+    repoUrl: "https://github.com/mhrzfrota",
+    category: "Landing Page",
   },
 ];
 

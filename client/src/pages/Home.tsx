@@ -12,6 +12,7 @@ import { WHATSAPP_BUDGET_URL } from "@/const";
 import { getPosts } from "@/data/posts";
 import { useLanguage, type Lang } from "@/contexts/LanguageContext";
 import { getStrings } from "@/i18n/strings";
+import ProjectDeck from "@/components/ProjectDeck";
 import ProjectsCategoryPage from "@/components/ProjectsCategoryPage";
 import StackShowcase from "@/components/StackShowcase";
 import Hero from "@/components/hero/Hero";
@@ -80,6 +81,7 @@ export default function Home() {
 
       {/* PROJETOS */}
       <section id="projetos" className="scroll-mt-20">
+        <ProjectDeck />
         <ProjectsCategoryPage />
       </section>
 

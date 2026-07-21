@@ -56,6 +56,8 @@ const strings = {
     },
     projects: {
       title: "Projetos em destaque",
+      allTitle: "Todos os projetos",
+      deckAria: "Vitrine de projetos em destaque",
       categories: {
         Todos: "Todos",
         Web: "Web",
@@ -238,6 +240,8 @@ const strings = {
     },
     projects: {
       title: "Featured projects",
+      allTitle: "All projects",
+      deckAria: "Featured projects showcase",
       categories: {
         Todos: "All",
         Web: "Web",
