@@ -12,6 +12,7 @@ import { WHATSAPP_BUDGET_URL } from "@/const";
 import { getPosts } from "@/data/posts";
 import { useLanguage, type Lang } from "@/contexts/LanguageContext";
 import { getStrings } from "@/i18n/strings";
+import DiagnosticoSpotlight from "@/components/DiagnosticoSpotlight";
 import ProjectDeck from "@/components/ProjectDeck";
 import ProjectsCategoryPage from "@/components/ProjectsCategoryPage";
 import StackShowcase from "@/components/StackShowcase";
@@ -87,6 +88,9 @@ export default function Home() {
 
       {/* STACK */}
       <StackShowcase />
+
+      {/* MF DIAGNÓSTICO IA */}
+      <DiagnosticoSpotlight />
 
       {/* COMBOS */}
       <section

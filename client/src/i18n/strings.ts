@@ -111,6 +111,21 @@ const strings = {
         },
       ],
     },
+    diagnostico: {
+      badge: "Ferramenta exclusiva",
+      title: "Descubra o que trava as vendas do seu negócio no digital.",
+      subtitle:
+        "O MF Diagnóstico IA analisa cinco pilares do seu negócio — posicionamento, presença digital, conversão, autoridade e automação — e entrega nota, prioridades e um plano de ação de 7 dias. Em menos de um minuto.",
+      bullets: [
+        "Nota geral e pontuação em 5 pilares",
+        "Problemas e oportunidades priorizados por impacto",
+        "Proposta de valor, conteúdo e automações sob medida",
+      ],
+      cta: "Gerar meu diagnóstico",
+      note: "Gratuito · sem cadastro · resultado na hora",
+      previewScore: "Nota geral",
+      previewPillars: ["Posicionamento", "Conversão", "Automação"],
+    },
     blog: {
       title: "Notas & ideias",
       subtitle: "Notas sobre backend, dados e construção de produtos.",
@@ -294,6 +309,21 @@ const strings = {
           ],
         },
       ],
+    },
+    diagnostico: {
+      badge: "Exclusive tool",
+      title: "Find out what's holding back your sales online.",
+      subtitle:
+        "MF Diagnóstico IA scores five pillars of your business — positioning, digital presence, conversion, authority and automation — and delivers a grade, priorities and a 7-day action plan. In under a minute.",
+      bullets: [
+        "Overall grade and scores across 5 pillars",
+        "Problems and opportunities ranked by impact",
+        "Tailored value proposition, content and automations",
+      ],
+      cta: "Run my diagnostic",
+      note: "Free · no sign-up · instant results",
+      previewScore: "Overall score",
+      previewPillars: ["Positioning", "Conversion", "Automation"],
     },
     blog: {
       title: "Notes & ideas",
