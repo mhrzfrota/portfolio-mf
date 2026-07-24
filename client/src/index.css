@@ -45,131 +45,237 @@
   --color-brand-green: var(--brand-green);
   --color-brand-green-dark: var(--brand-green-dark);
   --color-brand-ink: var(--brand-ink);
-  --font-sans: "Titillium Web", system-ui, -apple-system, arial, sans-serif;
-  --font-display: "Titillium Web", system-ui, -apple-system, arial, sans-serif;
-  --font-mono: "Titillium Web", system-ui, -apple-system, arial, sans-serif;
-  --font-weight-thin: 100;
-  --font-weight-extralight: 200;
-  --font-weight-light: 300;
-  --font-weight-normal: 300;
-  --font-weight-medium: 400;
-  --font-weight-semibold: 500;
-  --font-weight-bold: 600;
-  --font-weight-extrabold: 700;
-  --font-weight-black: 700;
+  --font-sans: "Inter", system-ui, -apple-system, arial, sans-serif;
+  --font-display: "Plus Jakarta Sans", system-ui, -apple-system, arial, sans-serif;
+  --font-mono: "Noto Sans Mono", ui-monospace, "Cascadia Mono", monospace;
 }
 
 :root {
-  /* MF Services palette — metallic charcoal + royal/steel blue (no green) */
-  --brand-blue: oklch(0.52 0.14 260); /* Royal steel blue (logo) */
-  --brand-blue-dark: oklch(0.3 0.11 263); /* Deep navy (logo) */
-  --brand-green: oklch(
-    0.66 0.11 245
-  ); /* Light steel-blue accent (repurposed) */
-  --brand-green-dark: oklch(0.46 0.1 248); /* Slate steel-blue */
-  --brand-ink: oklch(0.15 0.025 264); /* Metallic charcoal-black (MF) */
+  /* Ateliê — greige quase monocromático; cor entra pelos projetos */
+  --brand-blue: #0c2afe;
+  --brand-blue-dark: #001fdd;
+  --brand-green: #6a6a6a; /* legado, neutralizado */
+  --brand-green-dark: #4a4a4a;
+  --brand-ink: #1f1f1f;
 
-  --primary: oklch(0.52 0.14 260); /* Royal steel blue */
-  --primary-foreground: oklch(1 0 0);
+  --accent-blue: #0c2afe; /* micro-acento: links e detalhes */
+  --dot: #ed3131; /* exclusivo do status de disponibilidade */
+  --body-text: rgba(0, 0, 0, 0.65);
 
-  --sidebar-primary: oklch(0.52 0.14 260);
-  --sidebar-primary-foreground: oklch(1 0 0);
-
-  --chart-1: oklch(0.52 0.14 260);
-  --chart-2: oklch(0.66 0.11 245);
-  --chart-3: oklch(0.6 0.13 230);
-  --chart-4: oklch(0.3 0.11 263);
-  --chart-5: oklch(0.46 0.1 248);
+  --primary: #161616;
+  --primary-foreground: #ffffff;
 
   --radius: 0.5rem;
 
-  /* Mesma cor do ponto final do degradê do hero. */
-  --background: #f2f7ff;
-  --foreground: oklch(0.15 0.025 264); /* Metallic charcoal-black */
-
-  --card: oklch(0.985 0.004 264);
-  --card-foreground: oklch(0.15 0.025 264);
-
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.15 0.025 264);
-
-  --secondary: oklch(0.96 0.008 264);
-  --secondary-foreground: oklch(0.15 0.025 264);
-
-  --muted: oklch(0.965 0.005 264);
-  --muted-foreground: oklch(0.45 0.02 264);
-
-  --accent: oklch(0.66 0.11 245); /* Steel-blue accent */
-  --accent-foreground: oklch(0.15 0.03 264);
-
+  --background: #ededed;
+  --foreground: #161616;
+  --card: #ffffff;
+  --card-foreground: #161616;
+  --popover: #ffffff;
+  --popover-foreground: #161616;
+  --secondary: #f3f3f3;
+  --secondary-foreground: #161616;
+  --muted: #f3f3f3;
+  --muted-foreground: #6a6a6a;
+  --accent: #f3f3f3;
+  --accent-foreground: #161616;
   --destructive: oklch(0.6 0.2 25);
   --destructive-foreground: oklch(0.98 0 0);
+  --border: #d9d9d9;
+  --input: #d9d9d9;
+  --ring: #161616;
 
-  --border: oklch(0.9 0.008 264);
-  --input: oklch(0.9 0.008 264);
-  --ring: oklch(0.52 0.14 260);
+  --chart-1: #161616;
+  --chart-2: #6a6a6a;
+  --chart-3: #0c2afe;
+  --chart-4: #9a9a9a;
+  --chart-5: #d9d9d9;
 
-  --sidebar: oklch(1 0 0);
-  --sidebar-foreground: oklch(0.15 0.025 264);
-  --sidebar-accent: oklch(0.96 0.008 264);
-  --sidebar-accent-foreground: oklch(0.15 0.025 264);
-  --sidebar-border: oklch(0.9 0.008 264);
-  --sidebar-ring: oklch(0.52 0.14 260);
+  --sidebar: #ffffff;
+  --sidebar-foreground: #161616;
+  --sidebar-primary: #161616;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #f3f3f3;
+  --sidebar-accent-foreground: #161616;
+  --sidebar-border: #d9d9d9;
+  --sidebar-ring: #161616;
 }
 
 .dark {
-  /* MF Services — dark: deep charcoal + royal/steel blue accents (no green) */
-  --brand-blue: oklch(0.64 0.15 260);
-  --brand-blue-dark: oklch(0.32 0.12 263);
-  --brand-green: oklch(0.74 0.11 245);
-  --brand-green-dark: oklch(0.48 0.1 248);
-  /* brand-ink stays permanently dark so dark accent panels keep contrast on white text */
-  --brand-ink: oklch(0.15 0.025 264);
+  --brand-blue: #7c8cff;
+  --brand-blue-dark: #5b6cf0;
+  --brand-green: #9a9a9a;
+  --brand-green-dark: #6a6a6a;
+  --brand-ink: #1f1f1f; /* folhas escuras continuam escuras nos dois temas */
 
-  --primary: oklch(0.64 0.15 260);
-  --primary-foreground: oklch(0.05 0.02 264);
+  --accent-blue: #7c8cff;
+  --dot: #ed3131;
+  --body-text: rgba(255, 255, 255, 0.65);
 
-  --sidebar-primary: oklch(0.64 0.15 260);
-  --sidebar-primary-foreground: oklch(0.05 0.02 264);
+  --primary: #ededed;
+  --primary-foreground: #161616;
 
-  /* Mesma cor do ponto final do degradê do hero no tema escuro. */
-  --background: #05080f;
-  --foreground: oklch(0.95 0.008 264);
-
-  --card: oklch(0.14 0.025 264);
-  --card-foreground: oklch(0.95 0.008 264);
-
-  --popover: oklch(0.11 0.022 264);
-  --popover-foreground: oklch(0.95 0.008 264);
-
-  --secondary: oklch(0.2 0.03 264);
-  --secondary-foreground: oklch(0.9 0.015 264);
-
-  --muted: oklch(0.18 0.028 264);
-  --muted-foreground: oklch(0.65 0.02 264);
-
-  --accent: oklch(0.74 0.11 245);
-  --accent-foreground: oklch(0.1 0.03 264);
-
+  --background: #0f0f0f;
+  --foreground: #f2f2f2;
+  --card: #1a1a1a;
+  --card-foreground: #f2f2f2;
+  --popover: #1a1a1a;
+  --popover-foreground: #f2f2f2;
+  --secondary: #171717;
+  --secondary-foreground: #f2f2f2;
+  --muted: #171717;
+  --muted-foreground: #9a9a9a;
+  --accent: #171717;
+  --accent-foreground: #f2f2f2;
   --destructive: oklch(0.6 0.2 25);
   --destructive-foreground: oklch(0.98 0 0);
+  --border: #2a2a2a;
+  --input: #2a2a2a;
+  --ring: #f2f2f2;
 
-  --border: oklch(0.26 0.03 264);
-  --input: oklch(0.26 0.03 264);
-  --ring: oklch(0.64 0.15 260);
+  --chart-1: #f2f2f2;
+  --chart-2: #9a9a9a;
+  --chart-3: #7c8cff;
+  --chart-4: #6a6a6a;
+  --chart-5: #2a2a2a;
 
-  --chart-1: oklch(0.64 0.15 260);
-  --chart-2: oklch(0.74 0.11 245);
-  --chart-3: oklch(0.68 0.14 230);
-  --chart-4: oklch(0.5 0.13 262);
-  --chart-5: oklch(0.55 0.12 248);
+  --sidebar: #141414;
+  --sidebar-foreground: #f2f2f2;
+  --sidebar-primary: #ededed;
+  --sidebar-primary-foreground: #161616;
+  --sidebar-accent: #171717;
+  --sidebar-accent-foreground: #f2f2f2;
+  --sidebar-border: #2a2a2a;
+  --sidebar-ring: #f2f2f2;
+}
 
-  --sidebar: oklch(0.09 0.02 264);
-  --sidebar-foreground: oklch(0.95 0.008 264);
-  --sidebar-accent: oklch(0.18 0.028 264);
-  --sidebar-accent-foreground: oklch(0.74 0.11 245);
-  --sidebar-border: oklch(0.26 0.03 264);
-  --sidebar-ring: oklch(0.64 0.15 260);
+/* ---------- Ateliê: peças compartilhadas ---------- */
+@layer components {
+  /* Badge-pílula preta que rima as seções (SERVICES/PLANS da referência). */
+  .atelier-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 9999px;
+    background: var(--brand-ink);
+    color: #fff;
+    padding: 0.4rem 0.95rem;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .dark .atelier-badge {
+    background: #ededed;
+    color: #161616;
+  }
+
+  /* Anotações manuscritas — sempre decorativas (aria-hidden). */
+  .scribble {
+    font-family: "Gloria Hallelujah", "Caveat", cursive;
+    font-size: 15px;
+    line-height: 1.3;
+    color: var(--body-text);
+  }
+
+  /* Dot de disponibilidade com glow, exclusivo do vermelho --dot. */
+  .status-dot {
+    display: inline-block;
+    height: 0.5rem;
+    width: 0.5rem;
+    flex-shrink: 0;
+    border-radius: 9999px;
+    background: var(--dot);
+    box-shadow: 0 0 20px rgba(237, 49, 49, 0.5);
+    animation: dot-pulse 1.6s ease-in-out infinite;
+  }
+
+  @keyframes dot-pulse {
+    50% {
+      opacity: 0.35;
+    }
+  }
+
+  /* CTA pill preta canônica (substitui .hero-btn-primary a partir da task 9). */
+  .pill-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    border-radius: 9999px;
+    background: var(--brand-ink);
+    color: #fff;
+    padding: 0.8rem 1.5rem;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    transition:
+      transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+      background-color 0.3s ease,
+      box-shadow 0.3s ease;
+  }
+
+  .pill-cta:hover {
+    transform: translateY(-2px);
+    background: #000;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+  }
+
+  .dark .pill-cta {
+    background: #ededed;
+    color: #161616;
+  }
+
+  .dark .pill-cta:hover {
+    background: #fff;
+  }
+
+  /* Palavra ciclante da headline: itálico do próprio Plus Jakarta. */
+  .hero-area {
+    font-style: italic;
+    font-weight: 600;
+    letter-spacing: -0.04em;
+  }
+
+  /* Balões de depoimento do hero (rabinho via ::after rotacionado). */
+  .hero-bubble {
+    position: relative;
+    max-width: 230px;
+    border-radius: 16px;
+    background: var(--brand-ink);
+    color: #fff;
+    padding: 0.7rem 0.95rem;
+    text-align: left;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+  }
+
+  .hero-bubble::after {
+    content: "";
+    position: absolute;
+    bottom: -5px;
+    left: 26px;
+    height: 12px;
+    width: 12px;
+    background: inherit;
+    transform: rotate(45deg);
+    border-radius: 2px;
+  }
+
+  .dark .hero-bubble {
+    background: #ededed;
+    color: #161616;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .status-dot {
+      animation: none;
+    }
+
+    .pill-cta {
+      transition: none;
+    }
+  }
 }
 
 @layer base {
@@ -183,7 +289,6 @@
   }
   body {
     @apply bg-background text-foreground font-sans antialiased selection:bg-primary/20 selection:text-primary;
-    font-weight: var(--font-weight-normal);
   }
   h1,
   h2,
@@ -192,9 +297,10 @@
   h5,
   h6 {
     font-family: var(--font-display);
-    font-weight: var(--font-weight-bold);
-    letter-spacing: 0;
-    line-height: 1.08;
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    line-height: 1.05;
+    text-wrap: balance;
   }
 }
 
@@ -415,7 +521,7 @@
     gap: 0.6rem;
     overflow: hidden;
     border-radius: 9999px;
-    font-weight: var(--font-weight-semibold);
+    font-weight: 600;
     font-size: 0.95rem;
     letter-spacing: -0.01em;
     white-space: nowrap;
@@ -537,10 +643,10 @@
      suavemente quando o useRevealOnScroll adiciona .is-revealed. */
   [data-reveal] {
     opacity: 0;
-    transform: translateY(18px);
+    transform: translateY(60px);
     transition:
-      opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+      opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   [data-reveal].is-revealed {
@@ -602,7 +708,7 @@
 
   .hero-headline {
     font-family: var(--font-display);
-    font-weight: var(--font-weight-bold);
+    font-weight: 700;
     font-size: clamp(2.5rem, 8.5vw, 5.25rem);
     line-height: 1;
     letter-spacing: -0.03em;
@@ -961,40 +1067,3 @@
   }
 }
 
-@layer utilities {
-  .font-thin {
-    font-weight: var(--font-weight-thin);
-  }
-
-  .font-extralight {
-    font-weight: var(--font-weight-extralight);
-  }
-
-  .font-light {
-    font-weight: var(--font-weight-light);
-  }
-
-  .font-normal {
-    font-weight: var(--font-weight-normal);
-  }
-
-  .font-medium {
-    font-weight: var(--font-weight-medium);
-  }
-
-  .font-semibold {
-    font-weight: var(--font-weight-semibold);
-  }
-
-  .font-bold {
-    font-weight: var(--font-weight-bold);
-  }
-
-  .font-extrabold {
-    font-weight: var(--font-weight-extrabold);
-  }
-
-  .font-black {
-    font-weight: var(--font-weight-black);
-  }
-}
