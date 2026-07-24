@@ -1285,6 +1285,11 @@ git commit -m "fix(redesign): ajustes finais da verificação"
 
 ---
 
+## Progresso da execução
+
+- **Task 1: COMPLETA** (commits `22b5419` + `f68ecec`, review aprovado). Retomar na **Task 2**.
+- Modo: superpowers:subagent-driven-development, branch `feat/redesign-atelie`.
+
 ## Self-review do plano (executado na escrita)
 
 - **Cobertura do spec:** tokens (T1), tipografia (T1), navbar (T5), hero (T4), stack (T6), bento+deck (T7), grade (T8), diagnóstico (T9), combos (T10), blog (T11), contato/rodapé/orbital/monograma (T12), remoções e páginas internas (T13), verificação (T14). Testimonials: dados na T3, render na T4. ✓
