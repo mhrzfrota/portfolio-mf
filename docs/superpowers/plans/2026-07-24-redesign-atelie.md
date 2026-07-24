@@ -1087,9 +1087,7 @@ Adicionar ao index.css (dentro do `@layer components` do Ateliê da task 1):
 
 ```tsx
 import { MessageCircle } from "lucide-react";
-import { useDeferredValue } from "react";
 import { SOCIALS, WHATSAPP_BUDGET_URL } from "@/const";
-import { useTheme } from "@/contexts/ThemeContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { getStrings } from "@/i18n/strings";
 import { projects } from "@/data/projects";
@@ -1101,10 +1099,6 @@ const RING_RADIUS = 165; // px — raio do anel de thumbnails
 export default function ContactSheet() {
   const { lang } = useLanguage();
   const t = getStrings(lang);
-  // Evita re-bake do environment 3D travar o clique de tema (mesmo truque do hero antigo).
-  useTheme();
-  const monogramDark = useDeferredValue(true);
-
   const thumbs = projects.slice(0, 12);
 
   return (
@@ -1198,7 +1192,8 @@ export default function ContactSheet() {
                 );
               })}
             </div>
-            <HeroMonogram isDark={monogramDark} className="h-[220px] max-w-[320px]" />
+            {/* A folha é escura nos dois temas: environment sempre dark. */}
+            <HeroMonogram isDark className="h-[220px] max-w-[320px]" />
           </div>
 
           <div className="mt-12 flex w-full flex-col items-center justify-between gap-4 border-t border-white/10 pt-6 text-[12px] text-white/45 sm:flex-row">
