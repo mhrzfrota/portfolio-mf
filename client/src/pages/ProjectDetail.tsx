@@ -86,7 +86,7 @@ export default function ProjectDetail({
 
           <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center">
             <RollButton
-              variant="blue"
+              variant="black"
               size="md"
               label={caseStudy.ctaLabel[lang]}
               href={WHATSAPP_BUDGET_URL}

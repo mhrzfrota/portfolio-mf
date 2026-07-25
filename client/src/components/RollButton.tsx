@@ -1,21 +1,21 @@
 import { ArrowRight } from "lucide-react";
+import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 const easing = "ease-[cubic-bezier(0.25,0.1,0.25,1)]";
 
 const variantStyles = {
-  blue: {
-    pill: "bg-[#0C2AFE] text-white hover:bg-[#001FDD]",
-    circle: "bg-white text-[#0C2AFE]",
-  },
-  dark: {
-    pill: "bg-[var(--brand-ink)] text-white hover:bg-[#0C2AFE] dark:bg-white dark:text-[var(--brand-ink)] dark:hover:bg-white/85",
-    circle:
-      "bg-white text-[var(--brand-ink)] dark:bg-[var(--brand-ink)] dark:text-white",
+  black: {
+    pill: "bg-[var(--brand-ink)] text-white hover:bg-black dark:bg-[#EDEDED] dark:text-[#161616] dark:hover:bg-white",
+    circle: "bg-white text-[var(--brand-ink)] dark:bg-[#161616] dark:text-white",
   },
   white: {
-    pill: "bg-white text-[#0b1020] shadow-[0_2px_8px_rgba(0,0,0,0.08)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)]",
-    circle: "bg-[#0C2AFE] text-white",
+    pill: "bg-white text-[#161616] shadow-[0_3px_4px_-2px_rgba(0,0,0,0.1)] hover:shadow-[0_10px_26px_rgba(0,0,0,0.16)]",
+    circle: "bg-[var(--brand-ink)] text-white",
+  },
+  outline: {
+    pill: "border border-border bg-transparent text-foreground hover:border-foreground",
+    circle: "border border-border text-foreground",
   },
 };
 
@@ -40,6 +40,7 @@ type RollButtonProps = {
   onClick?: () => void;
   variant?: keyof typeof variantStyles;
   size?: keyof typeof sizeStyles;
+  leading?: ReactNode;
   className?: string;
 };
 
@@ -49,8 +50,9 @@ export default function RollButton({
   external = false,
   download,
   onClick,
-  variant = "blue",
+  variant = "black",
   size = "md",
+  leading,
   className,
 }: RollButtonProps) {
   const v = variantStyles[variant];
@@ -65,6 +67,7 @@ export default function RollButton({
 
   const content = (
     <>
+      {leading}
       <span className="block h-5 overflow-hidden">
         <span
           className={cn(

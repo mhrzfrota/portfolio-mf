@@ -215,7 +215,7 @@ export default function ProjectDeck() {
         {/* Ação do projeto ativo, à direita. */}
         <div className="absolute right-6 top-1/2 z-20 hidden -translate-y-1/2 md:block lg:right-12">
           <RollButton
-            variant="dark"
+            variant="black"
             size="md"
             label={activeAction.label}
             href={activeAction.href}
@@ -235,7 +235,7 @@ export default function ProjectDeck() {
             / {pad(count)}
           </span>
           <RollButton
-            variant="dark"
+            variant="black"
             size="sm"
             label={activeAction.label}
             href={activeAction.href}

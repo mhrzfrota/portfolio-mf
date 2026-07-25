@@ -278,7 +278,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <RollButton
             className="mt-6 w-full"
             size="md"
-            variant="blue"
+            variant="black"
             label={t.topbar.requestQuote}
             href={WHATSAPP_BUDGET_URL}
             external

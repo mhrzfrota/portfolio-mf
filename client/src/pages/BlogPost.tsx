@@ -162,7 +162,7 @@ export default function BlogPost({
         </p>
         <div className="mt-6 flex justify-center">
           <RollButton
-            variant="blue"
+            variant="black"
             size="md"
             label={t.blogPost.ctaButton}
             href={WHATSAPP_BUDGET_URL}

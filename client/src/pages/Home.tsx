@@ -212,7 +212,7 @@ export default function Home() {
                 <RollButton
                   className="mt-8 w-full"
                   size="md"
-                  variant={combo.featured ? "white" : "blue"}
+                  variant={combo.featured ? "white" : "black"}
                   label={t.combos.cta}
                   href={combo.href}
                   external
