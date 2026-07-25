@@ -17,6 +17,7 @@ import {
 import { useLanguage, type Lang } from "@/contexts/LanguageContext";
 import { getStrings } from "@/i18n/strings";
 import { cn } from "@/lib/utils";
+import LazyVideo from "@/components/LazyVideo";
 
 const projectsByNewest = [...allProjects].reverse();
 
@@ -246,56 +247,6 @@ export function getProjectAction(project: Project, lang: Lang) {
  * Fora dela o navegador mostra apenas o poster — em vez de baixar e decodificar
  * os 5 vídeos da home de uma vez (pesado demais no mobile).
  */
-function LazyVideo({
-  src,
-  poster,
-  title,
-  className,
-}: {
-  src: string;
-  poster: string;
-  title: string;
-  className: string;
-}) {
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          video.play().catch(() => {});
-        } else {
-          video.pause();
-        }
-      },
-      // Margem generosa: o vídeo começa a carregar um pouco antes de aparecer,
-      // então visualmente continua "sempre tocando" como no autoplay antigo.
-      { rootMargin: "25% 25%" }
-    );
-
-    observer.observe(video);
-    return () => observer.disconnect();
-  }, []);
-
-  return (
-    <video
-      ref={videoRef}
-      src={src}
-      poster={poster}
-      preload="none"
-      loop
-      muted
-      playsInline
-      draggable={false}
-      aria-label={title}
-      className={className}
-    />
-  );
-}
-
 function ProjectCard({ project, dark }: { project: Project; dark: boolean }) {
   const { lang } = useLanguage();
   const t = getStrings(lang);
