@@ -45,7 +45,7 @@ export default function ProjectsCategoryPage() {
           data-reveal
           className="mb-8 flex flex-col gap-6 sm:mb-10 md:flex-row md:items-end md:justify-between"
         >
-          <h2 className="text-[clamp(1.75rem,7vw,4.2rem)] font-medium leading-[1.08] tracking-[-0.03em] text-foreground sm:text-[clamp(2.5rem,5vw,4.2rem)]">
+          <h2 className="text-[clamp(1.75rem,7vw,4.2rem)] font-semibold leading-[1.08] tracking-[-0.04em] text-foreground sm:text-[clamp(2.5rem,5vw,4.2rem)]">
             {t.projects.allTitle}
           </h2>
 
@@ -61,7 +61,7 @@ export default function ProjectsCategoryPage() {
                     "rounded-full border px-4 py-2 text-[13px] font-medium transition-colors duration-300",
                     active
                       ? "border-[var(--brand-ink)] bg-[var(--brand-ink)] text-white dark:border-white dark:bg-white dark:text-[var(--brand-ink)]"
-                      : "border-border bg-card text-muted-foreground hover:border-[#0C2AFE] hover:text-[#0C2AFE]"
+                      : "border-border bg-card text-muted-foreground hover:border-foreground hover:text-foreground"
                   )}
                 >
                   {t.projects.categories[category] ?? category}
@@ -319,7 +319,7 @@ function ProjectCard({ project, dark }: { project: Project; dark: boolean }) {
               target="_blank"
               rel="noreferrer"
               draggable={false}
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors duration-300 hover:border-[#0C2AFE] hover:text-[#0C2AFE]"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors duration-300 hover:border-foreground hover:text-foreground"
               aria-label={`${t.projects.visitProject}: ${project.title}`}
             >
               <ExternalLink size={15} />
@@ -331,7 +331,7 @@ function ProjectCard({ project, dark }: { project: Project; dark: boolean }) {
               target="_blank"
               rel="noreferrer"
               draggable={false}
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors duration-300 hover:border-[#0C2AFE] hover:text-[#0C2AFE]"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors duration-300 hover:border-foreground hover:text-foreground"
               aria-label={`${t.projects.openRepo} ${project.title}`}
             >
               <Github size={15} />
