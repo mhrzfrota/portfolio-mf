@@ -4,11 +4,9 @@ import {
   Calendar,
   Check,
   Layers,
-  MessageCircle,
   Rocket,
 } from "lucide-react";
 import { Link } from "wouter";
-import { WHATSAPP_BUDGET_URL } from "@/const";
 import { getPosts } from "@/data/posts";
 import { useLanguage, type Lang } from "@/contexts/LanguageContext";
 import { getStrings } from "@/i18n/strings";
@@ -296,123 +294,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CONTATO */}
-      <section
-        id="contato"
-        className="scroll-mt-20 bg-background py-16 sm:py-20 lg:py-28"
-      >
-        <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
-          <h2
-            data-reveal
-            className="text-[clamp(1.5rem,4vw,3.2rem)] font-medium leading-[1.12] tracking-[-0.02em] text-foreground"
-          >
-            {t.contact.title}
-          </h2>
-          <p
-            data-reveal
-            className="reveal-delay-1 mt-4 max-w-2xl text-[14px] leading-relaxed text-muted-foreground sm:text-[15px]"
-          >
-            {t.contact.subtitle}
-          </p>
-
-          <div
-            data-reveal
-            className="reveal-delay-2 mt-10 grid items-start gap-6 sm:mt-14 lg:grid-cols-[1.2fr_0.8fr] lg:gap-8"
-          >
-            <div className="relative overflow-hidden rounded-2xl bg-[var(--brand-ink)] p-7 text-white sm:rounded-[2rem] sm:p-10 lg:p-12">
-              <div className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-[#0C2AFE]/40 blur-3xl" />
-              <div className="absolute -bottom-20 -left-20 h-56 w-56 rounded-full bg-[#5B7CFF]/20 blur-3xl" />
-
-              <div className="relative space-y-7">
-                <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3.5 py-1.5 text-[12px] font-medium text-white/80">
-                  <span className="h-2 w-2 rounded-full bg-[#7C8CFF]" />
-                  {t.contact.directBadge}
-                </span>
-
-                <div className="space-y-4">
-                  <h3 className="max-w-2xl text-[clamp(1.6rem,4vw,3rem)] font-medium leading-[1.1] tracking-[-0.02em]">
-                    {t.contact.whatsappTitlePrefix}{" "}
-                    <span className="text-[#7C8CFF]">WhatsApp</span>.
-                  </h3>
-                  <p className="max-w-xl text-[14px] leading-relaxed text-white/65 sm:text-[15px]">
-                    {t.contact.whatsappParagraph}
-                  </p>
-                </div>
-
-                <RollButton
-                  variant="white"
-                  size="md"
-                  label={t.contact.sendMessage}
-                  href={WHATSAPP_BUDGET_URL}
-                  external
-                />
-
-                <div className="grid gap-4 pt-2 sm:grid-cols-3">
-                  {t.contact.highlights.map((item, index) => (
-                    <div
-                      key={item.title}
-                      className="rounded-xl border border-white/10 bg-white/[0.04] px-4 py-5 transition-colors duration-300 hover:border-[#7C8CFF]/60 hover:bg-white/[0.07]"
-                    >
-                      <span className="text-[11px] font-semibold text-[#7C8CFF]">
-                        0{index + 1}
-                      </span>
-                      <h4 className="mt-3 text-[15px] font-semibold text-white">
-                        {item.title}
-                      </h4>
-                      <p className="mt-2 text-[13px] leading-relaxed text-white/60">
-                        {item.description}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            <aside className="space-y-5">
-              <div className="rounded-2xl border border-border bg-card p-6 sm:p-7">
-                <h3 className="text-[17px] font-semibold text-foreground">
-                  {t.contact.contactInfo}
-                </h3>
-                <div className="mt-5 flex items-start gap-4">
-                  <div className="rounded-full bg-[#0C2AFE]/10 p-3 text-[#0C2AFE] dark:text-[#7C8CFF]">
-                    <MessageCircle className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
-                      WhatsApp
-                    </p>
-                    <a
-                      href={WHATSAPP_BUDGET_URL}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="text-[15px] font-semibold text-foreground transition-colors hover:text-[#0C2AFE]"
-                    >
-                      (85) 99637-0080
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-              <div className="rounded-2xl bg-[#0C2AFE] p-6 text-white sm:p-7">
-                <h4 className="text-[17px] font-semibold">
-                  {t.contact.resumeTitle}
-                </h4>
-                <p className="mt-2 text-[13px] leading-relaxed text-white/75">
-                  {t.contact.resumeParagraph}
-                </p>
-                <RollButton
-                  className="mt-5"
-                  variant="white"
-                  size="sm"
-                  label={t.contact.downloadPdf}
-                  href="/curriculo.pdf"
-                  download="Curriculo-Matheus-Frota.pdf"
-                />
-              </div>
-            </aside>
-          </div>
-        </div>
-      </section>
     </div>
   );
 }

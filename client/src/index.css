@@ -267,8 +267,35 @@
     color: #161616;
   }
 
+  /* Anel orbital do rodapé: gira o container; thumbs circulares dispensam
+     contra-rotação. */
+  .orbital-spin {
+    animation: orbital-spin 60s linear infinite;
+  }
+
+  @keyframes orbital-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* Feixes de luz da folha preta (skew fixo, sem animação). */
+  .sheet-beam {
+    position: absolute;
+    top: -20%;
+    height: 140%;
+    width: 3.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    transform: skewX(45deg);
+    pointer-events: none;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .status-dot {
+      animation: none;
+    }
+
+    .orbital-spin {
       animation: none;
     }
 

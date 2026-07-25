@@ -1,40 +1,16 @@
 import { useEffect, useState } from "react";
-import {
-  Clock,
-  Github,
-  Instagram,
-  Linkedin,
-  Menu,
-  MessageCircle,
-  Moon,
-  Sun,
-  X,
-} from "lucide-react";
+import { Clock, Menu, Moon, Sun, X } from "lucide-react";
 import { useLocation } from "wouter";
 import { cn } from "@/lib/utils";
-import { WHATSAPP_BUDGET_URL } from "@/const";
+import { SOCIALS, WHATSAPP_BUDGET_URL } from "@/const";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { getStrings } from "@/i18n/strings";
 import { useRevealOnScroll } from "@/lib/useRevealOnScroll";
 import RollButton from "@/components/RollButton";
+import ContactSheet from "@/components/ContactSheet";
 
 const navIds = ["inicio", "projetos", "combos", "blog", "contato"] as const;
-
-const socials = [
-  { href: "https://github.com/mhrzfrota", label: "GitHub", Icon: Github },
-  {
-    href: "https://www.linkedin.com/in/matheusfrt",
-    label: "LinkedIn",
-    Icon: Linkedin,
-  },
-  {
-    href: "https://www.instagram.com/emefeservices",
-    label: "Instagram",
-    Icon: Instagram,
-  },
-  { href: WHATSAPP_BUDGET_URL, label: "WhatsApp", Icon: MessageCircle },
-];
 
 const timeFormatter = new Intl.DateTimeFormat("pt-BR", {
   hour: "2-digit",
@@ -269,7 +245,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </nav>
 
           <div className="mt-6 flex items-center gap-2">
-            {socials.map(({ href, label, Icon }) => (
+            {SOCIALS.map(({ href, label, Icon }) => (
               <a
                 key={label}
                 href={href}
@@ -297,36 +273,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       {/* Conteúdo */}
       <main className="relative">{children}</main>
 
-      {/* Footer */}
-      <footer className="border-t border-border bg-background">
-        <div className="mx-auto flex max-w-[1440px] flex-col items-center justify-between gap-5 px-5 py-8 sm:px-8 md:flex-row lg:px-12">
-          <div className="flex items-center gap-4">
-            <img
-              src="/logo2-removebg-preview.png"
-              alt="MF Services"
-              className="h-10 w-auto dark:brightness-0 dark:invert"
-            />
-            <p className="text-[12px] leading-relaxed text-muted-foreground">
-              © {new Date().getFullYear()} MF Services — Matheus Frota
-              <br className="hidden sm:block" /> {t.footer.role}
-            </p>
-          </div>
-          <div className="flex gap-2">
-            {socials.map(({ href, label, Icon }) => (
-              <a
-                key={label}
-                href={href}
-                target="_blank"
-                rel="noreferrer"
-                className="flex h-9 w-9 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:border-[#0C2AFE] hover:text-[#0C2AFE]"
-                aria-label={label}
-              >
-                <Icon className="h-4 w-4" />
-              </a>
-            ))}
-          </div>
-        </div>
-      </footer>
+      {/* Folha preta de contato + rodapé (todas as rotas) */}
+      <ContactSheet />
     </div>
   );
 }

@@ -1,7 +1,25 @@
+import { Github, Instagram, Linkedin, MessageCircle } from "lucide-react";
+
 export { COOKIE_NAME, ONE_YEAR_MS } from "@shared/const";
 
 export const WHATSAPP_BUDGET_URL =
   "https://wa.me/5585996370080?text=Ol%C3%A1!%20Quero%20fazer%20um%20or%C3%A7amento.";
+
+/** Links sociais compartilhados entre o menu mobile e a folha de contato. */
+export const SOCIALS = [
+  { href: "https://github.com/mhrzfrota", label: "GitHub", Icon: Github },
+  {
+    href: "https://www.linkedin.com/in/matheusfrt",
+    label: "LinkedIn",
+    Icon: Linkedin,
+  },
+  {
+    href: "https://www.instagram.com/emefeservices",
+    label: "Instagram",
+    Icon: Instagram,
+  },
+  { href: WHATSAPP_BUDGET_URL, label: "WhatsApp", Icon: MessageCircle },
+];
 
 // Generate login URL at runtime so redirect URI reflects the current origin.
 export const getLoginUrl = () => {

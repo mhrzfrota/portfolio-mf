@@ -49,18 +49,26 @@ function FlatMonogram() {
   );
 }
 
-export default function HeroMonogram({ isDark }: { isDark: boolean }) {
+export default function HeroMonogram({
+  isDark,
+  className,
+}: {
+  isDark: boolean;
+  className?: string;
+}) {
   const reduced = usePrefersReducedMotion();
 
   return (
-    <div className="relative h-[clamp(170px,26vh,280px)] w-full max-w-[600px]">
-      {/* halo por trás da peça — separa o metal do céu sem lavar os reflexos */}
+    <div
+      className={cn(
+        "relative h-[clamp(170px,26vh,280px)] w-full max-w-[600px]",
+        className
+      )}
+    >
+      {/* halo por trás da peça — separa o metal do fundo sem lavar os reflexos */}
       <div
         aria-hidden="true"
-        className={cn(
-          "pointer-events-none absolute left-1/2 top-1/2 h-[70%] w-[62%] -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl",
-          isDark ? "bg-[#2f5bff]/30" : "bg-white/30"
-        )}
+        className="pointer-events-none absolute left-1/2 top-1/2 h-[70%] w-[62%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/10 blur-3xl"
       />
       <div className="hero-monogram-in relative h-full w-full">
         <SceneBoundary fallback={<FlatMonogram />}>
