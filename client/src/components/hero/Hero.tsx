@@ -1,77 +1,97 @@
-import { useDeferredValue } from "react";
-import { ArrowRight, MessageCircle } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { WHATSAPP_BUDGET_URL } from "@/const";
-import { useTheme } from "@/contexts/ThemeContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { getStrings } from "@/i18n/strings";
-import HeroMonogram from "./HeroMonogram";
-import RotatingFacts from "./RotatingFacts";
+import { getTestimonials } from "@/data/testimonials";
 import TypeCycler from "./TypeCycler";
 
 export default function Hero() {
-  const { theme } = useTheme();
   const { lang } = useLanguage();
   const t = getStrings(lang);
-  const isDark = theme === "dark";
-  // Trocar o tema re-baka o environment do canvas 3D (caro, chega a travar a
-  // UI). Com o valor adiado, o CSS da página troca e pinta primeiro; a peça
-  // 3D acompanha um instante depois, sem segurar o clique.
-  const monogramDark = useDeferredValue(isDark);
+  // Balões só existem com depoimentos reais cadastrados (máx. 2 no hero).
+  const bubbles = getTestimonials(lang).slice(0, 2);
 
   return (
     <section
       id="inicio"
-      className="hero-sky relative flex min-h-svh flex-col items-center overflow-hidden"
+      className="relative flex min-h-svh flex-col items-center justify-center overflow-hidden bg-background px-5 pb-16 pt-28 sm:px-8"
     >
-      <div className="hero-clouds" aria-hidden="true" />
-      <div className="hero-grain" aria-hidden="true" />
-
-      <div className="relative z-10 flex w-full max-w-[880px] flex-1 flex-col items-center justify-center px-5 pb-12 pt-24 sm:px-8 sm:pt-28">
-        <HeroMonogram isDark={monogramDark} />
-
-        <div className="flex w-full flex-col items-center gap-5 text-center">
-          <h1
-            className="hero-headline hero-rise"
-            aria-label={t.hero.ariaHeadline}
+      <div className="relative mx-auto flex w-full max-w-[880px] flex-col items-center text-center">
+        {bubbles[0] && (
+          <figure
+            className="hero-bubble hero-rise absolute -top-6 left-0 hidden -rotate-[5deg] lg:block"
+            aria-hidden="true"
           >
-            <span className="block">{t.hero.headline}</span>
-            {/* key={lang}: reinicia o typewriter ao trocar de idioma */}
-            <TypeCycler
-              key={lang}
-              texts={[...t.hero.areas]}
-              className="hero-headline-area"
-            />
-          </h1>
+            <blockquote className="text-[12.5px] italic leading-snug">
+              “{bubbles[0].quote}”
+            </blockquote>
+            <figcaption className="mt-1 text-[10.5px] not-italic opacity-55">
+              — {bubbles[0].author}, {bubbles[0].role}
+            </figcaption>
+          </figure>
+        )}
+        {bubbles[1] && (
+          <figure
+            className="hero-bubble hero-rise absolute -top-10 right-0 hidden rotate-3 lg:block"
+            aria-hidden="true"
+          >
+            <blockquote className="text-[12.5px] italic leading-snug">
+              “{bubbles[1].quote}”
+            </blockquote>
+            <figcaption className="mt-1 text-[10.5px] not-italic opacity-55">
+              — {bubbles[1].author}, {bubbles[1].role}
+            </figcaption>
+          </figure>
+        )}
 
-          <p className="hero-rise hero-rise-2 max-w-xl text-balance text-[15px] leading-relaxed text-muted-foreground sm:text-[17px]">
-            {t.hero.description}
-          </p>
+        <span className="scribble hero-rise rotate-2" aria-hidden="true">
+          {t.hero.scribble}
+        </span>
 
-          <div className="hero-rise hero-rise-3 mt-1 flex flex-col items-center gap-3 sm:flex-row sm:gap-4">
-            <a
-              href={WHATSAPP_BUDGET_URL}
-              target="_blank"
-              rel="noreferrer"
-              className="hero-btn hero-btn-primary btn-drain btn-drain-blue"
-            >
-              <span>{t.hero.startProject}</span>
-              <MessageCircle className="hero-btn-icon" />
-            </a>
-            <a
-              href="#projetos"
-              className="hero-btn hero-btn-secondary btn-drain btn-drain-white"
-            >
-              <span>{t.hero.viewProjects}</span>
-              <span className="hero-btn-circle">
-                <ArrowRight className="hero-btn-arrow" />
+        <h1
+          className="hero-rise mt-5 font-display text-[clamp(2.4rem,7vw,4.5rem)] font-semibold leading-[0.98] tracking-[-0.05em] text-foreground"
+          aria-label={t.hero.ariaHeadline}
+        >
+          {t.hero.headline}{" "}
+          {/* key={lang}: reinicia o typewriter ao trocar de idioma */}
+          <TypeCycler key={lang} texts={[...t.hero.areas]} className="hero-area" />
+        </h1>
+
+        <p className="hero-rise hero-rise-2 mt-6 max-w-xl text-balance text-[15px] leading-relaxed text-[var(--body-text)] sm:text-[16px]">
+          {t.hero.description}
+        </p>
+
+        <div className="hero-rise hero-rise-3 mt-8 flex flex-col items-center gap-4 sm:flex-row sm:gap-6">
+          <a
+            href={WHATSAPP_BUDGET_URL}
+            target="_blank"
+            rel="noreferrer"
+            className="pill-cta"
+          >
+            <span className="flex items-center -space-x-2" aria-hidden="true">
+              <span className="flex h-7 w-7 items-center justify-center rounded-full border-2 border-[var(--brand-ink)] bg-[#3a3a3a] text-[9px] font-semibold text-white dark:border-[#EDEDED]">
+                {t.hero.you}
               </span>
-            </a>
-          </div>
+              <span className="flex h-7 w-7 items-center justify-center overflow-hidden rounded-full border-2 border-[var(--brand-ink)] bg-white dark:border-[#EDEDED]">
+                <img src="/logo.png" alt="" className="h-4 w-auto" />
+              </span>
+            </span>
+            {t.hero.ctaWhats}
+          </a>
 
-          <div className="hero-rise hero-rise-4 w-full">
-            <RotatingFacts key={lang} facts={[...t.hero.facts]} />
-          </div>
+          <a
+            href="#projetos"
+            className="group flex items-center gap-1.5 text-[14px] font-medium text-foreground/80 transition-colors hover:text-foreground"
+          >
+            {t.hero.viewProjects}
+            <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+          </a>
         </div>
+
+        <p className="hero-rise hero-rise-4 mt-10 flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
+          <span className="status-dot" aria-hidden="true" />
+          {t.hero.status}
+        </p>
       </div>
     </section>
   );
