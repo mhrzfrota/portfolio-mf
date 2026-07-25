@@ -32,15 +32,10 @@ const strings = {
       role: "Desenvolvedor de Software",
     },
     hero: {
-      headline: "Desenvolvedor",
-      areas: [
-        "Full Stack.",
-        "Back-end.",
-        "Web.",
-        "de Automações.",
-        "de Soluções Digitais.",
-      ],
-      ariaHeadline: "Desenvolvedor fullstack — MF Services",
+      headline: "Sites e produtos digitais que fazem seu negócio",
+      areas: ["crescer.", "vender.", "escalar."],
+      ariaHeadline:
+        "Sites e produtos digitais que fazem seu negócio crescer — MF Services",
       description:
         "Desenvolvo sites, sistemas e automações sob medida para transformar ideias em soluções que vendem, organizam processos e economizam tempo.",
       facts: [
@@ -50,6 +45,10 @@ const strings = {
       ],
       startProject: "Iniciar um projeto",
       viewProjects: "Ver projetos",
+      scribble: "é sério, olha os projetos ↓",
+      status: "Disponível para novos projetos",
+      ctaWhats: "Chamar no WhatsApp",
+      you: "Você",
     },
     stack: {
       title: "Tecnologias que uso nos projetos",
@@ -70,12 +69,17 @@ const strings = {
       rowTop: "Projetos em destaque, primeira fileira",
       rowBottom: "Projetos em destaque, segunda fileira",
     },
+    bento: {
+      viewCase: "ver case →",
+    },
     combos: {
       title: "Combos de serviços",
       subtitle:
         "Pacotes pensados para diferentes momentos do seu negócio. Não achou o ideal? Monto um escopo sob medida.",
       mostChosen: "Mais escolhido",
       from: "a partir de",
+      fixedTag: "[fixo]",
+      onRequest: "sob consulta",
       cta: "Quero este combo",
       items: [
         {
@@ -136,6 +140,9 @@ const strings = {
       subtitle:
         "Tem um projeto em mente ou quer conversar? Estou aberto a novas oportunidades.",
       directBadge: "Atendimento direto",
+      sheetTitlePrefix: "Pronto para construir algo",
+      sheetTitleAccent: "grande?",
+      sheetCta: "Chamar no WhatsApp",
       whatsappTitlePrefix: "Vamos conversar pelo",
       whatsappParagraph:
         "Clique no botão abaixo para abrir uma conversa com a mensagem de orçamento já preenchida.",
@@ -231,15 +238,10 @@ const strings = {
       role: "Software Developer",
     },
     hero: {
-      headline: "Developer",
-      areas: [
-        "Full Stack.",
-        "Back-end.",
-        "Web.",
-        "of Automations.",
-        "of Digital Solutions.",
-      ],
-      ariaHeadline: "Fullstack developer — MF Services",
+      headline: "Websites and digital products that make your business",
+      areas: ["grow.", "sell.", "scale."],
+      ariaHeadline:
+        "Websites and digital products that make your business grow — MF Services",
       description:
         "I build custom websites, systems and automations that turn ideas into solutions that sell, organize processes and save time.",
       facts: [
@@ -249,6 +251,10 @@ const strings = {
       ],
       startProject: "Start a project",
       viewProjects: "View projects",
+      scribble: "seriously, check the projects ↓",
+      status: "Available for new projects",
+      ctaWhats: "Chat on WhatsApp",
+      you: "You",
     },
     stack: {
       title: "Technologies I work with",
@@ -269,12 +275,17 @@ const strings = {
       rowTop: "Featured projects, first row",
       rowBottom: "Featured projects, second row",
     },
+    bento: {
+      viewCase: "view case →",
+    },
     combos: {
       title: "Service bundles",
       subtitle:
         "Packages designed for different moments of your business. Didn't find the right fit? I'll build a custom scope.",
       mostChosen: "Most popular",
       from: "from",
+      fixedTag: "[fixed]",
+      onRequest: "on request",
       cta: "I want this bundle",
       items: [
         {
@@ -335,6 +346,9 @@ const strings = {
       subtitle:
         "Have a project in mind or want to talk? I'm open to new opportunities.",
       directBadge: "Direct contact",
+      sheetTitlePrefix: "Ready to build something",
+      sheetTitleAccent: "big?",
+      sheetCta: "Chat on WhatsApp",
       whatsappTitlePrefix: "Let's talk on",
       whatsappParagraph:
         "Click the button below to open a conversation with a pre-filled quote message.",
