@@ -150,8 +150,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     className={cn(
                       "text-[14px] transition-colors duration-300",
                       activeSection === item.id
-                        ? "text-[#0C2AFE] dark:text-[#7C8CFF]"
-                        : "text-foreground hover:text-muted-foreground"
+                        ? "font-semibold text-foreground"
+                        : "text-muted-foreground hover:text-foreground"
                     )}
                   >
                     {item.label}
@@ -179,6 +179,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   <Moon className="h-4 w-4" />
                 )}
               </button>
+              <a
+                href={WHATSAPP_BUDGET_URL}
+                target="_blank"
+                rel="noreferrer"
+                className="rounded-full bg-[var(--brand-ink)] px-4 py-2 text-[13px] font-medium text-white transition-colors hover:bg-black dark:bg-white dark:text-[var(--brand-ink)] dark:hover:bg-white/90"
+              >
+                {t.topbar.requestQuote}
+              </a>
             </div>
 
             {/* Ações mobile */}
@@ -251,8 +259,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 className={cn(
                   "py-2 text-left text-[28px] font-medium leading-[32px] tracking-tight transition-colors",
                   activeSection === item.id
-                    ? "text-[#0C2AFE] dark:text-[#7C8CFF]"
-                    : "text-foreground"
+                    ? "font-semibold text-foreground"
+                    : "text-muted-foreground"
                 )}
               >
                 {item.label}
@@ -267,7 +275,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 href={href}
                 target="_blank"
                 rel="noreferrer"
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:border-[#0C2AFE] hover:text-[#0C2AFE]"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:border-foreground hover:text-foreground"
                 aria-label={label}
               >
                 <Icon className="h-4 w-4" />
