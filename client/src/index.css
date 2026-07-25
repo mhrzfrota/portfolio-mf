@@ -45,9 +45,9 @@
   --color-brand-green: var(--brand-green);
   --color-brand-green-dark: var(--brand-green-dark);
   --color-brand-ink: var(--brand-ink);
-  --font-sans: "Titillium Web", system-ui, -apple-system, arial, sans-serif;
-  --font-display: "Titillium Web", system-ui, -apple-system, arial, sans-serif;
-  --font-mono: "Titillium Web", system-ui, -apple-system, arial, sans-serif;
+  --font-sans: "Inter", system-ui, -apple-system, arial, sans-serif;
+  --font-display: "Plus Jakarta Sans", system-ui, -apple-system, arial, sans-serif;
+  --font-mono: ui-monospace, "Cascadia Mono", "Segoe UI Mono", monospace;
   --font-weight-thin: 100;
   --font-weight-extralight: 200;
   --font-weight-light: 300;
