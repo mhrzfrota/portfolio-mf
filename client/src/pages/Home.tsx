@@ -225,7 +225,7 @@ export default function Home() {
         <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
           <h2
             data-reveal
-            className="text-[clamp(1.5rem,4vw,3.2rem)] font-medium leading-[1.12] tracking-[-0.02em] text-foreground"
+            className="text-[clamp(1.5rem,4vw,3.2rem)] font-semibold leading-[1.12] tracking-[-0.04em] text-foreground"
           >
             {t.blog.title}
           </h2>
@@ -244,7 +244,7 @@ export default function Home() {
               <Link
                 key={post.id}
                 href={`/blog/${post.slug}`}
-                className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(13,30,80,0.12)]"
+                className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(0,0,0,0.10)]"
               >
                 <div
                   className={cn(
@@ -252,11 +252,11 @@ export default function Home() {
                     post.cover
                   )}
                 >
-                  <StarburstIcon className="absolute -right-7 -top-7 h-32 w-32 rotate-12 fill-current text-white/10 transition-transform duration-700 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:rotate-45" />
-                  <span className="relative text-[44px] font-medium leading-none tracking-[-0.02em] text-white/90">
+                  <StarburstIcon className="absolute -right-7 -top-7 h-32 w-32 rotate-12 fill-current text-foreground/10 transition-transform duration-700 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:rotate-45" />
+                  <span className="relative text-[44px] font-medium leading-none tracking-[-0.02em] text-foreground/80">
                     0{index + 1}
                   </span>
-                  <span className="relative rounded-full bg-white/15 px-3 py-1 text-[11px] font-medium text-white backdrop-blur">
+                  <span className="relative rounded-full border border-foreground/15 px-3 py-1 text-[11px] font-medium text-foreground/70">
                     {post.readTime}
                   </span>
                 </div>
@@ -266,7 +266,7 @@ export default function Home() {
                     <Calendar size={13} /> {formatDate(post.date, lang)}
                   </span>
 
-                  <h3 className="text-[18px] font-semibold leading-snug tracking-[-0.01em] text-foreground transition-colors duration-300 group-hover:text-[#0C2AFE] sm:text-[19px]">
+                  <h3 className="text-[18px] font-semibold leading-snug tracking-[-0.01em] text-foreground underline-offset-4 transition-colors duration-300 group-hover:text-[var(--accent-blue)] group-hover:underline sm:text-[19px]">
                     {post.title}
                   </h3>
 
@@ -285,7 +285,7 @@ export default function Home() {
                     ))}
                   </div>
 
-                  <span className="mt-1 flex items-center gap-1.5 text-[13px] font-semibold text-[#0C2AFE]">
+                  <span className="mt-1 flex items-center gap-1.5 text-[13px] font-semibold text-[var(--accent-blue)]">
                     {t.blog.readArticle}
                     <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                   </span>

@@ -33,7 +33,7 @@ const postsPt: Post[] = [
     date: "2026-05-07",
     readTime: "8 min de leitura",
     tags: ["Deploy", "Fullstack", "CI/CD"],
-    cover: "bg-gradient-to-br from-[#0C2AFE] via-[#1B3BFF] to-[#020A2E]",
+    cover: "bg-[#E4E2DE] dark:bg-[#1D1D1B]",
     lead: "Colocar uma aplicação no ar deixou de ser um passo final e isolado. Hoje, o deploy é um processo contínuo que começa no primeiro commit e acompanha o produto durante toda a sua vida. Este guia reúne as decisões práticas que fazem uma aplicação fullstack chegar à produção de forma estável, rápida e fácil de manter.",
     sections: [
       {
@@ -128,7 +128,7 @@ const postsPt: Post[] = [
     date: "2026-05-07",
     readTime: "6 min de leitura",
     tags: ["IA", "Produtividade", "Software"],
-    cover: "bg-gradient-to-br from-[#0B1020] via-[#101A3A] to-[#0C2AFE]",
+    cover: "bg-[#DDDEE2] dark:bg-[#1A1C20]",
     lead: "A inteligência artificial deixou de ser uma promessa distante e passou a fazer parte do dia a dia de quem cria software. Mais do que escrever código, ela está mudando como pensamos, testamos e entregamos produtos digitais. Vale entender o que muda de verdade e o que continua sendo responsabilidade humana.",
     sections: [
       {
@@ -196,7 +196,7 @@ const postsPt: Post[] = [
     date: "2025-10-12",
     readTime: "7 min de leitura",
     tags: ["Dados", "APIs", "Dashboard"],
-    cover: "bg-gradient-to-br from-[#5B7CFF] via-[#2C50FF] to-[#0A1B66]",
+    cover: "bg-[#E6E4DF] dark:bg-[#1E1D1A]",
     lead: "Métricas de redes sociais só viram decisão quando são organizadas, tratadas e apresentadas com clareza. A Meta Graph API dá acesso aos dados de Facebook e Instagram, mas transformar esses números em um painel útil exige mais do que uma simples requisição. Este é o caminho do dado bruto até um KPI que ajuda a decidir.",
     sections: [
       {
@@ -274,7 +274,7 @@ const postsEn: Post[] = [
     date: "2026-05-07",
     readTime: "8 min read",
     tags: ["Deploy", "Fullstack", "CI/CD"],
-    cover: "bg-gradient-to-br from-[#0C2AFE] via-[#1B3BFF] to-[#020A2E]",
+    cover: "bg-[#E4E2DE] dark:bg-[#1D1D1B]",
     lead: "Shipping an application is no longer a final, isolated step. Today, deployment is a continuous process that starts at the first commit and follows the product through its whole life. This guide gathers the practical decisions that get a fullstack application to production in a stable, fast and maintainable way.",
     sections: [
       {
@@ -369,7 +369,7 @@ const postsEn: Post[] = [
     date: "2026-05-07",
     readTime: "6 min read",
     tags: ["AI", "Productivity", "Software"],
-    cover: "bg-gradient-to-br from-[#0B1020] via-[#101A3A] to-[#0C2AFE]",
+    cover: "bg-[#DDDEE2] dark:bg-[#1A1C20]",
     lead: "Artificial intelligence stopped being a distant promise and became part of the daily life of anyone who builds software. More than writing code, it is changing how we think, test and ship digital products. It's worth understanding what really changes and what remains a human responsibility.",
     sections: [
       {
@@ -437,7 +437,7 @@ const postsEn: Post[] = [
     date: "2025-10-12",
     readTime: "7 min read",
     tags: ["Data", "APIs", "Dashboard"],
-    cover: "bg-gradient-to-br from-[#5B7CFF] via-[#2C50FF] to-[#0A1B66]",
+    cover: "bg-[#E6E4DF] dark:bg-[#1E1D1A]",
     lead: "Social media metrics only become decisions when they are organized, processed and presented clearly. The Meta Graph API gives access to Facebook and Instagram data, but turning those numbers into a useful panel takes more than a simple request. This is the path from raw data to a KPI that helps you decide.",
     sections: [
       {
