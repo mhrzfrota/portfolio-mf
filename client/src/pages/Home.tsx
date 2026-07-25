@@ -100,126 +100,120 @@ export default function Home() {
         <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
           <h2
             data-reveal
-            className="text-[clamp(1.5rem,4vw,3.2rem)] font-medium leading-[1.12] tracking-[-0.02em] text-foreground"
+            className="text-[clamp(1.5rem,4vw,3.2rem)] font-semibold leading-[1.12] tracking-[-0.04em] text-foreground"
           >
             {t.combos.title}
           </h2>
           <p
             data-reveal
-            className="reveal-delay-1 mt-4 max-w-2xl text-[14px] leading-relaxed text-muted-foreground sm:text-[15px]"
+            className="reveal-delay-1 mt-4 max-w-2xl text-[14px] leading-relaxed text-[var(--body-text)] sm:text-[15px]"
           >
             {t.combos.subtitle}
           </p>
 
-          <div
-            data-reveal
-            className="reveal-delay-2 mt-10 grid items-stretch gap-5 sm:mt-14 md:grid-cols-2 lg:grid-cols-3 lg:gap-6"
-          >
-            {combos.map(combo => (
-              <div
-                key={combo.name}
-                className={cn(
-                  "group relative flex flex-col rounded-2xl p-7 transition-all duration-300 hover:-translate-y-1 sm:p-8",
-                  combo.featured
-                    ? "bg-[var(--brand-ink)] text-white hover:shadow-[0_24px_50px_rgba(2,6,19,0.35)]"
-                    : "border border-border bg-card hover:shadow-[0_18px_40px_rgba(13,30,80,0.1)]"
-                )}
-              >
-                {combo.featured && (
-                  <span className="absolute right-6 top-7 rounded-full bg-[#0C2AFE] px-3 py-1 text-[11px] font-semibold text-white">
-                    {t.combos.mostChosen}
+          {(() => {
+            const featured = combos.find(combo => combo.featured)!;
+            const others = combos.filter(combo => !combo.featured);
+
+            const priceLine = (combo: (typeof combos)[number]) => (
+              <div className="mt-6 flex items-baseline gap-2">
+                <span className="text-[26px] font-semibold tracking-[-0.02em] text-foreground sm:text-[28px]">
+                  {combo.price ?? t.combos.onRequest}
+                </span>
+                {combo.price && (
+                  <span className="text-[13px] font-medium text-muted-foreground">
+                    {t.combos.fixedTag}
                   </span>
                 )}
-
-                <span
-                  className={cn(
-                    "mb-6 flex h-12 w-12 items-center justify-center rounded-xl",
-                    combo.featured
-                      ? "bg-white/10 text-[#7C8CFF]"
-                      : "bg-[#0C2AFE]/10 text-[#0C2AFE] dark:text-[#7C8CFF]"
-                  )}
-                >
-                  <combo.icon className="h-6 w-6" />
-                </span>
-
-                <h3
-                  className={cn(
-                    "text-[20px] font-semibold tracking-[-0.01em]",
-                    combo.featured ? "text-white" : "text-foreground"
-                  )}
-                >
-                  {combo.name}
-                </h3>
-                <p
-                  className={cn(
-                    "mt-2 text-[13px] leading-relaxed sm:text-[14px]",
-                    combo.featured ? "text-white/70" : "text-muted-foreground"
-                  )}
-                >
-                  {combo.tagline}
-                </p>
-
-                {combo.price && (
-                  <div className="mt-6 flex items-baseline gap-1.5">
-                    <span
-                      className={cn(
-                        "text-[12px] font-medium",
-                        combo.featured
-                          ? "text-white/60"
-                          : "text-muted-foreground"
-                      )}
-                    >
-                      {t.combos.from}
-                    </span>
-                    <span
-                      className={cn(
-                        "text-[26px] font-semibold tracking-[-0.02em] sm:text-[28px]",
-                        combo.featured ? "text-white" : "text-foreground"
-                      )}
-                    >
-                      {combo.price}
-                    </span>
-                  </div>
-                )}
-
-                <div
-                  className={cn(
-                    "my-6 h-px w-full",
-                    combo.featured ? "bg-white/15" : "bg-border"
-                  )}
-                />
-
-                <ul className="flex flex-1 flex-col gap-3">
-                  {combo.features.map(feature => (
-                    <li
-                      key={feature}
-                      className={cn(
-                        "flex items-start gap-2.5 text-[13px] leading-snug sm:text-[14px]",
-                        combo.featured ? "text-white/85" : "text-foreground"
-                      )}
-                    >
-                      <Check
-                        className={cn(
-                          "mt-0.5 h-4 w-4 shrink-0",
-                          combo.featured ? "text-[#7C8CFF]" : "text-[#0C2AFE]"
-                        )}
-                      />
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-
-                <RollButton
-                  className="mt-8 w-full"
-                  size="md"
-                  variant={combo.featured ? "white" : "black"}
-                  label={t.combos.cta}
-                  href={combo.href}
-                  external
-                />
               </div>
-            ))}
-          </div>
+            );
+
+            return (
+              <div
+                data-reveal
+                className="reveal-delay-2 mt-10 space-y-5 sm:mt-14 lg:space-y-6"
+              >
+                {/* Destaque largo */}
+                <div className="relative grid gap-8 rounded-3xl border border-border bg-card p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(0,0,0,0.10)] sm:p-9 lg:grid-cols-[1fr_1fr] lg:p-11">
+                  <span className="atelier-badge absolute right-6 top-6">
+                    {t.combos.mostChosen}
+                  </span>
+                  <div className="flex flex-col">
+                    <span className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-secondary text-foreground">
+                      <featured.icon className="h-6 w-6" />
+                    </span>
+                    <h3 className="text-[24px] font-semibold tracking-[-0.02em] text-foreground">
+                      {featured.name}
+                    </h3>
+                    <p className="mt-2 text-[14px] leading-relaxed text-[var(--body-text)]">
+                      {featured.tagline}
+                    </p>
+                    {priceLine(featured)}
+                    <RollButton
+                      className="mt-8 w-fit"
+                      size="md"
+                      variant="black"
+                      label={t.combos.cta}
+                      href={featured.href}
+                      external
+                    />
+                  </div>
+                  <ul className="flex flex-col justify-center gap-3 border-t border-border pt-6 lg:border-l lg:border-t-0 lg:pl-10 lg:pt-0">
+                    {featured.features.map(feature => (
+                      <li
+                        key={feature}
+                        className="flex items-start gap-2.5 text-[14px] leading-snug text-foreground"
+                      >
+                        <Check className="mt-0.5 h-4 w-4 shrink-0 text-foreground" />
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Dois menores */}
+                <div className="grid gap-5 md:grid-cols-2 lg:gap-6">
+                  {others.map(combo => (
+                    <div
+                      key={combo.name}
+                      className="flex flex-col rounded-3xl border border-border bg-card p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(0,0,0,0.10)] sm:p-8"
+                    >
+                      <span className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-secondary text-foreground">
+                        <combo.icon className="h-6 w-6" />
+                      </span>
+                      <h3 className="text-[20px] font-semibold tracking-[-0.01em] text-foreground">
+                        {combo.name}
+                      </h3>
+                      <p className="mt-2 text-[13px] leading-relaxed text-[var(--body-text)] sm:text-[14px]">
+                        {combo.tagline}
+                      </p>
+                      {priceLine(combo)}
+                      <div className="my-6 h-px w-full bg-border" />
+                      <ul className="flex flex-1 flex-col gap-3">
+                        {combo.features.map(feature => (
+                          <li
+                            key={feature}
+                            className="flex items-start gap-2.5 text-[13px] leading-snug text-foreground sm:text-[14px]"
+                          >
+                            <Check className="mt-0.5 h-4 w-4 shrink-0 text-foreground" />
+                            {feature}
+                          </li>
+                        ))}
+                      </ul>
+                      <RollButton
+                        className="mt-8 w-full"
+                        size="md"
+                        variant="black"
+                        label={t.combos.cta}
+                        href={combo.href}
+                        external
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+          })()}
         </div>
       </section>
 
