@@ -247,9 +247,9 @@ export default function Landing({
 
           <button
             type="submit"
-            className="hero-btn hero-btn-primary w-full justify-center"
+            className="pill-cta w-full justify-center"
           >
-            <Sparkles className="hero-btn-icon" />
+            <Sparkles className="h-4 w-4" />
             Gerar diagnóstico com IA
           </button>
 

@@ -30,7 +30,7 @@ export default function ProjectDetail({
     return (
       <section className="mx-auto min-h-[60vh] w-full max-w-[1200px] px-5 pb-16 pt-32 sm:px-8 lg:px-12">
         <div className="max-w-2xl space-y-5 rounded-2xl border border-border bg-card p-7">
-          <span className="inline-flex rounded-full border border-border px-3 py-1 text-[12px] font-medium text-[#0C2AFE]">
+          <span className="inline-flex rounded-full border border-border px-3 py-1 text-[12px] font-medium text-[var(--accent-blue)]">
             {t.projectDetail.notFoundBadge}
           </span>
           <h1 className="text-3xl font-medium tracking-[-0.02em]">
@@ -41,7 +41,7 @@ export default function ProjectDetail({
           </p>
           <Button
             asChild
-            className="rounded-full bg-[#0C2AFE] text-white hover:bg-[#001FDD]"
+            className="rounded-full bg-[var(--brand-ink)] text-white hover:bg-black dark:bg-[#EDEDED] dark:text-[#161616] dark:hover:bg-white"
           >
             <Link href="/">{t.projectDetail.backToPortfolio}</Link>
           </Button>
@@ -64,7 +64,7 @@ export default function ProjectDetail({
           <Button
             asChild
             variant="outline"
-            className="rounded-full border-border text-[13px] font-medium hover:text-[#0C2AFE]"
+            className="rounded-full border-border text-[13px] font-medium hover:text-[var(--accent-blue)]"
           >
             <a href="/#projetos">
               <ArrowLeft className="h-4 w-4" />
@@ -73,7 +73,7 @@ export default function ProjectDetail({
           </Button>
 
           <div className="space-y-4">
-            <span className="inline-flex rounded-full border border-border px-3 py-1 text-[12px] font-medium text-[#0C2AFE]">
+            <span className="inline-flex rounded-full border border-border px-3 py-1 text-[12px] font-medium text-[var(--accent-blue)]">
               {t.projects.categories[project.category] ?? project.category}
             </span>
             <h1 className="text-3xl font-medium leading-[1.1] tracking-[-0.02em] md:text-5xl">
@@ -96,7 +96,7 @@ export default function ProjectDetail({
               asChild
               size="lg"
               variant="outline"
-              className="rounded-full border-border text-[13px] font-medium hover:text-[#0C2AFE]"
+              className="rounded-full border-border text-[13px] font-medium hover:text-[var(--accent-blue)]"
             >
               <a href={project.liveUrl} target="_blank" rel="noreferrer">
                 {t.projectDetail.viewLive}
@@ -145,7 +145,7 @@ export default function ProjectDetail({
       <section className="grid gap-8 lg:grid-cols-[0.75fr_1.25fr]">
         <aside className="space-y-5">
           <div className="rounded-2xl border border-border bg-card p-6">
-            <h2 className="text-[13px] font-semibold uppercase tracking-wide text-[#0C2AFE]">
+            <h2 className="text-[13px] font-semibold uppercase tracking-wide text-[var(--accent-blue)]">
               {t.projectDetail.techUsed}
             </h2>
             <div className="mt-4 flex flex-wrap gap-2">
@@ -161,7 +161,7 @@ export default function ProjectDetail({
           </div>
 
           <div className="rounded-2xl border border-border bg-card p-6">
-            <h2 className="text-[13px] font-semibold uppercase tracking-wide text-[#0C2AFE]">
+            <h2 className="text-[13px] font-semibold uppercase tracking-wide text-[var(--accent-blue)]">
               {t.projectDetail.links}
             </h2>
             <div className="mt-4 grid gap-3">
@@ -169,7 +169,7 @@ export default function ProjectDetail({
                 href={project.liveUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center justify-between rounded-xl border border-border px-4 py-3 text-sm transition-colors hover:border-[#0C2AFE] hover:text-[#0C2AFE]"
+                className="flex items-center justify-between rounded-xl border border-border px-4 py-3 text-sm transition-colors hover:border-[var(--accent-blue)] hover:text-[var(--accent-blue)]"
               >
                 {t.projectDetail.liveLink} <ExternalLink className="h-4 w-4" />
               </a>
@@ -177,7 +177,7 @@ export default function ProjectDetail({
                 href={project.repoUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center justify-between rounded-xl border border-border px-4 py-3 text-sm transition-colors hover:border-[#0C2AFE] hover:text-[#0C2AFE]"
+                className="flex items-center justify-between rounded-xl border border-border px-4 py-3 text-sm transition-colors hover:border-[var(--accent-blue)] hover:text-[var(--accent-blue)]"
               >
                 {t.projectDetail.repository} <Github className="h-4 w-4" />
               </a>
@@ -206,9 +206,9 @@ export default function ProjectDetail({
           {caseFacts.map(([label, value]) => (
             <article
               key={label}
-              className="rounded-2xl border border-border bg-card p-6 transition-colors hover:border-[#0C2AFE]/40"
+              className="rounded-2xl border border-border bg-card p-6 transition-colors hover:border-[var(--accent-blue)]/40"
             >
-              <h2 className="text-[13px] font-semibold uppercase tracking-wide text-[#0C2AFE]">
+              <h2 className="text-[13px] font-semibold uppercase tracking-wide text-[var(--accent-blue)]">
                 {label}
               </h2>
               <p className="mt-3 leading-relaxed text-muted-foreground">
