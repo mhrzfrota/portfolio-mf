@@ -26,8 +26,12 @@ export default function StackShowcase() {
       <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
         <p
           data-reveal
-          className="mb-8 text-center text-[13px] font-semibold uppercase tracking-[0.16em] text-muted-foreground sm:mb-10 sm:text-[15px]"
+          className="mb-8 flex items-center justify-center gap-2.5 text-center text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground sm:mb-10"
         >
+          <span
+            aria-hidden="true"
+            className="h-1.5 w-1.5 rounded-full bg-[#0C2AFE] dark:bg-[#7C8CFF]"
+          />
           {t.stack.title}
         </p>
 
@@ -45,7 +49,7 @@ export default function StackShowcase() {
                 <img
                   src={tech.logo}
                   alt={tech.name}
-                  className="h-9 w-24 object-contain opacity-100 transition-transform duration-300 hover:scale-110 md:h-11 md:w-28"
+                  className="h-9 w-24 object-contain opacity-60 grayscale transition-all duration-300 hover:scale-110 hover:opacity-100 hover:grayscale-0 md:h-11 md:w-28 dark:opacity-50 dark:hover:opacity-100"
                   draggable={false}
                   loading="lazy"
                 />

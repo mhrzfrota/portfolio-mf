@@ -98,9 +98,19 @@ export default function Home() {
         className="scroll-mt-20 bg-background py-16 sm:py-20 lg:py-28"
       >
         <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
+          <p
+            data-reveal
+            className="mb-4 flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground"
+          >
+            <span
+              aria-hidden="true"
+              className="h-1.5 w-1.5 rounded-full bg-[#0C2AFE] dark:bg-[#7C8CFF]"
+            />
+            {t.nav.combos}
+          </p>
           <h2
             data-reveal
-            className="text-[clamp(1.5rem,4vw,3.2rem)] font-medium leading-[1.12] tracking-[-0.02em] text-foreground"
+            className="text-[clamp(1.5rem,4vw,3.2rem)] font-semibold leading-[1.08] tracking-[-0.035em] text-foreground"
           >
             {t.combos.title}
           </h2>
@@ -119,10 +129,10 @@ export default function Home() {
               <div
                 key={combo.name}
                 className={cn(
-                  "group relative flex flex-col rounded-2xl p-7 transition-all duration-300 hover:-translate-y-1 sm:p-8",
+                  "group relative flex flex-col rounded-3xl p-7 transition-all duration-300 hover:-translate-y-1 sm:p-8",
                   combo.featured
-                    ? "bg-[var(--brand-ink)] text-white hover:shadow-[0_24px_50px_rgba(2,6,19,0.35)]"
-                    : "border border-border bg-card hover:shadow-[0_18px_40px_rgba(13,30,80,0.1)]"
+                    ? "bg-[var(--brand-ink)] text-white hover:shadow-[0_28px_60px_-16px_rgba(2,6,19,0.45)]"
+                    : "border border-border bg-card hover:border-[#0C2AFE]/25 hover:shadow-[0_24px_48px_-20px_rgba(12,42,254,0.22)] dark:hover:border-[#7C8CFF]/25"
                 )}
               >
                 {combo.featured && (
@@ -160,10 +170,10 @@ export default function Home() {
                 </p>
 
                 {combo.price && (
-                  <div className="mt-6 flex items-baseline gap-1.5">
+                  <div className="mt-6 flex items-baseline gap-2">
                     <span
                       className={cn(
-                        "text-[12px] font-medium",
+                        "text-[11px] font-medium uppercase tracking-[0.08em]",
                         combo.featured
                           ? "text-white/60"
                           : "text-muted-foreground"
@@ -173,7 +183,7 @@ export default function Home() {
                     </span>
                     <span
                       className={cn(
-                        "text-[26px] font-semibold tracking-[-0.02em] sm:text-[28px]",
+                        "font-display text-[28px] font-bold tracking-[-0.03em] sm:text-[30px]",
                         combo.featured ? "text-white" : "text-foreground"
                       )}
                     >
@@ -229,9 +239,19 @@ export default function Home() {
         className="scroll-mt-20 bg-background py-16 sm:py-20 lg:py-28"
       >
         <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
+          <p
+            data-reveal
+            className="mb-4 flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground"
+          >
+            <span
+              aria-hidden="true"
+              className="h-1.5 w-1.5 rounded-full bg-[#0C2AFE] dark:bg-[#7C8CFF]"
+            />
+            {t.nav.blog}
+          </p>
           <h2
             data-reveal
-            className="text-[clamp(1.5rem,4vw,3.2rem)] font-medium leading-[1.12] tracking-[-0.02em] text-foreground"
+            className="text-[clamp(1.5rem,4vw,3.2rem)] font-semibold leading-[1.08] tracking-[-0.035em] text-foreground"
           >
             {t.blog.title}
           </h2>
@@ -250,7 +270,7 @@ export default function Home() {
               <Link
                 key={post.id}
                 href={`/blog/${post.slug}`}
-                className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(13,30,80,0.12)]"
+                className="group flex flex-col overflow-hidden rounded-3xl border border-border bg-card transition-all duration-300 hover:-translate-y-1 hover:border-[#0C2AFE]/25 hover:shadow-[0_24px_48px_-20px_rgba(12,42,254,0.22)] dark:hover:border-[#7C8CFF]/25"
               >
                 <div
                   className={cn(
@@ -259,10 +279,10 @@ export default function Home() {
                   )}
                 >
                   <StarburstIcon className="absolute -right-7 -top-7 h-32 w-32 rotate-12 fill-current text-white/10 transition-transform duration-700 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:rotate-45" />
-                  <span className="relative text-[44px] font-medium leading-none tracking-[-0.02em] text-white/90">
+                  <span className="relative font-display text-[52px] font-light leading-none tracking-[-0.04em] text-white/90 tabular-nums">
                     0{index + 1}
                   </span>
-                  <span className="relative rounded-full bg-white/15 px-3 py-1 text-[11px] font-medium text-white backdrop-blur">
+                  <span className="relative rounded-full border border-white/30 px-3 py-1 text-[11px] font-medium text-white/90">
                     {post.readTime}
                   </span>
                 </div>
@@ -284,7 +304,7 @@ export default function Home() {
                     {post.tags.map(tag => (
                       <span
                         key={tag}
-                        className="rounded-full border border-border px-2.5 py-1 text-[11px] font-medium text-muted-foreground"
+                        className="rounded-full bg-secondary px-2.5 py-1 text-[10.5px] font-medium uppercase tracking-[0.06em] text-muted-foreground"
                       >
                         {tag}
                       </span>
@@ -308,9 +328,19 @@ export default function Home() {
         className="scroll-mt-20 bg-background py-16 sm:py-20 lg:py-28"
       >
         <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
+          <p
+            data-reveal
+            className="mb-4 flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground"
+          >
+            <span
+              aria-hidden="true"
+              className="h-1.5 w-1.5 rounded-full bg-[#0C2AFE] dark:bg-[#7C8CFF]"
+            />
+            {t.nav.contato}
+          </p>
           <h2
             data-reveal
-            className="text-[clamp(1.5rem,4vw,3.2rem)] font-medium leading-[1.12] tracking-[-0.02em] text-foreground"
+            className="text-[clamp(1.5rem,4vw,3.2rem)] font-semibold leading-[1.08] tracking-[-0.035em] text-foreground"
           >
             {t.contact.title}
           </h2>
@@ -354,14 +384,15 @@ export default function Home() {
                 />
 
                 <div className="grid gap-4 pt-2 sm:grid-cols-3">
-                  {t.contact.highlights.map((item, index) => (
+                  {t.contact.highlights.map(item => (
                     <div
                       key={item.title}
-                      className="rounded-xl border border-white/10 bg-white/[0.04] px-4 py-5 transition-colors duration-300 hover:border-[#7C8CFF]/60 hover:bg-white/[0.07]"
+                      className="rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-5 transition-colors duration-300 hover:border-[#7C8CFF]/60 hover:bg-white/[0.07]"
                     >
-                      <span className="text-[11px] font-semibold text-[#7C8CFF]">
-                        0{index + 1}
-                      </span>
+                      <span
+                        aria-hidden="true"
+                        className="block h-1.5 w-1.5 rounded-full bg-[#7C8CFF]"
+                      />
                       <h4 className="mt-3 text-[15px] font-semibold text-white">
                         {item.title}
                       </h4>
@@ -375,7 +406,7 @@ export default function Home() {
             </div>
 
             <aside className="space-y-5">
-              <div className="rounded-2xl border border-border bg-card p-6 sm:p-7">
+              <div className="rounded-3xl border border-border bg-card p-6 sm:p-7">
                 <h3 className="text-[17px] font-semibold text-foreground">
                   {t.contact.contactInfo}
                 </h3>
@@ -399,7 +430,7 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="rounded-2xl bg-[#0C2AFE] p-6 text-white sm:p-7">
+              <div className="rounded-3xl bg-gradient-to-br from-[#0C2AFE] to-[#0620C0] p-6 text-white sm:p-7">
                 <h4 className="text-[17px] font-semibold">
                   {t.contact.resumeTitle}
                 </h4>

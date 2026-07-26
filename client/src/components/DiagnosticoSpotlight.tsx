@@ -25,7 +25,7 @@ export default function DiagnosticoSpotlight() {
       <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
         <div
           data-reveal
-          className="relative overflow-hidden rounded-3xl bg-[var(--brand-ink)] p-7 text-white sm:p-10 lg:p-14"
+          className="relative overflow-hidden rounded-3xl bg-[var(--brand-ink)] p-7 text-white sm:rounded-[2rem] sm:p-10 lg:p-14"
         >
           {/* Brilho azul no canto — mesmo tom de ação do site. */}
           <div
@@ -45,7 +45,7 @@ export default function DiagnosticoSpotlight() {
                 MF Diagnóstico IA — {s.badge}
               </span>
 
-              <h2 className="max-w-xl text-[clamp(1.6rem,3.6vw,2.7rem)] font-semibold leading-[1.1] tracking-[-0.02em]">
+              <h2 className="max-w-xl text-[clamp(1.6rem,3.6vw,2.7rem)] font-semibold leading-[1.08] tracking-[-0.035em]">
                 {s.title}
               </h2>
 

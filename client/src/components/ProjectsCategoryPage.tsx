@@ -44,9 +44,18 @@ export default function ProjectsCategoryPage() {
           data-reveal
           className="mb-8 flex flex-col gap-6 sm:mb-10 md:flex-row md:items-end md:justify-between"
         >
-          <h2 className="text-[clamp(1.75rem,7vw,4.2rem)] font-medium leading-[1.08] tracking-[-0.03em] text-foreground sm:text-[clamp(2.5rem,5vw,4.2rem)]">
-            {t.projects.allTitle}
-          </h2>
+          <div>
+            <p className="mb-4 flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+              <span
+                aria-hidden="true"
+                className="h-1.5 w-1.5 rounded-full bg-[#0C2AFE] dark:bg-[#7C8CFF]"
+              />
+              {t.nav.projetos}
+            </p>
+            <h2 className="text-[clamp(1.75rem,7vw,4.2rem)] font-semibold leading-[1.04] tracking-[-0.04em] text-foreground sm:text-[clamp(2.5rem,5vw,4.2rem)]">
+              {t.projects.allTitle}
+            </h2>
+          </div>
 
           <div className="flex flex-wrap gap-2 md:pb-3">
             {categories.map(category => {
@@ -57,10 +66,10 @@ export default function ProjectsCategoryPage() {
                   type="button"
                   onClick={() => setActiveCategory(category)}
                   className={cn(
-                    "rounded-full border px-4 py-2 text-[13px] font-medium transition-colors duration-300",
+                    "rounded-full px-4 py-2 text-[13px] font-medium transition-colors duration-300",
                     active
-                      ? "border-[var(--brand-ink)] bg-[var(--brand-ink)] text-white dark:border-white dark:bg-white dark:text-[var(--brand-ink)]"
-                      : "border-border bg-card text-muted-foreground hover:border-[#0C2AFE] hover:text-[#0C2AFE]"
+                      ? "bg-[#0C2AFE] text-white dark:bg-[#7C8CFF] dark:text-[#0B1020]"
+                      : "bg-secondary text-muted-foreground hover:bg-muted hover:text-foreground"
                   )}
                 >
                   {t.projects.categories[category] ?? category}
