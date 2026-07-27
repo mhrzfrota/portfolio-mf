@@ -1,4 +1,11 @@
-import { Component, Suspense, lazy, type ReactNode } from "react";
+import {
+  Component,
+  Suspense,
+  lazy,
+  useEffect,
+  useState,
+  type ReactNode,
+} from "react";
 import { cn } from "@/lib/utils";
 import { usePrefersReducedMotion } from "@/lib/usePrefersReducedMotion";
 import {
@@ -49,8 +56,32 @@ function FlatMonogram() {
   );
 }
 
+/**
+ * Espera o navegador ficar ocioso antes de buscar o chunk do three.js
+ * (~950 kB): parseá-lo junto com a primeira pintura era o que segurava a
+ * abertura do site no celular. Até lá (e enquanto o chunk baixa) o monograma
+ * SVG ocupa o lugar — o hero nunca fica vazio.
+ */
+function useIdleReady(): boolean {
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    if (typeof window.requestIdleCallback === "function") {
+      const id = window.requestIdleCallback(() => setReady(true), {
+        timeout: 1500,
+      });
+      return () => window.cancelIdleCallback(id);
+    }
+    const id = window.setTimeout(() => setReady(true), 350);
+    return () => window.clearTimeout(id);
+  }, []);
+
+  return ready;
+}
+
 export default function HeroMonogram({ isDark }: { isDark: boolean }) {
   const reduced = usePrefersReducedMotion();
+  const sceneReady = useIdleReady();
 
   return (
     <div className="relative h-[clamp(170px,26vh,280px)] w-full max-w-[600px]">
@@ -64,9 +95,13 @@ export default function HeroMonogram({ isDark }: { isDark: boolean }) {
       />
       <div className="hero-monogram-in relative h-full w-full">
         <SceneBoundary fallback={<FlatMonogram />}>
-          <Suspense fallback={null}>
-            <MonogramScene isDark={isDark} reduced={reduced} />
-          </Suspense>
+          {sceneReady ? (
+            <Suspense fallback={<FlatMonogram />}>
+              <MonogramScene isDark={isDark} reduced={reduced} />
+            </Suspense>
+          ) : (
+            <FlatMonogram />
+          )}
         </SceneBoundary>
       </div>
     </div>

@@ -196,6 +196,15 @@
     letter-spacing: 0;
     line-height: 1.08;
   }
+
+  /* O ThemeContext aplica esta classe durante a troca de tema: sem ela, cada
+     elemento com transition-colors animaria por 300ms ao mesmo tempo — é a
+     tempestade de paint que trava a troca no celular. */
+  .theme-switching *,
+  .theme-switching *::before,
+  .theme-switching *::after {
+    transition: none !important;
+  }
 }
 
 @layer base {
@@ -393,6 +402,16 @@
     }
     to {
       transform: translate3d(2%, -1.5%, 0) scale(1.06);
+    }
+  }
+
+  /* Em telas touch a GPU já fica ocupada com o canvas 3D do monograma; manter
+     uma camada de viewport inteiro com blur(14px) animando sem parar disputa
+     exatamente o mesmo recurso. As nuvens ficam estáticas — visualmente
+     idênticas num instante qualquer do drift. */
+  @media (pointer: coarse) {
+    .hero-clouds {
+      animation: none;
     }
   }
 

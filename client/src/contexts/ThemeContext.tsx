@@ -38,15 +38,22 @@ export function ThemeProvider({
 
   useEffect(() => {
     const root = document.documentElement;
-    if (theme === "dark") {
-      root.classList.add("dark");
-    } else {
-      root.classList.remove("dark");
-    }
+
+    // Sem isso, cada elemento com transition-colors anima ao mesmo tempo na
+    // troca de tema — 300ms de paint contínuo na página inteira trava o
+    // celular. A classe desliga as transições enquanto o tema troca; o
+    // double-rAF religa só depois do primeiro frame pintado com o tema novo.
+    root.classList.add("theme-switching");
+    root.classList.toggle("dark", theme === "dark");
+    const raf = requestAnimationFrame(() => {
+      requestAnimationFrame(() => root.classList.remove("theme-switching"));
+    });
 
     if (switchable) {
       localStorage.setItem("theme", theme);
     }
+
+    return () => cancelAnimationFrame(raf);
   }, [theme, switchable]);
 
   const toggleTheme = useCallback(() => {

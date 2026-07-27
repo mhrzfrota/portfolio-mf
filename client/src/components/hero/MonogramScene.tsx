@@ -17,6 +17,16 @@ import {
 
 const DEPTH = 0.72;
 
+/**
+ * Telas touch = GPU de celular: o mesmo cromo custa caro demais lá. Menos
+ * pixels (dpr 1.5), environment menor e shader sem clearcoat/iridescence
+ * mantêm o visual metálico sem saturar a GPU — é essa saturação que fazia o
+ * arraste da logo, o scroll e a troca de tema engasgarem no mobile.
+ */
+const COARSE_POINTER =
+  typeof window !== "undefined" &&
+  window.matchMedia("(pointer: coarse)").matches;
+
 /** Estado de arraste compartilhado entre o handler de ponteiro e o loop de render. */
 type Spin = {
   angle: number;
@@ -96,6 +106,20 @@ function Monogram({ spin, reduced }: { spin: Spin; reduced: boolean }) {
 
 /** Cromo: metal puro, então quem "pinta" a peça é inteiramente o environment. */
 function ChromeMaterial() {
+  // No touch, o standard entrega o mesmo metal espelhado (metalness + envMap)
+  // sem os dois lóbulos especulares extras de clearcoat/iridescence — a ~250px
+  // de largura a diferença é imperceptível, o custo por frame não.
+  if (COARSE_POINTER) {
+    return (
+      <meshStandardMaterial
+        color="#e2ebff"
+        metalness={1}
+        roughness={0.12}
+        envMapIntensity={1.15}
+      />
+    );
+  }
+
   return (
     <meshPhysicalMaterial
       color="#e2ebff"
@@ -118,8 +142,11 @@ function ChromeMaterial() {
  * devolve o grafite da marca sobre o céu claro.
  */
 function SkyEnvironment({ isDark }: { isDark: boolean }) {
+  // 128 no touch: o PMREM do environment é re-bakeado a cada troca de tema e
+  // seu custo cresce com a resolução — metade da resolução corta o engasgo
+  // do toggle; nos reflexos borrados do cromo a perda não aparece.
   return (
-    <Environment resolution={256} frames={1}>
+    <Environment resolution={COARSE_POINTER ? 128 : 256} frames={1}>
       <color attach="background" args={[isDark ? "#03060f" : "#0a1637"]} />
 
       {/* faixa larga de céu no alto: acende as faces superiores */}
@@ -242,7 +269,7 @@ export default function MonogramScene({ isDark, reduced }: MonogramSceneProps) {
       onPointerCancel={endDrag}
     >
       <Canvas
-        dpr={[1, 2]}
+        dpr={COARSE_POINTER ? [1, 1.5] : [1, 2]}
         camera={{ position: [0, 0, 12], fov: 25 }}
         gl={{
           // Em telas densas (retina/celular) o MSAA fica imperceptível — os

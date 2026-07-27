@@ -42,7 +42,12 @@ const timeFormatter = new Intl.DateTimeFormat("pt-BR", {
   timeZone: "America/Fortaleza",
 });
 
-function useFortalezaTime() {
+/**
+ * Componente próprio de propósito: com o interval dentro do Layout, o header,
+ * o menu mobile e o footer inteiros re-renderizavam a cada segundo. Aqui o
+ * tick de 1s atualiza só este texto.
+ */
+function FortalezaTime({ suffix }: { suffix: string }) {
   const [time, setTime] = useState(() => timeFormatter.format(new Date()));
 
   useEffect(() => {
@@ -52,7 +57,11 @@ function useFortalezaTime() {
     return () => window.clearInterval(id);
   }, []);
 
-  return time;
+  return (
+    <>
+      {time} {suffix}
+    </>
+  );
 }
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -63,7 +72,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const { lang, toggleLang } = useLanguage();
   const t = getStrings(lang);
   const isDark = theme === "dark";
-  const time = useFortalezaTime();
 
   // Anima os blocos data-reveal da página atual; reexecuta ao trocar de rota.
   useRevealOnScroll([location]);
@@ -163,7 +171,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <div className="hidden items-center gap-2 pr-2 md:flex">
               <span className="hidden items-center gap-1.5 pr-2 text-[13px] text-muted-foreground lg:flex">
                 <Clock size={14} />
-                {time} {t.topbar.timeSuffix}
+                <FortalezaTime suffix={t.topbar.timeSuffix} />
               </span>
               {langToggle}
               <button
@@ -232,7 +240,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <div className="flex items-center justify-between">
             <span className="flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-[12px] text-muted-foreground">
               <Clock size={13} />
-              {time} {t.topbar.timeSuffix}
+              <FortalezaTime suffix={t.topbar.timeSuffix} />
             </span>
             <button
               onClick={() => setMobileOpen(false)}
