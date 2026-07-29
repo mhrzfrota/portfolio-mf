@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { ArrowRight } from "lucide-react";
 import { Link } from "wouter";
 
 import { projects as allProjects, type Project } from "@/data/projects";
@@ -149,7 +150,9 @@ export default function ProjectDeck() {
             {t.projects.title}
           </h2>
           {deckProjects.map(project => (
-            <DeckCard key={project.id} project={project} lang={lang} />
+            <div key={project.id} className="h-[min(58svh,620px)]">
+              <DeckCard project={project} lang={lang} />
+            </div>
           ))}
         </div>
       </div>
@@ -256,37 +259,84 @@ function DeckCard({
   lang: Lang;
   videoRef?: (element: HTMLVideoElement | null) => void;
 }) {
+  const t = getStrings(lang);
   const action = getProjectAction(project, lang);
+  const visibleTags = project.tags.slice(0, 3);
+  const extraTags = project.tags.length - visibleTags.length;
 
   return (
     <DeckCardLink
       external={action.external}
       href={action.href}
       ariaLabel={`${action.label}: ${project.title}`}
-      className="group relative block h-full w-full overflow-hidden rounded-[24px] bg-card shadow-[0_30px_80px_rgba(2,6,19,0.35)] sm:rounded-[32px]"
+      className="group relative flex h-full w-full flex-col overflow-hidden rounded-[24px] bg-card shadow-[0_30px_80px_rgba(2,6,19,0.35)] sm:rounded-[32px]"
     >
-      {project.video ? (
-        <video
-          ref={videoRef}
-          src={project.video}
-          poster={project.image}
-          preload="none"
-          loop
-          muted
-          playsInline
-          draggable={false}
-          aria-label={project.title}
-          className="h-full w-full object-cover"
-        />
-      ) : (
-        <img
-          src={project.image}
-          alt={project.title}
-          loading="lazy"
-          draggable={false}
-          className="h-full w-full object-cover"
-        />
-      )}
+      {/* Mídia ancorada no topo: é onde mora o hero do site do cliente.
+          Decorativa para leitores de tela — o nome já está no link e no h3. */}
+      <div aria-hidden className="relative flex-1 overflow-hidden">
+        {project.video ? (
+          <video
+            ref={videoRef}
+            src={project.video}
+            poster={project.image}
+            preload="none"
+            loop
+            muted
+            playsInline
+            draggable={false}
+            className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-700 ease-out motion-safe:group-hover:scale-[1.02]"
+          />
+        ) : (
+          <img
+            src={project.image}
+            alt=""
+            loading="lazy"
+            draggable={false}
+            className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-700 ease-out motion-safe:group-hover:scale-[1.02]"
+          />
+        )}
+      </div>
+
+      {/* Barra editorial: categoria, stack, título e a seta-assinatura do site. */}
+      <div className="relative shrink-0 border-t border-border bg-card px-5 py-4 sm:px-8 sm:py-5">
+        <div className="flex items-center justify-between gap-3">
+          <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+            {t.projects.categories[project.category]}
+          </span>
+          <div className="hidden items-center gap-1.5 sm:flex">
+            {visibleTags.map(tag => (
+              <span
+                key={tag}
+                className="rounded-full border border-border px-2.5 py-0.5 text-[11px] font-medium text-muted-foreground"
+              >
+                {tag}
+              </span>
+            ))}
+            {extraTags > 0 && (
+              <span className="rounded-full border border-border px-2.5 py-0.5 text-[11px] font-medium text-muted-foreground">
+                +{extraTags}
+              </span>
+            )}
+          </div>
+        </div>
+
+        <div className="mt-1.5 flex items-end justify-between gap-4 sm:mt-2">
+          <div className="min-w-0">
+            <h3 className="truncate font-display text-[clamp(1.15rem,2.6vw,1.8rem)] font-semibold leading-tight tracking-[-0.02em] text-foreground">
+              {project.title}
+            </h3>
+            <p className="mt-1 hidden max-w-[60ch] text-sm leading-relaxed text-muted-foreground lg:line-clamp-2">
+              {project.description[lang]}
+            </p>
+          </div>
+          <span
+            aria-hidden
+            className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[#0C2AFE] text-white transition-colors duration-300 group-hover:bg-[#001FDD] sm:h-11 sm:w-11"
+          >
+            <ArrowRight className="h-4 w-4 transition-transform duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] motion-safe:group-hover:-rotate-45 sm:h-[18px] sm:w-[18px]" />
+          </span>
+        </div>
+      </div>
 
       <div className="deck-dim" />
     </DeckCardLink>
