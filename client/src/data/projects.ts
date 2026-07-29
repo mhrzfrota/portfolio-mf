@@ -115,8 +115,8 @@ export const projects: Project[] = [
     id: 6,
     title: "MG Aldeota - Landing Page",
     description: {
-      pt: "Landing page institucional para comunicação e captação de clientes, com seção de serviços, apresentação da marca e CTA para contato.",
-      en: "Institutional landing page for communication and client acquisition, with a services section, brand presentation and a contact CTA.",
+      pt: "Quem chegava pela indicação não encontrava a empresa online. O site institucional apresenta serviços e diferenciais — e encurta o caminho até o contato.",
+      en: "Clients arriving by referral couldn't find the company online. The institutional website presents services and differentiators — and shortens the path to contact.",
     },
     tags: ["HTML", "CSS", "Landing Page", "UI Responsiva"],
     image: "/images/image4.webp",
@@ -168,8 +168,8 @@ export const projects: Project[] = [
     id: 10,
     title: "TZ Produções - Landing Page",
     description: {
-      pt: "Landing page institucional para produtora de eventos, com apresentação da marca, serviços, portfólio visual e CTA para contato.",
-      en: "Institutional landing page for an event production company, with brand presentation, services, a visual portfolio and a contact CTA.",
+      pt: "Eventos memoráveis não podem depender de boca a boca. A landing page organiza portfólio, serviços e contato para transformar indicação em pedido de proposta.",
+      en: "Memorable events can't depend on word of mouth. The landing page organizes portfolio, services and contact to turn referrals into proposal requests.",
     },
     tags: ["HTML", "CSS", "JavaScript"],
     image: "/images/image10.webp",
@@ -197,8 +197,8 @@ export const projects: Project[] = [
     id: 12,
     title: "Via Shopping Car",
     description: {
-      pt: "Plataforma web para o Via Shopping Car, shopping de carros em Fortaleza, com apresentação de estoque, informações institucionais e canais de contato para visitas presenciais.",
-      en: "Web platform for Via Shopping Car, a car mall in Fortaleza, presenting inventory, institutional information and contact channels for in-person visits.",
+      pt: "Um shopping de carros inteiro, invisível para quem pesquisava online. A plataforma web reúne estoque, lojas e contato num só lugar — e transforma visita ao site em visita à loja.",
+      en: "An entire car mall, invisible to anyone searching online. The web platform gathers inventory, stores and contact in one place — turning site visits into showroom visits.",
     },
     tags: ["React", "Vite", "TypeScript", "CSS"],
     image: "/images/vsc.webp",
@@ -259,8 +259,8 @@ export const projects: Project[] = [
     slug: "montadora-fenix",
     title: "Montadora Fênix",
     description: {
-      pt: "Site institucional para uma empresa de arquitetura de eventos e montagem de stands promocionais, com apresentação da marca, indicadores, portfólio visual e contato direto para orçamento.",
-      en: "Institutional website for an event architecture and promotional stand assembly company, with brand presentation, indicators, a visual portfolio and direct quote contact.",
+      pt: "Vinte anos de stands impecáveis — e um site que não mostrava isso. Construí uma presença digital à altura da empresa: portfólio visual, prova de experiência e orçamento a um toque no WhatsApp.",
+      en: "Twenty years of impeccable stands — and a website that didn't show it. I built a digital presence to match: a visual portfolio, proof of experience and a quote one WhatsApp tap away.",
     },
     tags: ["HTML", "CSS", "JavaScript", "UI Responsiva"],
     image: "/images/montadora-fenix/tela-1.webp",

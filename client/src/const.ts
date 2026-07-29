@@ -1,7 +1,7 @@
 export { COOKIE_NAME, ONE_YEAR_MS } from "@shared/const";
 
 export const WHATSAPP_BUDGET_URL =
-  "https://wa.me/5585996370080?text=Ol%C3%A1!%20Quero%20fazer%20um%20or%C3%A7amento.";
+  "https://wa.me/5585996370080?text=Ol%C3%A1!%20Quero%20conversar%20sobre%20a%20minha%20empresa.";
 
 // Generate login URL at runtime so redirect URI reflects the current origin.
 export const getLoginUrl = () => {

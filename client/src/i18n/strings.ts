@@ -4,13 +4,17 @@ import type { Lang } from "@/contexts/LanguageContext";
  * Todos os textos de interface do site, em PT e EN.
  * Textos de dados (projetos, posts) ficam localizados nos próprios
  * arquivos de dados (`data/projects.ts`, `data/posts.ts`).
+ *
+ * Voz da marca: PORQUÊ → COMO → O QUÊ (Golden Circle). O herói do texto é
+ * o tempo do empresário, nunca a tecnologia. Ver
+ * docs/brand/2026-07-29-nova-comunicacao-mf.md antes de editar.
  */
 const strings = {
   pt: {
     nav: {
       inicio: "Início",
       projetos: "Projetos",
-      combos: "Combos",
+      combos: "Soluções",
       blog: "Blog",
       contato: "Contato",
     },
@@ -25,7 +29,7 @@ const strings = {
       light: "Modo claro",
       dark: "Modo escuro",
       switchLang: "Switch to English",
-      requestQuote: "Solicitar orçamento",
+      requestQuote: "Vamos conversar",
       backHome: "MF Services — voltar ao início",
     },
     footer: {
@@ -35,127 +39,132 @@ const strings = {
       headline: "Desenvolvedor",
       areas: [
         "Full Stack.",
-        "Back-end.",
-        "Web.",
-        "de Automações.",
-        "de Soluções Digitais.",
+        "de IA aplicada.",
+        "de automações.",
+        "de sistemas web.",
+        "de software sob medida.",
       ],
-      ariaHeadline: "Desenvolvedor fullstack — MF Services",
+      ariaHeadline: "Matheus Frota — desenvolvedor full stack, automações e IA",
       description:
-        "Desenvolvo sites, sistemas e automações sob medida para transformar ideias em soluções que vendem, organizam processos e economizam tempo.",
+        "Sou Matheus Frota. Uso código, automações e inteligência artificial para resolver problemas reais de empresas — do site ao sistema sob medida.",
       facts: [
-        "Formado em Análise e Desenvolvimento de Sistemas pela UNIFOR.",
-        "Do planejamento ao deploy: projetos com escopo claro, comunicação direta e foco nos resultados do negócio.",
-        "Experiência com React, Node.js, TypeScript, PostgreSQL e integração de APIs.",
+        "Tecnologia para resolver · IA para potencializar · visão de negócio para gerar resultado.",
+        "Antes do código, entendo o problema, o processo e o objetivo comercial.",
+        "Formado em ADS pela UNIFOR · React, Node.js, TypeScript, PostgreSQL e IA aplicada.",
       ],
-      startProject: "Iniciar um projeto",
-      viewProjects: "Ver projetos",
+      startProject: "Falar comigo",
+      viewProjects: "Ver meus projetos",
     },
     stack: {
-      title: "Tecnologias que uso nos projetos",
+      title: "Tecnologias que uso em projetos reais",
     },
     projects: {
-      title: "Projetos em destaque",
-      allTitle: "Todos os projetos",
-      deckAria: "Vitrine de projetos em destaque",
+      title: "Projetos que viraram resultado",
+      allTitle: "Cada projeto, um problema resolvido",
+      deckAria: "Projetos em destaque e o resultado de cada um",
       categories: {
         Todos: "Todos",
         Web: "Web",
         Plataformas: "Plataformas",
         "Landing Page": "Landing Page",
       } as Record<string, string>,
-      viewProject: "Ver projeto",
-      visitProject: "Acessar projeto",
+      viewProject: "Ver o case",
+      visitProject: "Ver no ar",
       openRepo: "Abrir repositório de",
       rowTop: "Projetos em destaque, primeira fileira",
       rowBottom: "Projetos em destaque, segunda fileira",
     },
     combos: {
-      title: "Combos de serviços",
+      title: "Por onde começar",
       subtitle:
-        "Pacotes pensados para diferentes momentos do seu negócio. Não achou o ideal? Monto um escopo sob medida.",
+        "Cada empresa está num momento diferente. Escolha o seu — ou me conte o problema, e eu desenho o caminho sob medida.",
       mostChosen: "Mais escolhido",
       from: "a partir de",
-      cta: "Quero este combo",
+      cta: "Começar por aqui",
       items: [
         {
           name: "Presença Digital",
           tagline:
-            "Para colocar seu negócio no ar com uma página que converte.",
+            "Para quem perde cliente por não ser encontrado — ou por parecer menor do que é.",
           features: [
-            "Landing page responsiva e rápida",
-            "Design e textos focados em conversão",
-            "Formulário e botão de WhatsApp",
-            "Domínio, deploy e SEO básico",
+            "Site institucional ou landing page rápida e responsiva",
+            "Texto e design que conduzem ao contato",
+            "WhatsApp e formulário a um toque",
+            "Domínio, publicação e SEO desde o início",
           ],
         },
         {
           name: "Operação & Dados",
-          tagline: "Para quem já vende e quer organizar dados e ganhar tempo.",
+          tagline:
+            "Para quem já vende, mas decide no escuro e perde horas em rotina manual.",
           features: [
-            "Dashboard de métricas em tempo quase real",
-            "Integração de APIs (Meta, planilhas, etc.)",
-            "Automação de rotinas repetitivas",
-            "Tratamento e organização de dados",
+            "Dashboard com os números do negócio em tempo quase real",
+            "Integrações entre os sistemas que você já usa",
+            "Automações que eliminam o trabalho repetitivo",
+            "Dados organizados para decidir com clareza",
           ],
         },
         {
           name: "Produto Completo",
-          tagline: "Para tirar uma ideia do papel como um sistema sob medida.",
+          tagline:
+            "Para o processo que hoje só funciona na cabeça de alguém — e precisa virar sistema.",
           features: [
-            "Aplicação fullstack (back + front)",
-            "Banco de dados e autenticação",
-            "Painel administrativo sob medida",
-            "Deploy, monitoramento e suporte",
+            "Sistema web sob medida, do banco de dados à tela",
+            "Acessos e permissões para a equipe",
+            "Painel administrativo do seu jeito de operar",
+            "No ar com monitoramento, suporte e evolução",
           ],
         },
       ],
     },
     diagnostico: {
-      badge: "Ferramenta exclusiva",
-      title: "Descubra o que trava as vendas do seu negócio no digital.",
+      badge: "Comece por aqui",
+      title: "Antes de investir em site, descubra o que trava suas vendas.",
       subtitle:
-        "O MF Diagnóstico IA analisa cinco pilares do seu negócio — posicionamento, presença digital, conversão, autoridade e automação — e entrega nota, prioridades e um plano de ação de 7 dias. Em menos de um minuto.",
+        "É assim que começo qualquer projeto: entendendo. O MF Diagnóstico IA avalia posicionamento, presença digital, conversão, autoridade e automação — e devolve nota, prioridades e um plano de ação de 7 dias. Em menos de um minuto.",
       bullets: [
         "Nota geral e pontuação em 5 pilares",
         "Problemas e oportunidades priorizados por impacto",
         "Proposta de valor, conteúdo e automações sob medida",
       ],
-      cta: "Gerar meu diagnóstico",
+      cta: "Diagnosticar minha empresa",
       note: "Gratuito · sem cadastro · resultado na hora",
       previewScore: "Nota geral",
       previewPillars: ["Posicionamento", "Conversão", "Automação"],
     },
     blog: {
       title: "Notas & ideias",
-      subtitle: "Notas sobre backend, dados e construção de produtos.",
+      subtitle:
+        "O que aprendo usando tecnologia para destravar negócios reais — sem tecniquês.",
       readArticle: "Ler artigo",
     },
     contact: {
-      title: "Vamos construir juntos.",
+      title: "Conte o problema. A tecnologia é comigo.",
       subtitle:
-        "Tem um projeto em mente ou quer conversar? Estou aberto a novas oportunidades.",
-      directBadge: "Atendimento direto",
+        "Sem compromisso e sem tecniquês: uma conversa sobre onde sua empresa perde tempo — e o que dá para resolver primeiro.",
+      directBadge: "Você fala direto comigo",
       whatsappTitlePrefix: "Vamos conversar pelo",
       whatsappParagraph:
-        "Clique no botão abaixo para abrir uma conversa com a mensagem de orçamento já preenchida.",
-      sendMessage: "Enviar mensagem",
+        "A primeira conversa é sobre o seu negócio, não sobre proposta. Me chame e conte o que hoje mais toma o seu tempo.",
+      sendMessage: "Começar a conversa",
       highlights: [
         {
-          title: "Orçamentos",
-          description: "Escopo, prazo e próximos passos definidos com clareza.",
+          title: "Entender",
+          description:
+            "Primeiro, o seu negócio: como vende, onde trava, o que consome tempo.",
         },
         {
-          title: "Landing pages",
-          description: "Páginas rápidas, responsivas e focadas em conversão.",
+          title: "Desenhar",
+          description:
+            "Escopo claro e prazo real. Só entra no plano o que gera resultado.",
         },
         {
-          title: "Dashboards e automações",
-          description: "Dados organizados para operação, análise e decisão.",
+          title: "Construir e acompanhar",
+          description: "Do código ao ar, com suporte e evolução contínua.",
         },
       ],
       contactInfo: "Informações de contato",
-      resumeTitle: "Baixar currículo",
+      resumeTitle: "Meu currículo",
       resumeParagraph:
         "Um resumo da minha experiência, formação e habilidades técnicas.",
       downloadPdf: "Baixar PDF",
@@ -175,14 +184,14 @@ const strings = {
       links: "Links",
       liveLink: "Projeto online",
       repository: "Repositório",
-      similarTitle: "Quer algo parecido?",
+      similarTitle: "Sua empresa trava num ponto parecido?",
       similarText:
-        "Me chame para transformar um problema parecido em uma solução web com painel, automação ou página de conversão.",
-      requestQuote: "Pedir orçamento",
+        "Me conte como funciona hoje. Eu mostro o que dá para automatizar, organizar ou transformar em sistema.",
+      requestQuote: "Conversar sobre isso",
       labelName: "Nome do projeto",
-      labelProblem: "Problema do cliente",
-      labelSolution: "Solução criada",
-      labelBenefit: "Resultado ou benefício",
+      labelProblem: "O que travava",
+      labelSolution: "O que construí",
+      labelBenefit: "O que mudou",
       imagesTitle: "Imagens do projeto",
       imagesSubtitle:
         "Espaço preparado para ampliar o case com mais telas quando houver novas capturas.",
@@ -192,16 +201,16 @@ const strings = {
       notFoundTitle: "Esse texto ainda não existe",
       notFoundText: "O artigo que você procura pode ter mudado de endereço.",
       backToBlog: "Voltar ao blog",
-      ctaTitle: "Quer aplicar isso no seu projeto?",
+      ctaTitle: "Isso encaixa na sua empresa?",
       ctaText:
-        "Posso ajudar a transformar essas ideias em uma solução real, do planejamento à produção.",
+        "Conte seu contexto e eu mostro como essa ideia vira solução — do plano ao ar.",
       ctaButton: "Conversar no WhatsApp",
       keepReading: "Continue lendo",
       readArticle: "Ler artigo",
     },
     notFound: {
       title: "Página não encontrada",
-      text: "Desculpe, a página que você procura não existe. Ela pode ter sido movida ou removida.",
+      text: "Essa página não existe — mas o seu problema com certeza tem solução. Volte ao início e me conte.",
       goHome: "Voltar para o início",
     },
   },
@@ -209,7 +218,7 @@ const strings = {
     nav: {
       inicio: "Home",
       projetos: "Projects",
-      combos: "Bundles",
+      combos: "Solutions",
       blog: "Blog",
       contato: "Contact",
     },
@@ -224,7 +233,7 @@ const strings = {
       light: "Light mode",
       dark: "Dark mode",
       switchLang: "Mudar para português",
-      requestQuote: "Request a quote",
+      requestQuote: "Let's talk",
       backHome: "MF Services — back to top",
     },
     footer: {
@@ -234,127 +243,134 @@ const strings = {
       headline: "Developer",
       areas: [
         "Full Stack.",
-        "Back-end.",
-        "Web.",
-        "of Automations.",
-        "of Digital Solutions.",
+        "of applied AI.",
+        "of automations.",
+        "of web systems.",
+        "of custom software.",
       ],
-      ariaHeadline: "Fullstack developer — MF Services",
+      ariaHeadline: "Matheus Frota — full stack developer, automations and AI",
       description:
-        "I build custom websites, systems and automations that turn ideas into solutions that sell, organize processes and save time.",
+        "I'm Matheus Frota. I use code, automations and artificial intelligence to solve real business problems — from websites to custom systems.",
       facts: [
-        "Degree in Systems Analysis and Development from UNIFOR.",
-        "From planning to deploy: projects with clear scope, direct communication and focus on business results.",
-        "Experience with React, Node.js, TypeScript, PostgreSQL and API integrations.",
+        "Technology to solve · AI to amplify · business vision to drive results.",
+        "Before any code, I understand the problem, the process and the business goal.",
+        "Systems Analysis degree (UNIFOR) · React, Node.js, TypeScript, PostgreSQL and applied AI.",
       ],
-      startProject: "Start a project",
-      viewProjects: "View projects",
+      startProject: "Talk to me",
+      viewProjects: "See my projects",
     },
     stack: {
-      title: "Technologies I work with",
+      title: "Technologies I use in real projects",
     },
     projects: {
-      title: "Featured projects",
-      allTitle: "All projects",
-      deckAria: "Featured projects showcase",
+      title: "Projects that became results",
+      allTitle: "Every project, a problem solved",
+      deckAria: "Featured projects and the result of each one",
       categories: {
         Todos: "All",
         Web: "Web",
         Plataformas: "Platforms",
         "Landing Page": "Landing Page",
       } as Record<string, string>,
-      viewProject: "View project",
-      visitProject: "Visit project",
+      viewProject: "View the case",
+      visitProject: "See it live",
       openRepo: "Open repository of",
       rowTop: "Featured projects, first row",
       rowBottom: "Featured projects, second row",
     },
     combos: {
-      title: "Service bundles",
+      title: "Where to start",
       subtitle:
-        "Packages designed for different moments of your business. Didn't find the right fit? I'll build a custom scope.",
+        "Every company is at a different moment. Pick yours — or tell me the problem and I'll design a custom path.",
       mostChosen: "Most popular",
       from: "from",
-      cta: "I want this bundle",
+      cta: "Start here",
       items: [
         {
           name: "Digital Presence",
-          tagline: "To get your business online with a page that converts.",
+          tagline:
+            "For those losing clients by not being found — or by looking smaller than they are.",
           features: [
-            "Fast, responsive landing page",
-            "Design and copy focused on conversion",
-            "Contact form and WhatsApp button",
-            "Domain, deploy and basic SEO",
+            "Fast, responsive institutional website or landing page",
+            "Copy and design that lead to contact",
+            "WhatsApp and contact form one tap away",
+            "Domain, deployment and SEO from day one",
           ],
         },
         {
           name: "Operations & Data",
           tagline:
-            "For those already selling who want organized data and more time.",
+            "For those already selling, but deciding in the dark and losing hours to manual routine.",
           features: [
-            "Near real-time metrics dashboard",
-            "API integrations (Meta, spreadsheets, etc.)",
-            "Automation of repetitive routines",
-            "Data processing and organization",
+            "Dashboard with your business numbers in near real time",
+            "Integrations between the systems you already use",
+            "Automations that eliminate repetitive work",
+            "Organized data for clear decisions",
           ],
         },
         {
           name: "Full Product",
-          tagline: "To take an idea off paper as a custom-built system.",
+          tagline:
+            "For the process that today only works inside someone's head — and needs to become a system.",
           features: [
-            "Fullstack application (back + front)",
-            "Database and authentication",
-            "Custom admin panel",
-            "Deploy, monitoring and support",
+            "Custom web system, from database to screen",
+            "Access and permissions for the team",
+            "Admin panel built around how you operate",
+            "Live with monitoring, support and evolution",
           ],
         },
       ],
     },
     diagnostico: {
-      badge: "Exclusive tool",
-      title: "Find out what's holding back your sales online.",
+      badge: "Start here",
+      title:
+        "Before investing in a website, find out what's blocking your sales.",
       subtitle:
-        "MF Diagnóstico IA scores five pillars of your business — positioning, digital presence, conversion, authority and automation — and delivers a grade, priorities and a 7-day action plan. In under a minute.",
+        "This is how I start every project: by understanding. MF Diagnóstico IA scores positioning, digital presence, conversion, authority and automation — and returns a grade, priorities and a 7-day action plan. In under a minute.",
       bullets: [
         "Overall grade and scores across 5 pillars",
         "Problems and opportunities ranked by impact",
         "Tailored value proposition, content and automations",
       ],
-      cta: "Run my diagnostic",
+      cta: "Diagnose my company",
       note: "Free · no sign-up · instant results",
       previewScore: "Overall score",
       previewPillars: ["Positioning", "Conversion", "Automation"],
     },
     blog: {
       title: "Notes & ideas",
-      subtitle: "Notes on backend, data and product building.",
+      subtitle:
+        "What I learn using technology to unblock real businesses — no tech jargon.",
       readArticle: "Read article",
     },
     contact: {
-      title: "Let's build together.",
+      title: "Tell me the problem. Technology is on me.",
       subtitle:
-        "Have a project in mind or want to talk? I'm open to new opportunities.",
-      directBadge: "Direct contact",
+        "No commitment, no jargon: a conversation about where your company loses time — and what to solve first.",
+      directBadge: "You talk directly to me",
       whatsappTitlePrefix: "Let's talk on",
       whatsappParagraph:
-        "Click the button below to open a conversation with a pre-filled quote message.",
-      sendMessage: "Send a message",
+        "The first conversation is about your business, not a proposal. Reach out and tell me what takes up your day.",
+      sendMessage: "Start the conversation",
       highlights: [
         {
-          title: "Quotes",
-          description: "Scope, timeline and next steps clearly defined.",
+          title: "Understand",
+          description:
+            "First, your business: how it sells, where it gets stuck, what consumes time.",
         },
         {
-          title: "Landing pages",
-          description: "Fast, responsive pages focused on conversion.",
+          title: "Design",
+          description:
+            "Clear scope and a realistic timeline. Only what drives results makes the plan.",
         },
         {
-          title: "Dashboards & automations",
-          description: "Organized data for operations, analysis and decisions.",
+          title: "Build and follow through",
+          description:
+            "From code to production, with support and continuous evolution.",
         },
       ],
       contactInfo: "Contact information",
-      resumeTitle: "Download résumé",
+      resumeTitle: "My résumé",
       resumeParagraph:
         "A summary of my experience, education and technical skills.",
       downloadPdf: "Download PDF",
@@ -374,14 +390,14 @@ const strings = {
       links: "Links",
       liveLink: "Live project",
       repository: "Repository",
-      similarTitle: "Want something similar?",
+      similarTitle: "Is your company stuck at a similar point?",
       similarText:
-        "Reach out to turn a similar problem into a web solution with a dashboard, automation or conversion page.",
-      requestQuote: "Request a quote",
+        "Tell me how it works today. I'll show what can be automated, organized or turned into a system.",
+      requestQuote: "Talk about it",
       labelName: "Project name",
-      labelProblem: "Client's problem",
-      labelSolution: "Solution built",
-      labelBenefit: "Result or benefit",
+      labelProblem: "What was stuck",
+      labelSolution: "What I built",
+      labelBenefit: "What changed",
       imagesTitle: "Project images",
       imagesSubtitle:
         "Room to expand the case with more screens as new captures come in.",
@@ -391,16 +407,16 @@ const strings = {
       notFoundTitle: "This article doesn't exist yet",
       notFoundText: "The article you're looking for may have moved.",
       backToBlog: "Back to blog",
-      ctaTitle: "Want to apply this to your project?",
+      ctaTitle: "Does this fit your company?",
       ctaText:
-        "I can help turn these ideas into a real solution, from planning to production.",
+        "Share your context and I'll show how this idea becomes a solution — from plan to production.",
       ctaButton: "Chat on WhatsApp",
       keepReading: "Keep reading",
       readArticle: "Read article",
     },
     notFound: {
       title: "Page not found",
-      text: "Sorry, the page you're looking for doesn't exist. It may have been moved or removed.",
+      text: "This page doesn't exist — but your problem certainly has a solution. Head back home and tell me about it.",
       goHome: "Back to home",
     },
   },

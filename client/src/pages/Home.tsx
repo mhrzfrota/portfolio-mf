@@ -38,19 +38,19 @@ const comboMeta = [
   {
     icon: Rocket,
     price: "R$ 500",
-    href: `${WHATSAPP_BASE}Ol%C3%A1!%20Tenho%20interesse%20no%20combo%20Presen%C3%A7a%20Digital.`,
+    href: `${WHATSAPP_BASE}Ol%C3%A1!%20Quero%20come%C3%A7ar%20pela%20Presen%C3%A7a%20Digital.`,
     featured: false,
   },
   {
     icon: BarChart3,
     price: null,
-    href: `${WHATSAPP_BASE}Ol%C3%A1!%20Tenho%20interesse%20no%20combo%20Opera%C3%A7%C3%A3o%20%26%20Dados.`,
+    href: `${WHATSAPP_BASE}Ol%C3%A1!%20Quero%20come%C3%A7ar%20por%20Opera%C3%A7%C3%A3o%20%26%20Dados.`,
     featured: true,
   },
   {
     icon: Layers,
     price: null,
-    href: `${WHATSAPP_BASE}Ol%C3%A1!%20Tenho%20interesse%20no%20combo%20Produto%20Completo.`,
+    href: `${WHATSAPP_BASE}Ol%C3%A1!%20Quero%20come%C3%A7ar%20pelo%20Produto%20Completo.`,
     featured: false,
   },
 ];
