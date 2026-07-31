@@ -13,6 +13,7 @@ const strings = {
   pt: {
     nav: {
       inicio: "Início",
+      sobre: "Sobre",
       projetos: "Projetos",
       combos: "Soluções",
       blog: "Blog",
@@ -34,6 +35,16 @@ const strings = {
     },
     footer: {
       role: "Desenvolvedor de Software",
+      tagline:
+        "Código, automações e inteligência artificial para resolver problemas reais de empresas.",
+      navLabel: "Navegação",
+      socialLabel: "Redes",
+      contactLabel: "Contato",
+      resumeLink: "Currículo (PDF)",
+      formLabel: "Me chame no WhatsApp",
+      formPlaceholder: "Escreva sua mensagem…",
+      formSubmit: "Enviar",
+      diagnosticoLink: "MF Diagnóstico IA",
     },
     hero: {
       headline: "Desenvolvedor",
@@ -47,21 +58,33 @@ const strings = {
       ariaHeadline: "Matheus Frota — desenvolvedor full stack, automações e IA",
       description:
         "Sou Matheus Frota. Uso código, automações e inteligência artificial para resolver problemas reais de empresas — do site ao sistema sob medida.",
-      facts: [
-        "Tecnologia para resolver · IA para potencializar · visão de negócio para gerar resultado.",
-        "Antes do código, entendo o problema, o processo e o objetivo comercial.",
-        "Formado em ADS pela UNIFOR · React, Node.js, TypeScript, PostgreSQL e IA aplicada.",
-      ],
       startProject: "Falar comigo",
       viewProjects: "Ver meus projetos",
     },
     stack: {
       title: "Tecnologias que uso em projetos reais",
     },
+    about: {
+      title: "Antes do código, o problema do negócio",
+      subtitle:
+        "Sou Matheus Frota, desenvolvedor em Fortaleza. Trabalho com empresas que já sabem onde dói mas não sabem como resolver — e traduzo isso em software que funciona no dia a dia.",
+      projectsLabel: "Projetos entregues e no ar",
+      stackLabel: "Tecnologias no dia a dia",
+      degreeValue: "ADS",
+      degreeLabel: "Análise e Desenvolvimento de Sistemas — UNIFOR",
+      baseValue: "Fortaleza",
+      baseLabel: "Ceará, Brasil — atendo remoto para todo o país",
+      quote:
+        "Tecnologia para resolver, IA para potencializar, visão de negócio para gerar resultado.",
+    },
     projects: {
       title: "Projetos que viraram resultado",
-      allTitle: "Cada projeto, um problema resolvido",
-      deckAria: "Projetos em destaque e o resultado de cada um",
+      subtitle:
+        "Sistemas, plataformas e sites sob medida. Cada um começou por um problema de negócio.",
+      landingEyebrow: "Landing Pages",
+      landingTitle: "Páginas feitas para converter",
+      landingSubtitle:
+        "Uma página, um objetivo: transformar quem chega em contato. Design, texto e velocidade trabalhando juntos.",
       categories: {
         Todos: "Todos",
         Web: "Web",
@@ -70,9 +93,8 @@ const strings = {
       } as Record<string, string>,
       viewProject: "Ver o case",
       visitProject: "Ver no ar",
-      openRepo: "Abrir repositório de",
-      rowTop: "Projetos em destaque, primeira fileira",
-      rowBottom: "Projetos em destaque, segunda fileira",
+      prev: "Projeto anterior",
+      next: "Próximo projeto",
     },
     combos: {
       title: "Por onde começar",
@@ -217,6 +239,7 @@ const strings = {
   en: {
     nav: {
       inicio: "Home",
+      sobre: "About",
       projetos: "Projects",
       combos: "Solutions",
       blog: "Blog",
@@ -238,6 +261,16 @@ const strings = {
     },
     footer: {
       role: "Software Developer",
+      tagline:
+        "Code, automations and artificial intelligence to solve real business problems.",
+      navLabel: "Navigation",
+      socialLabel: "Social",
+      contactLabel: "Contact",
+      resumeLink: "Resume (PDF)",
+      formLabel: "Message me on WhatsApp",
+      formPlaceholder: "Write your message…",
+      formSubmit: "Send",
+      diagnosticoLink: "MF AI Diagnosis",
     },
     hero: {
       headline: "Developer",
@@ -251,21 +284,33 @@ const strings = {
       ariaHeadline: "Matheus Frota — full stack developer, automations and AI",
       description:
         "I'm Matheus Frota. I use code, automations and artificial intelligence to solve real business problems — from websites to custom systems.",
-      facts: [
-        "Technology to solve · AI to amplify · business vision to drive results.",
-        "Before any code, I understand the problem, the process and the business goal.",
-        "Systems Analysis degree (UNIFOR) · React, Node.js, TypeScript, PostgreSQL and applied AI.",
-      ],
       startProject: "Talk to me",
       viewProjects: "See my projects",
     },
     stack: {
       title: "Technologies I use in real projects",
     },
+    about: {
+      title: "Before the code, the business problem",
+      subtitle:
+        "I'm Matheus Frota, a developer based in Fortaleza, Brazil. I work with companies that already know where it hurts but not how to fix it — and turn that into software that holds up day to day.",
+      projectsLabel: "Projects delivered and live",
+      stackLabel: "Technologies I work with daily",
+      degreeValue: "ADS",
+      degreeLabel: "Systems Analysis and Development — UNIFOR",
+      baseValue: "Fortaleza",
+      baseLabel: "Ceará, Brazil — working remotely nationwide",
+      quote:
+        "Technology to solve, AI to amplify, business vision to drive results.",
+    },
     projects: {
       title: "Projects that became results",
-      allTitle: "Every project, a problem solved",
-      deckAria: "Featured projects and the result of each one",
+      subtitle:
+        "Custom systems, platforms and websites. Each one started from a business problem.",
+      landingEyebrow: "Landing Pages",
+      landingTitle: "Pages built to convert",
+      landingSubtitle:
+        "One page, one goal: turning visitors into conversations. Design, copy and speed working together.",
       categories: {
         Todos: "All",
         Web: "Web",
@@ -274,9 +319,8 @@ const strings = {
       } as Record<string, string>,
       viewProject: "View the case",
       visitProject: "See it live",
-      openRepo: "Open repository of",
-      rowTop: "Featured projects, first row",
-      rowBottom: "Featured projects, second row",
+      prev: "Previous project",
+      next: "Next project",
     },
     combos: {
       title: "Where to start",

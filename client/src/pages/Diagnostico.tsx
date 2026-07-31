@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useRevealOnScroll } from "@/lib/useRevealOnScroll";
+import { useAnimations } from "@/lib/useAnimations";
 import type {
   DiagnosticoInput,
   DiagnosticoReport,
@@ -19,7 +19,7 @@ export default function Diagnostico() {
   const [input, setInput] = useState<DiagnosticoInput | null>(null);
   const [report, setReport] = useState<DiagnosticoReport | null>(null);
 
-  useRevealOnScroll([etapa]);
+  useAnimations([etapa]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });

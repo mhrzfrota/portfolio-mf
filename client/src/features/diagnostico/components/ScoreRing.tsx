@@ -28,7 +28,7 @@ export default function ScoreRing({
   return (
     <div className="flex flex-col items-center gap-3">
       <div
-        className="relative text-[#0C2AFE] dark:text-[#7C8CFF]"
+        className="relative text-primary"
         role="img"
         aria-label={`Nota geral: ${value} de 100`}
       >

@@ -61,11 +61,18 @@ function FlatMonogram() {
  * (~950 kB): parseá-lo junto com a primeira pintura era o que segurava a
  * abertura do site no celular. Até lá (e enquanto o chunk baixa) o monograma
  * SVG ocupa o lugar — o hero nunca fica vazio.
+ *
+ * Em tela de toque o chunk nunca é buscado. O hero agora divide a GPU com o
+ * anel 3D, e canvas WebGL mais anel é exatamente a disputa que travava o
+ * celular. O `FlatMonogram` é vetorial, então o monograma continua lá — só
+ * não em WebGL.
  */
 function useIdleReady(): boolean {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
+    if (window.matchMedia("(pointer: coarse)").matches) return;
+
     if (typeof window.requestIdleCallback === "function") {
       const id = window.requestIdleCallback(() => setReady(true), {
         timeout: 1500,

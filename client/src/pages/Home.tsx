@@ -4,7 +4,6 @@ import {
   Calendar,
   Check,
   Layers,
-  MessageCircle,
   Rocket,
 } from "lucide-react";
 import { Link } from "wouter";
@@ -12,12 +11,15 @@ import { WHATSAPP_BUDGET_URL } from "@/const";
 import { getPosts } from "@/data/posts";
 import { useLanguage, type Lang } from "@/contexts/LanguageContext";
 import { getStrings } from "@/i18n/strings";
-import DiagnosticoSpotlight from "@/components/DiagnosticoSpotlight";
-import ProjectDeck from "@/components/ProjectDeck";
-import ProjectsCategoryPage from "@/components/ProjectsCategoryPage";
+import AboutBento from "@/components/AboutBento";
+import ProjectsShowcase, {
+  landingProjects,
+  otherProjects,
+} from "@/components/ProjectsShowcase";
 import StackShowcase from "@/components/StackShowcase";
 import Hero from "@/components/hero/Hero";
 import RollButton from "@/components/RollButton";
+import SectionHeader from "@/components/SectionHeader";
 import { cn } from "@/lib/utils";
 
 const WHATSAPP_BASE = "https://wa.me/5585996370080?text=";
@@ -80,53 +82,59 @@ export default function Home() {
     <div className="flex flex-col">
       <Hero />
 
-      {/* PROJETOS */}
-      <section id="projetos" className="scroll-mt-20">
-        <ProjectDeck />
-        <ProjectsCategoryPage />
-      </section>
-
-      {/* STACK */}
+      {/* Ordem da referência: hero → faixa de logos → sobre → serviços →
+          destaque → preços → blog → CTA final. */}
       <StackShowcase />
 
-      {/* MF DIAGNÓSTICO IA */}
-      <DiagnosticoSpotlight />
+      <AboutBento />
 
-      {/* COMBOS */}
-      <section
-        id="combos"
-        className="scroll-mt-20 bg-background py-16 sm:py-20 lg:py-28"
-      >
-        <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
-          <h2
-            data-reveal
-            className="text-[clamp(1.5rem,4vw,3.2rem)] font-medium leading-[1.12] tracking-[-0.02em] text-foreground"
-          >
-            {t.combos.title}
-          </h2>
-          <p
-            data-reveal
-            className="reveal-delay-1 mt-4 max-w-2xl text-[14px] leading-relaxed text-muted-foreground sm:text-[15px]"
-          >
-            {t.combos.subtitle}
-          </p>
+      {/* Sistemas, plataformas e sites em cima; landing pages logo abaixo, no
+          lugar onde ficava o Diagnóstico. São públicos diferentes: quem
+          procura sistema não procura página de captura. */}
+      <ProjectsShowcase
+        id="projetos"
+        eyebrow={t.nav.projetos}
+        title={t.projects.title}
+        subtitle={t.projects.subtitle}
+        projects={otherProjects}
+      />
+
+      <ProjectsShowcase
+        id="landing-pages"
+        eyebrow={t.projects.landingEyebrow}
+        title={t.projects.landingTitle}
+        subtitle={t.projects.landingSubtitle}
+        projects={landingProjects}
+      />
+
+      {/* COMBOS — o "Pricing" da referência */}
+      <section id="combos" className="section-box section-pad scroll-mt-24">
+        <div className="container padding-global">
+          <SectionHeader
+            eyebrow={t.nav.combos}
+            title={t.combos.title}
+            subtitle={t.combos.subtitle}
+          />
 
           <div
-            data-reveal
-            className="reveal-delay-2 mt-10 grid items-stretch gap-5 sm:mt-14 md:grid-cols-2 lg:grid-cols-3 lg:gap-6"
+            data-anim="card-reveal"
+            data-anim-children
+            className="mt-12 grid items-stretch gap-5 sm:mt-16 md:grid-cols-2 lg:grid-cols-3 lg:gap-6"
           >
             {combos.map(combo => (
               <div
                 key={combo.name}
                 className={cn(
-                  "group relative flex flex-col rounded-2xl p-7 transition-all duration-300 hover:-translate-y-1 sm:p-8",
+                  "group relative flex flex-col rounded-[20px] p-7 transition-shadow duration-300 sm:p-8",
                   combo.featured
-                    ? "bg-[var(--brand-ink)] text-white hover:shadow-[0_24px_50px_rgba(2,6,19,0.35)]"
-                    : "border border-border bg-card hover:shadow-[0_18px_40px_rgba(13,30,80,0.1)]"
+                    ? // O plano em destaque era preto; vira azul sólido, que é
+                      // onde o lime da referência morava.
+                      "bg-primary text-white hover:shadow-[0_24px_50px_rgba(12,42,254,0.35)]"
+                    : "a-card hover:shadow-[0_18px_40px_rgba(13,30,80,0.1)]"
                 )}
               >
                 {combo.featured && (
-                  <span className="absolute right-6 top-7 rounded-full bg-[#0C2AFE] px-3 py-1 text-[11px] font-semibold text-white">
+                  <span className="mono-label absolute right-6 top-7 rounded-full bg-white px-3 py-1 text-[10px] text-primary">
                     {t.combos.mostChosen}
                   </span>
                 )}
@@ -135,8 +143,8 @@ export default function Home() {
                   className={cn(
                     "mb-6 flex h-12 w-12 items-center justify-center rounded-xl",
                     combo.featured
-                      ? "bg-white/10 text-[#7C8CFF]"
-                      : "bg-[#0C2AFE]/10 text-[#0C2AFE] dark:text-[#7C8CFF]"
+                      ? "bg-white text-primary"
+                      : "bg-primary text-white"
                   )}
                 >
                   <combo.icon className="h-6 w-6" />
@@ -144,16 +152,16 @@ export default function Home() {
 
                 <h3
                   className={cn(
-                    "text-[20px] font-semibold tracking-[-0.01em]",
-                    combo.featured ? "text-white" : "text-foreground"
+                    "mono-label text-[12px]",
+                    combo.featured ? "text-white/90" : "text-muted-foreground"
                   )}
                 >
                   {combo.name}
                 </h3>
                 <p
                   className={cn(
-                    "mt-2 text-[13px] leading-relaxed sm:text-[14px]",
-                    combo.featured ? "text-white/70" : "text-muted-foreground"
+                    "mt-3 text-[17px] font-medium leading-snug tracking-[-0.04em]",
+                    combo.featured ? "text-white" : "text-foreground"
                   )}
                 >
                   {combo.tagline}
@@ -163,9 +171,9 @@ export default function Home() {
                   <div className="mt-6 flex items-baseline gap-1.5">
                     <span
                       className={cn(
-                        "text-[12px] font-medium",
+                        "mono-label text-[11px]",
                         combo.featured
-                          ? "text-white/60"
+                          ? "text-white/70"
                           : "text-muted-foreground"
                       )}
                     >
@@ -173,7 +181,7 @@ export default function Home() {
                     </span>
                     <span
                       className={cn(
-                        "text-[26px] font-semibold tracking-[-0.02em] sm:text-[28px]",
+                        "text-[30px] font-medium tracking-[-0.06em]",
                         combo.featured ? "text-white" : "text-foreground"
                       )}
                     >
@@ -185,7 +193,7 @@ export default function Home() {
                 <div
                   className={cn(
                     "my-6 h-px w-full",
-                    combo.featured ? "bg-white/15" : "bg-border"
+                    combo.featured ? "bg-white/20" : "bg-border"
                   )}
                 />
 
@@ -194,16 +202,21 @@ export default function Home() {
                     <li
                       key={feature}
                       className={cn(
-                        "flex items-start gap-2.5 text-[13px] leading-snug sm:text-[14px]",
-                        combo.featured ? "text-white/85" : "text-foreground"
+                        "flex items-start gap-2.5 text-[14px] leading-snug",
+                        combo.featured ? "text-white/90" : "text-foreground"
                       )}
                     >
-                      <Check
+                      {/* Check em círculo preenchido, como na referência. */}
+                      <span
                         className={cn(
-                          "mt-0.5 h-4 w-4 shrink-0",
-                          combo.featured ? "text-[#7C8CFF]" : "text-[#0C2AFE]"
+                          "mt-0.5 flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full",
+                          combo.featured
+                            ? "bg-white text-primary"
+                            : "bg-primary text-white"
                         )}
-                      />
+                      >
+                        <Check className="h-3 w-3" strokeWidth={3} />
+                      </span>
                       {feature}
                     </li>
                   ))}
@@ -211,8 +224,7 @@ export default function Home() {
 
                 <RollButton
                   className="mt-8 w-full"
-                  size="md"
-                  variant={combo.featured ? "white" : "blue"}
+                  variant={combo.featured ? "light" : "dark"}
                   label={t.combos.cta}
                   href={combo.href}
                   external
@@ -223,60 +235,53 @@ export default function Home() {
         </div>
       </section>
 
-      {/* BLOG */}
-      <section
-        id="blog"
-        className="scroll-mt-20 bg-background py-16 sm:py-20 lg:py-28"
-      >
-        <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
-          <h2
-            data-reveal
-            className="text-[clamp(1.5rem,4vw,3.2rem)] font-medium leading-[1.12] tracking-[-0.02em] text-foreground"
-          >
-            {t.blog.title}
-          </h2>
-          <p
-            data-reveal
-            className="reveal-delay-1 mt-4 max-w-2xl text-[14px] leading-relaxed text-muted-foreground sm:text-[15px]"
-          >
-            {t.blog.subtitle}
-          </p>
+      {/* BLOG — a referência põe um botão "VIEW ALL" no cabeçalho; aqui não há
+          rota de índice do blog (só /blog/:slug), então ele ficaria sem destino. */}
+      <section id="blog" className="section-box section-pad scroll-mt-24">
+        <div className="container padding-global">
+          <SectionHeader
+            eyebrow={t.nav.blog}
+            title={t.blog.title}
+            subtitle={t.blog.subtitle}
+          />
 
           <div
-            data-reveal
-            className="reveal-delay-2 mt-10 grid gap-5 sm:mt-14 md:grid-cols-3 lg:gap-6"
+            data-anim="card-reveal"
+            data-anim-children
+            className="mt-12 grid gap-5 sm:mt-16 md:grid-cols-3 lg:gap-6"
           >
-            {posts.map((post, index) => (
+            {posts.map(post => (
               <Link
                 key={post.id}
                 href={`/blog/${post.slug}`}
-                className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(13,30,80,0.12)]"
+                className="a-card group flex flex-col overflow-hidden transition-shadow duration-300 hover:shadow-[0_18px_40px_rgba(13,30,80,0.12)]"
               >
-                <div
-                  className={cn(
-                    "relative flex h-40 items-end justify-between overflow-hidden p-5 sm:h-44",
-                    post.cover
-                  )}
-                >
-                  <StarburstIcon className="absolute -right-7 -top-7 h-32 w-32 rotate-12 fill-current text-white/10 transition-transform duration-700 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:rotate-45" />
-                  <span className="relative text-[44px] font-medium leading-none tracking-[-0.02em] text-white/90">
-                    0{index + 1}
-                  </span>
-                  <span className="relative rounded-full bg-white/15 px-3 py-1 text-[11px] font-medium text-white backdrop-blur">
-                    {post.readTime}
-                  </span>
+                {/* A capa é um degradê, não foto: o zoom de 1.06 do hover roda
+                    no bloco inteiro, junto com o giro do starburst. */}
+                <div className="relative h-40 overflow-hidden sm:h-44">
+                  <div
+                    className={cn(
+                      "absolute inset-0 flex items-end justify-end p-5 transition-transform duration-[1200ms] ease-out group-hover:scale-[1.06]",
+                      post.cover
+                    )}
+                  >
+                    <StarburstIcon className="absolute -right-7 -top-7 h-32 w-32 rotate-12 fill-current text-white/10 transition-transform duration-700 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:rotate-45" />
+                    <span className="mono-label relative rounded-full bg-white/20 px-3 py-1 text-[10px] text-white backdrop-blur">
+                      {post.readTime}
+                    </span>
+                  </div>
                 </div>
 
                 <div className="flex flex-1 flex-col gap-3 p-6 sm:p-7">
-                  <span className="flex items-center gap-1.5 text-[12px] text-muted-foreground">
+                  <span className="mono-label flex items-center gap-1.5 text-[11px] text-muted-foreground">
                     <Calendar size={13} /> {formatDate(post.date, lang)}
                   </span>
 
-                  <h3 className="text-[18px] font-semibold leading-snug tracking-[-0.01em] text-foreground transition-colors duration-300 group-hover:text-[#0C2AFE] sm:text-[19px]">
+                  <h3 className="text-[19px] font-medium leading-snug tracking-[-0.04em] text-foreground transition-transform duration-300 group-hover:-translate-y-1">
                     {post.title}
                   </h3>
 
-                  <p className="flex-1 text-[13px] leading-relaxed text-muted-foreground sm:text-[14px]">
+                  <p className="flex-1 text-[14px] leading-relaxed text-muted-foreground">
                     {post.excerpt}
                   </p>
 
@@ -284,14 +289,14 @@ export default function Home() {
                     {post.tags.map(tag => (
                       <span
                         key={tag}
-                        className="rounded-full border border-border px-2.5 py-1 text-[11px] font-medium text-muted-foreground"
+                        className="mono-label rounded-full bg-muted px-2.5 py-1 text-[10px] text-muted-foreground"
                       >
                         {tag}
                       </span>
                     ))}
                   </div>
 
-                  <span className="mt-1 flex items-center gap-1.5 text-[13px] font-semibold text-[#0C2AFE]">
+                  <span className="mono-label mt-1 flex items-center gap-1.5 text-[11px] text-primary">
                     {t.blog.readArticle}
                     <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                   </span>
@@ -302,120 +307,42 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CONTATO */}
+      {/* CONTATO — o CTA final da referência: a seção INTEIRA é o bloco de
+          céu, conteúdo alinhado à esquerda e um único botão; a metade direita
+          fica livre para a foto (hoje o degradê, depois o vídeo em loop).
+          Telefone e currículo moram agora no rodapé; os três passos do
+          processo saíram — a referência fecha limpa, só com o convite. */}
       <section
         id="contato"
-        className="scroll-mt-20 bg-background py-16 sm:py-20 lg:py-28"
+        className="hero-sky section-box relative overflow-hidden scroll-mt-24"
       >
-        <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
-          <h2
-            data-reveal
-            className="text-[clamp(1.5rem,4vw,3.2rem)] font-medium leading-[1.12] tracking-[-0.02em] text-foreground"
-          >
-            {t.contact.title}
-          </h2>
-          <p
-            data-reveal
-            className="reveal-delay-1 mt-4 max-w-2xl text-[14px] leading-relaxed text-muted-foreground sm:text-[15px]"
-          >
-            {t.contact.subtitle}
-          </p>
+        <div className="hero-grain" aria-hidden="true" />
 
+        <div className="container padding-global relative py-20 sm:py-28 lg:py-32">
           <div
-            data-reveal
-            className="reveal-delay-2 mt-10 grid items-start gap-6 sm:mt-14 lg:grid-cols-[1.2fr_0.8fr] lg:gap-8"
+            data-anim="fade-up"
+            data-anim-children
+            className="max-w-2xl space-y-6"
           >
-            <div className="relative overflow-hidden rounded-2xl bg-[var(--brand-ink)] p-7 text-white sm:rounded-[2rem] sm:p-10 lg:p-12">
-              <div className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-[#0C2AFE]/40 blur-3xl" />
-              <div className="absolute -bottom-20 -left-20 h-56 w-56 rounded-full bg-[#5B7CFF]/20 blur-3xl" />
+            <span className="mono-label inline-flex items-center gap-2 rounded-full bg-white/15 px-3.5 py-1.5 text-[11px] text-white backdrop-blur">
+              <span className="h-2 w-2 rounded-full bg-white" />
+              {t.contact.directBadge}
+            </span>
 
-              <div className="relative space-y-7">
-                <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3.5 py-1.5 text-[12px] font-medium text-white/80">
-                  <span className="h-2 w-2 rounded-full bg-[#7C8CFF]" />
-                  {t.contact.directBadge}
-                </span>
+            <h2 className="text-white">{t.contact.title}</h2>
 
-                <div className="space-y-4">
-                  <h3 className="max-w-2xl text-[clamp(1.6rem,4vw,3rem)] font-medium leading-[1.1] tracking-[-0.02em]">
-                    {t.contact.whatsappTitlePrefix}{" "}
-                    <span className="text-[#7C8CFF]">WhatsApp</span>.
-                  </h3>
-                  <p className="max-w-xl text-[14px] leading-relaxed text-white/65 sm:text-[15px]">
-                    {t.contact.whatsappParagraph}
-                  </p>
-                </div>
+            <p className="max-w-md text-[15px] leading-relaxed text-white/90 [text-shadow:0_1px_10px_rgba(10,30,90,0.35)] sm:text-[16px]">
+              {t.contact.subtitle}
+            </p>
 
-                <RollButton
-                  variant="white"
-                  size="md"
-                  label={t.contact.sendMessage}
-                  href={WHATSAPP_BUDGET_URL}
-                  external
-                />
-
-                <div className="grid gap-4 pt-2 sm:grid-cols-3">
-                  {t.contact.highlights.map((item, index) => (
-                    <div
-                      key={item.title}
-                      className="rounded-xl border border-white/10 bg-white/[0.04] px-4 py-5 transition-colors duration-300 hover:border-[#7C8CFF]/60 hover:bg-white/[0.07]"
-                    >
-                      <span className="text-[11px] font-semibold text-[#7C8CFF]">
-                        0{index + 1}
-                      </span>
-                      <h4 className="mt-3 text-[15px] font-semibold text-white">
-                        {item.title}
-                      </h4>
-                      <p className="mt-2 text-[13px] leading-relaxed text-white/60">
-                        {item.description}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </div>
+            <div className="pt-2">
+              <RollButton
+                variant="arrow"
+                label={t.contact.sendMessage}
+                href={WHATSAPP_BUDGET_URL}
+                external
+              />
             </div>
-
-            <aside className="space-y-5">
-              <div className="rounded-2xl border border-border bg-card p-6 sm:p-7">
-                <h3 className="text-[17px] font-semibold text-foreground">
-                  {t.contact.contactInfo}
-                </h3>
-                <div className="mt-5 flex items-start gap-4">
-                  <div className="rounded-full bg-[#0C2AFE]/10 p-3 text-[#0C2AFE] dark:text-[#7C8CFF]">
-                    <MessageCircle className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
-                      WhatsApp
-                    </p>
-                    <a
-                      href={WHATSAPP_BUDGET_URL}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="text-[15px] font-semibold text-foreground transition-colors hover:text-[#0C2AFE]"
-                    >
-                      (85) 99637-0080
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-              <div className="rounded-2xl bg-[#0C2AFE] p-6 text-white sm:p-7">
-                <h4 className="text-[17px] font-semibold">
-                  {t.contact.resumeTitle}
-                </h4>
-                <p className="mt-2 text-[13px] leading-relaxed text-white/75">
-                  {t.contact.resumeParagraph}
-                </p>
-                <RollButton
-                  className="mt-5"
-                  variant="white"
-                  size="sm"
-                  label={t.contact.downloadPdf}
-                  href="/curriculo.pdf"
-                  download="Curriculo-Matheus-Frota.pdf"
-                />
-              </div>
-            </aside>
           </div>
         </div>
       </section>

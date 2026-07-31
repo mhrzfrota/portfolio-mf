@@ -36,7 +36,7 @@ function SectionTitle({
 }) {
   return (
     <div className="mb-5">
-      <h2 className="text-[13px] font-semibold uppercase tracking-wide text-[#0C2AFE] dark:text-[#7C8CFF]">
+      <h2 className="text-[13px] font-semibold uppercase tracking-wide text-primary">
         {children}
       </h2>
       {sub && <p className="mt-1 text-[13px] text-muted-foreground">{sub}</p>}
@@ -62,7 +62,7 @@ function PilarBars({ pilares }: { pilares: PilarScore[] }) {
             <span className="flex items-center gap-2 text-[14px] font-medium text-foreground">
               {pilar.label}
               {pilar.score === menor && (
-                <span className="rounded-full bg-[#0C2AFE]/10 px-2 py-0.5 text-[10.5px] font-semibold uppercase tracking-wide text-[#0C2AFE] dark:bg-[#7C8CFF]/15 dark:text-[#7C8CFF]">
+                <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10.5px] font-semibold uppercase tracking-wide text-primary">
                   Prioridade
                 </span>
               )}
@@ -71,9 +71,9 @@ function PilarBars({ pilares }: { pilares: PilarScore[] }) {
               {pilar.score}
             </span>
           </div>
-          <div className="mt-1.5 h-2.5 overflow-hidden rounded-full bg-[#0C2AFE]/12 dark:bg-[#7C8CFF]/15">
+          <div className="mt-1.5 h-2.5 overflow-hidden rounded-full bg-primary/12">
             <div
-              className="diag-bar h-full rounded-r-full bg-[#0C2AFE] dark:bg-[#7C8CFF]"
+              className="diag-bar h-full rounded-r-full bg-primary"
               style={{ width: filled ? `${pilar.score}%` : "0%" }}
             />
           </div>
@@ -196,14 +196,14 @@ export default function Report({
       {/* Cabeçalho do relatório */}
       <div className="diag-card-in space-y-4" style={entrada()}>
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-1.5 text-[12px] font-semibold text-[#0C2AFE] dark:text-[#7C8CFF]">
+          <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-1.5 text-[12px] font-semibold text-primary">
             <Bot className="h-3.5 w-3.5" />
             Relatório gerado — IA + regras de mercado
           </span>
           <button
             type="button"
             onClick={onRestart}
-            className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-[13px] font-medium text-foreground transition-colors hover:border-[#0C2AFE] hover:text-[#0C2AFE] dark:hover:border-[#7C8CFF] dark:hover:text-[#7C8CFF]"
+            className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-[13px] font-medium text-foreground transition-colors hover:border-primary hover:text-primary"
           >
             <RefreshCcw className="h-3.5 w-3.5" />
             Refazer diagnóstico
@@ -289,7 +289,7 @@ export default function Report({
           <ul className="space-y-4">
             {report.oportunidades.map(oportunidade => (
               <li key={oportunidade.titulo} className="flex items-start gap-3">
-                <TrendingUp className="mt-0.5 h-4 w-4 shrink-0 text-[#0C2AFE] dark:text-[#7C8CFF]" />
+                <TrendingUp className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
                 <div>
                   <p className="text-[14px] font-semibold text-foreground">
                     {oportunidade.titulo}
@@ -369,7 +369,7 @@ export default function Report({
           <ul className="space-y-3">
             {report.ideiasDeConteudo.map(ideia => (
               <li key={ideia} className="flex items-start gap-3">
-                <Lightbulb className="mt-0.5 h-4 w-4 shrink-0 text-[#0C2AFE] dark:text-[#7C8CFF]" />
+                <Lightbulb className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
                 <span className="text-[13.5px] leading-relaxed text-muted-foreground">
                   {ideia}
                 </span>
@@ -383,7 +383,7 @@ export default function Report({
           <ul className="space-y-4">
             {report.automacoes.map(automacao => (
               <li key={automacao.titulo} className="flex items-start gap-3">
-                <Bot className="mt-0.5 h-4 w-4 shrink-0 text-[#0C2AFE] dark:text-[#7C8CFF]" />
+                <Bot className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
                 <div>
                   <p className="text-[14px] font-semibold text-foreground">
                     {automacao.titulo}
@@ -412,7 +412,7 @@ export default function Report({
                   className="absolute left-[17px] top-9 bottom-0 w-px bg-border"
                 />
               )}
-              <span className="z-10 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#0C2AFE]/30 bg-card text-[12px] font-semibold text-[#0C2AFE] dark:border-[#7C8CFF]/40 dark:text-[#7C8CFF]">
+              <span className="z-10 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-primary/30 bg-card text-[12px] font-semibold text-primary">
                 D{dia.dia}
               </span>
               <div className="pt-1">
@@ -425,7 +425,7 @@ export default function Report({
                       key={acao}
                       className="flex items-start gap-2 text-[13px] leading-relaxed text-muted-foreground"
                     >
-                      <Check className="mt-[3px] h-3.5 w-3.5 shrink-0 text-[#0C2AFE]/60 dark:text-[#7C8CFF]/60" />
+                      <Check className="mt-[3px] h-3.5 w-3.5 shrink-0 text-primary/60" />
                       {acao}
                     </li>
                   ))}
@@ -451,8 +451,7 @@ export default function Report({
           </p>
           <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <RollButton
-              variant="white"
-              size="md"
+              variant="arrow"
               label="Solicitar proposta"
               href={propostaUrl}
               external

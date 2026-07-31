@@ -40,7 +40,7 @@ export default function BlogPost({
     return (
       <section className="mx-auto flex min-h-[60vh] w-full max-w-[1200px] flex-col items-center px-5 pb-16 pt-32 text-center sm:px-8 lg:px-12">
         <div className="max-w-xl space-y-5">
-          <span className="inline-flex rounded-full border border-border px-3 py-1 text-[12px] font-medium text-[#0C2AFE]">
+          <span className="inline-flex rounded-full border border-border px-3 py-1 text-[12px] font-medium text-primary">
             {t.blogPost.notFoundBadge}
           </span>
           <h1 className="text-3xl font-bold tracking-[-0.02em]">
@@ -51,7 +51,7 @@ export default function BlogPost({
           </p>
           <Button
             asChild
-            className="rounded-full bg-[#0C2AFE] text-white hover:bg-[#001FDD]"
+            className="rounded-full bg-primary text-white hover:bg-[var(--brand-blue-dark)]"
           >
             <Link href="/#blog">{t.blogPost.backToBlog}</Link>
           </Button>
@@ -70,7 +70,7 @@ export default function BlogPost({
       <Button
         asChild
         variant="outline"
-        className="rounded-full border-border text-[13px] font-medium hover:text-[#0C2AFE]"
+        className="rounded-full border-border text-[13px] font-medium hover:text-primary"
       >
         <a href="/#blog">
           <ArrowLeft className="h-4 w-4" />
@@ -84,7 +84,7 @@ export default function BlogPost({
           {post.tags.map(tag => (
             <span
               key={tag}
-              className="rounded-full border border-border px-3 py-1 text-[12px] font-semibold uppercase tracking-wide text-[#0C2AFE]"
+              className="rounded-full border border-border px-3 py-1 text-[12px] font-semibold uppercase tracking-wide text-primary"
             >
               {tag}
             </span>
@@ -130,7 +130,7 @@ export default function BlogPost({
                           key={item}
                           className="relative pl-6 text-[16px] font-medium leading-[1.7] text-foreground/80"
                         >
-                          <span className="absolute left-0 top-[0.7em] h-1.5 w-1.5 -translate-y-1/2 rounded-full bg-[#0C2AFE]" />
+                          <span className="absolute left-0 top-[0.7em] h-1.5 w-1.5 -translate-y-1/2 rounded-full bg-primary" />
                           {item}
                         </li>
                       ))}
@@ -162,8 +162,7 @@ export default function BlogPost({
         </p>
         <div className="mt-6 flex justify-center">
           <RollButton
-            variant="blue"
-            size="md"
+            variant="arrow"
             label={t.blogPost.ctaButton}
             href={WHATSAPP_BUDGET_URL}
             external
@@ -182,15 +181,15 @@ export default function BlogPost({
               <Link
                 key={item.slug}
                 href={`/blog/${item.slug}`}
-                className="group flex flex-col rounded-2xl border border-border bg-card p-6 transition-colors hover:border-[#0C2AFE]/50"
+                className="group flex flex-col rounded-2xl border border-border bg-card p-6 transition-colors hover:border-primary/50"
               >
                 <span className="text-[12px] font-medium text-muted-foreground">
                   {formatDate(item.date, lang)}
                 </span>
-                <h3 className="mt-2 text-[16px] font-bold leading-snug tracking-[-0.01em] text-foreground transition-colors group-hover:text-[#0C2AFE]">
+                <h3 className="mt-2 text-[16px] font-bold leading-snug tracking-[-0.01em] text-foreground transition-colors group-hover:text-primary">
                   {item.title}
                 </h3>
-                <span className="mt-4 flex items-center gap-1.5 text-[13px] font-semibold text-[#0C2AFE]">
+                <span className="mt-4 flex items-center gap-1.5 text-[13px] font-semibold text-primary">
                   {t.blogPost.readArticle}
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </span>

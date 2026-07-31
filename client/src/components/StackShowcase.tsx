@@ -1,7 +1,7 @@
 import { useLanguage } from "@/contexts/LanguageContext";
 import { getStrings } from "@/i18n/strings";
 
-const STACK = [
+export const STACK = [
   { name: "React", logo: "/logos/stack/react.svg" },
   { name: "Node.js", logo: "/logos/stack/nodejs.svg" },
   { name: "TypeScript", logo: "/logos/stack/typescript.svg" },
@@ -14,6 +14,14 @@ const STACK = [
   { name: "Java", logo: "/logos/stack/java.svg" },
 ];
 
+/**
+ * Faixa de logos da referência: atravessa a seção inteira de ponta a ponta,
+ * cortando os logos nas bordas — sem `section-box`, sem container e sem
+ * máscara de fade, que é o que dava a impressão de faixa "encaixotada".
+ *
+ * O título visível saiu; o texto vira o `aria-label` da região, para quem usa
+ * leitor de tela continuar sabendo o que a faixa é.
+ */
 export default function StackShowcase() {
   const { lang } = useLanguage();
   const t = getStrings(lang);
@@ -21,37 +29,34 @@ export default function StackShowcase() {
   return (
     <section
       id="stack"
-      className="scroll-mt-20 bg-background py-14 sm:py-16 lg:py-20"
+      aria-label={t.stack.title}
+      className="scroll-mt-24 overflow-hidden bg-background py-10 sm:py-14"
     >
-      <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
-        <p
-          data-reveal
-          className="mb-8 text-center text-[13px] font-semibold uppercase tracking-[0.16em] text-muted-foreground sm:mb-10 sm:text-[15px]"
-        >
-          {t.stack.title}
-        </p>
-
-        <div
-          data-reveal
-          className="reveal-delay-1 hero-marquee-mask mx-auto max-w-5xl overflow-hidden"
-        >
-          <div className="hero-marquee-track">
-            {[...STACK, ...STACK].map((tech, index) => (
-              <div
-                key={`${tech.name}-${index}`}
-                className="flex min-w-36 items-center justify-center px-6 md:min-w-44"
-                aria-label={tech.name}
-              >
-                <img
-                  src={tech.logo}
-                  alt={tech.name}
-                  className="h-9 w-24 object-contain opacity-100 transition-transform duration-300 hover:scale-110 md:h-11 md:w-28"
-                  draggable={false}
-                  loading="lazy"
-                />
-              </div>
-            ))}
-          </div>
+      {/* A lista já vem duplicada no JSX: o marquee percorre metade da
+          largura e cai num quadro idêntico ao inicial, sem emenda. */}
+      <div
+        data-anim="marquee-left"
+        data-anim-speed="40"
+        className="overflow-hidden"
+      >
+        <div className="marquee-track">
+          {[...STACK, ...STACK].map((tech, index) => (
+            <div
+              key={`${tech.name}-${index}`}
+              className="flex min-w-36 items-center justify-center px-6 md:min-w-48"
+              aria-label={tech.name}
+            >
+              {/* Cinza uniforme como na referência; a cor volta no hover, e o
+                  marquee pausa junto, então dá pra identificar cada uma. */}
+              <img
+                src={tech.logo}
+                alt={tech.name}
+                className="h-8 w-24 object-contain opacity-55 grayscale transition duration-300 hover:opacity-100 hover:grayscale-0 md:h-10 md:w-28 dark:opacity-45 dark:invert dark:hover:invert-0"
+                draggable={false}
+                loading="lazy"
+              />
+            </div>
+          ))}
         </div>
       </div>
     </section>

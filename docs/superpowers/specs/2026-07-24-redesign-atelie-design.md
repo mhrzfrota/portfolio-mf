@@ -1,6 +1,11 @@
 # Redesign "Ateliê" — Portfólio MF
 
-**Data:** 2026-07-24 · **Status:** aprovado em brainstorming (companion visual, opção A)
+**Data:** 2026-07-24 · **Status:** ARQUIVADO — nunca implementado
+
+> Substituído em 2026-07-31 por `2026-07-31-redesign-aeline-mf-design.md`, que segue
+> a direção oposta (referência "Aeline": blocos arredondados, preto/cinza, GSAP, anel
+> 3D no hero). Nenhum step deste plano chegou a ser executado. Mantido como registro
+> da direção considerada e descartada.
 
 ## 1. Contexto e objetivo
 

@@ -1,5 +1,8 @@
 # Redesign "Ateliê" — Implementation Plan
 
+> **ARQUIVADO em 2026-07-31.** Nunca executado. Substituído pelo redesign "Aeline MF"
+> (`docs/superpowers/specs/2026-07-31-redesign-aeline-mf-design.md`).
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Re-skin completo do portfólio na direção "Ateliê" (greige monocromático + pílulas pretas + rabiscos manuscritos, estilo budarina.studio), preservando rotas, i18n, temas e conversão.

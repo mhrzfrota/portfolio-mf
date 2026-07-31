@@ -42,149 +42,196 @@
   --color-sidebar-ring: var(--sidebar-ring);
   --color-brand-blue: var(--brand-blue);
   --color-brand-blue-dark: var(--brand-blue-dark);
-  --color-brand-green: var(--brand-green);
-  --color-brand-green-dark: var(--brand-green-dark);
   --color-brand-ink: var(--brand-ink);
-  --font-sans: "Inter", system-ui, -apple-system, arial, sans-serif;
-  --font-display: "Plus Jakarta Sans", system-ui, -apple-system, arial, sans-serif;
-  --font-mono: ui-monospace, "Cascadia Mono", "Segoe UI Mono", monospace;
+  --color-ink: var(--ink);
+  --color-grey-50: var(--grey-50);
+  --color-grey-100: var(--grey-100);
+  --color-grey-300: var(--grey-300);
+  --color-grey-600: var(--grey-600);
+  --color-sky: var(--sky);
+  --color-delta: var(--delta);
+  --color-delta-soft: var(--delta-soft);
+
+  /* Uma família para display e corpo (a referência Aeline não usa serifada);
+     Geist Mono carrega eyebrows, labels e botões. */
+  --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, arial, sans-serif;
+  --font-display:
+    "Plus Jakarta Sans", system-ui, -apple-system, arial, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, "Cascadia Mono", monospace;
+
+  /* Escala normalizada: o mapa antigo deslocava tudo (bold valia 600, normal
+     valia 300) e brigava com o peso 500 que a referência pede nos headings. */
   --font-weight-thin: 100;
   --font-weight-extralight: 200;
   --font-weight-light: 300;
-  --font-weight-normal: 300;
-  --font-weight-medium: 400;
-  --font-weight-semibold: 500;
-  --font-weight-bold: 600;
-  --font-weight-extrabold: 700;
-  --font-weight-black: 700;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+  --font-weight-black: 900;
 }
 
 :root {
-  /* MF Services palette — metallic charcoal + royal/steel blue (no green) */
-  --brand-blue: oklch(0.52 0.14 260); /* Royal steel blue (logo) */
-  --brand-blue-dark: oklch(0.3 0.11 263); /* Deep navy (logo) */
-  --brand-green: oklch(
-    0.66 0.11 245
-  ); /* Light steel-blue accent (repurposed) */
-  --brand-green-dark: oklch(0.46 0.1 248); /* Slate steel-blue */
-  --brand-ink: oklch(0.15 0.025 264); /* Metallic charcoal-black (MF) */
+  /* ---------- Paleta Aeline MF — tema claro ----------
+     O lime #D6FD70 da referência é uma cor CLARA usada como superfície com
+     texto preto. O azul MF é ESCURO e pede texto branco (7.56:1) — preto sobre
+     ele daria 2.6:1. Por isso o papel do lime se divide: onde ele era CTA vira
+     azul sólido com texto branco; onde ele era superfície em destaque (o plano
+     do meio) vira azul sólido também, e não um azul pastel lavado. */
+  --ink: #131313;
+  --grey-50: #f2f2f2;
+  --grey-100: #ececec;
+  --grey-300: #c7c7c7;
+  --grey-600: #585858;
+  --sky: #38c6f6;
+  --delta: #1db82b;
+  --delta-soft: #cdfad1;
+  --glass: rgba(18, 40, 53, 0.25);
 
-  --primary: oklch(0.52 0.14 260); /* Royal steel blue */
-  --primary-foreground: oklch(1 0 0);
+  --brand-blue: #2453ff;
+  --brand-blue-dark: #003cff;
+  --brand-ink: #131313;
 
-  --sidebar-primary: oklch(0.52 0.14 260);
-  --sidebar-primary-foreground: oklch(1 0 0);
+  --primary: #2453ff;
+  --primary-foreground: #ffffff;
+  --ring: #2453ff;
 
-  --chart-1: oklch(0.52 0.14 260);
-  --chart-2: oklch(0.66 0.11 245);
-  --chart-3: oklch(0.6 0.13 230);
-  --chart-4: oklch(0.3 0.11 263);
-  --chart-5: oklch(0.46 0.1 248);
+  --radius: 1rem;
 
-  --radius: 0.5rem;
+  /* Branco, como o --bg-default da referência. As seções não pintam fundo por
+     padrão: o "bloco flutuante" só aparece onde há preenchimento próprio — o
+     hero com céu, o Diagnóstico e o rodapé escuros, os blocos cinza. */
+  --background: #ffffff;
+  --foreground: #131313;
 
-  /* Mesma cor do ponto final do degradê do hero. */
-  --background: #f2f7ff;
-  --foreground: oklch(0.15 0.025 264); /* Metallic charcoal-black */
+  --card: #ffffff;
+  --card-foreground: #131313;
 
-  --card: oklch(0.985 0.004 264);
-  --card-foreground: oklch(0.15 0.025 264);
+  --popover: #ffffff;
+  --popover-foreground: #131313;
 
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.15 0.025 264);
+  --secondary: #f2f2f2;
+  --secondary-foreground: #131313;
 
-  --secondary: oklch(0.96 0.008 264);
-  --secondary-foreground: oklch(0.15 0.025 264);
+  --muted: #f2f2f2;
+  --muted-foreground: #585858;
 
-  --muted: oklch(0.965 0.005 264);
-  --muted-foreground: oklch(0.45 0.02 264);
+  /* shadcn usa --accent como superfície sutil de hover, não como cor de marca:
+     o azul da marca mora em --primary / --brand-blue. */
+  --accent: #ececec;
+  --accent-foreground: #131313;
 
-  --accent: oklch(0.66 0.11 245); /* Steel-blue accent */
-  --accent-foreground: oklch(0.15 0.03 264);
+  --destructive: #d62828;
+  --destructive-foreground: #ffffff;
 
-  --destructive: oklch(0.6 0.2 25);
-  --destructive-foreground: oklch(0.98 0 0);
+  --border: #ececec;
+  --input: #ececec;
 
-  --border: oklch(0.9 0.008 264);
-  --input: oklch(0.9 0.008 264);
-  --ring: oklch(0.52 0.14 260);
+  --chart-1: #2453ff;
+  --chart-2: #38c6f6;
+  --chart-3: #5b7cff;
+  --chart-4: #131313;
+  --chart-5: #585858;
 
-  --sidebar: oklch(1 0 0);
-  --sidebar-foreground: oklch(0.15 0.025 264);
-  --sidebar-accent: oklch(0.96 0.008 264);
-  --sidebar-accent-foreground: oklch(0.15 0.025 264);
-  --sidebar-border: oklch(0.9 0.008 264);
-  --sidebar-ring: oklch(0.52 0.14 260);
+  --sidebar: #ffffff;
+  --sidebar-foreground: #131313;
+  --sidebar-primary: #2453ff;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #f2f2f2;
+  --sidebar-accent-foreground: #131313;
+  --sidebar-border: #ececec;
+  --sidebar-ring: #2453ff;
 }
 
 .dark {
-  /* MF Services — dark: deep charcoal + royal/steel blue accents (no green) */
-  --brand-blue: oklch(0.64 0.15 260);
-  --brand-blue-dark: oklch(0.32 0.12 263);
-  --brand-green: oklch(0.74 0.11 245);
-  --brand-green-dark: oklch(0.48 0.1 248);
-  /* brand-ink stays permanently dark so dark accent panels keep contrast on white text */
-  --brand-ink: oklch(0.15 0.025 264);
+  /* A referência é light-only. A lógica "página clara, blocos escuros" inverte
+     preservando a relação: a página é mais escura que os blocos, e os blocos
+     que já eram pretos (Diagnóstico, rodapé) clareiam para continuar lendo
+     como material diferente. */
+  --ink: #1e1e1e;
+  --grey-50: #1e1e1e;
+  --grey-100: #2a2a2a;
+  --grey-300: #4a4a4a;
+  --grey-600: #9a9a9a;
+  --sky: #5fd4f8;
+  --delta: #46d455;
+  --delta-soft: #17351b;
+  --glass: rgba(255, 255, 255, 0.12);
 
-  --primary: oklch(0.64 0.15 260);
-  --primary-foreground: oklch(0.05 0.02 264);
+  --brand-blue: #5b7cff;
+  --brand-blue-dark: #3d5cf0;
+  --brand-ink: #1e1e1e;
 
-  --sidebar-primary: oklch(0.64 0.15 260);
-  --sidebar-primary-foreground: oklch(0.05 0.02 264);
+  --primary: #5b7cff;
+  --primary-foreground: #0a0a0a;
+  --ring: #5b7cff;
 
-  /* Mesma cor do ponto final do degradê do hero no tema escuro. */
-  --background: #05080f;
-  --foreground: oklch(0.95 0.008 264);
+  --background: #0a0a0a;
+  --foreground: #f2f2f2;
 
-  --card: oklch(0.14 0.025 264);
-  --card-foreground: oklch(0.95 0.008 264);
+  --card: #161616;
+  --card-foreground: #f2f2f2;
 
-  --popover: oklch(0.11 0.022 264);
-  --popover-foreground: oklch(0.95 0.008 264);
+  --popover: #161616;
+  --popover-foreground: #f2f2f2;
 
-  --secondary: oklch(0.2 0.03 264);
-  --secondary-foreground: oklch(0.9 0.015 264);
+  --secondary: #1e1e1e;
+  --secondary-foreground: #f2f2f2;
 
-  --muted: oklch(0.18 0.028 264);
-  --muted-foreground: oklch(0.65 0.02 264);
+  --muted: #1e1e1e;
+  --muted-foreground: #9a9a9a;
 
-  --accent: oklch(0.74 0.11 245);
-  --accent-foreground: oklch(0.1 0.03 264);
+  --accent: #2a2a2a;
+  --accent-foreground: #f2f2f2;
 
-  --destructive: oklch(0.6 0.2 25);
-  --destructive-foreground: oklch(0.98 0 0);
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
 
-  --border: oklch(0.26 0.03 264);
-  --input: oklch(0.26 0.03 264);
-  --ring: oklch(0.64 0.15 260);
+  --border: #2a2a2a;
+  --input: #2a2a2a;
 
-  --chart-1: oklch(0.64 0.15 260);
-  --chart-2: oklch(0.74 0.11 245);
-  --chart-3: oklch(0.68 0.14 230);
-  --chart-4: oklch(0.5 0.13 262);
-  --chart-5: oklch(0.55 0.12 248);
+  --chart-1: #5b7cff;
+  --chart-2: #5fd4f8;
+  --chart-3: #8fa2ff;
+  --chart-4: #f2f2f2;
+  --chart-5: #9a9a9a;
 
-  --sidebar: oklch(0.09 0.02 264);
-  --sidebar-foreground: oklch(0.95 0.008 264);
-  --sidebar-accent: oklch(0.18 0.028 264);
-  --sidebar-accent-foreground: oklch(0.74 0.11 245);
-  --sidebar-border: oklch(0.26 0.03 264);
-  --sidebar-ring: oklch(0.64 0.15 260);
+  --sidebar: #0a0a0a;
+  --sidebar-foreground: #f2f2f2;
+  --sidebar-primary: #5b7cff;
+  --sidebar-primary-foreground: #0a0a0a;
+  --sidebar-accent: #1e1e1e;
+  --sidebar-accent-foreground: #f2f2f2;
+  --sidebar-border: #2a2a2a;
+  --sidebar-ring: #5b7cff;
 }
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border;
   }
+
   html {
     scroll-behavior: smooth;
     scroll-padding-top: 5rem;
     overflow-x: hidden;
+    background: var(--background);
   }
+
   body {
-    @apply bg-background text-foreground font-sans antialiased selection:bg-primary/20 selection:text-primary;
+    @apply bg-background text-foreground font-sans antialiased;
     font-weight: var(--font-weight-normal);
+    letter-spacing: -0.02em;
+    -webkit-font-smoothing: antialiased;
   }
+
+  ::selection {
+    background: color-mix(in oklab, var(--primary) 18%, transparent);
+    color: var(--primary);
+  }
+
+  /* O tracking negativo agressivo é a assinatura tipográfica da referência. */
   h1,
   h2,
   h3,
@@ -192,9 +239,54 @@
   h5,
   h6 {
     font-family: var(--font-display);
-    font-weight: var(--font-weight-bold);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.2;
+  }
+
+  h1 {
+    font-size: clamp(2.25rem, 6vw, 3.75rem);
+    letter-spacing: -0.06em;
+  }
+
+  h2 {
+    font-size: clamp(1.875rem, 5vw, 3rem);
+    letter-spacing: -0.06em;
+  }
+
+  h3 {
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    letter-spacing: -0.04em;
+  }
+
+  h4 {
+    font-size: 1.5rem;
     letter-spacing: 0;
-    line-height: 1.08;
+  }
+
+  h5,
+  h6 {
+    font-size: 1.125rem;
+    letter-spacing: 0;
+  }
+
+  /* Foco: o anel a 50% de opacidade dava 2.07:1 e reprovava os 3:1 que a WCAG
+     exige para indicador de foco. Sólido, com afastamento, dá 7.56:1. */
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  [type="button"]:not(:disabled),
+  [type="submit"]:not(:disabled),
+  [type="reset"]:not(:disabled),
+  a[href],
+  select:not(:disabled),
+  input[type="checkbox"]:not(:disabled),
+  input[type="radio"]:not(:disabled) {
+    @apply cursor-pointer;
   }
 
   /* O ThemeContext aplica esta classe durante a troca de tema: sem ela, cada
@@ -207,27 +299,71 @@
   }
 }
 
-@layer base {
-  button:not(:disabled),
-  [role="button"]:not([aria-disabled="true"]),
-  [type="button"]:not(:disabled),
-  [type="submit"]:not(:disabled),
-  [type="reset"]:not(:disabled),
-  a[href],
-  select:not(:disabled),
-  input[type="checkbox"]:not(:disabled),
-  input[type="radio"]:not(:disabled) {
-    @apply cursor-pointer;
-  }
-}
-
 @layer components {
+  /* ---------- Primitivas de layout ---------- */
+
+  .padding-global {
+    padding-inline: 16px;
+  }
+
+  @media (min-width: 768px) {
+    .padding-global {
+      padding-inline: 24px;
+    }
+  }
+
+  @media (min-width: 992px) {
+    .padding-global {
+      padding-inline: 52px;
+    }
+  }
+
   .container {
     width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 1rem;
-    padding-right: 1rem;
+    max-width: 1280px;
+    margin-inline: auto;
+  }
+
+  /* Cada seção é um bloco com margem e raio. O fundo não vem por padrão: numa
+     página branca, bloco branco sobre branco não mostra bloco nenhum — o
+     recorte só se revela onde a seção tem preenchimento próprio.
+
+     Sem overflow: o ProjectDeck usa position: sticky lá dentro e qualquer
+     recorte no ancestral mataria o grude. Quem precisa recortar recorta em si
+     mesmo. */
+  .section-box {
+    position: relative;
+    margin: 8px;
+    border-radius: 16px;
+  }
+
+  @media (min-width: 768px) {
+    .section-box {
+      margin: 12px;
+      border-radius: 24px;
+    }
+  }
+
+  .section-box-ink {
+    background: var(--ink);
+    color: #fff;
+  }
+
+  /* Ritmo vertical: 56 / 80 / 120px. */
+  .section-pad {
+    padding-block: 56px;
+  }
+
+  @media (min-width: 768px) {
+    .section-pad {
+      padding-block: 80px;
+    }
+  }
+
+  @media (min-width: 992px) {
+    .section-pad {
+      padding-block: 120px;
+    }
   }
 
   .flex {
@@ -237,100 +373,410 @@
 
   .font-display {
     font-family: var(--font-display);
-    letter-spacing: 0;
   }
 
-  /* Nike-style pill buttons */
-  .nike-pill {
-    border-radius: 9999px;
+  /* ---------- Eyebrow e labels ---------- */
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--grey-600);
   }
 
-  /* Liquid glass surfaces (Axion-style) */
-  .liquid-glass {
+  @media (min-width: 768px) {
+    .eyebrow {
+      font-size: 16px;
+    }
+  }
+
+  .eyebrow::before {
+    content: "";
+    height: 8px;
+    width: 8px;
+    flex-shrink: 0;
+    border-radius: 2px;
+    background: var(--primary);
+  }
+
+  .eyebrow-plain::before {
+    display: none;
+  }
+
+  .mono-label {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  /* ---------- Botões ----------
+     Três variantes da referência. O texto fica em 14px e não nos 16px dos
+     labels: mono em caixa alta com 0.12em de tracking a 16px estoura a largura
+     dos botões no mobile. */
+
+  .btn {
     position: relative;
-    background: rgba(255, 255, 255, 0.01);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    border-radius: 80px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    -webkit-tap-highlight-color: transparent;
+    transition:
+      background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+      color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  .liquid-glass::before {
+  @media (min-width: 640px) {
+    .btn {
+      font-size: 14px;
+    }
+  }
+
+  .btn-primary {
+    padding: 13px 22px;
+    background: var(--primary);
+    color: #fff;
+  }
+
+  .btn-primary:hover {
+    background: var(--brand-blue-dark);
+  }
+
+  .btn-glass {
+    padding: 13px 22px;
+    background: var(--glass);
+    color: #fff;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+  }
+
+  .btn-glass:hover {
+    background: rgba(18, 40, 53, 0.38);
+  }
+
+  .btn-dark {
+    padding: 13px 22px;
+    background: var(--ink);
+    color: #fff;
+  }
+
+  .dark .btn-dark {
+    background: #fff;
+    color: #131313;
+  }
+
+  .btn-dark:hover {
+    background: var(--primary);
+    color: #fff;
+  }
+
+  /* Sobre painel azul ou preto, onde a pílula escura sumiria. */
+  .btn-light {
+    padding: 13px 22px;
+    background: #fff;
+    color: var(--ink);
+  }
+
+  .btn-light:hover {
+    background: #e6e6e6;
+  }
+
+  /* Variante arrow: pílula com 4px de padding e um círculo branco de 40px à
+     direita. No hover, o botão "se pinta" a partir da seta — um círculo da cor
+     da superfície nasce sobre o círculo da seta e cresce até cobrir a pílula,
+     deixando o rótulo azul e um contorno azul (o mesmo gesto do
+     .button-arrow_bg da referência, feito em CSS puro). */
+  .btn-arrow {
+    padding: 4px 4px 4px 22px;
+    background: var(--primary);
+    color: #fff;
+    overflow: clip;
+  }
+
+  .btn-arrow::before {
     content: "";
     position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    padding: 1px;
-    background: linear-gradient(
-      135deg,
-      rgba(255, 255, 255, 0.4),
-      rgba(255, 255, 255, 0.05)
-    );
-    -webkit-mask:
-      linear-gradient(#fff 0 0) content-box,
-      linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
+    top: 50%;
+    right: 4px;
+    height: 40px;
+    width: 40px;
+    margin-top: -20px;
+    border-radius: 9999px;
+    background: var(--card);
+    transform: scale(0);
+    transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  .liquid-glass-strong {
-    background: rgba(255, 255, 255, 0.01);
-    backdrop-filter: blur(50px);
-    -webkit-backdrop-filter: blur(50px);
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  .btn-arrow:hover {
+    color: var(--primary);
+    box-shadow: inset 0 0 0 1.5px var(--primary);
   }
 
-  /* Hero logo/tech marquee */
-  .hero-marquee-track {
+  .btn-arrow:hover::before {
+    /* Raio de 20px precisa virar ~260px pra cobrir o rótulo mais longo. */
+    transform: scale(14);
+  }
+
+  /* Rótulo e círculo acima da pintura. */
+  .btn-arrow .btn-roll,
+  .btn-arrow .btn-circle {
+    position: relative;
+    z-index: 2;
+  }
+
+  .btn-circle {
     display: flex;
-    width: max-content;
-    animation: hero-marquee 32s linear infinite;
+    height: 40px;
+    width: 40px;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    overflow: clip;
+    border-radius: 9999px;
+    background: var(--card);
+    color: var(--primary);
+    transition: background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  .hero-marquee-mask {
-    -webkit-mask-image: linear-gradient(
-      to right,
-      transparent,
-      #000 7%,
-      #000 93%,
-      transparent
-    );
-    mask-image: linear-gradient(
-      to right,
-      transparent,
-      #000 7%,
-      #000 93%,
-      transparent
-    );
+  /* Com a pintura por baixo, o círculo se dissolve nela. */
+  .btn-arrow:hover .btn-circle {
+    background: transparent;
   }
 
-  @keyframes hero-marquee {
-    from {
-      transform: translateX(0);
+  /* Troca diagonal da seta: sai pelo canto que aponta, entra pelo oposto. */
+  .btn-swap {
+    position: relative;
+    height: 18px;
+    width: 18px;
+  }
+
+  .btn-swap > * {
+    position: absolute;
+    inset: 0;
+    height: 18px;
+    width: 18px;
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .btn-swap > :last-child {
+    transform: translate(-22px, 22px);
+  }
+
+  .btn-arrow:hover .btn-swap > :first-child {
+    transform: translate(22px, -22px);
+  }
+
+  .btn-arrow:hover .btn-swap > :last-child {
+    transform: translate(0, 0);
+  }
+
+  /* Roll do label: mantido do RollButton original. */
+  .btn-roll {
+    display: block;
+    height: 18px;
+    overflow: hidden;
+  }
+
+  .btn-roll > span {
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .btn:hover .btn-roll > span {
+    transform: translateY(-50%);
+  }
+
+  .btn-roll > span > span {
+    display: flex;
+    height: 18px;
+    flex-shrink: 0;
+    align-items: center;
+    white-space: nowrap;
+  }
+
+  /* ---------- Cards ---------- */
+
+  .a-card {
+    border: 1px solid var(--grey-100);
+    border-radius: 20px;
+    background: var(--card);
+  }
+
+  .a-card-muted {
+    border-radius: 20px;
+    background: var(--grey-50);
+  }
+
+  /* ---------- Slider de projetos (o layout dos Testimonials da referência) --
+     Cards altos (30rem, ~3 por viewport) com a foto em full-bleed, gradiente
+     escuro subindo do pé e o texto por cima. Navegação por setas circulares no
+     cabeçalho + scroll/arraste nativo com snap; o card seguinte fica
+     parcialmente visível na borda. */
+
+  .pslider {
+    display: flex;
+    gap: 24px;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .pslider::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Os screenshots são ~2.15:1 (1200×555, 1600×742). Num card alto com
+     `cover` eles viravam uma tira vertical — daí a foto não aparecer. Agora a
+     imagem tem moldura própria em 16/9 no topo e o texto vem embaixo, no
+     painel escuro; o card fica largo (dois por tela) em vez de alto. */
+  .pslider-card {
+    position: relative;
+    display: flex;
+    flex: 0 0 clamp(300px, 46%, 600px);
+    flex-direction: column;
+    overflow: clip;
+    border-radius: 24px;
+    background: var(--ink);
+    scroll-snap-align: start;
+  }
+
+  @media (max-width: 767px) {
+    .pslider-card {
+      flex-basis: 86%;
     }
-    to {
-      transform: translateX(-50%);
-    }
   }
 
-  /* ---------- Hero: céu azul + monograma MF ---------- */
+  .pslider-card-media {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: clip;
+    background: var(--grey-50);
+  }
 
-  /* Azul forte em cima (onde flutua o monograma) abrindo pra quase-branco
-     embaixo, onde a manchete e os botões precisam de contraste. */
+  /* `top center`: o topo do screenshot é a parte reconhecível de um site. */
+  .pslider-card-media img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: top center;
+    transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .pslider-card:hover .pslider-card-media img {
+    transform: scale(1.04);
+  }
+
+  .pslider-card-body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 10px;
+    padding: 26px 28px 28px;
+  }
+
+  /* Setas circulares do cabeçalho, como na referência. */
+  .slider-arrow {
+    display: flex;
+    height: 44px;
+    width: 44px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    background: var(--card);
+    color: var(--foreground);
+    box-shadow: 0 4px 16px rgba(2, 6, 19, 0.12);
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease,
+      opacity 0.3s ease;
+  }
+
+  .slider-arrow:hover {
+    background: var(--primary);
+    color: #fff;
+  }
+
+  .slider-arrow:disabled {
+    cursor: default;
+    opacity: 0.35;
+  }
+
+  .slider-arrow:disabled:hover {
+    background: var(--card);
+    color: var(--foreground);
+  }
+
+  /* Inputs deixam de depender da borda para serem identificados: com a borda a
+     1.25:1 o campo era invisível, e escurecê-la até os 3:1 exigidos quebraria
+     o visual. O preenchimento resolve os dois lados. */
+  .a-input {
+    width: 100%;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    background: var(--grey-50);
+    padding: 14px 16px;
+    font-size: 15px;
+    color: var(--foreground);
+    outline: none;
+    transition:
+      border-color 0.3s ease,
+      background-color 0.3s ease;
+  }
+
+  .a-input::placeholder {
+    color: var(--grey-600);
+  }
+
+  .a-input:focus {
+    border-color: var(--primary);
+    background: var(--card);
+  }
+
+  /* ---------- Hero: céu ---------- */
+
+  /* Céu saturado da referência: azul vivo por inteiro, com nuvens sugeridas
+     por radiais brancas suaves nas bordas — o texto em cima é branco. */
   .hero-sky {
     background:
       radial-gradient(
-        90% 55% at 50% 20%,
-        rgba(255, 255, 255, 0.92) 0%,
-        rgba(255, 255, 255, 0) 60%
+        42% 26% at 12% 78%,
+        rgba(255, 255, 255, 0.5),
+        transparent 70%
+      ),
+      radial-gradient(
+        36% 22% at 88% 68%,
+        rgba(255, 255, 255, 0.42),
+        transparent 70%
+      ),
+      radial-gradient(
+        55% 30% at 50% 108%,
+        rgba(255, 255, 255, 0.55),
+        transparent 72%
       ),
       linear-gradient(
         180deg,
-        #4a7bee 0%,
-        #7ba7f6 20%,
-        #a9c9fb 42%,
-        #d6e6fe 66%,
-        #f2f7ff 100%
+        #2f6ae8 0%,
+        #3f7df0 34%,
+        #58a0f6 68%,
+        #8ec3fa 100%
       );
   }
 
@@ -351,68 +797,35 @@
       );
   }
 
-  .hero-clouds {
+  .hero-sky-media {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: 50% 30%;
+  }
+
+  /* Texto branco sobre céu: um escurecimento suave atrás da área do título
+     (e nada no pé, onde o anel precisa do azul vivo). Também serve à foto/
+     vídeo quando entrarem no lugar do degradê. */
+  .hero-scrim {
     position: absolute;
     inset: 0;
     pointer-events: none;
-    opacity: 0.5;
-    filter: blur(14px);
-    background:
-      radial-gradient(
-        38% 22% at 18% 26%,
-        rgba(255, 255, 255, 0.75),
-        transparent 70%
-      ),
-      radial-gradient(
-        30% 18% at 82% 17%,
-        rgba(255, 255, 255, 0.6),
-        transparent 70%
-      ),
-      radial-gradient(
-        46% 20% at 62% 40%,
-        rgba(255, 255, 255, 0.45),
-        transparent 72%
-      );
-    animation: hero-drift 36s ease-in-out infinite alternate;
+    background: radial-gradient(
+      70% 46% at 50% 30%,
+      rgba(10, 30, 90, 0.28),
+      transparent 75%
+    );
   }
 
-  .dark .hero-clouds {
-    opacity: 0.4;
-    background:
-      radial-gradient(
-        38% 22% at 18% 26%,
-        rgba(70, 110, 255, 0.35),
-        transparent 70%
-      ),
-      radial-gradient(
-        30% 18% at 82% 17%,
-        rgba(124, 140, 255, 0.24),
-        transparent 70%
-      ),
-      radial-gradient(
-        46% 20% at 62% 42%,
-        rgba(47, 91, 255, 0.22),
-        transparent 72%
-      );
-  }
-
-  @keyframes hero-drift {
-    from {
-      transform: translate3d(-2%, 0, 0) scale(1);
-    }
-    to {
-      transform: translate3d(2%, -1.5%, 0) scale(1.06);
-    }
-  }
-
-  /* Em telas touch a GPU já fica ocupada com o canvas 3D do monograma; manter
-     uma camada de viewport inteiro com blur(14px) animando sem parar disputa
-     exatamente o mesmo recurso. As nuvens ficam estáticas — visualmente
-     idênticas num instante qualquer do drift. */
-  @media (pointer: coarse) {
-    .hero-clouds {
-      animation: none;
-    }
+  .dark .hero-scrim {
+    background: radial-gradient(
+      70% 46% at 50% 30%,
+      rgba(0, 0, 0, 0.35),
+      transparent 75%
+    );
   }
 
   /* Grão fino: sem isso o degradê do céu mostra banding em telas de 8 bits. */
@@ -425,184 +838,35 @@
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
   }
 
-  /* Dois botões do hero, no estilo pill da referência mas em azul MF.
-     Ambos sobem um pouco no hover; o primário ganha um brilho que varre. */
-  .hero-btn {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.6rem;
-    overflow: hidden;
-    border-radius: 9999px;
-    font-weight: var(--font-weight-semibold);
-    font-size: 0.95rem;
-    letter-spacing: -0.01em;
-    white-space: nowrap;
-    -webkit-tap-highlight-color: transparent;
-    transition:
-      transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
-      box-shadow 0.3s ease,
-      background-color 0.3s ease;
-  }
+  /* ---------- Marquee ---------- */
 
-  @media (min-width: 640px) {
-    .hero-btn {
-      font-size: 1rem;
-    }
-  }
-
-  .hero-btn:hover {
-    transform: translateY(-2px);
-  }
-
-  /* Primário: pill azul cheio (o "Connect" da referência, adaptado). */
-  .hero-btn-primary {
-    padding: 0.85rem 1.5rem;
-    background: #0c2afe;
-    color: #fff;
-    box-shadow: 0 6px 18px rgba(12, 42, 254, 0.28);
-  }
-
-  .hero-btn-primary:hover {
-    background: #001fdd;
-    box-shadow: 0 12px 30px rgba(12, 42, 254, 0.42);
-  }
-
-  /* Brilho diagonal que atravessa o botão ao passar o mouse. */
-  .hero-btn-primary::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      120deg,
-      transparent 30%,
-      rgba(255, 255, 255, 0.35) 50%,
-      transparent 70%
-    );
-    transform: translateX(-130%);
-    transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
-    pointer-events: none;
-  }
-
-  .hero-btn-primary:hover::after {
-    transform: translateX(130%);
-  }
-
-  .hero-btn-icon {
-    height: 1.15rem;
-    width: 1.15rem;
-    transition: transform 0.3s ease;
-  }
-
-  .hero-btn-primary:hover .hero-btn-icon {
-    transform: scale(1.12) rotate(-8deg);
-  }
-
-  /* Secundário: pill branco com círculo azul (o "See Work" adaptado). */
-  .hero-btn-secondary {
-    padding: 0.4rem 0.45rem 0.4rem 1.5rem;
-    background: #fff;
-    color: #0b1020;
-    box-shadow: 0 2px 10px rgba(2, 6, 19, 0.08);
-  }
-
-  .hero-btn-secondary:hover {
-    box-shadow: 0 10px 26px rgba(2, 6, 19, 0.16);
-  }
-
-  .hero-btn-circle {
+  .marquee-track {
     display: flex;
-    height: 2.15rem;
-    width: 2.15rem;
-    flex-shrink: 0;
-    align-items: center;
-    justify-content: center;
-    border-radius: 9999px;
-    background: #0c2afe;
-    color: #fff;
-    transition:
-      transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
-      background-color 0.3s ease;
+    width: max-content;
   }
 
-  .hero-btn-secondary:hover .hero-btn-circle {
-    background: #001fdd;
-    transform: scale(1.08);
+  /* ---------- Sistema data-anim ----------
+     Começam ocultos para não piscar antes do GSAP assumir; o runtime libera a
+     visibilidade num único gsap.set na inicialização. Se o JS falhar, o
+     fallback abaixo devolve tudo depois de 3s. */
+
+  [data-anim] {
+    visibility: hidden;
   }
 
-  .hero-btn-arrow {
-    height: 1.05rem;
-    width: 1.05rem;
-    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  html.anim-ready [data-anim],
+  html.no-js [data-anim] {
+    visibility: visible;
   }
 
-  .hero-btn-secondary:hover .hero-btn-arrow {
-    transform: rotate(-45deg);
+  .split-word {
+    display: inline-block;
+    white-space: pre;
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .hero-btn,
-    .hero-btn::after,
-    .hero-btn-icon,
-    .hero-btn-circle,
-    .hero-btn-arrow {
-      transition: none;
-    }
-  }
-
-  /* ---------- Animações de entrada ---------- */
-
-  /* Fade-up dos blocos marcados com data-reveal: começam invisíveis e sobem
-     suavemente quando o useRevealOnScroll adiciona .is-revealed. */
-  [data-reveal] {
-    opacity: 0;
-    transform: translateY(18px);
-    transition:
-      opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
-  [data-reveal].is-revealed {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* Escalona título → texto → conteúdo dentro da mesma seção. */
-  .reveal-delay-1 {
-    transition-delay: 0.12s;
-  }
-
-  .reveal-delay-2 {
-    transition-delay: 0.22s;
-  }
-
-  /* Entrada do hero ao carregar/atualizar a página, em cascata. */
-  .hero-rise {
-    animation: hero-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
-  }
-
-  .hero-rise-2 {
-    animation-delay: 0.12s;
-  }
-
-  .hero-rise-3 {
-    animation-delay: 0.24s;
-  }
-
-  .hero-rise-4 {
-    animation-delay: 0.36s;
-  }
-
-  @keyframes hero-rise {
-    from {
-      opacity: 0;
-      transform: translateY(16px);
-    }
-    to {
-      opacity: 1;
-      transform: none;
-    }
-  }
+  /* ---------- Micro-animações próprias dos componentes ----------
+     Vivem em CSS e não no data-anim: são loops e entradas locais que o
+     componente dispara sozinho, sem depender de scroll. */
 
   .hero-monogram-in {
     animation: hero-monogram-in 1s cubic-bezier(0.22, 1, 0.36, 1) both;
@@ -619,32 +883,7 @@
     }
   }
 
-  .hero-headline {
-    font-family: var(--font-display);
-    font-weight: var(--font-weight-bold);
-    font-size: clamp(2.5rem, 8.5vw, 5.25rem);
-    line-height: 1;
-    letter-spacing: -0.03em;
-    color: var(--foreground);
-  }
-
-  /* A área que se alterna é a única voz editorial da página: serifada e itálica,
-     contra o sans técnico do resto. */
-  .hero-headline-area {
-    display: block;
-    font-family: "Instrument Serif", Georgia, serif;
-    font-style: italic;
-    font-weight: 400;
-    font-size: 1.04em;
-    line-height: 1.08;
-    letter-spacing: -0.01em;
-    color: #0c2afe;
-  }
-
-  .dark .hero-headline-area {
-    color: #8fa2ff;
-  }
-
+  /* Cursor do typewriter do hero. */
   .type-caret {
     display: inline-block;
     width: 0.05em;
@@ -665,197 +904,11 @@
       opacity: 0;
     }
   }
-
-  .hero-fact {
-    animation: hero-fact-in 0.6s ease-out both;
-  }
-
-  @keyframes hero-fact-in {
-    from {
-      opacity: 0;
-      transform: translateY(6px);
-      filter: blur(2px);
-    }
-    to {
-      opacity: 1;
-      transform: none;
-      filter: blur(0);
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    html {
-      scroll-behavior: auto;
-    }
-
-    .hero-marquee-track,
-    .hero-clouds,
-    .type-caret,
-    .hero-fact,
-    .hero-rise,
-    .hero-monogram-in {
-      animation: none;
-    }
-
-    [data-reveal] {
-      opacity: 1;
-      transform: none;
-      transition: none;
-    }
-  }
-
-  /* ---------- Deck de projetos (vitrine empilhada) ---------- */
-
-  /* A perspectiva fica no palco: o rotateX dos cards que entram por baixo
-     só vira inclinação "de verdade" com um ponto de fuga em comum. */
-  .deck-stage {
-    perspective: 1400px;
-  }
-
-  .deck-card {
-    transform-style: preserve-3d;
-    will-change: transform, opacity;
-  }
-
-  /* Véu que escurece o card conforme ele sai de cena; a intensidade vem da
-     variável --deck-dim, atualizada por JS junto com o transform. */
-  .deck-dim {
-    position: absolute;
-    inset: 0;
-    background: #030712;
-    opacity: var(--deck-dim, 0);
-    pointer-events: none;
-  }
-
-  /* Número do contador entra deslizando de baixo a cada troca de card. */
-  .deck-count {
-    animation: deck-count-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
-  }
-
-  @keyframes deck-count-in {
-    from {
-      opacity: 0;
-      transform: translateY(0.7em);
-    }
-    to {
-      opacity: 1;
-      transform: none;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .deck-count {
-      animation: none;
-    }
-  }
-
-  /* Brand utilities */
-  .brand-border {
-    @apply border border-[var(--brand-blue)]/30 hover:border-[var(--brand-blue)] transition-colors duration-300;
-  }
-
-  .brand-card {
-    @apply bg-card border border-border hover:border-[var(--brand-blue)]/60 transition-all duration-300;
-  }
-
-  /* Fileira de projetos: carrossel horizontal dentro do container padrão
-     (sem padding-inline próprio, o alinhamento vem do container de 1440px).
-     Barra de scroll oculta — a navegação é por arraste/scroll nativo. */
-  .project-row {
-    -webkit-overflow-scrolling: touch;
-    /* Só o eixo X rola: sem isso o overflow-y implícito vira "auto" e qualquer
-       pixel de sobra cria um scroll vertical preso dentro da seção. */
-    overflow-y: hidden;
-    scrollbar-width: none;
-    scroll-snap-type: x proximity;
-  }
-
-  .project-row a,
-  .project-row img,
-  .project-row video {
-    -webkit-user-drag: none;
-  }
-
-  .project-row > * {
-    scroll-snap-align: start;
-  }
-
-  .project-row::-webkit-scrollbar {
-    display: none;
-  }
-
-  .project-carousel-scroll {
-    -webkit-overflow-scrolling: touch;
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-    scrollbar-color: color-mix(in oklab, var(--brand-blue) 58%, transparent)
-      transparent;
-    scrollbar-width: thin;
-    scroll-snap-type: x proximity;
-  }
-
-  .project-carousel-card-title,
-  .project-carousel-card-description {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  .project-carousel-card-title {
-    -webkit-line-clamp: 2;
-  }
-
-  .project-carousel-card-description {
-    -webkit-line-clamp: 2;
-  }
-
-  .project-carousel-scroll::-webkit-scrollbar {
-    height: 0.5rem;
-  }
-
-  .project-carousel-scroll::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  .project-carousel-scroll::-webkit-scrollbar-thumb {
-    background: color-mix(in oklab, var(--brand-blue) 50%, transparent);
-    border-radius: 999px;
-  }
-
-  @media (min-width: 768px) {
-    .project-carousel-scroll {
-      padding-left: 3rem;
-      padding-right: 3rem;
-    }
-  }
-
-  @media (min-width: 1280px) {
-    .project-carousel-scroll {
-      padding-left: max(3rem, calc((100vw - 72rem) / 2 + 3rem));
-      padding-right: max(3rem, calc((100vw - 72rem) / 2 + 3rem));
-    }
-  }
-
-  @media (min-width: 640px) {
-    .container {
-      padding-left: 1.5rem;
-      padding-right: 1.5rem;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .container {
-      padding-left: 2rem;
-      padding-right: 2rem;
-      max-width: 1280px;
-    }
-  }
 }
 
 @layer components {
   /* ---------- MF Diagnóstico IA ---------- */
 
-  /* Skeleton com shimmer: base neutra + varredura clara da esquerda p/ direita. */
   .diag-skeleton {
     position: relative;
     overflow: hidden;
@@ -883,23 +936,6 @@
     }
   }
 
-  /* Entrada dos cards do relatório (escalonada via animation-delay inline). */
-  .diag-card-in {
-    animation: diag-card-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
-  }
-
-  @keyframes diag-card-in {
-    from {
-      opacity: 0;
-      transform: translateY(14px);
-    }
-    to {
-      opacity: 1;
-      transform: none;
-    }
-  }
-
-  /* Barras de pilar e anel da nota preenchem suavemente após o skeleton. */
   .diag-bar {
     transition: width 1.1s cubic-bezier(0.22, 1, 0.36, 1);
   }
@@ -908,7 +944,6 @@
     transition: stroke-dashoffset 1.2s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  /* Linha ativa do processamento: feixe azul varrendo a linha ("scan"). */
   .diag-scan-row {
     position: relative;
     overflow: hidden;
@@ -922,13 +957,12 @@
     background: linear-gradient(
       90deg,
       transparent,
-      color-mix(in oklab, var(--brand-blue) 14%, transparent),
+      color-mix(in oklab, var(--primary) 14%, transparent),
       transparent
     );
     animation: diag-shimmer 1.4s ease-in-out infinite;
   }
 
-  /* Check que "estala" quando uma etapa conclui. */
   .diag-pop {
     animation: diag-pop 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
@@ -944,7 +978,6 @@
     }
   }
 
-  /* Ponto pulsante do badge "analisando". */
   .diag-pulse {
     animation: diag-pulse 1.4s ease-in-out infinite;
   }
@@ -960,60 +993,37 @@
       transform: scale(0.75);
     }
   }
-
-  @media (prefers-reduced-motion: reduce) {
-    .diag-skeleton::after,
-    .diag-scan-row::after,
-    .diag-pulse {
-      animation: none;
-    }
-
-    .diag-card-in,
-    .diag-pop {
-      animation-duration: 0.01ms;
-    }
-
-    .diag-bar,
-    .diag-ring {
-      transition: none;
-    }
-  }
 }
 
-@layer utilities {
-  .font-thin {
-    font-weight: var(--font-weight-thin);
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
   }
 
-  .font-extralight {
-    font-weight: var(--font-weight-extralight);
+  .diag-skeleton::after,
+  .diag-scan-row::after,
+  .diag-pulse {
+    animation: none;
   }
 
-  .font-light {
-    font-weight: var(--font-weight-light);
+  .diag-pop {
+    animation-duration: 0.01ms;
   }
 
-  .font-normal {
-    font-weight: var(--font-weight-normal);
+  .type-caret,
+  .hero-monogram-in {
+    animation: none;
   }
 
-  .font-medium {
-    font-weight: var(--font-weight-medium);
+  .diag-bar,
+  .diag-ring {
+    transition: none;
   }
 
-  .font-semibold {
-    font-weight: var(--font-weight-semibold);
-  }
-
-  .font-bold {
-    font-weight: var(--font-weight-bold);
-  }
-
-  .font-extrabold {
-    font-weight: var(--font-weight-extrabold);
-  }
-
-  .font-black {
-    font-weight: var(--font-weight-black);
+  .btn,
+  .btn-circle,
+  .btn-swap,
+  .btn-roll > span {
+    transition: none;
   }
 }

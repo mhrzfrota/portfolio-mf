@@ -38,7 +38,7 @@ export default function NotFound() {
           <div className="flex flex-col justify-center gap-3 sm:flex-row">
             <Button
               onClick={handleGoHome}
-              className="rounded-lg bg-[#0C2AFE] px-6 py-2.5 text-white shadow-md transition-all duration-200 hover:bg-[#001FDD] hover:shadow-lg"
+              className="rounded-lg bg-primary px-6 py-2.5 text-white shadow-md transition-all duration-200 hover:bg-[var(--brand-blue-dark)] hover:shadow-lg"
             >
               <Home className="mr-2 h-4 w-4" />
               {t.notFound.goHome}

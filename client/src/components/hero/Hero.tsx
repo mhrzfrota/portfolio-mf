@@ -1,76 +1,101 @@
-import { useDeferredValue } from "react";
-import { ArrowRight, MessageCircle } from "lucide-react";
 import { WHATSAPP_BUDGET_URL } from "@/const";
-import { useTheme } from "@/contexts/ThemeContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { getStrings } from "@/i18n/strings";
-import HeroMonogram from "./HeroMonogram";
-import RotatingFacts from "./RotatingFacts";
+import RollButton from "@/components/RollButton";
 import TypeCycler from "./TypeCycler";
 
+/**
+ * Hero no desenho da referência: céu azul vivo, título branco em duas linhas,
+ * dois botões e o anel 3D de projetos atravessando a base — os fatos rotativos
+ * fecham a seção onde a referência põe o "Rated 4.9/5".
+ *
+ * O monograma 3D saiu daqui (e com ele o chunk de ~950 kB do three.js na
+ * home). O componente continua em components/hero/HeroMonogram.tsx, pronto
+ * para a seção onde o usuário decidir usá-lo.
+ *
+ * Vídeo de céu em loop: enquanto não existir, o degradê `.hero-sky` sustenta a
+ * seção. Para ligar, exporte o loop e o poster e preencha as constantes.
+ */
+const SKY_VIDEO: string | null = null;
+const SKY_POSTER: string | null = null;
+
 export default function Hero() {
-  const { theme } = useTheme();
   const { lang } = useLanguage();
   const t = getStrings(lang);
-  const isDark = theme === "dark";
-  // Trocar o tema re-baka o environment do canvas 3D (caro, chega a travar a
-  // UI). Com o valor adiado, o CSS da página troca e pinta primeiro; a peça
-  // 3D acompanha um instante depois, sem segurar o clique.
-  const monogramDark = useDeferredValue(isDark);
+
+  // O split sai daqui e não de uma mutação no DOM: o <h1> hospeda o TypeCycler,
+  // que re-renderiza a cada caractere e apagaria spans criados por fora.
+  const words = t.hero.headline.split(" ");
 
   return (
     <section
       id="inicio"
-      className="hero-sky relative flex min-h-svh flex-col items-center overflow-hidden"
+      className="section-box relative flex min-h-[calc(100svh-16px)] flex-col overflow-hidden md:min-h-[calc(100svh-24px)]"
     >
-      <div className="hero-clouds" aria-hidden="true" />
+      <div className="hero-sky absolute inset-0" aria-hidden="true" />
+
+      {SKY_VIDEO && (
+        <video
+          className="hero-sky-media"
+          src={SKY_VIDEO}
+          poster={SKY_POSTER ?? undefined}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="none"
+          aria-hidden="true"
+        />
+      )}
+
       <div className="hero-grain" aria-hidden="true" />
+      <div className="hero-scrim" aria-hidden="true" />
 
-      <div className="relative z-10 flex w-full max-w-[880px] flex-1 flex-col items-center justify-center px-5 pb-12 pt-24 sm:px-8 sm:pt-28">
-        <HeroMonogram isDark={monogramDark} />
-
-        <div className="flex w-full flex-col items-center gap-5 text-center">
-          <h1
-            className="hero-headline hero-rise"
-            aria-label={t.hero.ariaHeadline}
-          >
-            <span className="block">{t.hero.headline}</span>
-            {/* key={lang}: reinicia o typewriter ao trocar de idioma */}
-            <TypeCycler
-              key={lang}
-              texts={[...t.hero.areas]}
-              className="hero-headline-area"
-            />
-          </h1>
-
-          <p className="hero-rise hero-rise-2 max-w-xl text-balance text-[15px] leading-relaxed text-muted-foreground sm:text-[17px]">
-            {t.hero.description}
-          </p>
-
-          <div className="hero-rise hero-rise-3 mt-1 flex flex-col items-center gap-3 sm:flex-row sm:gap-4">
-            <a
-              href={WHATSAPP_BUDGET_URL}
-              target="_blank"
-              rel="noreferrer"
-              className="hero-btn hero-btn-primary btn-drain btn-drain-blue"
-            >
-              <span>{t.hero.startProject}</span>
-              <MessageCircle className="hero-btn-icon" />
-            </a>
-            <a
-              href="#projetos"
-              className="hero-btn hero-btn-secondary btn-drain btn-drain-white"
-            >
-              <span>{t.hero.viewProjects}</span>
-              <span className="hero-btn-circle">
-                <ArrowRight className="hero-btn-arrow" />
+      <div className="relative z-10 mx-auto flex w-full max-w-[880px] flex-1 flex-col items-center justify-center px-5 pb-10 pt-28 text-center sm:px-8 sm:pt-32">
+        <h1 aria-label={t.hero.ariaHeadline} className="text-white">
+          <span data-anim="hero-words" className="block" aria-hidden="true">
+            {words.map((word, index) => (
+              <span key={`${word}-${index}`} className="split-word">
+                {index > 0 ? ` ${word}` : word}
               </span>
-            </a>
-          </div>
+            ))}
+          </span>
 
-          <div className="hero-rise hero-rise-4 w-full">
-            <RotatingFacts key={lang} facts={[...t.hero.facts]} />
-          </div>
+          {/* Segunda linha em 73% de opacidade, como na referência: a
+              profundidade vem do contraste entre as duas linhas, não de uma
+              cor nova. key={lang} reinicia o typewriter ao trocar de idioma. */}
+          <TypeCycler
+            key={lang}
+            texts={[...t.hero.areas]}
+            className="block opacity-[0.73]"
+          />
+        </h1>
+
+        <p
+          data-anim="fade-up"
+          data-anim-delay="0.5"
+          className="mt-6 max-w-xl text-balance text-[15px] leading-relaxed text-white/90 [text-shadow:0_1px_12px_rgba(10,30,90,0.35)] sm:text-[17px]"
+        >
+          {t.hero.description}
+        </p>
+
+        <div
+          data-anim="fade-up"
+          data-anim-delay="0.65"
+          data-anim-children
+          className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:gap-4"
+        >
+          <RollButton
+            variant="glass"
+            label={t.hero.viewProjects}
+            href="#projetos"
+          />
+          <RollButton
+            variant="arrow"
+            label={t.hero.startProject}
+            href={WHATSAPP_BUDGET_URL}
+            external
+          />
         </div>
       </div>
     </section>

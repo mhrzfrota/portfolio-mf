@@ -1,36 +1,22 @@
-import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const easing = "ease-[cubic-bezier(0.25,0.1,0.25,1)]";
+/**
+ * Botão do sistema Aeline MF.
+ *
+ * - `primary` / `dark` / `light`: pílula sólida com o label rolando no hover.
+ * - `glass`: só sobre o hero — fundo translúcido com blur.
+ * - `arrow`: pílula com círculo de 40px à direita; no hover o botão se pinta
+ *   a partir da seta (ver .btn-arrow no index.css) e a seta troca na diagonal.
+ */
 
-const variantStyles = {
-  blue: {
-    pill: "bg-[#0C2AFE] text-white hover:bg-[#001FDD]",
-    circle: "bg-white text-[#0C2AFE]",
-  },
-  dark: {
-    pill: "bg-[var(--brand-ink)] text-white hover:bg-[#0C2AFE] dark:bg-white dark:text-[var(--brand-ink)] dark:hover:bg-white/85",
-    circle:
-      "bg-white text-[var(--brand-ink)] dark:bg-[var(--brand-ink)] dark:text-white",
-  },
-  white: {
-    pill: "bg-white text-[#0b1020] shadow-[0_2px_8px_rgba(0,0,0,0.08)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)]",
-    circle: "bg-[#0C2AFE] text-white",
-  },
-};
-
-const sizeStyles = {
-  sm: {
-    pill: "pl-5 pr-2 py-2 text-[13px]",
-    circle: "h-6 w-6",
-    icon: "h-3 w-3",
-  },
-  md: {
-    pill: "pl-5 sm:pl-6 pr-2 py-2 text-[13px] sm:text-[14px]",
-    circle: "h-7 w-7 sm:h-8 sm:w-8",
-    icon: "h-3.5 w-3.5",
-  },
-};
+const variants = {
+  primary: "btn-primary",
+  dark: "btn-dark",
+  /** Pílula branca — para uso sobre painel azul ou preto. */
+  light: "btn-light",
+  glass: "btn-glass",
+  arrow: "btn-arrow",
+} as const;
 
 type RollButtonProps = {
   label: string;
@@ -38,10 +24,27 @@ type RollButtonProps = {
   external?: boolean;
   download?: string;
   onClick?: () => void;
-  variant?: keyof typeof variantStyles;
-  size?: keyof typeof sizeStyles;
+  variant?: keyof typeof variants;
   className?: string;
 };
+
+/** Seta diagonal ↗ desenhada à mão: haste até o canto e cabeça em L. */
+function DiagonalArrow() {
+  return (
+    <svg
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M4.2 11.8 11.8 4.2" />
+      <path d="M5.4 4.2h6.4v6.4" />
+    </svg>
+  );
+}
 
 export default function RollButton({
   label,
@@ -49,52 +52,29 @@ export default function RollButton({
   external = false,
   download,
   onClick,
-  variant = "blue",
-  size = "md",
+  variant = "primary",
   className,
 }: RollButtonProps) {
-  const v = variantStyles[variant];
-  const s = sizeStyles[size];
-
-  const classes = cn(
-    "group inline-flex items-center justify-between gap-3 rounded-full font-medium transition-all duration-300",
-    v.pill,
-    s.pill,
-    className
-  );
+  const classes = cn("btn group", variants[variant], className);
 
   const content = (
     <>
-      <span className="block h-5 overflow-hidden">
-        <span
-          className={cn(
-            "flex flex-col transition-transform duration-500 group-hover:-translate-y-1/2",
-            easing
-          )}
-        >
-          <span className="flex h-5 shrink-0 items-center whitespace-nowrap">
-            {label}
-          </span>
-          <span className="flex h-5 shrink-0 items-center whitespace-nowrap">
-            {label}
-          </span>
+      {/* Duas cópias do label empilhadas: a de cima sai, a de baixo entra. */}
+      <span className="btn-roll">
+        <span>
+          <span>{label}</span>
+          <span aria-hidden="true">{label}</span>
         </span>
       </span>
-      <span
-        className={cn(
-          "flex shrink-0 items-center justify-center rounded-full",
-          v.circle,
-          s.circle
-        )}
-      >
-        <ArrowRight
-          className={cn(
-            "transition-transform duration-500 group-hover:-rotate-45",
-            easing,
-            s.icon
-          )}
-        />
-      </span>
+
+      {variant === "arrow" && (
+        <span className="btn-circle" aria-hidden="true">
+          <span className="btn-swap">
+            <DiagonalArrow />
+            <DiagonalArrow />
+          </span>
+        </span>
+      )}
     </>
   );
 

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import {
+  ArrowUpRight,
   Clock,
   Github,
   Instagram,
@@ -16,10 +17,17 @@ import { WHATSAPP_BUDGET_URL } from "@/const";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { getStrings } from "@/i18n/strings";
-import { useRevealOnScroll } from "@/lib/useRevealOnScroll";
+import { useAnimations } from "@/lib/useAnimations";
 import RollButton from "@/components/RollButton";
 
-const navIds = ["inicio", "projetos", "combos", "blog", "contato"] as const;
+const navIds = [
+  "inicio",
+  "sobre",
+  "projetos",
+  "combos",
+  "blog",
+  "contato",
+] as const;
 
 const socials = [
   { href: "https://github.com/mhrzfrota", label: "GitHub", Icon: Github },
@@ -64,6 +72,53 @@ function FortalezaTime({ suffix }: { suffix: string }) {
   );
 }
 
+/**
+ * O "newsletter" da referência, adaptado ao que existe de verdade: a mensagem
+ * digitada abre o WhatsApp já preenchida. Vazio, cai na mensagem padrão de
+ * orçamento.
+ */
+function FooterWhatsForm({
+  placeholder,
+  submit,
+}: {
+  placeholder: string;
+  submit: string;
+}) {
+  const [message, setMessage] = useState("");
+
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    const text = message.trim();
+    const url = text
+      ? `https://wa.me/5585996370080?text=${encodeURIComponent(text)}`
+      : WHATSAPP_BUDGET_URL;
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
+
+  return (
+    <form
+      onSubmit={handleSubmit}
+      className="mt-3 flex items-center gap-2 rounded-full border border-white/15 bg-white/5 p-1.5 pl-5 transition-colors focus-within:border-white/35"
+    >
+      <input
+        type="text"
+        value={message}
+        onChange={event => setMessage(event.target.value)}
+        placeholder={placeholder}
+        aria-label={placeholder}
+        className="min-w-0 flex-1 bg-transparent text-[14px] text-white outline-none placeholder:text-white/50"
+      />
+      <button
+        type="submit"
+        className="mono-label flex shrink-0 items-center gap-1.5 rounded-full bg-primary px-5 py-2.5 text-[11px] text-white transition-colors hover:bg-[var(--brand-blue-dark)]"
+      >
+        {submit}
+        <ArrowUpRight className="h-3.5 w-3.5" />
+      </button>
+    </form>
+  );
+}
+
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [activeSection, setActiveSection] = useState("inicio");
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -73,8 +128,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const t = getStrings(lang);
   const isDark = theme === "dark";
 
-  // Anima os blocos data-reveal da página atual; reexecuta ao trocar de rota.
-  useRevealOnScroll([location]);
+  // Monta o sistema data-anim da página atual; reexecuta ao trocar de rota.
+  useAnimations([location]);
 
   const navItems = navIds.map(id => ({ id, label: t.nav[id] }));
 
@@ -122,20 +177,23 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       onClick={toggleLang}
       aria-label={t.topbar.switchLang}
       title={t.topbar.switchLang}
-      className="flex h-9 items-center gap-1 rounded-full px-2.5 text-[12px] font-semibold tracking-wide text-muted-foreground transition-colors duration-300 hover:bg-muted hover:text-foreground"
+      className="mono-label flex h-9 items-center gap-1 rounded-full px-2.5 text-[11px] text-muted-foreground transition-colors duration-300 hover:bg-muted hover:text-foreground"
     >
       <span className={lang === "pt" ? "text-foreground" : ""}>PT</span>
-      <span className="text-border">/</span>
+      {/* Era text-border: 1.29:1, invisível. Decorativo, então some do leitor. */}
+      <span aria-hidden="true">/</span>
       <span className={lang === "en" ? "text-foreground" : ""}>EN</span>
     </button>
   );
 
   return (
-    <div className="min-h-screen bg-background font-sans text-foreground selection:bg-[#0C2AFE]/15 selection:text-[#0C2AFE]">
+    <div className="min-h-screen bg-background font-sans text-foreground selection:bg-primary/15 selection:text-primary">
       {/* Navbar pill flutuante */}
       <header className="fixed inset-x-0 top-0 z-40">
         <div className="mx-auto max-w-[1080px] p-2 sm:p-3">
-          <div className="flex items-center justify-between rounded-full bg-card px-[5px] py-2 shadow-[0_2px_12px_rgba(2,6,19,0.08)] ring-1 ring-black/[0.04] dark:ring-white/10">
+          {/* O ring a 4% dava 1.04:1 e não existia na tela; a sombra é quem
+              descola o pill do fundo. */}
+          <div className="flex items-center justify-between rounded-full bg-card px-[5px] py-2 shadow-[0_4px_24px_rgba(2,6,19,0.10)] ring-1 ring-black/[0.08] dark:ring-white/12">
             <div className="flex items-center gap-4">
               <button
                 onClick={() => handleNavClick("inicio")}
@@ -156,10 +214,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     key={item.id}
                     onClick={() => handleNavClick(item.id)}
                     className={cn(
-                      "text-[14px] transition-colors duration-300",
+                      // Hover reforça em vez de enfraquecer: antes o link
+                      // clareava para muted-foreground ao passar o mouse.
+                      "mono-label text-[11px] transition-colors duration-300",
                       activeSection === item.id
-                        ? "text-[#0C2AFE] dark:text-[#7C8CFF]"
-                        : "text-foreground hover:text-muted-foreground"
+                        ? "text-primary"
+                        : "text-muted-foreground hover:text-foreground"
                     )}
                   >
                     {item.label}
@@ -206,8 +266,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               </button>
               <button
                 onClick={() => setMobileOpen(true)}
-                className="flex items-center gap-1.5 rounded-full bg-[var(--brand-ink)] px-4 py-2.5 text-[13px] font-medium text-white dark:bg-white dark:text-[var(--brand-ink)]"
+                className="mono-label flex items-center gap-1.5 rounded-full bg-[var(--brand-ink)] px-4 py-2.5 text-[11px] text-white dark:bg-white dark:text-[var(--brand-ink)]"
                 aria-label={t.topbar.openMenu}
+                aria-expanded={mobileOpen}
+                aria-controls="mobile-menu"
               >
                 {t.topbar.menu} <Menu size={14} />
               </button>
@@ -218,6 +280,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
       {/* Menu mobile — bottom sheet */}
       <div
+        id="mobile-menu"
         className={cn(
           "fixed inset-0 z-50 md:hidden",
           mobileOpen ? "" : "pointer-events-none"
@@ -238,13 +301,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           )}
         >
           <div className="flex items-center justify-between">
-            <span className="flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-[12px] text-muted-foreground">
+            <span className="mono-label flex items-center gap-1.5 rounded-full bg-muted px-3 py-1.5 text-[11px] text-muted-foreground">
               <Clock size={13} />
               <FortalezaTime suffix={t.topbar.timeSuffix} />
             </span>
             <button
               onClick={() => setMobileOpen(false)}
-              className="flex items-center gap-1.5 rounded-full bg-[var(--brand-ink)] px-4 py-2.5 text-[13px] font-medium text-white dark:bg-white dark:text-[var(--brand-ink)]"
+              className="mono-label flex items-center gap-1.5 rounded-full bg-[var(--brand-ink)] px-4 py-2.5 text-[11px] text-white dark:bg-white dark:text-[var(--brand-ink)]"
               aria-label={t.topbar.closeMenu}
             >
               {t.topbar.close} <X size={14} />
@@ -257,10 +320,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 key={item.id}
                 onClick={() => handleNavClick(item.id)}
                 className={cn(
-                  "py-2 text-left text-[28px] font-medium leading-[32px] tracking-tight transition-colors",
-                  activeSection === item.id
-                    ? "text-[#0C2AFE] dark:text-[#7C8CFF]"
-                    : "text-foreground"
+                  "py-2 text-left text-[28px] font-medium leading-[32px] tracking-[-0.04em] transition-colors",
+                  activeSection === item.id ? "text-primary" : "text-foreground"
                 )}
               >
                 {item.label}
@@ -275,7 +336,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 href={href}
                 target="_blank"
                 rel="noreferrer"
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:border-[#0C2AFE] hover:text-[#0C2AFE]"
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-muted text-muted-foreground transition-colors hover:bg-primary hover:text-white"
                 aria-label={label}
               >
                 <Icon className="h-4 w-4" />
@@ -285,8 +346,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
           <RollButton
             className="mt-6 w-full"
-            size="md"
-            variant="blue"
+            variant="arrow"
             label={t.topbar.requestQuote}
             href={WHATSAPP_BUDGET_URL}
             external
@@ -297,33 +357,119 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       {/* Conteúdo */}
       <main className="relative">{children}</main>
 
-      {/* Footer */}
-      <footer className="border-t border-border bg-background">
-        <div className="mx-auto flex max-w-[1440px] flex-col items-center justify-between gap-5 px-5 py-8 sm:px-8 md:flex-row lg:px-12">
-          <div className="flex items-center gap-4">
-            <img
-              src="/logo2-removebg-preview.png"
-              alt="MF Services"
-              className="h-10 w-auto dark:brightness-0 dark:invert"
-            />
-            <p className="text-[12px] leading-relaxed text-muted-foreground">
-              © {new Date().getFullYear()} MF Services — Matheus Frota
-              <br className="hidden sm:block" /> {t.footer.role}
-            </p>
+      {/* Footer — bloco escuro arredondado no desenho da referência: coluna de
+          marca com formulário em pílula, colunas de links e barra inferior.
+          A referência assina newsletter; sem backend pra isso, o formulário
+          manda a mensagem digitada direto pro WhatsApp — funciona de verdade. */}
+      <footer className="section-box section-box-ink overflow-hidden">
+        <div className="container padding-global py-14 sm:py-16">
+          <div className="grid gap-12 lg:grid-cols-[1.6fr_1fr_1fr_1fr] lg:gap-8">
+            <div className="max-w-md">
+              <img
+                src="/logo2-removebg-preview.png"
+                alt="MF Services"
+                className="h-10 w-auto brightness-0 invert"
+              />
+              <p className="mt-5 text-[14px] leading-relaxed text-white/70">
+                {t.footer.tagline}
+              </p>
+
+              <p className="mono-label mt-7 text-[11px] text-white/60">
+                {t.footer.formLabel}
+              </p>
+              <FooterWhatsForm
+                placeholder={t.footer.formPlaceholder}
+                submit={t.footer.formSubmit}
+              />
+            </div>
+
+            <nav aria-label={t.footer.navLabel}>
+              <h2 className="mono-label text-[11px] text-white/60">
+                {t.footer.navLabel}
+              </h2>
+              <ul className="mt-5 flex flex-col gap-3">
+                {navItems.map(item => (
+                  <li key={item.id}>
+                    <button
+                      onClick={() => handleNavClick(item.id)}
+                      className="text-[14px] text-white/80 transition-colors hover:text-white"
+                    >
+                      {item.label}
+                    </button>
+                  </li>
+                ))}
+                {/* O bloco do Diagnóstico saiu da home; sem este link a rota
+                    /diagnostico ficaria sem nenhum caminho até ela. */}
+                <li>
+                  <a
+                    href="/diagnostico"
+                    className="text-[14px] text-white/80 transition-colors hover:text-white"
+                  >
+                    {t.footer.diagnosticoLink}
+                  </a>
+                </li>
+              </ul>
+            </nav>
+
+            <div>
+              <h2 className="mono-label text-[11px] text-white/60">
+                {t.footer.socialLabel}
+              </h2>
+              <ul className="mt-5 flex flex-col gap-3">
+                {socials.map(({ href, label, Icon }) => (
+                  <li key={label}>
+                    <a
+                      href={href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-2.5 text-[14px] text-white/80 transition-colors hover:text-white"
+                    >
+                      <Icon className="h-4 w-4" />
+                      {label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Telefone e currículo, realocados do antigo painel de contato. */}
+            <div>
+              <h2 className="mono-label text-[11px] text-white/60">
+                {t.footer.contactLabel}
+              </h2>
+              <ul className="mt-5 flex flex-col gap-3">
+                <li>
+                  <a
+                    href={WHATSAPP_BUDGET_URL}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-[14px] text-white/80 transition-colors hover:text-white"
+                  >
+                    (85) 99637-0080
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/curriculo.pdf"
+                    download="Curriculo-Matheus-Frota.pdf"
+                    className="text-[14px] text-white/80 transition-colors hover:text-white"
+                  >
+                    {t.footer.resumeLink}
+                  </a>
+                </li>
+              </ul>
+            </div>
           </div>
-          <div className="flex gap-2">
-            {socials.map(({ href, label, Icon }) => (
-              <a
-                key={label}
-                href={href}
-                target="_blank"
-                rel="noreferrer"
-                className="flex h-9 w-9 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:border-[#0C2AFE] hover:text-[#0C2AFE]"
-                aria-label={label}
-              >
-                <Icon className="h-4 w-4" />
-              </a>
-            ))}
+
+          <div className="mt-12 flex flex-col items-start gap-5 border-t border-white/10 pt-8 sm:flex-row sm:items-center sm:justify-between">
+            <p className="text-[12px] leading-relaxed text-white/70">
+              © {new Date().getFullYear()} MF Services — Matheus Frota ·{" "}
+              {t.footer.role}
+            </p>
+            <span className="mono-label flex items-center gap-1.5 text-[11px] text-white/60">
+              <Clock size={13} />
+              <FortalezaTime suffix={t.topbar.timeSuffix} />
+            </span>
           </div>
         </div>
       </footer>

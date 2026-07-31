@@ -11,11 +11,12 @@ import { cn } from "@/lib/utils";
 import { OBJETIVOS, type DiagnosticoInput, type Objetivo } from "../types";
 import { DEMO_LOJA_VEICULOS } from "../demo";
 
-const inputCls =
-  "w-full rounded-xl border border-border bg-background px-4 py-3 text-[14px] text-foreground outline-none transition-colors placeholder:text-muted-foreground/60 focus:border-[#0C2AFE] focus:ring-2 focus:ring-[#0C2AFE]/20 dark:focus:border-[#7C8CFF] dark:focus:ring-[#7C8CFF]/20";
+// O campo passa a ser identificado pelo preenchimento, não pela borda: a
+// borda a 1.25:1 era invisível e escurecê-la até os 3:1 exigidos quebraria o
+// visual. O placeholder perdeu o /60 — a 2.76:1 ele reprovava como texto.
+const inputCls = "a-input";
 
-const labelCls =
-  "mb-1.5 block text-[12px] font-semibold uppercase tracking-wide text-muted-foreground";
+const labelCls = "mono-label mb-2 block text-[11px] text-muted-foreground";
 
 const beneficios = [
   {
@@ -73,27 +74,27 @@ export default function Landing({
       <div className="space-y-8">
         <div className="space-y-5">
           <span
-            data-reveal
-            className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-1.5 text-[12px] font-semibold text-[#0C2AFE] dark:text-[#7C8CFF]"
+            data-anim="fade-up"
+            className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-1.5 text-[12px] font-semibold text-primary"
           >
             <Sparkles className="h-3.5 w-3.5" />
             MF Diagnóstico IA
           </span>
 
           <h1
-            data-reveal
+            data-anim="fade-up"
             className="text-[clamp(2rem,5vw,3.4rem)] font-semibold leading-[1.06] tracking-[-0.02em] text-foreground"
           >
             Descubra o que está impedindo seu negócio de{" "}
             <em className="font-normal not-italic">
-              <span className="hero-headline-area inline">vender mais</span>
+              <span className="inline text-primary">vender mais</span>
             </em>{" "}
             no digital.
           </h1>
 
           <p
-            data-reveal
-            className="reveal-delay-1 max-w-xl text-[15px] leading-relaxed text-muted-foreground sm:text-[16px]"
+            data-anim="fade-up"
+            className="max-w-xl text-[15px] leading-relaxed text-muted-foreground sm:text-[16px]"
           >
             Receba uma análise estratégica do posicionamento, presença digital,
             conversão e oportunidades de automação do seu negócio — com plano de
@@ -101,10 +102,10 @@ export default function Landing({
           </p>
         </div>
 
-        <ul data-reveal className="reveal-delay-2 space-y-4">
+        <ul data-anim="fade-up" className="space-y-4">
           {beneficios.map(({ Icon, titulo, texto }) => (
             <li key={titulo} className="flex items-start gap-3.5">
-              <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#0C2AFE]/10 text-[#0C2AFE] dark:bg-[#7C8CFF]/15 dark:text-[#7C8CFF]">
+              <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
                 <Icon className="h-4 w-4" />
               </span>
               <div>
@@ -119,11 +120,11 @@ export default function Landing({
           ))}
         </ul>
 
-        <div data-reveal className="reveal-delay-2">
+        <div data-anim="fade-up" data-anim-delay="0.22">
           <button
             type="button"
             onClick={() => onStart(DEMO_LOJA_VEICULOS)}
-            className="group inline-flex items-center gap-2.5 rounded-full border border-border bg-card px-5 py-2.5 text-[13px] font-medium text-foreground transition-colors hover:border-[#0C2AFE] hover:text-[#0C2AFE] dark:hover:border-[#7C8CFF] dark:hover:text-[#7C8CFF]"
+            className="group inline-flex items-center gap-2.5 rounded-full border border-border bg-card px-5 py-2.5 text-[13px] font-medium text-foreground transition-colors hover:border-primary hover:text-primary"
           >
             <Car className="h-4 w-4" />
             Ver demonstração com uma loja de veículos
@@ -133,8 +134,8 @@ export default function Landing({
 
       {/* Briefing */}
       <form
-        data-reveal
-        className="reveal-delay-1 rounded-2xl border border-border bg-card p-6 shadow-[0_18px_50px_rgba(13,30,80,0.08)] sm:p-8"
+        data-anim="fade-up"
+        className="rounded-2xl border border-border bg-card p-6 shadow-[0_18px_50px_rgba(13,30,80,0.08)] sm:p-8"
         onSubmit={handleSubmit}
         noValidate
       >
@@ -215,8 +216,8 @@ export default function Landing({
                     className={cn(
                       "rounded-xl border px-3.5 py-3 text-left transition-all duration-200",
                       ativo
-                        ? "border-[#0C2AFE] bg-[#0C2AFE]/[0.06] dark:border-[#7C8CFF] dark:bg-[#7C8CFF]/10"
-                        : "border-border bg-background hover:border-[#0C2AFE]/50 dark:hover:border-[#7C8CFF]/50"
+                        ? "border-primary bg-primary/[0.06]"
+                        : "border-border bg-background hover:border-primary/50"
                     )}
                   >
                     <span className="flex items-center justify-between gap-2">
@@ -224,7 +225,7 @@ export default function Landing({
                         {item.label}
                       </span>
                       {ativo && (
-                        <Check className="diag-pop h-3.5 w-3.5 text-[#0C2AFE] dark:text-[#7C8CFF]" />
+                        <Check className="diag-pop h-3.5 w-3.5 text-primary" />
                       )}
                     </span>
                     <span className="mt-0.5 block text-[11.5px] leading-snug text-muted-foreground">
