@@ -118,6 +118,52 @@ export default function ProjectsShowcase({
     return () => window.removeEventListener("resize", updateArrows);
   }, [updateArrows]);
 
+  // Depois de um scroll lateral, o navegador "prende" o gesto no carrossel
+  // (scroll latching) e a rodinha/trackpad vertical para de descer a página.
+  // O eixo é decidido uma vez por gesto (e liberado numa pausa), então a inércia
+  // horizontal do trackpad nunca engole a rolagem vertical seguinte.
+  // Precisa de listener nativo: o onWheel do React é passivo e não permite
+  // preventDefault.
+  useEffect(() => {
+    const el = sliderRef.current;
+    if (!el) return;
+
+    let axis: "x" | "y" | null = null;
+    let idle = 0;
+
+    const onWheel = (event: WheelEvent) => {
+      if (event.ctrlKey) return; // pinch-zoom
+
+      // Pausa entre eventos = gesto terminou; o próximo escolhe o eixo de novo.
+      window.clearTimeout(idle);
+      idle = window.setTimeout(() => {
+        axis = null;
+      }, 140);
+
+      if (!axis) {
+        const dx = Math.abs(event.deltaX);
+        const dy = Math.abs(event.deltaY);
+        if (dx < 1 && dy < 1) return;
+        axis = dx > dy ? "x" : "y";
+      }
+
+      if (axis === "x") return; // carrossel rola nativo
+
+      event.preventDefault();
+      // deltaMode 1 = linhas (Firefox com mouse); converte pra pixels.
+      const dy = event.deltaMode === 1 ? event.deltaY * 16 : event.deltaY;
+      // "instant": a rodinha nativa é imediata; sem isso o scroll-behavior
+      // smooth global deixa a rolagem elástica só em cima do carrossel.
+      window.scrollBy({ top: dy, behavior: "instant" });
+    };
+
+    el.addEventListener("wheel", onWheel, { passive: false });
+    return () => {
+      window.clearTimeout(idle);
+      el.removeEventListener("wheel", onWheel);
+    };
+  }, []);
+
   const scrollByCard = (direction: -1 | 1) => {
     const el = sliderRef.current;
     if (!el) return;

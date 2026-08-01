@@ -634,6 +634,16 @@
     display: flex;
     gap: 24px;
     overflow-x: auto;
+    /* Só o eixo X rola: sem isso o overflow-y implícito vira "auto" e qualquer
+       pixel de sobra cria um scroll vertical preso dentro do carrossel. */
+    overflow-y: hidden;
+    /* No toque, a fileira só reage a arrasto horizontal. Sem isso, depois de
+       passar os cards pro lado o navegador prende o gesto no carrossel e o
+       swipe pra baixo não desce a página. */
+    touch-action: pan-x pinch-zoom;
+    /* Chegar no fim da fileira não empurra o scroll (nem o "voltar" do
+       navegador) pro que está atrás. */
+    overscroll-behavior-x: contain;
     scroll-snap-type: x proximity;
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;

@@ -172,7 +172,7 @@ export const projects: Project[] = [
       en: "Memorable events can't depend on word of mouth. The landing page organizes portfolio, services and contact to turn referrals into proposal requests.",
     },
     tags: ["HTML", "CSS", "JavaScript"],
-    image: "/images/image10.webp",
+    image: "/images/tz-producoes.webp",
     video: "/videos/tz-producoes.mp4",
     liveUrl: "https://www.tzproducoes.com.br/",
     repoUrl: "https://github.com/mhrzfrota",
