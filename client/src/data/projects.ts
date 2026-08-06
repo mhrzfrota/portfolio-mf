@@ -336,6 +336,52 @@ export const projects: Project[] = [
     repoUrl: "https://github.com/mhrzfrota",
     category: "Landing Page",
   },
+  {
+    id: 15,
+    slug: "lopes-veiculos",
+    title: "Lopes Veículos",
+    description: {
+      pt: "Uma loja de seminovos que vendia no boca a boca e anunciava na OLX no braço. Construí o site com estoque ao vivo e o sistema interno que o alimenta — cadastro, CRM, financeiro e publicação na OLX no mesmo lugar.",
+      en: "A used-car dealership selling by word of mouth and posting OLX ads by hand. I built the website with live inventory and the internal system that feeds it — registration, CRM, finance and OLX publishing in one place.",
+    },
+    tags: ["Next.js", "TypeScript", "Supabase", "Tailwind CSS", "API OLX"],
+    image: "/images/lopes-veiculos.webp",
+    liveUrl: "https://lopesveiculos.com",
+    repoUrl: "https://github.com/mhrzfrota",
+    category: "Plataformas",
+    featured: true,
+    caseStudy: {
+      clientProblem: {
+        pt: "O estoque vivia em planilhas e em anúncios avulsos na OLX. Cada carro precisava ser cadastrado duas vezes, o site nunca refletia o pátio real e as conversas com interessados se perdiam entre o WhatsApp e a plataforma de anúncios.",
+        en: "Inventory lived in spreadsheets and one-off OLX listings. Every car had to be registered twice, the website never reflected the actual lot, and conversations with buyers were scattered between WhatsApp and the ad platform.",
+      },
+      solution: {
+        pt: "Desenvolvi um sistema em Next.js e Supabase onde o veículo é cadastrado uma vez e alimenta o site público, a publicação na OLX e o CRM. O painel interno reúne estoque, clientes, negociações, financeiro e relatórios, e a integração oficial com a OLX cuida de anúncios, leads e chat sem sair do sistema.",
+        en: "I built a Next.js and Supabase system where a vehicle is registered once and feeds the public site, the OLX listing and the CRM. The internal panel gathers inventory, customers, deals, finance and reports, while the official OLX integration handles ads, leads and chat without leaving the system.",
+      },
+      benefit: {
+        pt: "A loja passou a ter uma vitrine sempre atualizada e um só lugar para tocar a operação: o carro entra no pátio, aparece no site e vai para a OLX no mesmo fluxo, e o atendimento chega organizado em vez de espalhado.",
+        en: "The dealership now has an always-current showcase and a single place to run the operation: a car enters the lot, shows up on the site and goes to OLX in the same flow, with inquiries arriving organized instead of scattered.",
+      },
+      images: [
+        {
+          src: "/images/lopes-veiculos.webp",
+          alt: {
+            pt: "Página inicial do site da Lopes Veículos",
+            en: "Lopes Veículos website home page",
+          },
+          caption: {
+            pt: "Hero em vídeo com a proposta da loja e chamadas para o estoque e o WhatsApp.",
+            en: "Video hero with the dealership's pitch and CTAs for inventory and WhatsApp.",
+          },
+        },
+      ],
+      ctaLabel: {
+        pt: "Quero um sistema parecido",
+        en: "I want a similar system",
+      },
+    },
+  },
 ];
 
 export const categories = ["Todos", "Web", "Plataformas", "Landing Page"];
