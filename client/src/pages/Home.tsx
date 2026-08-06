@@ -12,6 +12,7 @@ import { getPosts } from "@/data/posts";
 import { useLanguage, type Lang } from "@/contexts/LanguageContext";
 import { getStrings } from "@/i18n/strings";
 import AboutBento from "@/components/AboutBento";
+import GlassMonogram from "@/components/GlassMonogram";
 import ProjectsShowcase, {
   landingProjects,
   otherProjects,
@@ -317,6 +318,20 @@ export default function Home() {
         className="hero-sky section-box relative overflow-hidden scroll-mt-24"
       >
         <div className="hero-grain" aria-hidden="true" />
+
+        {/* A metade direita era o vão que sobrava: agora fecha a página com a
+            marca em vidro fosco, que dá pra girar com o mouse. Só a partir de
+            xl: abaixo disso o texto chega perto demais e a peça passaria por
+            cima dele.
+
+            z-10 + pointer-events: o bloco de texto vem depois no DOM e cobria
+            a peça, comendo o arraste. Só o canvas volta a receber ponteiro. */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-y-0 right-0 z-10 hidden w-[46%] items-center justify-center xl:flex"
+        >
+          <GlassMonogram className="h-[min(74%,420px)] w-[min(88%,560px)]" />
+        </div>
 
         <div className="container padding-global relative py-20 sm:py-28 lg:py-32">
           <div

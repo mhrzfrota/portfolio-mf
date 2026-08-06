@@ -146,7 +146,7 @@ export const projects: Project[] = [
       en: "E-commerce site in HTML and CSS for a women's fashion brand, with a collection showcase, category navigation and a prominent purchase CTA.",
     },
     tags: ["HTML", "CSS", "E-commerce"],
-    image: "/images/image8.webp",
+    image: "/images/lyre-store.webp",
     liveUrl: "https://lyrestore.vercel.app",
     repoUrl: "https://github.com/mhrzfrota",
     category: "Web",
@@ -217,7 +217,7 @@ export const projects: Project[] = [
       en: "Facebook and Instagram metrics monitoring system, integrated with the Meta Graph API and PostgreSQL, with near real-time KPI visualization.",
     },
     tags: ["Python", "Flask", "React", "PostgreSQL", "Meta Graph API"],
-    image: "/images/image1.webp",
+    image: "/images/monitor-dashboard.webp",
     video: "/videos/monitor-dashboard.mp4",
     liveUrl: "https://monitor.mslestrategia.com.br",
     repoUrl: "https://github.com/mhrzfrota",
@@ -237,7 +237,7 @@ export const projects: Project[] = [
       },
       images: [
         {
-          src: "/images/image1.webp",
+          src: "/images/monitor-dashboard.webp",
           alt: {
             pt: "Tela do Dashboard Meta Analytics",
             en: "Meta Analytics Dashboard screen",

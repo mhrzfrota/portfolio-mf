@@ -1,0 +1,567 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Frosted glass cube — raw WebGL</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        overflow: hidden;
+        background: #060606;
+      }
+      canvas#gl {
+        display: block;
+        width: 100vw;
+        height: 100vh;
+        cursor: grab;
+        touch-action: none;
+      }
+      canvas#gl.dragging {
+        cursor: grabbing;
+      }
+      .hint {
+        position: fixed;
+        left: 22px;
+        bottom: 20px;
+        font:
+          400 10px/1 ui-monospace,
+          SFMono-Regular,
+          Menlo,
+          monospace;
+        letter-spacing: 0.22em;
+        color: rgba(255, 255, 255, 0.32);
+        pointer-events: none;
+        user-select: none;
+      }
+      .fallback {
+        position: fixed;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        padding: 24px;
+        text-align: center;
+        font:
+          400 13px/1.6 ui-monospace,
+          SFMono-Regular,
+          Menlo,
+          monospace;
+        letter-spacing: 0.14em;
+        color: rgba(255, 255, 255, 0.6);
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="gl"></canvas>
+    <p class="hint">DRAG TO ROTATE</p>
+
+    <script>
+      // ---------------------------------------------------------------------
+      // Tudo que dá pra ajustar mora aqui.
+      // ---------------------------------------------------------------------
+      const CONFIG = {
+        text: "AVI VASHISHTA",
+        textFill: "#d2d2d2",
+        textWidthRatio: 0.92, // fração da largura da viewport ocupada pela palavra
+        ghost: {
+          count: 3,
+          // cada cópia: escala relativa à palavra sólida + deslocamento nos DOIS eixos
+          // (fração da altura da fonte) — elas precisam vazar pra fora das letras
+          copies: [
+            { scale: 1.04, dx: -0.055, dy: -0.05 },
+            { scale: 1.06, dx: 0.06, dy: 0.075 },
+            { scale: 1.08, dx: -0.015, dy: -0.14 },
+          ],
+          stroke: "rgba(255,255,255,0.055)",
+          lineWidth: 1.6,
+        },
+        bgGrain: 27, // ±N por canal na ImageData do fundo
+        cube: {
+          size: 0.62, // meia-aresta
+          radius: 0.03, // raio do canto
+          ior: 1.48,
+          frost: 0.1, // amplitude do ruído que perturba as normais
+          frostFreq: 26.0,
+          blurBase: 0.01,
+          blurFresnel: 0.055,
+          chromaBase: 0.004,
+          chromaFresnel: 0.02,
+        },
+        camera: { z: 3.0, focal: 1.9, planeZ: -3.2 },
+        grain: 0.027, // grão sobre o frame inteiro
+        vignette: 0.55,
+        rotation: {
+          yaw: 0.62,
+          pitch: 0.46,
+          idleYaw: 0.0038, // rad por frame
+          bob: 0.12, // amplitude do balanço de pitch
+          bobSpeed: 0.0055,
+          dragSpeed: 0.007,
+          damping: 0.94,
+          pitchClamp: 1.25,
+        },
+      };
+
+      const canvas = document.getElementById("gl");
+      const gl =
+        canvas.getContext("webgl", { antialias: false, alpha: false }) ||
+        canvas.getContext("experimental-webgl");
+
+      if (!gl) {
+        canvas.remove();
+        document.querySelector(".hint")?.remove();
+        const p = document.createElement("p");
+        p.className = "fallback";
+        p.textContent = "WEBGL INDISPONÍVEL NESTE NAVEGADOR";
+        document.body.appendChild(p);
+        throw new Error("WebGL unavailable");
+      }
+
+      // ---------------------------------------------------------------------
+      // Camada de fundo: canvas 2D offscreen que vira textura.
+      // ---------------------------------------------------------------------
+      const bg = document.createElement("canvas");
+      const bgCtx = bg.getContext("2d", { willReadFrequently: true });
+
+      const FONT_STACK =
+        '"Helvetica Neue", Helvetica, Arial, "Arial Narrow", system-ui, sans-serif';
+
+      function drawBackground(w, h) {
+        bg.width = w;
+        bg.height = h;
+
+        bgCtx.setTransform(1, 0, 0, 1, 0, 0);
+        bgCtx.fillStyle = "#060606";
+        bgCtx.fillRect(0, 0, w, h);
+
+        // Acha o tamanho de fonte que faz a palavra ocupar textWidthRatio da largura.
+        let size = h * 0.5;
+        bgCtx.font = `900 ${size}px ${FONT_STACK}`;
+        const measured = bgCtx.measureText(CONFIG.text).width || 1;
+        size = (size * (w * CONFIG.textWidthRatio)) / measured;
+
+        bgCtx.font = `900 ${size}px ${FONT_STACK}`;
+        bgCtx.textAlign = "center";
+        bgCtx.textBaseline = "middle";
+
+        const cx = w / 2;
+        const cy = h / 2;
+
+        // Ghost stack primeiro: só contorno, maior e deslocado nos dois eixos.
+        bgCtx.strokeStyle = CONFIG.ghost.stroke;
+        bgCtx.lineWidth = CONFIG.ghost.lineWidth;
+        bgCtx.lineJoin = "round";
+        for (let i = 0; i < CONFIG.ghost.count; i++) {
+          const g = CONFIG.ghost.copies[i % CONFIG.ghost.copies.length];
+          bgCtx.save();
+          bgCtx.translate(cx + g.dx * size, cy + g.dy * size);
+          bgCtx.scale(g.scale, g.scale);
+          bgCtx.strokeText(CONFIG.text, 0, 0);
+          bgCtx.restore();
+        }
+
+        // Palavra sólida por cima.
+        bgCtx.fillStyle = CONFIG.textFill;
+        bgCtx.fillText(CONFIG.text, cx, cy);
+
+        // Grão monocromático caminhando pela ImageData inteira.
+        const amount = CONFIG.bgGrain;
+        const img = bgCtx.getImageData(0, 0, w, h);
+        const d = img.data;
+        for (let i = 0; i < d.length; i += 4) {
+          const n = (Math.random() * 2 - 1) * amount;
+          d[i] += n;
+          d[i + 1] += n;
+          d[i + 2] += n;
+        }
+        bgCtx.putImageData(img, 0, 0);
+      }
+
+      // ---------------------------------------------------------------------
+      // Shaders
+      // ---------------------------------------------------------------------
+      const VERT = `
+        attribute vec2 aPos;
+        void main() { gl_Position = vec4(aPos, 0.0, 1.0); }
+      `;
+
+      const FRAG = `
+        precision highp float;
+
+        uniform vec2  uRes;
+        uniform float uAspect;
+        uniform float uTime;
+        uniform sampler2D uTex;
+        uniform mat3  uInvRot;
+        uniform float uSize;
+        uniform float uRadius;
+        uniform float uIOR;
+        uniform float uFrost;
+        uniform float uFrostFreq;
+        uniform float uBlurBase;
+        uniform float uBlurFresnel;
+        uniform float uChromaBase;
+        uniform float uChromaFresnel;
+        uniform float uCamZ;
+        uniform float uFocal;
+        uniform float uPlaneZ;
+        uniform float uGrain;
+        uniform float uVignette;
+
+        const float PI = 3.14159265;
+
+        // ---- SDF: caixa arredondada, centrada na origem do mundo ----
+        float sdRoundBox(vec3 p, float b, float r) {
+          vec3 q = abs(p) - vec3(b - r);
+          return length(max(q, 0.0)) + min(max(q.x, max(q.y, q.z)), 0.0) - r;
+        }
+
+        // A rotação entra aqui: o ponto vai pro espaço do objeto pela inversa.
+        float map(vec3 p) {
+          return sdRoundBox(uInvRot * p, uSize, uRadius);
+        }
+
+        vec3 calcNormal(vec3 p) {
+          vec2 e = vec2(0.0008, 0.0);
+          return normalize(vec3(
+            map(p + e.xyy) - map(p - e.xyy),
+            map(p + e.yxy) - map(p - e.yxy),
+            map(p + e.yyx) - map(p - e.yyx)
+          ));
+        }
+
+        // ---- ruído de valor 3D pro vidro jateado ----
+        float hash31(vec3 p) {
+          p = fract(p * 0.3183099 + vec3(0.11, 0.71, 0.31));
+          p += dot(p, p.yzx + 19.19);
+          return fract((p.x + p.y) * p.z);
+        }
+
+        float vnoise(vec3 x) {
+          vec3 i = floor(x);
+          vec3 f = fract(x);
+          f = f * f * (3.0 - 2.0 * f);
+          return mix(
+            mix(mix(hash31(i + vec3(0.0, 0.0, 0.0)), hash31(i + vec3(1.0, 0.0, 0.0)), f.x),
+                mix(hash31(i + vec3(0.0, 1.0, 0.0)), hash31(i + vec3(1.0, 1.0, 0.0)), f.x), f.y),
+            mix(mix(hash31(i + vec3(0.0, 0.0, 1.0)), hash31(i + vec3(1.0, 0.0, 1.0)), f.x),
+                mix(hash31(i + vec3(0.0, 1.0, 1.0)), hash31(i + vec3(1.0, 1.0, 1.0)), f.x), f.y),
+            f.z);
+        }
+
+        vec3 noise3(vec3 p) {
+          return vec3(vnoise(p), vnoise(p + 37.21), vnoise(p + 71.53)) * 2.0 - 1.0;
+        }
+
+        float hash12(vec2 p) {
+          vec3 p3 = fract(vec3(p.xyx) * 0.1031);
+          p3 += dot(p3, p3.yzx + 33.33);
+          return fract((p3.x + p3.y) * p3.z);
+        }
+
+        // Projeta um ponto do mundo de volta pela MESMA câmera -> uv da textura.
+        vec2 projectUV(vec3 h) {
+          float s = max((uCamZ - h.z) / uFocal, 1e-4);
+          vec2 pl = h.xy / s;
+          return vec2(pl.x / uAspect, pl.y) * 0.5 + 0.5;
+        }
+
+        // Espiral de 16 taps em ângulo áureo, com aberração cromática ao longo
+        // do deslocamento da refração. Offsets corrigidos pelo aspect.
+        vec3 spiralSample(vec2 uv, float radius, vec2 caDir, float ca, float seed) {
+          const float GOLDEN = 2.39996323;
+          vec3 sum = vec3(0.0);
+          for (int i = 0; i < 16; i++) {
+            float fi = float(i) + seed;
+            float a = fi * GOLDEN;
+            float r = radius * sqrt(fi / 16.0);
+            vec2 off = vec2(cos(a), sin(a)) * r * vec2(1.0 / uAspect, 1.0);
+            vec2 base = uv + off;
+            sum.r += texture2D(uTex, base + caDir * ca).r;
+            sum.g += texture2D(uTex, base).g;
+            sum.b += texture2D(uTex, base - caDir * ca).b;
+          }
+          return sum / 16.0;
+        }
+
+        void main() {
+          vec2 uv = gl_FragCoord.xy / uRes;
+          vec2 p = uv * 2.0 - 1.0;
+          p.x *= uAspect;
+
+          vec3 ro = vec3(0.0, 0.0, uCamZ);
+          vec3 rd = normalize(vec3(p, -uFocal));
+
+          float seed = hash12(gl_FragCoord.xy + fract(uTime) * 91.7);
+
+          vec3 col = texture2D(uTex, uv).rgb;
+
+          // 1) marcha até a face da frente
+          float t = 0.0;
+          bool hit = false;
+          for (int i = 0; i < 96; i++) {
+            vec3 pos = ro + rd * t;
+            float d = map(pos);
+            if (d < 0.0007) { hit = true; break; }
+            t += d;
+            if (t > 7.0) break;
+          }
+
+          if (hit) {
+            vec3 pos = ro + rd * t;
+            vec3 n = calcNormal(pos);
+            n = normalize(n + noise3(pos * uFrostFreq) * uFrost);
+
+            float fres = pow(clamp(1.0 - dot(-rd, n), 0.0, 1.0), 3.5);
+
+            // 2) entra no vidro
+            vec3 rIn = refract(rd, n, 1.0 / uIOR);
+            if (dot(rIn, rIn) < 0.001) rIn = reflect(rd, n);
+
+            // 3) marcha DENTRO do sólido (passo no SDF negado)
+            vec3 ip = pos + rIn * 0.02;
+            for (int i = 0; i < 64; i++) {
+              float d = -map(ip);
+              if (d < 0.0007) break;
+              ip += rIn * d;
+            }
+
+            vec3 n2 = -calcNormal(ip);
+            n2 = normalize(n2 + noise3(ip * uFrostFreq + 13.7) * uFrost);
+
+            // 4) sai — reflexão interna total cai no reflect()
+            vec3 rOut = refract(rIn, n2, uIOR);
+            if (dot(rOut, rOut) < 0.001) rOut = reflect(rIn, n2);
+
+            // 5) plano de fundo -> reprojeção pela câmera
+            vec2 rUV = uv;
+            if (rOut.z < -1e-3) {
+              float tp = (uPlaneZ - ip.z) / rOut.z;
+              rUV = projectUV(ip + rOut * tp);
+            }
+
+            vec2 disp = rUV - uv;
+            vec2 caDir = length(disp) > 1e-5 ? normalize(disp) : vec2(1.0, 0.0);
+
+            float radius = uBlurBase + uBlurFresnel * fres;
+            float ca = uChromaBase + uChromaFresnel * fres;
+            vec3 glass = spiralSample(rUV, radius, caDir, ca, seed);
+
+            glass *= vec3(0.90, 0.93, 0.97);
+            glass += fres * 0.14;                                    // borda
+            glass += vec3(0.36, 0.20, 0.58) * pow(fres, 1.5) * 0.30; // irisação
+            glass += pow(max(dot(reflect(rd, n), normalize(vec3(-0.55, 0.85, 0.55))), 0.0), 34.0) * 0.55;
+
+            col = glass;
+          }
+
+          // grão + vinheta sobre o frame inteiro
+          col += (hash12(gl_FragCoord.xy + uTime) - 0.5) * 2.0 * uGrain;
+          float v = length(uv - 0.5);
+          col *= 1.0 - uVignette * v * v;
+
+          gl_FragColor = vec4(col, 1.0);
+        }
+      `;
+
+      function compile(type, src) {
+        const s = gl.createShader(type);
+        gl.shaderSource(s, src);
+        gl.compileShader(s);
+        if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
+          console.error("Shader compile error:", gl.getShaderInfoLog(s));
+        }
+        return s;
+      }
+
+      const program = gl.createProgram();
+      gl.attachShader(program, compile(gl.VERTEX_SHADER, VERT));
+      gl.attachShader(program, compile(gl.FRAGMENT_SHADER, FRAG));
+      gl.linkProgram(program);
+      if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+        console.error("Program link error:", gl.getProgramInfoLog(program));
+      }
+      gl.useProgram(program);
+
+      // triângulo único que cobre a tela inteira
+      const buffer = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+      gl.bufferData(
+        gl.ARRAY_BUFFER,
+        new Float32Array([-1, -1, 3, -1, -1, 3]),
+        gl.STATIC_DRAW
+      );
+      const aPos = gl.getAttribLocation(program, "aPos");
+      gl.enableVertexAttribArray(aPos);
+      gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
+
+      const U = {};
+      for (const name of [
+        "uRes",
+        "uAspect",
+        "uTime",
+        "uTex",
+        "uInvRot",
+        "uSize",
+        "uRadius",
+        "uIOR",
+        "uFrost",
+        "uFrostFreq",
+        "uBlurBase",
+        "uBlurFresnel",
+        "uChromaBase",
+        "uChromaFresnel",
+        "uCamZ",
+        "uFocal",
+        "uPlaneZ",
+        "uGrain",
+        "uVignette",
+      ]) {
+        U[name] = gl.getUniformLocation(program, name);
+      }
+
+      const texture = gl.createTexture();
+      gl.bindTexture(gl.TEXTURE_2D, texture);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+
+      gl.uniform1i(U.uTex, 0);
+      gl.uniform1f(U.uSize, CONFIG.cube.size);
+      gl.uniform1f(U.uRadius, CONFIG.cube.radius);
+      gl.uniform1f(U.uIOR, CONFIG.cube.ior);
+      gl.uniform1f(U.uFrost, CONFIG.cube.frost);
+      gl.uniform1f(U.uFrostFreq, CONFIG.cube.frostFreq);
+      gl.uniform1f(U.uBlurBase, CONFIG.cube.blurBase);
+      gl.uniform1f(U.uBlurFresnel, CONFIG.cube.blurFresnel);
+      gl.uniform1f(U.uChromaBase, CONFIG.cube.chromaBase);
+      gl.uniform1f(U.uChromaFresnel, CONFIG.cube.chromaFresnel);
+      gl.uniform1f(U.uCamZ, CONFIG.camera.z);
+      gl.uniform1f(U.uFocal, CONFIG.camera.focal);
+      gl.uniform1f(U.uPlaneZ, CONFIG.camera.planeZ);
+      gl.uniform1f(U.uGrain, CONFIG.grain);
+      gl.uniform1f(U.uVignette, CONFIG.vignette);
+
+      // ---------------------------------------------------------------------
+      // Resize: canvas em pixels físicos + textura de fundo redesenhada.
+      // ---------------------------------------------------------------------
+      function resize() {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        const w = Math.max(1, Math.round(canvas.clientWidth * dpr));
+        const h = Math.max(1, Math.round(canvas.clientHeight * dpr));
+        canvas.width = w;
+        canvas.height = h;
+        gl.viewport(0, 0, w, h);
+        gl.uniform2f(U.uRes, w, h);
+        gl.uniform1f(U.uAspect, w / h);
+
+        drawBackground(w, h);
+        gl.bindTexture(gl.TEXTURE_2D, texture);
+        gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, bg);
+      }
+
+      window.addEventListener("resize", resize);
+      resize();
+
+      // ---------------------------------------------------------------------
+      // Rotação: drift + arraste com inércia.
+      // ---------------------------------------------------------------------
+      const R = CONFIG.rotation;
+      const spin = {
+        yaw: R.yaw,
+        pitch: R.pitch,
+        vYaw: 0,
+        vPitch: 0,
+        dragging: false,
+        x: 0,
+        y: 0,
+      };
+
+      canvas.addEventListener("pointerdown", e => {
+        spin.dragging = true;
+        spin.vYaw = 0;
+        spin.vPitch = 0;
+        spin.x = e.clientX;
+        spin.y = e.clientY;
+        canvas.classList.add("dragging");
+        canvas.setPointerCapture(e.pointerId);
+      });
+
+      canvas.addEventListener("pointermove", e => {
+        if (!spin.dragging) return;
+        const dx = (e.clientX - spin.x) * R.dragSpeed;
+        const dy = (e.clientY - spin.y) * R.dragSpeed;
+        spin.x = e.clientX;
+        spin.y = e.clientY;
+        spin.yaw += dx;
+        spin.pitch += dy;
+        spin.vYaw = dx;
+        spin.vPitch = dy;
+      });
+
+      const endDrag = e => {
+        if (!spin.dragging) return;
+        spin.dragging = false;
+        canvas.classList.remove("dragging");
+        canvas.releasePointerCapture(e.pointerId);
+      };
+      canvas.addEventListener("pointerup", endDrag);
+      canvas.addEventListener("pointercancel", endDrag);
+
+      // mat3 da rotação INVERSA: Rx(-pitch) * Ry(-yaw), em column-major.
+      function inverseRotation(yaw, pitch) {
+        const cy = Math.cos(-yaw),
+          sy = Math.sin(-yaw);
+        const cx = Math.cos(-pitch),
+          sx = Math.sin(-pitch);
+        // Ry(-yaw)
+        const ry = [cy, 0, -sy, 0, 1, 0, sy, 0, cy];
+        // Rx(-pitch)
+        const rx = [1, 0, 0, 0, cx, sx, 0, -sx, cx];
+        // rx * ry (column-major: m[c*3+r])
+        const out = new Float32Array(9);
+        for (let c = 0; c < 3; c++) {
+          for (let r = 0; r < 3; r++) {
+            out[c * 3 + r] =
+              rx[0 * 3 + r] * ry[c * 3 + 0] +
+              rx[1 * 3 + r] * ry[c * 3 + 1] +
+              rx[2 * 3 + r] * ry[c * 3 + 2];
+          }
+        }
+        return out;
+      }
+
+      let frame = 0;
+      function render() {
+        frame++;
+
+        if (!spin.dragging) {
+          spin.yaw += spin.vYaw;
+          spin.pitch += spin.vPitch;
+          spin.vYaw *= R.damping;
+          spin.vPitch *= R.damping;
+          spin.yaw += R.idleYaw;
+        }
+        spin.pitch = Math.max(
+          -R.pitchClamp,
+          Math.min(R.pitchClamp, spin.pitch)
+        );
+
+        const pitch = spin.pitch + Math.sin(frame * R.bobSpeed) * R.bob;
+
+        gl.uniformMatrix3fv(U.uInvRot, false, inverseRotation(spin.yaw, pitch));
+        gl.uniform1f(U.uTime, frame * 0.016);
+        gl.drawArrays(gl.TRIANGLES, 0, 3);
+        requestAnimationFrame(render);
+      }
+      render();
+    </script>
+  </body>
+</html>
