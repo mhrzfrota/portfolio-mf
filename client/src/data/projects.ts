@@ -382,6 +382,19 @@ export const projects: Project[] = [
       },
     },
   },
+  {
+    id: 16,
+    title: "Colégio La' Marques",
+    description: {
+      pt: "Quase 30 anos formando gerações em Fortaleza — e uma presença digital que não contava isso. Construí o site do colégio com matrículas, proposta pedagógica e contato, e a visita agendada a um clique.",
+      en: "Nearly 30 years teaching generations in Fortaleza — and a digital presence that didn't show it. I built the school's website with enrollment, teaching approach and contact pages, and a visit booked in one click.",
+    },
+    tags: ["Next.js", "React", "CSS Modules", "UI Responsiva"],
+    image: "/images/colegio-lamarques.webp",
+    liveUrl: "https://colegiolamarques.vercel.app/",
+    repoUrl: "https://github.com/mhrzfrota",
+    category: "Web",
+  },
 ];
 
 export const categories = ["Todos", "Web", "Plataformas", "Landing Page"];
