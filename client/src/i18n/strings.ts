@@ -45,6 +45,7 @@ const strings = {
       formPlaceholder: "Escreva sua mensagem…",
       formSubmit: "Enviar",
       diagnosticoLink: "MF Diagnóstico IA",
+      boardLink: "Board interno",
     },
     hero: {
       headline: "Desenvolvedor",
@@ -271,6 +272,7 @@ const strings = {
       formPlaceholder: "Write your message…",
       formSubmit: "Send",
       diagnosticoLink: "MF AI Diagnosis",
+      boardLink: "Internal board",
     },
     hero: {
       headline: "Developer",

@@ -1005,9 +1005,80 @@
   }
 }
 
+/* ---------- Board interno ----------
+   Página fora do Layout, sempre azul/branca, independente do tema. O vidro só
+   parece "líquido" se houver luz atrás para refratar: os .board-blob derivam
+   devagar sob as colunas e o backdrop-filter faz o resto. */
+@layer components {
+  .board-bg {
+    background: linear-gradient(
+      165deg,
+      var(--brand-blue) 0%,
+      #1a3ae0 55%,
+      var(--brand-blue-dark) 100%
+    );
+  }
+
+  .board-blob {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(80px);
+    pointer-events: none;
+    animation: board-drift 26s ease-in-out infinite alternate;
+  }
+
+  @keyframes board-drift {
+    from {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+    to {
+      transform: translate3d(70px, 50px, 0) scale(1.18);
+    }
+  }
+
+  .board-glass {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.32),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.13),
+      0 16px 44px rgba(0, 16, 80, 0.22);
+  }
+
+  .board-card {
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.26),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  }
+
+  .board-col-in {
+    animation: board-col-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  @keyframes board-col-in {
+    from {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  .board-blob,
+  .board-col-in {
+    animation: none;
   }
 
   .diag-skeleton::after,

@@ -466,10 +466,20 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               © {new Date().getFullYear()} MF Services — Matheus Frota ·{" "}
               {t.footer.role}
             </p>
-            <span className="mono-label flex items-center gap-1.5 text-[11px] text-white/60">
-              <Clock size={13} />
-              <FortalezaTime suffix={t.topbar.timeSuffix} />
-            </span>
+            <div className="flex items-center gap-5">
+              {/* Ferramenta pessoal: o link existe pra rota ter um caminho,
+                  mas fica discreto de propósito. */}
+              <a
+                href="/board"
+                className="text-[12px] text-white/45 transition-colors hover:text-white/80"
+              >
+                {t.footer.boardLink}
+              </a>
+              <span className="mono-label flex items-center gap-1.5 text-[11px] text-white/60">
+                <Clock size={13} />
+                <FortalezaTime suffix={t.topbar.timeSuffix} />
+              </span>
+            </div>
           </div>
         </div>
       </footer>

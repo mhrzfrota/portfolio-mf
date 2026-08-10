@@ -8,18 +8,25 @@ import Home from "./pages/Home";
 import ProjectDetail from "./pages/ProjectDetail";
 import BlogPost from "./pages/BlogPost";
 import Diagnostico from "./pages/Diagnostico";
+import Board from "./pages/Board";
 
 function Router() {
   return (
-    <Layout>
-      <Switch>
-        <Route path="/" component={Home} />
-        <Route path="/diagnostico" component={Diagnostico} />
-        <Route path="/projetos/:slug" component={ProjectDetail} />
-        <Route path="/blog/:slug" component={BlogPost} />
-        <Route component={NotFound} />
-      </Switch>
-    </Layout>
+    <Switch>
+      {/* Ferramenta interna, tela cheia: fica fora do Layout do site. */}
+      <Route path="/board" component={Board} />
+      <Route>
+        <Layout>
+          <Switch>
+            <Route path="/" component={Home} />
+            <Route path="/diagnostico" component={Diagnostico} />
+            <Route path="/projetos/:slug" component={ProjectDetail} />
+            <Route path="/blog/:slug" component={BlogPost} />
+            <Route component={NotFound} />
+          </Switch>
+        </Layout>
+      </Route>
+    </Switch>
   );
 }
 
