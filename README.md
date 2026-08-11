@@ -150,7 +150,11 @@ O build produz dois artefatos: o site estático em `dist/public` e o servidor Ex
 
 1. Comando de build: `pnpm build` (ou apenas `vite build`)
 2. Diretório de saída: `dist/public`
-3. Configure o fallback de SPA (rewrite de todas as rotas para `/index.html`), senão rotas diretas como `/diagnostico` retornam 404.
+3. Configure o fallback de SPA (rewrite de todas as rotas para `/index.html`), senão rotas diretas como `/diagnostico` e `/board` retornam 404 — o roteador do wouter nunca chega a rodar.
+
+No Vercel isso já vem resolvido pelo `vercel.json` na raiz do repo. Em outras
+hospedagens o equivalente é `_redirects` (`/* /index.html 200`) na Netlify ou
+`try_files $uri /index.html;` no nginx.
 
 ## Contato
 
