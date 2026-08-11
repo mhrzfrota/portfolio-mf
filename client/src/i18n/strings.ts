@@ -44,7 +44,6 @@ const strings = {
       formLabel: "Me chame no WhatsApp",
       formPlaceholder: "Escreva sua mensagem…",
       formSubmit: "Enviar",
-      diagnosticoLink: "MF Diagnóstico IA",
       boardLink: "Board interno",
     },
     hero: {
@@ -139,21 +138,6 @@ const strings = {
           ],
         },
       ],
-    },
-    diagnostico: {
-      badge: "Comece por aqui",
-      title: "Antes de investir em site, descubra o que trava suas vendas.",
-      subtitle:
-        "É assim que começo qualquer projeto: entendendo. O MF Diagnóstico IA avalia posicionamento, presença digital, conversão, autoridade e automação — e devolve nota, prioridades e um plano de ação de 7 dias. Em menos de um minuto.",
-      bullets: [
-        "Nota geral e pontuação em 5 pilares",
-        "Problemas e oportunidades priorizados por impacto",
-        "Proposta de valor, conteúdo e automações sob medida",
-      ],
-      cta: "Diagnosticar minha empresa",
-      note: "Gratuito · sem cadastro · resultado na hora",
-      previewScore: "Nota geral",
-      previewPillars: ["Posicionamento", "Conversão", "Automação"],
     },
     blog: {
       title: "Notas & ideias",
@@ -271,7 +255,6 @@ const strings = {
       formLabel: "Message me on WhatsApp",
       formPlaceholder: "Write your message…",
       formSubmit: "Send",
-      diagnosticoLink: "MF AI Diagnosis",
       boardLink: "Internal board",
     },
     hero: {
@@ -366,22 +349,6 @@ const strings = {
           ],
         },
       ],
-    },
-    diagnostico: {
-      badge: "Start here",
-      title:
-        "Before investing in a website, find out what's blocking your sales.",
-      subtitle:
-        "This is how I start every project: by understanding. MF Diagnóstico IA scores positioning, digital presence, conversion, authority and automation — and returns a grade, priorities and a 7-day action plan. In under a minute.",
-      bullets: [
-        "Overall grade and scores across 5 pillars",
-        "Problems and opportunities ranked by impact",
-        "Tailored value proposition, content and automations",
-      ],
-      cta: "Diagnose my company",
-      note: "Free · no sign-up · instant results",
-      previewScore: "Overall score",
-      previewPillars: ["Positioning", "Conversion", "Automation"],
     },
     blog: {
       title: "Notes & ideas",

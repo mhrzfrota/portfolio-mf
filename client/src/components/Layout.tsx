@@ -398,16 +398,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     </button>
                   </li>
                 ))}
-                {/* O bloco do Diagnóstico saiu da home; sem este link a rota
-                    /diagnostico ficaria sem nenhum caminho até ela. */}
-                <li>
-                  <a
-                    href="/diagnostico"
-                    className="text-[14px] text-white/80 transition-colors hover:text-white"
-                  >
-                    {t.footer.diagnosticoLink}
-                  </a>
-                </li>
               </ul>
             </nav>
 

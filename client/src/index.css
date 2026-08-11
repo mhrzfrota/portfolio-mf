@@ -101,7 +101,7 @@
 
   /* Branco, como o --bg-default da referência. As seções não pintam fundo por
      padrão: o "bloco flutuante" só aparece onde há preenchimento próprio — o
-     hero com céu, o Diagnóstico e o rodapé escuros, os blocos cinza. */
+     hero com céu, o rodapé escuro, os blocos cinza. */
   --background: #ffffff;
   --foreground: #131313;
 
@@ -147,8 +147,8 @@
 .dark {
   /* A referência é light-only. A lógica "página clara, blocos escuros" inverte
      preservando a relação: a página é mais escura que os blocos, e os blocos
-     que já eram pretos (Diagnóstico, rodapé) clareiam para continuar lendo
-     como material diferente. */
+     que já eram pretos (o rodapé) clareiam para continuar lendo como material
+     diferente. */
   --ink: #1e1e1e;
   --grey-50: #1e1e1e;
   --grey-100: #2a2a2a;
@@ -912,95 +912,6 @@
     50.01%,
     100% {
       opacity: 0;
-    }
-  }
-}
-
-@layer components {
-  /* ---------- MF Diagnóstico IA ---------- */
-
-  .diag-skeleton {
-    position: relative;
-    overflow: hidden;
-    border-radius: 0.5rem;
-    background: color-mix(in oklab, var(--muted-foreground) 14%, transparent);
-  }
-
-  .diag-skeleton::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    transform: translateX(-100%);
-    background: linear-gradient(
-      90deg,
-      transparent,
-      color-mix(in oklab, var(--background) 65%, transparent),
-      transparent
-    );
-    animation: diag-shimmer 1.6s ease-in-out infinite;
-  }
-
-  @keyframes diag-shimmer {
-    to {
-      transform: translateX(100%);
-    }
-  }
-
-  .diag-bar {
-    transition: width 1.1s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
-  .diag-ring {
-    transition: stroke-dashoffset 1.2s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
-  .diag-scan-row {
-    position: relative;
-    overflow: hidden;
-  }
-
-  .diag-scan-row::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    transform: translateX(-100%);
-    background: linear-gradient(
-      90deg,
-      transparent,
-      color-mix(in oklab, var(--primary) 14%, transparent),
-      transparent
-    );
-    animation: diag-shimmer 1.4s ease-in-out infinite;
-  }
-
-  .diag-pop {
-    animation: diag-pop 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
-  }
-
-  @keyframes diag-pop {
-    from {
-      opacity: 0;
-      transform: scale(0.4);
-    }
-    to {
-      opacity: 1;
-      transform: none;
-    }
-  }
-
-  .diag-pulse {
-    animation: diag-pulse 1.4s ease-in-out infinite;
-  }
-
-  @keyframes diag-pulse {
-    0%,
-    100% {
-      opacity: 1;
-      transform: scale(1);
-    }
-    50% {
-      opacity: 0.4;
-      transform: scale(0.75);
     }
   }
 }

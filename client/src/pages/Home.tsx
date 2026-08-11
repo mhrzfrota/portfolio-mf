@@ -89,9 +89,9 @@ export default function Home() {
 
       <AboutBento />
 
-      {/* Sistemas, plataformas e sites em cima; landing pages logo abaixo, no
-          lugar onde ficava o Diagnóstico. São públicos diferentes: quem
-          procura sistema não procura página de captura. */}
+      {/* Sistemas, plataformas e sites em cima; landing pages logo abaixo. São
+          públicos diferentes: quem procura sistema não procura página de
+          captura. */}
       <ProjectsShowcase
         id="projetos"
         eyebrow={t.nav.projetos}

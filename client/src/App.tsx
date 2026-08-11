@@ -7,7 +7,6 @@ import Layout from "./components/Layout";
 import Home from "./pages/Home";
 import ProjectDetail from "./pages/ProjectDetail";
 import BlogPost from "./pages/BlogPost";
-import Diagnostico from "./pages/Diagnostico";
 import Board from "./pages/Board";
 
 function Router() {
@@ -19,7 +18,6 @@ function Router() {
         <Layout>
           <Switch>
             <Route path="/" component={Home} />
-            <Route path="/diagnostico" component={Diagnostico} />
             <Route path="/projetos/:slug" component={ProjectDetail} />
             <Route path="/blog/:slug" component={BlogPost} />
             <Route component={NotFound} />
