@@ -81,6 +81,17 @@ export function editCard(
   };
 }
 
+export function toggleCard(state: BoardState, cardId: string): BoardState {
+  return {
+    lists: state.lists.map(list => ({
+      ...list,
+      cards: list.cards.map(card =>
+        card.id === cardId ? { ...card, done: !card.done } : card
+      ),
+    })),
+  };
+}
+
 export function removeCard(state: BoardState, cardId: string): BoardState {
   return {
     lists: state.lists.map(list => ({
@@ -129,7 +140,8 @@ function isBoardState(value: unknown): value is BoardState {
         typeof card === "object" &&
         card !== null &&
         typeof card.id === "string" &&
-        typeof card.text === "string"
+        typeof card.text === "string" &&
+        (card.done === undefined || typeof card.done === "boolean")
     );
   });
 }

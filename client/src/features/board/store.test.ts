@@ -10,6 +10,7 @@ import {
   renameList,
   saveBoard,
   seedBoard,
+  toggleCard,
 } from "./store";
 import type { BoardState } from "./types";
 
@@ -125,6 +126,30 @@ describe("editCard", () => {
   });
 });
 
+describe("toggleCard", () => {
+  it("marca um cartão sem done como concluído", () => {
+    const next = toggleCard(boardFixture(), "c2");
+    expect(next.lists[0].cards[1].done).toBe(true);
+  });
+
+  it("desmarca um cartão já concluído", () => {
+    const marcado = toggleCard(boardFixture(), "c2");
+    expect(toggleCard(marcado, "c2").lists[0].cards[1].done).toBe(false);
+  });
+
+  it("não altera os outros cartões nem o texto", () => {
+    const next = toggleCard(boardFixture(), "c1");
+    expect(next.lists[0].cards[0].text).toBe("Comprar café");
+    expect(next.lists[0].cards[1].done).toBeUndefined();
+    expect(next.lists[1].cards[0].done).toBeUndefined();
+  });
+
+  it("ignora id inexistente", () => {
+    const next = toggleCard(boardFixture(), "nao-existe");
+    expect(next.lists.flatMap(l => l.cards).every(c => !c.done)).toBe(true);
+  });
+});
+
 describe("removeCard", () => {
   it("remove o cartão da lista onde estiver", () => {
     const next = removeCard(boardFixture(), "c1");
@@ -188,6 +213,28 @@ describe("loadBoard / saveBoard", () => {
 
   it("cai no seed com JSON de formato inesperado", () => {
     const storage = fakeStorage({ "mf-board:v1": '{"lists": "oops"}' });
+    expect(loadBoard(storage).lists).toHaveLength(3);
+  });
+
+  it("preserva o done no round-trip", () => {
+    const storage = fakeStorage();
+    saveBoard(toggleCard(boardFixture(), "c1"), storage);
+    expect(loadBoard(storage).lists[0].cards[0].done).toBe(true);
+  });
+
+  it("aceita cartão antigo sem o campo done", () => {
+    const storage = fakeStorage({
+      "mf-board:v1":
+        '{"lists":[{"id":"l1","title":"A","cards":[{"id":"c","text":"t"}]}]}',
+    });
+    expect(loadBoard(storage).lists).toHaveLength(1);
+  });
+
+  it("cai no seed quando done tem tipo errado", () => {
+    const storage = fakeStorage({
+      "mf-board:v1":
+        '{"lists":[{"id":"l1","title":"A","cards":[{"id":"c","text":"t","done":"sim"}]}]}',
+    });
     expect(loadBoard(storage).lists).toHaveLength(3);
   });
 

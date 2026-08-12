@@ -980,6 +980,64 @@
       transform: translateY(0);
     }
   }
+
+  /* Cabeçalho da coluna: barra própria, um pouco mais opaca que o vidro da
+     lista, para o título descolar dos cartões em vez de flutuar entre eles. */
+  .board-col-head {
+    background: rgba(255, 255, 255, 0.14);
+    box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.16);
+    border-radius: 20px 20px 0 0;
+  }
+
+  /* ---------- Modal do cartão ----------
+     Entrada e saída são keyframes separados (e não uma transição) porque o
+     componente só desmonta depois que a animação de saída termina. */
+  .board-backdrop-in {
+    animation: board-fade-in 0.22s ease-out both;
+  }
+
+  .board-backdrop-out {
+    animation: board-fade-in 0.18s ease-in reverse both;
+  }
+
+  .board-modal-in {
+    animation: board-modal-in 0.32s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .board-modal-out {
+    animation: board-modal-out 0.18s cubic-bezier(0.4, 0, 1, 1) both;
+  }
+
+  @keyframes board-fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes board-modal-in {
+    from {
+      opacity: 0;
+      transform: translateY(16px) scale(0.94);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @keyframes board-modal-out {
+    from {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(8px) scale(0.97);
+    }
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -992,13 +1050,10 @@
     animation: none;
   }
 
-  .diag-skeleton::after,
-  .diag-scan-row::after,
-  .diag-pulse {
-    animation: none;
-  }
-
-  .diag-pop {
+  .board-backdrop-in,
+  .board-modal-in,
+  .board-modal-out,
+  .board-backdrop-out {
     animation-duration: 0.01ms;
   }
 

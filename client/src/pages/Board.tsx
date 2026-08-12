@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { ArrowLeft, Pencil, Plus, Trash2, X } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { ArrowLeft, Check, Pencil, Plus, Trash2, X } from "lucide-react";
 import { Link } from "wouter";
 import { cn } from "@/lib/utils";
 import {
@@ -12,13 +12,179 @@ import {
   removeList,
   renameList,
   saveBoard,
+  toggleCard,
 } from "@/features/board/store";
-import type { BoardList } from "@/features/board/types";
+import { planBoard } from "@/features/board/plan";
+import type { BoardCard, BoardList } from "@/features/board/types";
 
 /** Posição de inserção durante o arrasto, para desenhar a linha-guia. */
 interface DropTarget {
   listId: string;
   index: number;
+}
+
+/** Círculo de check reusado no cartão e no modal. */
+function CheckCircle({
+  done,
+  onToggle,
+  size = "sm",
+}: {
+  done: boolean;
+  onToggle: () => void;
+  size?: "sm" | "lg";
+}) {
+  return (
+    <button
+      onClick={event => {
+        // No cartão o clique abre o modal; aqui ele para no círculo.
+        event.stopPropagation();
+        onToggle();
+      }}
+      role="checkbox"
+      aria-checked={done}
+      aria-label={done ? "Marcar como não concluído" : "Marcar como concluído"}
+      title={done ? "Desmarcar" : "Concluir"}
+      className={cn(
+        "flex shrink-0 items-center justify-center rounded-full border transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60",
+        size === "lg" ? "h-7 w-7" : "mt-px h-[18px] w-[18px]",
+        done
+          ? "border-white bg-white text-[var(--brand-blue-dark)]"
+          : "border-white/45 text-transparent hover:border-white hover:bg-white/15"
+      )}
+    >
+      <Check
+        aria-hidden="true"
+        className={cn(
+          size === "lg" ? "h-4 w-4" : "h-3 w-3",
+          "transition-transform duration-200",
+          done ? "scale-100" : "scale-50"
+        )}
+        strokeWidth={3}
+      />
+    </button>
+  );
+}
+
+/**
+ * Modal de detalhe do cartão. Monta com animação de entrada e só desmonta
+ * depois da animação de saída — por isso o fechamento passa por `requestClose`
+ * em vez de chamar `onClose` direto.
+ */
+function CardModal({
+  card,
+  listTitle,
+  onClose,
+  onChangeText,
+  onToggle,
+  onDelete,
+}: {
+  card: BoardCard;
+  listTitle: string;
+  onClose: () => void;
+  onChangeText: (text: string) => void;
+  onToggle: () => void;
+  onDelete: () => void;
+}) {
+  const [closing, setClosing] = useState(false);
+  const [text, setText] = useState(card.text);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const requestClose = useCallback(() => setClosing(true), []);
+
+  useEffect(() => {
+    panelRef.current?.focus();
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") requestClose();
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [requestClose]);
+
+  // O textarea cresce com o conteúdo em vez de rolar dentro de si.
+  useEffect(() => {
+    const el = textareaRef.current;
+    if (!el) return;
+    el.style.height = "auto";
+    el.style.height = `${el.scrollHeight}px`;
+  }, [text]);
+
+  return (
+    <div
+      onClick={event => {
+        if (event.target === event.currentTarget) requestClose();
+      }}
+      className={cn(
+        "fixed inset-0 z-50 flex items-end justify-center bg-[#00104f]/55 p-3 backdrop-blur-md sm:items-center sm:p-6",
+        closing ? "board-backdrop-out" : "board-backdrop-in"
+      )}
+    >
+      <div
+        ref={panelRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Detalhe do cartão"
+        tabIndex={-1}
+        onAnimationEnd={() => {
+          if (closing) onClose();
+        }}
+        className={cn(
+          "board-glass flex max-h-full w-full max-w-[560px] flex-col overflow-hidden rounded-[24px] text-white outline-none",
+          closing ? "board-modal-out" : "board-modal-in"
+        )}
+      >
+        <header className="flex items-center gap-3 px-5 pb-3 pt-5 sm:px-6">
+          <CheckCircle done={!!card.done} onToggle={onToggle} size="lg" />
+          <div className="min-w-0 flex-1">
+            <p className="mono-label text-[11px] text-white/60">{listTitle}</p>
+            <p className="text-[13px] text-white/75">
+              {card.done ? "Concluído" : "Em aberto"}
+            </p>
+          </div>
+          <button
+            onClick={requestClose}
+            aria-label="Fechar"
+            title="Fechar"
+            className="shrink-0 rounded-full p-2 text-white/60 transition-colors hover:bg-white/15 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        </header>
+
+        <div className="min-h-0 flex-1 overflow-y-auto px-5 pb-2 sm:px-6">
+          <textarea
+            ref={textareaRef}
+            value={text}
+            aria-label="Texto do cartão"
+            onChange={event => {
+              setText(event.target.value);
+              onChangeText(event.target.value);
+            }}
+            className={cn(
+              "w-full resize-none bg-transparent text-[15px] leading-relaxed outline-none",
+              card.done && "text-white/55 line-through"
+            )}
+          />
+        </div>
+
+        <footer className="flex items-center justify-between gap-3 px-5 pb-5 pt-3 sm:px-6">
+          <button
+            onClick={onDelete}
+            className="flex items-center gap-1.5 rounded-full px-3 py-2 text-[13px] text-white/55 transition-colors hover:bg-white/12 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+          >
+            <Trash2 className="h-3.5 w-3.5" />
+            Excluir
+          </button>
+          <button
+            onClick={requestClose}
+            className="mono-label rounded-full bg-white/15 px-5 py-2.5 text-[11px] transition-colors hover:bg-white/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+          >
+            Fechar
+          </button>
+        </footer>
+      </div>
+    </div>
+  );
 }
 
 /**
@@ -79,7 +245,7 @@ export default function Board() {
   const [board, setBoard] = useState(() => loadBoard());
   const [addingListTitle, setAddingListTitle] = useState<string | null>(null);
   const [addingCardIn, setAddingCardIn] = useState<string | null>(null);
-  const [editingCardId, setEditingCardId] = useState<string | null>(null);
+  const [openCardId, setOpenCardId] = useState<string | null>(null);
   const [renamingListId, setRenamingListId] = useState<string | null>(null);
   const [dragCardId, setDragCardId] = useState<string | null>(null);
   const [dropTarget, setDropTarget] = useState<DropTarget | null>(null);
@@ -100,6 +266,12 @@ export default function Board() {
     (sum, list) => sum + list.cards.length,
     0
   );
+
+  /** Lista que contém o cartão aberto — o modal precisa do título dela. */
+  const openList = openCardId
+    ? board.lists.find(list => list.cards.some(card => card.id === openCardId))
+    : undefined;
+  const openCard = openList?.cards.find(card => card.id === openCardId);
 
   const endDrag = () => {
     setDragCardId(null);
@@ -169,6 +341,29 @@ export default function Board() {
         </p>
       </header>
 
+      {/* Board vazio é a única hora em que carregar o plano não apaga nada, então
+          o convite só existe aqui — e ocupa a largura toda, porque no canto do
+          cabeçalho ninguém enxergava. Depois do primeiro cartão, some. */}
+      {totalCards === 0 && (
+        <div className="board-glass relative z-10 mx-4 mt-2 flex flex-col gap-4 rounded-[20px] px-5 py-4 sm:mx-8 sm:flex-row sm:items-center sm:justify-between">
+          <div className="min-w-0">
+            <p className="text-[15px] font-semibold leading-snug">
+              Seu plano comercial está pronto para carregar
+            </p>
+            <p className="mt-1 text-[13px] leading-snug text-white/70">
+              39 cartões em 5 etapas — do que fazer esta semana às decisões
+              pendentes. Depois de carregar, é tudo editável e arrastável.
+            </p>
+          </div>
+          <button
+            onClick={() => setBoard(planBoard())}
+            className="board-glass mono-label shrink-0 self-start rounded-full px-5 py-2.5 text-[11px] text-white transition-colors hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 sm:self-auto"
+          >
+            Carregar plano
+          </button>
+        </div>
+      )}
+
       {/* Colunas */}
       <main className="relative z-10 flex flex-1 snap-x snap-mandatory items-start gap-4 overflow-x-auto px-4 pb-6 pt-4 sm:snap-none sm:px-8">
         {board.lists.map((list, listIndex) => (
@@ -192,7 +387,7 @@ export default function Board() {
                 "shadow-[inset_0_0_0_2px_rgba(255,255,255,0.55)]"
             )}
           >
-            <header className="group flex items-center gap-2 px-4 pb-2 pt-4">
+            <header className="board-col-head group mb-1 flex items-center gap-2 px-4 pb-3 pt-4">
               {renamingListId === list.id ? (
                 <input
                   autoFocus
@@ -217,7 +412,7 @@ export default function Board() {
                     title="Renomear lista"
                     className="flex min-w-0 items-center gap-1.5 rounded-lg text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
                   >
-                    <span className="truncate text-[15px] font-semibold">
+                    <span className="truncate text-[16px] font-semibold tracking-[-0.01em] text-white">
                       {list.title}
                     </span>
                     <Pencil
@@ -225,8 +420,11 @@ export default function Board() {
                       className="h-3 w-3 shrink-0 text-white/0 transition-colors group-hover:text-white/50"
                     />
                   </button>
-                  <span className="mono-label ml-auto shrink-0 text-[11px] text-white/55">
-                    {list.cards.length}
+                  {/* Com algum cartão concluído o contador vira progresso. */}
+                  <span className="mono-label ml-auto shrink-0 text-[11px] text-white/70">
+                    {list.cards.some(card => card.done)
+                      ? `${list.cards.filter(card => card.done).length}/${list.cards.length}`
+                      : list.cards.length}
                   </span>
                   <button
                     onClick={() => handleRemoveList(list)}
@@ -246,62 +444,60 @@ export default function Board() {
                   {dropLine(list.id, cardIndex) && (
                     <div className="mb-2 h-0.5 rounded-full bg-white/70" />
                   )}
-                  {editingCardId === card.id ? (
-                    <CardTextarea
-                      initial={card.text}
-                      placeholder="Texto do cartão"
-                      onCommit={text => {
-                        setBoard(prev => editCard(prev, card.id, text));
-                        setEditingCardId(null);
-                      }}
-                      onCancel={() => setEditingCardId(null)}
-                    />
-                  ) : (
-                    <div
-                      draggable
-                      onDragStart={event => {
-                        event.dataTransfer.setData("text/plain", card.id);
-                        event.dataTransfer.effectAllowed = "move";
-                        setDragCardId(card.id);
-                      }}
-                      onDragEnd={endDrag}
-                      onDragOver={event => {
-                        event.preventDefault();
-                        event.stopPropagation();
-                        event.dataTransfer.dropEffect = "move";
-                        updateDropTarget(list.id, cardIndex);
-                      }}
-                      onDrop={event => {
-                        event.preventDefault();
-                        event.stopPropagation();
-                        handleDrop();
-                      }}
-                      className={cn(
-                        "board-card group/card cursor-grab rounded-xl p-3 transition-opacity active:cursor-grabbing",
-                        dragCardId === card.id && "opacity-35"
-                      )}
-                    >
-                      <div className="flex items-start gap-2">
-                        <button
-                          onClick={() => setEditingCardId(card.id)}
-                          title="Editar cartão"
-                          className="min-w-0 flex-1 whitespace-pre-wrap break-words text-left text-[14px] leading-snug focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
-                        >
-                          {card.text}
-                        </button>
-                        <button
-                          onClick={() =>
-                            setBoard(prev => removeCard(prev, card.id))
-                          }
-                          aria-label="Excluir cartão"
-                          title="Excluir cartão"
-                          className="shrink-0 rounded-md p-0.5 text-white/0 transition-colors hover:!text-white focus-visible:text-white/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 group-hover/card:text-white/45"
-                        >
-                          <X className="h-3.5 w-3.5" />
-                        </button>
-                      </div>
+                  <div
+                    draggable
+                    onDragStart={event => {
+                      event.dataTransfer.setData("text/plain", card.id);
+                      event.dataTransfer.effectAllowed = "move";
+                      setDragCardId(card.id);
+                    }}
+                    onDragEnd={endDrag}
+                    onDragOver={event => {
+                      event.preventDefault();
+                      event.stopPropagation();
+                      event.dataTransfer.dropEffect = "move";
+                      updateDropTarget(list.id, cardIndex);
+                    }}
+                    onDrop={event => {
+                      event.preventDefault();
+                      event.stopPropagation();
+                      handleDrop();
+                    }}
+                    className={cn(
+                      "board-card group/card cursor-grab rounded-xl p-3 transition-opacity active:cursor-grabbing",
+                      dragCardId === card.id && "opacity-35",
+                      card.done && "opacity-60"
+                    )}
+                  >
+                    <div className="flex items-start gap-2.5">
+                      <CheckCircle
+                        done={!!card.done}
+                        onToggle={() =>
+                          setBoard(prev => toggleCard(prev, card.id))
+                        }
+                      />
+                      <button
+                        onClick={() => setOpenCardId(card.id)}
+                        title="Abrir cartão"
+                        className={cn(
+                          "min-w-0 flex-1 whitespace-pre-wrap break-words text-left text-[14px] leading-snug focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60",
+                          card.done && "text-white/60 line-through"
+                        )}
+                      >
+                        {card.text}
+                      </button>
+                      <button
+                        onClick={() =>
+                          setBoard(prev => removeCard(prev, card.id))
+                        }
+                        aria-label="Excluir cartão"
+                        title="Excluir cartão"
+                        className="shrink-0 rounded-md p-0.5 text-white/0 transition-colors hover:!text-white focus-visible:text-white/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 group-hover/card:text-white/45"
+                      >
+                        <X className="h-3.5 w-3.5" />
+                      </button>
                     </div>
-                  )}
+                  </div>
                 </div>
               ))}
               {dropLine(list.id, list.cards.length) && (
@@ -366,6 +562,23 @@ export default function Board() {
           )}
         </div>
       </main>
+
+      {openCard && openList && (
+        <CardModal
+          key={openCard.id}
+          card={openCard}
+          listTitle={openList.title}
+          onClose={() => setOpenCardId(null)}
+          onChangeText={text =>
+            setBoard(prev => editCard(prev, openCard.id, text))
+          }
+          onToggle={() => setBoard(prev => toggleCard(prev, openCard.id))}
+          onDelete={() => {
+            setBoard(prev => removeCard(prev, openCard.id));
+            setOpenCardId(null);
+          }}
+        />
+      )}
     </div>
   );
 }
