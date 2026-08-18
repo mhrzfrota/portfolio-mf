@@ -36,23 +36,20 @@ function formatDate(value: string, lang: Lang) {
   }).format(parsed);
 }
 
-/** Parte fixa dos combos (ícone, preço, link); textos vêm do dicionário i18n. */
+/** Parte fixa dos combos (ícone, link); textos vêm do dicionário i18n. */
 const comboMeta = [
   {
     icon: Rocket,
-    price: "R$ 500",
     href: `${WHATSAPP_BASE}Ol%C3%A1!%20Quero%20come%C3%A7ar%20pela%20Presen%C3%A7a%20Digital.`,
     featured: false,
   },
   {
     icon: BarChart3,
-    price: null,
     href: `${WHATSAPP_BASE}Ol%C3%A1!%20Quero%20come%C3%A7ar%20por%20Opera%C3%A7%C3%A3o%20%26%20Dados.`,
     featured: true,
   },
   {
     icon: Layers,
-    price: null,
     href: `${WHATSAPP_BASE}Ol%C3%A1!%20Quero%20come%C3%A7ar%20pelo%20Produto%20Completo.`,
     featured: false,
   },
@@ -168,28 +165,15 @@ export default function Home() {
                   {combo.tagline}
                 </p>
 
-                {combo.price && (
-                  <div className="mt-6 flex items-baseline gap-1.5">
-                    <span
-                      className={cn(
-                        "mono-label text-[11px]",
-                        combo.featured
-                          ? "text-white/70"
-                          : "text-muted-foreground"
-                      )}
-                    >
-                      {t.combos.from}
-                    </span>
-                    <span
-                      className={cn(
-                        "text-[30px] font-medium tracking-[-0.06em]",
-                        combo.featured ? "text-white" : "text-foreground"
-                      )}
-                    >
-                      {combo.price}
-                    </span>
-                  </div>
-                )}
+                {/* Sem preço de propósito: a âncora é a conversa, não o valor. */}
+                <p
+                  className={cn(
+                    "mt-6 text-[14px] leading-snug",
+                    combo.featured ? "text-white/80" : "text-muted-foreground"
+                  )}
+                >
+                  {t.combos.quote}
+                </p>
 
                 <div
                   className={cn(

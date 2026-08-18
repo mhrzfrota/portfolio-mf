@@ -14,7 +14,6 @@ import {
   saveBoard,
   toggleCard,
 } from "@/features/board/store";
-import { planBoard } from "@/features/board/plan";
 import type { BoardCard, BoardList } from "@/features/board/types";
 
 /** Posição de inserção durante o arrasto, para desenhar a linha-guia. */
@@ -340,29 +339,6 @@ export default function Board() {
           {totalCards} {totalCards === 1 ? "cartão" : "cartões"}
         </p>
       </header>
-
-      {/* Board vazio é a única hora em que carregar o plano não apaga nada, então
-          o convite só existe aqui — e ocupa a largura toda, porque no canto do
-          cabeçalho ninguém enxergava. Depois do primeiro cartão, some. */}
-      {totalCards === 0 && (
-        <div className="board-glass relative z-10 mx-4 mt-2 flex flex-col gap-4 rounded-[20px] px-5 py-4 sm:mx-8 sm:flex-row sm:items-center sm:justify-between">
-          <div className="min-w-0">
-            <p className="text-[15px] font-semibold leading-snug">
-              Seu plano comercial está pronto para carregar
-            </p>
-            <p className="mt-1 text-[13px] leading-snug text-white/70">
-              39 cartões em 5 etapas — do que fazer esta semana às decisões
-              pendentes. Depois de carregar, é tudo editável e arrastável.
-            </p>
-          </div>
-          <button
-            onClick={() => setBoard(planBoard())}
-            className="board-glass mono-label shrink-0 self-start rounded-full px-5 py-2.5 text-[11px] text-white transition-colors hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 sm:self-auto"
-          >
-            Carregar plano
-          </button>
-        </div>
-      )}
 
       {/* Colunas */}
       <main className="relative z-10 flex flex-1 snap-x snap-mandatory items-start gap-4 overflow-x-auto px-4 pb-6 pt-4 sm:snap-none sm:px-8">

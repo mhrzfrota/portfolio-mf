@@ -101,7 +101,7 @@ const strings = {
       subtitle:
         "Cada empresa está num momento diferente. Escolha o seu — ou me conte o problema, e eu desenho o caminho sob medida.",
       mostChosen: "Mais escolhido",
-      from: "a partir de",
+      quote: "Investimento sob medida — me chame e eu analiso o seu caso",
       cta: "Começar por aqui",
       items: [
         {
@@ -312,7 +312,7 @@ const strings = {
       subtitle:
         "Every company is at a different moment. Pick yours — or tell me the problem and I'll design a custom path.",
       mostChosen: "Most popular",
-      from: "from",
+      quote: "Custom pricing — reach out and I'll assess your case",
       cta: "Start here",
       items: [
         {
