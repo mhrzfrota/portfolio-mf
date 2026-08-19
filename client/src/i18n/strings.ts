@@ -45,6 +45,7 @@ const strings = {
       formPlaceholder: "Escreva sua mensagem…",
       formSubmit: "Enviar",
       boardLink: "Board interno",
+      habitsLink: "Hábitos",
     },
     hero: {
       headline: "Desenvolvedor",
@@ -256,6 +257,7 @@ const strings = {
       formPlaceholder: "Write your message…",
       formSubmit: "Send",
       boardLink: "Internal board",
+      habitsLink: "Habits",
     },
     hero: {
       headline: "Developer",

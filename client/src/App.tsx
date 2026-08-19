@@ -8,12 +8,14 @@ import Home from "./pages/Home";
 import ProjectDetail from "./pages/ProjectDetail";
 import BlogPost from "./pages/BlogPost";
 import Board from "./pages/Board";
+import Habits from "./pages/Habits";
 
 function Router() {
   return (
     <Switch>
       {/* Ferramenta interna, tela cheia: fica fora do Layout do site. */}
       <Route path="/board" component={Board} />
+      <Route path="/habitos" component={Habits} />
       <Route>
         <Layout>
           <Switch>

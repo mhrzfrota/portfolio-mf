@@ -465,6 +465,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               >
                 {t.footer.boardLink}
               </a>
+              <a
+                href="/habitos"
+                className="text-[12px] text-white/45 transition-colors hover:text-white/80"
+              >
+                {t.footer.habitsLink}
+              </a>
               <span className="mono-label flex items-center gap-1.5 text-[11px] text-white/60">
                 <Clock size={13} />
                 <FortalezaTime suffix={t.topbar.timeSuffix} />
