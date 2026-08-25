@@ -1,6 +1,8 @@
 import NotFound from "@/pages/NotFound";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
+import ProtectedRoute from "./components/ProtectedRoute";
+import { AuthProvider } from "./contexts/AuthContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import Layout from "./components/Layout";
@@ -9,13 +11,23 @@ import ProjectDetail from "./pages/ProjectDetail";
 import BlogPost from "./pages/BlogPost";
 import Board from "./pages/Board";
 import Habits from "./pages/Habits";
+import Login from "./pages/Login";
 
 function Router() {
   return (
     <Switch>
       {/* Ferramenta interna, tela cheia: fica fora do Layout do site. */}
-      <Route path="/board" component={Board} />
-      <Route path="/habitos" component={Habits} />
+      <Route path="/acesso" component={Login} />
+      <Route path="/board">
+        <ProtectedRoute returnTo="/board">
+          <Board />
+        </ProtectedRoute>
+      </Route>
+      <Route path="/habitos">
+        <ProtectedRoute returnTo="/habitos">
+          <Habits />
+        </ProtectedRoute>
+      </Route>
       <Route>
         <Layout>
           <Switch>
@@ -34,9 +46,11 @@ function App() {
   return (
     <ErrorBoundary>
       <ThemeProvider defaultTheme="light" switchable>
-        <LanguageProvider>
-          <Router />
-        </LanguageProvider>
+        <AuthProvider>
+          <LanguageProvider>
+            <Router />
+          </LanguageProvider>
+        </AuthProvider>
       </ThemeProvider>
     </ErrorBoundary>
   );

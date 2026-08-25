@@ -49,6 +49,28 @@ Este site foi desenvolvido para reunir projetos reais e demonstrar experiência 
 - Node.js 20 ou superior;
 - pnpm 10 ou superior.
 
+### Configurar o acesso interno com Supabase
+
+As rotas `/board` e `/habitos` exigem uma sessão válida do Supabase. Não é
+necessário criar tabelas para o login: os usuários ficam em `auth.users` e os
+dados das duas ferramentas continuam no `localStorage` do navegador.
+
+1. No Supabase, abra **Connect** e copie a Project URL e a Publishable key.
+2. Copie `.env.example` para `.env.local` e preencha:
+
+```env
+VITE_SUPABASE_URL=https://seu-projeto.supabase.co
+VITE_SUPABASE_PUBLISHABLE_KEY=sua-chave-publicavel
+```
+
+3. Em **Authentication > Users**, crie o usuário que poderá acessar a área
+   interna. A aplicação oferece apenas login, sem cadastro público.
+4. Reinicie o servidor depois de alterar as variáveis. No deploy, cadastre as
+   mesmas duas variáveis no painel da hospedagem e gere um novo build.
+
+Projetos antigos também podem usar `VITE_SUPABASE_ANON_KEY` no lugar da
+Publishable key. Nunca coloque a `service_role` no frontend.
+
 ```bash
 # Clone o repositório
 git clone https://github.com/mhrzfrota/portfolio-mf.git

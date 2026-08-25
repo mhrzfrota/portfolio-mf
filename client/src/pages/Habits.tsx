@@ -11,6 +11,7 @@ import {
   Trash2,
 } from "lucide-react";
 import { Link } from "wouter";
+import InternalAccount from "@/components/InternalAccount";
 import { cn } from "@/lib/utils";
 import {
   activeOn,
@@ -452,13 +453,16 @@ export default function Habits() {
             </h1>
           </div>
         </div>
-        <Link
-          href="/board"
-          className="habit-glass mono-label flex items-center gap-2 rounded-full px-4 py-2.5 text-[10px] text-white/80 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
-        >
-          <LayoutGrid className="h-3.5 w-3.5" />
-          Board
-        </Link>
+        <div className="flex items-center gap-2">
+          <Link
+            href="/board"
+            className="habit-glass mono-label flex items-center gap-2 rounded-full px-4 py-2.5 text-[10px] text-white/80 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
+          >
+            <LayoutGrid className="h-3.5 w-3.5" />
+            Board
+          </Link>
+          <InternalAccount surface="habits" />
+        </div>
       </header>
 
       {/* Abas */}

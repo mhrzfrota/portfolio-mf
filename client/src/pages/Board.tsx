@@ -9,6 +9,7 @@ import {
   X,
 } from "lucide-react";
 import { Link } from "wouter";
+import InternalAccount from "@/components/InternalAccount";
 import { cn } from "@/lib/utils";
 import {
   addCard,
@@ -328,7 +329,7 @@ export default function Board() {
 
       {/* Topo */}
       <header className="relative z-10 flex items-center justify-between gap-4 px-4 pb-2 pt-4 sm:px-8 sm:pt-6">
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 sm:gap-4">
           <Link
             href="/"
             className="board-glass flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-white/85 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
@@ -354,6 +355,7 @@ export default function Board() {
             <CircleCheckBig className="h-3.5 w-3.5" />
             Hábitos
           </Link>
+          <InternalAccount />
         </div>
       </header>
 
