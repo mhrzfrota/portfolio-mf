@@ -3,12 +3,11 @@ import {
   addCard,
   addList,
   editCard,
-  loadBoard,
+  loadLegacyBoard,
   moveCard,
   removeCard,
   removeList,
   renameList,
-  saveBoard,
   seedBoard,
   toggleCard,
 } from "./store";
@@ -186,40 +185,29 @@ describe("moveCard", () => {
   });
 });
 
-describe("loadBoard / saveBoard", () => {
-  it("faz round-trip pelo storage", () => {
-    const storage = fakeStorage();
-    const state = addCard(seedBoard(), seedBoard().lists[0].id, "x");
-    saveBoard(state, storage);
-    const loaded = loadBoard(storage);
-    expect(loaded.lists.map(l => l.title)).toEqual(
-      state.lists.map(l => l.title)
-    );
+describe("loadLegacyBoard", () => {
+  it("lê o board único salvo no formato antigo", () => {
+    const storage = fakeStorage({
+      "mf-board:v1": JSON.stringify(toggleCard(boardFixture(), "c1")),
+    });
+    const loaded = loadLegacyBoard(storage);
+    expect(loaded?.lists.map(l => l.title)).toEqual(["A fazer", "Feito"]);
+    expect(loaded?.lists[0].cards[0].done).toBe(true);
   });
 
-  it("cai no seed quando não há nada salvo", () => {
-    const loaded = loadBoard(fakeStorage());
-    expect(loaded.lists.map(l => l.title)).toEqual([
-      "A fazer",
-      "Fazendo",
-      "Feito",
-    ]);
+  it("devolve null quando não há nada salvo", () => {
+    expect(loadLegacyBoard(fakeStorage())).toBeNull();
   });
 
-  it("cai no seed com JSON inválido", () => {
-    const storage = fakeStorage({ "mf-board:v1": "{quebrado" });
-    expect(loadBoard(storage).lists).toHaveLength(3);
+  it("devolve null com JSON inválido", () => {
+    expect(
+      loadLegacyBoard(fakeStorage({ "mf-board:v1": "{quebrado" }))
+    ).toBeNull();
   });
 
-  it("cai no seed com JSON de formato inesperado", () => {
+  it("devolve null com JSON de formato inesperado", () => {
     const storage = fakeStorage({ "mf-board:v1": '{"lists": "oops"}' });
-    expect(loadBoard(storage).lists).toHaveLength(3);
-  });
-
-  it("preserva o done no round-trip", () => {
-    const storage = fakeStorage();
-    saveBoard(toggleCard(boardFixture(), "c1"), storage);
-    expect(loadBoard(storage).lists[0].cards[0].done).toBe(true);
+    expect(loadLegacyBoard(storage)).toBeNull();
   });
 
   it("aceita cartão antigo sem o campo done", () => {
@@ -227,18 +215,18 @@ describe("loadBoard / saveBoard", () => {
       "mf-board:v1":
         '{"lists":[{"id":"l1","title":"A","cards":[{"id":"c","text":"t"}]}]}',
     });
-    expect(loadBoard(storage).lists).toHaveLength(1);
+    expect(loadLegacyBoard(storage)?.lists).toHaveLength(1);
   });
 
-  it("cai no seed quando done tem tipo errado", () => {
+  it("devolve null quando done tem tipo errado", () => {
     const storage = fakeStorage({
       "mf-board:v1":
         '{"lists":[{"id":"l1","title":"A","cards":[{"id":"c","text":"t","done":"sim"}]}]}',
     });
-    expect(loadBoard(storage).lists).toHaveLength(3);
+    expect(loadLegacyBoard(storage)).toBeNull();
   });
 
-  it("cai no seed quando o storage lança (indisponível)", () => {
+  it("devolve null quando o storage lança (indisponível)", () => {
     const storage = {
       getItem: () => {
         throw new Error("bloqueado");
@@ -247,7 +235,6 @@ describe("loadBoard / saveBoard", () => {
         throw new Error("bloqueado");
       },
     };
-    expect(loadBoard(storage).lists).toHaveLength(3);
-    expect(() => saveBoard(seedBoard(), storage)).not.toThrow();
+    expect(loadLegacyBoard(storage)).toBeNull();
   });
 });

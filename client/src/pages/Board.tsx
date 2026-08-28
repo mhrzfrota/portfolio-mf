@@ -15,15 +15,29 @@ import {
   addCard,
   addList,
   editCard,
-  loadBoard,
   moveCard,
   removeCard,
   removeList,
   renameList,
-  saveBoard,
   toggleCard,
 } from "@/features/board/store";
-import type { BoardCard, BoardList } from "@/features/board/types";
+import {
+  activeWorkspace,
+  addWorkspace,
+  loadWorkspaces,
+  mapActive,
+  removeWorkspace,
+  renameWorkspace,
+  saveWorkspaces,
+  selectWorkspace,
+} from "@/features/board/workspaces";
+import { planBoard } from "@/features/board/plan";
+import type {
+  BoardCard,
+  BoardList,
+  BoardState,
+  BoardWorkspace,
+} from "@/features/board/types";
 
 /** Posição de inserção durante o arrasto, para desenhar a linha-guia. */
 interface DropTarget {
@@ -249,8 +263,133 @@ function CardTextarea({
   );
 }
 
+/**
+ * Barra de workspaces: cada pílula é um board inteiro e independente. O ativo é
+ * o único que ganha lápis e lixeira — renomear ou apagar sempre se refere ao
+ * board que está na tela, então não há como errar de alvo com um clique.
+ */
+function WorkspaceTabs({
+  workspaces,
+  activeId,
+  onSelect,
+  onRename,
+  onRemove,
+  onCreate,
+}: {
+  workspaces: BoardWorkspace[];
+  activeId: string;
+  onSelect: (id: string) => void;
+  onRename: (id: string, name: string) => void;
+  onRemove: (workspace: BoardWorkspace) => void;
+  onCreate: (name: string) => void;
+}) {
+  const [renamingId, setRenamingId] = useState<string | null>(null);
+  const [newName, setNewName] = useState<string | null>(null);
+
+  return (
+    <nav
+      aria-label="Workspaces"
+      className="relative z-10 flex shrink-0 items-center gap-2 overflow-x-auto px-4 pb-1 pt-1 sm:px-8"
+    >
+      {workspaces.map(workspace => {
+        const active = workspace.id === activeId;
+
+        if (active && renamingId === workspace.id) {
+          return (
+            <input
+              key={workspace.id}
+              autoFocus
+              defaultValue={workspace.name}
+              aria-label="Renomear workspace"
+              size={Math.max(workspace.name.length, 8)}
+              onBlur={event => {
+                onRename(workspace.id, event.target.value);
+                setRenamingId(null);
+              }}
+              onKeyDown={event => {
+                if (event.key === "Enter") event.currentTarget.blur();
+                if (event.key === "Escape") setRenamingId(null);
+              }}
+              className="shrink-0 rounded-full bg-white px-4 py-2 text-[13px] font-medium text-[var(--brand-blue-dark)] outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+            />
+          );
+        }
+
+        return (
+          <div
+            key={workspace.id}
+            className={cn(
+              "group flex shrink-0 items-center gap-1.5 rounded-full py-2 pl-4 transition-colors",
+              active
+                ? "bg-white pr-2 text-[var(--brand-blue-dark)]"
+                : "board-glass pr-4 text-white/75 hover:text-white"
+            )}
+          >
+            <button
+              onClick={() =>
+                active ? setRenamingId(workspace.id) : onSelect(workspace.id)
+              }
+              title={active ? "Renomear workspace" : `Abrir ${workspace.name}`}
+              aria-current={active ? "page" : undefined}
+              className="max-w-[42vw] truncate text-[13px] font-medium leading-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 sm:max-w-[220px]"
+            >
+              {workspace.name}
+            </button>
+            {active && (
+              <>
+                <Pencil
+                  aria-hidden="true"
+                  className="h-3 w-3 shrink-0 text-current opacity-0 transition-opacity group-hover:opacity-45"
+                />
+                {workspaces.length > 1 && (
+                  <button
+                    onClick={() => onRemove(workspace)}
+                    aria-label={`Excluir workspace ${workspace.name}`}
+                    title="Excluir workspace"
+                    className="shrink-0 rounded-full p-1 text-current opacity-35 transition-opacity hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+                  >
+                    <Trash2 className="h-3.5 w-3.5" />
+                  </button>
+                )}
+              </>
+            )}
+          </div>
+        );
+      })}
+
+      {newName !== null ? (
+        <input
+          autoFocus
+          value={newName}
+          placeholder="Nome do workspace"
+          aria-label="Nome do novo workspace"
+          onChange={event => setNewName(event.target.value)}
+          onBlur={() => {
+            onCreate(newName);
+            setNewName(null);
+          }}
+          onKeyDown={event => {
+            if (event.key === "Enter") event.currentTarget.blur();
+            if (event.key === "Escape") setNewName(null);
+          }}
+          className="board-glass w-44 shrink-0 rounded-full px-4 py-2 text-[13px] text-white outline-none placeholder:text-white/45 focus-visible:ring-2 focus-visible:ring-white/60"
+        />
+      ) : (
+        <button
+          onClick={() => setNewName("")}
+          aria-label="Novo workspace"
+          title="Novo workspace"
+          className="board-glass flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-white/70 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+        >
+          <Plus className="h-4 w-4" />
+        </button>
+      )}
+    </nav>
+  );
+}
+
 export default function Board() {
-  const [board, setBoard] = useState(() => loadBoard());
+  const [state, setState] = useState(() => loadWorkspaces());
   const [addingListTitle, setAddingListTitle] = useState<string | null>(null);
   const [addingCardIn, setAddingCardIn] = useState<string | null>(null);
   const [openCardId, setOpenCardId] = useState<string | null>(null);
@@ -258,9 +397,19 @@ export default function Board() {
   const [dragCardId, setDragCardId] = useState<string | null>(null);
   const [dropTarget, setDropTarget] = useState<DropTarget | null>(null);
 
+  const workspace = activeWorkspace(state);
+  const board: BoardState = workspace;
+
+  /** As operações de board seguem escrevendo em um board só: o ativo. */
+  const setBoard = useCallback(
+    (update: (prev: BoardState) => BoardState) =>
+      setState(prev => mapActive(prev, update)),
+    []
+  );
+
   useEffect(() => {
-    saveBoard(board);
-  }, [board]);
+    saveWorkspaces(state);
+  }, [state]);
 
   useEffect(() => {
     const previous = document.title;
@@ -311,6 +460,29 @@ export default function Board() {
     if (ok) setBoard(prev => removeList(prev, list.id));
   };
 
+  /** Trocar de board fecha o que estava aberto no anterior. */
+  const handleSelectWorkspace = (id: string) => {
+    setOpenCardId(null);
+    setAddingCardIn(null);
+    setAddingListTitle(null);
+    setRenamingListId(null);
+    endDrag();
+    setState(prev => selectWorkspace(prev, id));
+  };
+
+  const handleRemoveWorkspace = (workspace: BoardWorkspace) => {
+    const cards = workspace.lists.reduce(
+      (sum, list) => sum + list.cards.length,
+      0
+    );
+    const ok =
+      cards === 0 ||
+      window.confirm(
+        `Excluir o workspace "${workspace.name}" e seus ${cards} cartões?`
+      );
+    if (ok) setState(prev => removeWorkspace(prev, workspace.id));
+  };
+
   /** Linha-guia que mostra onde o cartão vai cair. */
   const dropLine = (listId: string, index: number) =>
     dragCardId && dropTarget?.listId === listId && dropTarget.index === index;
@@ -358,6 +530,40 @@ export default function Board() {
           <InternalAccount />
         </div>
       </header>
+
+      <WorkspaceTabs
+        workspaces={state.workspaces}
+        activeId={workspace.id}
+        onSelect={handleSelectWorkspace}
+        onRename={(id, name) =>
+          setState(prev => renameWorkspace(prev, id, name))
+        }
+        onRemove={handleRemoveWorkspace}
+        onCreate={name => setState(prev => addWorkspace(prev, name))}
+      />
+
+      {/* Board vazio é a única hora em que carregar o plano não apaga nada, então
+          o convite só existe aqui — e ocupa a largura toda, porque no canto do
+          cabeçalho ninguém enxergava. Depois do primeiro cartão, some. */}
+      {totalCards === 0 && (
+        <div className="board-glass relative z-10 mx-4 mt-2 flex flex-col gap-4 rounded-[20px] px-5 py-4 sm:mx-8 sm:flex-row sm:items-center sm:justify-between">
+          <div className="min-w-0">
+            <p className="text-[15px] font-semibold leading-snug">
+              Carregar o plano de marketing neste workspace
+            </p>
+            <p className="mt-1 text-[13px] leading-snug text-white/70">
+              39 cartões em 5 etapas — do que fazer esta semana às decisões
+              pendentes. Depois de carregar, é tudo editável e arrastável.
+            </p>
+          </div>
+          <button
+            onClick={() => setBoard(() => planBoard())}
+            className="board-glass mono-label shrink-0 self-start rounded-full px-5 py-2.5 text-[11px] text-white transition-colors hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 sm:self-auto"
+          >
+            Carregar plano
+          </button>
+        </div>
+      )}
 
       {/* Colunas */}
       <main className="relative z-10 flex flex-1 snap-x snap-mandatory items-start gap-4 overflow-x-auto px-4 pb-6 pt-4 sm:snap-none sm:px-8">

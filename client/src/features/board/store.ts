@@ -3,9 +3,10 @@ import type { BoardCard, BoardList, BoardState } from "./types";
 /** Subconjunto de Storage que o board usa; injetável para testes. */
 export type BoardStorage = Pick<Storage, "getItem" | "setItem">;
 
-const STORAGE_KEY = "mf-board:v1";
+/** Formato antigo, de board único: só é lido, uma vez, para migrar. */
+export const LEGACY_STORAGE_KEY = "mf-board:v1";
 
-function newId(): string {
+export function newId(): string {
   if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
     return crypto.randomUUID();
   }
@@ -126,11 +127,9 @@ export function moveCard(
   };
 }
 
-function isBoardState(value: unknown): value is BoardState {
-  if (typeof value !== "object" || value === null) return false;
-  const lists = (value as { lists?: unknown }).lists;
-  if (!Array.isArray(lists)) return false;
-  return lists.every(list => {
+export function isBoardLists(value: unknown): value is BoardList[] {
+  if (!Array.isArray(value)) return false;
+  return value.every(list => {
     if (typeof list !== "object" || list === null) return false;
     const { id, title, cards } = list as Partial<BoardList>;
     if (typeof id !== "string" || typeof title !== "string") return false;
@@ -146,31 +145,25 @@ function isBoardState(value: unknown): value is BoardState {
   });
 }
 
-function defaultStorage(): BoardStorage | null {
+export function defaultStorage(): BoardStorage | null {
   if (typeof window === "undefined") return null;
   return window.localStorage;
 }
 
-export function loadBoard(
+/**
+ * Lê o board único salvo antes dos workspaces. Devolve null quando não há nada
+ * salvo ou o conteúdo não bate com o formato — quem chama decide o que semear.
+ */
+export function loadLegacyBoard(
   storage: BoardStorage | null = defaultStorage()
-): BoardState {
+): BoardState | null {
   try {
-    const raw = storage?.getItem(STORAGE_KEY);
-    if (!raw) return seedBoard();
+    const raw = storage?.getItem(LEGACY_STORAGE_KEY);
+    if (!raw) return null;
     const parsed: unknown = JSON.parse(raw);
-    return isBoardState(parsed) ? parsed : seedBoard();
+    const lists = (parsed as { lists?: unknown } | null)?.lists;
+    return isBoardLists(lists) ? { lists } : null;
   } catch {
-    return seedBoard();
-  }
-}
-
-export function saveBoard(
-  state: BoardState,
-  storage: BoardStorage | null = defaultStorage()
-): void {
-  try {
-    storage?.setItem(STORAGE_KEY, JSON.stringify(state));
-  } catch {
-    // storage cheio ou bloqueado: o board segue funcionando só em memória
+    return null;
   }
 }

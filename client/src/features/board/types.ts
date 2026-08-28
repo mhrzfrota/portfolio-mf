@@ -14,3 +14,15 @@ export interface BoardList {
 export interface BoardState {
   lists: BoardList[];
 }
+
+/** Um board completo com nome próprio — o board tem vários, um de cada vez na tela. */
+export interface BoardWorkspace {
+  id: string;
+  name: string;
+  lists: BoardList[];
+}
+
+export interface WorkspacesState {
+  workspaces: BoardWorkspace[];
+  activeId: string;
+}
