@@ -39,7 +39,8 @@ const postsPt: Post[] = [
   {
     id: 4,
     slug: "orquestracao-agentes-ia",
-    title: "Meu ambiente de desenvolvimento com múltiplos agentes de IA",
+    title:
+      "Agentes em terminais e contexto no Obsidian: meu fluxo para economizar tokens",
     excerpt:
       "Como organizei projetos, terminais, Claude Code, Codex e uma base de conhecimento no Obsidian dentro de um único ambiente de trabalho.",
     date: "2026-08-28",
@@ -807,7 +808,8 @@ const postsEn: Post[] = [
   {
     id: 4,
     slug: "orquestracao-agentes-ia",
-    title: "My development environment with multiple AI agents",
+    title:
+      "Agents in terminals and context in Obsidian: my workflow for using fewer tokens",
     excerpt:
       "How I organised projects, terminals, Claude Code, Codex and an Obsidian knowledge base inside a single workspace.",
     date: "2026-08-28",

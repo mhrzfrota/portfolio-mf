@@ -1,12 +1,23 @@
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import type { RouteComponentProps } from "wouter";
 import { Link } from "wouter";
-import { ArrowLeft, ArrowRight, Calendar, Clock } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Calendar,
+  ChevronDown,
+  Clock,
+} from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import RollButton from "@/components/RollButton";
 import { WHATSAPP_BUDGET_URL } from "@/const";
-import { getPostBySlug, getPosts, type PostContentBlock } from "@/data/posts";
+import {
+  getPostBySlug,
+  getPosts,
+  type PostContentBlock,
+  type PostSection,
+} from "@/data/posts";
 import {
   OrchestrationVisual,
   VaultVisual,
@@ -179,6 +190,63 @@ function PostBlock({ block }: { block: PostContentBlock }) {
   }
 }
 
+function CollapsiblePostSection({ section }: { section: PostSection }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const contentId = useId();
+  const triggerId = useId();
+
+  return (
+    <section
+      className={`overflow-hidden rounded-2xl border transition-colors duration-300 ${
+        isOpen ? "border-primary/30 bg-card" : "border-border bg-card/40"
+      }`}
+    >
+      <h2>
+        <button
+          id={triggerId}
+          type="button"
+          aria-expanded={isOpen}
+          aria-controls={contentId}
+          onClick={() => setIsOpen(current => !current)}
+          className="flex w-full items-center gap-4 px-5 py-5 text-left outline-none transition-colors hover:bg-muted/40 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-inset motion-reduce:transition-none sm:px-6"
+        >
+          <span className="flex-1 text-[clamp(1.05rem,2.6vw,1.3rem)] font-bold leading-snug tracking-[-0.01em] text-foreground">
+            {section.heading}
+          </span>
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-border bg-background text-primary">
+            <ChevronDown
+              aria-hidden="true"
+              className={`h-4 w-4 transition-transform duration-300 motion-reduce:transition-none ${isOpen ? "rotate-180" : ""}`}
+            />
+          </span>
+        </button>
+      </h2>
+
+      <div
+        id={contentId}
+        role="region"
+        aria-labelledby={triggerId}
+        aria-hidden={!isOpen}
+        className={`grid transition-[grid-template-rows] duration-300 ease-out motion-reduce:transition-none ${
+          isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+        }`}
+      >
+        <div className="min-h-0 overflow-hidden">
+          <div
+            className={`space-y-5 border-t border-border px-5 pb-6 pt-5 transition-opacity duration-200 motion-reduce:transition-none sm:px-6 sm:pb-7 ${
+              isOpen ? "opacity-100 delay-100" : "opacity-0"
+            }`}
+          >
+            {section.blocks.map((block, index) => (
+              <PostBlock key={index} block={block} />
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function BlogPost({
   params,
 }: RouteComponentProps<BlogPostParams>) {
@@ -218,6 +286,7 @@ export default function BlogPost({
   const relatedPosts = posts
     .filter(item => item.slug !== post.slug)
     .slice(0, 2);
+  const usesTopicAccordion = post.slug === "orquestracao-agentes-ia";
 
   return (
     <article className="mx-auto w-full max-w-[760px] px-5 pb-24 pt-28 sm:px-8 md:pt-32">
@@ -268,20 +337,24 @@ export default function BlogPost({
       </p>
 
       {/* Seções */}
-      <div className="mt-4">
-        {post.sections.map(section => (
-          <section key={section.heading} className="mt-12">
-            <h2 className="text-[clamp(1.25rem,3vw,1.6rem)] font-bold tracking-[-0.01em] text-foreground">
-              {section.heading}
-            </h2>
+      <div className={usesTopicAccordion ? "mt-10 space-y-3" : "mt-4"}>
+        {post.sections.map(section =>
+          usesTopicAccordion ? (
+            <CollapsiblePostSection key={section.heading} section={section} />
+          ) : (
+            <section key={section.heading} className="mt-12">
+              <h2 className="text-[clamp(1.25rem,3vw,1.6rem)] font-bold tracking-[-0.01em] text-foreground">
+                {section.heading}
+              </h2>
 
-            <div className="mt-5 space-y-5">
-              {section.blocks.map((block, index) => (
-                <PostBlock key={index} block={block} />
-              ))}
-            </div>
-          </section>
-        ))}
+              <div className="mt-5 space-y-5">
+                {section.blocks.map((block, index) => (
+                  <PostBlock key={index} block={block} />
+                ))}
+              </div>
+            </section>
+          )
+        )}
       </div>
 
       {/* CTA */}
