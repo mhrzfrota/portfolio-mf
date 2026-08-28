@@ -1101,6 +1101,176 @@
   }
 }
 
+@layer components {
+  /* ---------- Visuais do artigo de orquestração de agentes ----------
+     Três desenhos no lugar de captura de tela: o mesmo arquivo serve claro e
+     escuro, escala sem borrar e pesa alguns kB. Todo o movimento é CSS, roda em
+     opacity/transform e some inteiro em prefers-reduced-motion.
+
+     Os ciclos são todos de 9s com atrasos diferentes por elemento: uma linha só
+     de keyframes anima a lista inteira, e o desencontro dos atrasos é o que dá
+     a sensação de terminal trabalhando em vez de piscar em bloco. */
+
+  .wf-frame {
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    background: var(--card);
+    overflow: hidden;
+  }
+
+  .wf-pane {
+    position: relative;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--background);
+    overflow: hidden;
+  }
+
+  .wf-mono {
+    font-family: var(--font-mono);
+  }
+
+  /* Traço que corre pela conexão, no lugar de uma seta parada. */
+  .wf-flow {
+    stroke-dasharray: 5 7;
+    animation: wf-flow 1.5s linear infinite;
+  }
+
+  @keyframes wf-flow {
+    to {
+      stroke-dashoffset: -12;
+    }
+  }
+
+  /* Chip que acende quando é a vez dele no ciclo. */
+  .wf-pulse {
+    animation: wf-pulse 9s ease-in-out infinite;
+  }
+
+  @keyframes wf-pulse {
+    0%,
+    12%,
+    100% {
+      opacity: 0.25;
+    }
+    4%,
+    8% {
+      opacity: 1;
+    }
+  }
+
+  .wf-caret {
+    animation: wf-caret 1.1s steps(2, jump-none) infinite;
+  }
+
+  @keyframes wf-caret {
+    0%,
+    49% {
+      opacity: 1;
+    }
+    50%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* Linha de terminal: entra, fica quase o ciclo todo e sai junto com o reset. */
+  .wf-line {
+    animation: wf-line 9s ease-out infinite both;
+  }
+
+  @keyframes wf-line {
+    0% {
+      opacity: 0;
+      transform: translateY(5px);
+    }
+    5% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    90% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    96%,
+    100% {
+      opacity: 0;
+      transform: translateY(0);
+    }
+  }
+
+  /* Texto que se escreve: a largura cresce em passos, como um cursor andando. */
+  .wf-type {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    vertical-align: bottom;
+    animation: wf-type 9s steps(24, end) infinite both;
+  }
+
+  @keyframes wf-type {
+    0% {
+      width: 0;
+    }
+    7%,
+    92% {
+      width: 100%;
+    }
+    100% {
+      width: 0;
+    }
+  }
+
+  /* Barra de recarga da aplicação: só cruza a tela no momento do reload. */
+  .wf-sweep {
+    animation: wf-sweep 9s ease-in-out infinite;
+  }
+
+  @keyframes wf-sweep {
+    0%,
+    100% {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+    2% {
+      opacity: 1;
+    }
+    12% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    16%,
+    99% {
+      transform: translateX(0);
+      opacity: 0;
+    }
+  }
+
+  /* Faixa que varre as pastas do vault, como uma leitura acontecendo. */
+  .wf-scan {
+    animation: wf-scan 9s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  }
+
+  @keyframes wf-scan {
+    0% {
+      transform: translateY(0);
+      opacity: 0;
+    }
+    6% {
+      opacity: 1;
+    }
+    55% {
+      transform: translateY(var(--wf-scan-end, 180px));
+      opacity: 1;
+    }
+    70%,
+    100% {
+      transform: translateY(var(--wf-scan-end, 180px));
+      opacity: 0;
+    }
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -1120,8 +1290,29 @@
   }
 
   .type-caret,
-  .hero-monogram-in {
+  .hero-monogram-in,
+  .wf-flow,
+  .wf-pulse,
+  .wf-caret,
+  .wf-line,
+  .wf-type,
+  .wf-sweep,
+  .wf-scan {
     animation: none;
+  }
+
+  /* Sem animação, os elementos precisam nascer no estado final. */
+  .wf-type {
+    width: 100%;
+  }
+
+  .wf-pulse {
+    opacity: 1;
+  }
+
+  /* Parada, a barra de recarga vira um traço de acento, não um alarme. */
+  .wf-sweep {
+    opacity: 0.45;
   }
 
   .diag-bar,

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import type { RouteComponentProps } from "wouter";
 import { Link } from "wouter";
 import { ArrowLeft, ArrowRight, Calendar, Clock } from "lucide-react";
@@ -6,7 +6,12 @@ import { ArrowLeft, ArrowRight, Calendar, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import RollButton from "@/components/RollButton";
 import { WHATSAPP_BUDGET_URL } from "@/const";
-import { getPostBySlug, getPosts } from "@/data/posts";
+import { getPostBySlug, getPosts, type PostContentBlock } from "@/data/posts";
+import {
+  OrchestrationVisual,
+  VaultVisual,
+  WorkspaceVisual,
+} from "@/components/blog/WorkflowVisuals";
 import { useLanguage, type Lang } from "@/contexts/LanguageContext";
 import { getStrings } from "@/i18n/strings";
 
@@ -22,6 +27,156 @@ function formatDate(value: string, lang: Lang) {
     month: "long",
     year: "numeric",
   }).format(parsed);
+}
+
+/**
+ * Foto do artigo. Enquanto o arquivo não existe (ou falha ao carregar), o lugar
+ * dela continua marcado com a legenda — a página não abre um buraco no meio do
+ * texto nem quebra o ritmo das seções.
+ */
+function PostImage({
+  src,
+  alt,
+  caption,
+}: {
+  src: string;
+  alt: string;
+  caption: string;
+}) {
+  const { lang } = useLanguage();
+  const [failed, setFailed] = useState(false);
+
+  return (
+    <figure>
+      {failed ? (
+        <div className="flex aspect-[16/10] w-full items-center justify-center rounded-2xl border border-dashed border-border bg-muted/40">
+          <span className="mono-label text-[10px] text-muted-foreground">
+            {getStrings(lang).blogPost.imageComing}
+          </span>
+        </div>
+      ) : (
+        <img
+          src={src}
+          alt={alt}
+          loading="lazy"
+          onError={() => setFailed(true)}
+          className="w-full rounded-2xl border border-border"
+        />
+      )}
+      <figcaption className="mt-3 text-[13px] leading-relaxed text-muted-foreground">
+        {caption}
+      </figcaption>
+    </figure>
+  );
+}
+
+/** Um bloco de conteúdo do artigo. Cada tipo tem a sua forma na página. */
+function PostBlock({ block }: { block: PostContentBlock }) {
+  switch (block.type) {
+    case "list":
+      return (
+        <ul className="space-y-3">
+          {block.items.map(item => (
+            <li
+              key={item}
+              className="relative pl-6 text-[16px] font-medium leading-[1.7] text-foreground/80"
+            >
+              <span className="absolute left-0 top-[0.7em] h-1.5 w-1.5 -translate-y-1/2 rounded-full bg-primary" />
+              {item}
+            </li>
+          ))}
+        </ul>
+      );
+
+    case "quote":
+      return (
+        <blockquote className="border-l-2 border-primary pl-5 text-[clamp(1.05rem,2.2vw,1.2rem)] font-medium leading-[1.6] text-foreground">
+          {block.text}
+        </blockquote>
+      );
+
+    case "code":
+      return (
+        <div className="overflow-hidden rounded-2xl border border-border bg-card">
+          {block.label && (
+            <div className="border-b border-border px-5 py-2.5">
+              <span className="mono-label text-[10px] text-muted-foreground">
+                {block.label}
+              </span>
+            </div>
+          )}
+          <pre className="overflow-x-auto p-5 font-mono text-[12.5px] leading-[1.75] text-foreground/85">
+            <code>{block.code}</code>
+          </pre>
+        </div>
+      );
+
+    // O diagrama é texto: acompanha o tema, dá zoom junto com a página e o
+    // leitor de tela lê o mesmo que está na tela.
+    case "diagram":
+      return (
+        <figure>
+          <pre
+            aria-label="Diagrama"
+            className="overflow-x-auto rounded-2xl border border-border bg-card p-5 font-mono text-[11.5px] leading-[1.7] text-foreground/75 sm:text-[13px]"
+          >
+            {block.ascii}
+          </pre>
+          {block.caption && (
+            <figcaption className="mt-3 text-[13px] leading-relaxed text-muted-foreground">
+              {block.caption}
+            </figcaption>
+          )}
+        </figure>
+      );
+
+    case "image":
+      return (
+        <PostImage src={block.src} alt={block.alt} caption={block.caption} />
+      );
+
+    case "visual": {
+      const Visual = {
+        orchestration: OrchestrationVisual,
+        workspace: WorkspaceVisual,
+        vault: VaultVisual,
+      }[block.name];
+      return (
+        <figure>
+          <Visual />
+          <figcaption className="mt-3 text-[13px] leading-relaxed text-muted-foreground">
+            {block.caption}
+          </figcaption>
+        </figure>
+      );
+    }
+
+    case "cards":
+      return (
+        <div className="grid gap-4 sm:grid-cols-2">
+          {block.items.map(item => (
+            <div
+              key={item.title}
+              className="rounded-2xl border border-border bg-card p-5"
+            >
+              <h3 className="mono-label text-[11px] text-primary">
+                {item.title}
+              </h3>
+              <p className="mt-2.5 text-[14px] leading-relaxed text-muted-foreground">
+                {item.text}
+              </p>
+            </div>
+          ))}
+        </div>
+      );
+
+    default:
+      return (
+        <p className="text-[16px] font-medium leading-[1.8] text-foreground/80">
+          {block.text}
+        </p>
+      );
+  }
 }
 
 export default function BlogPost({
@@ -121,32 +276,9 @@ export default function BlogPost({
             </h2>
 
             <div className="mt-5 space-y-5">
-              {section.blocks.map((block, index) => {
-                if (block.type === "list") {
-                  return (
-                    <ul key={index} className="space-y-3">
-                      {block.items.map(item => (
-                        <li
-                          key={item}
-                          className="relative pl-6 text-[16px] font-medium leading-[1.7] text-foreground/80"
-                        >
-                          <span className="absolute left-0 top-[0.7em] h-1.5 w-1.5 -translate-y-1/2 rounded-full bg-primary" />
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  );
-                }
-
-                return (
-                  <p
-                    key={index}
-                    className="text-[16px] font-medium leading-[1.8] text-foreground/80"
-                  >
-                    {block.text}
-                  </p>
-                );
-              })}
+              {section.blocks.map((block, index) => (
+                <PostBlock key={index} block={block} />
+              ))}
             </div>
           </section>
         ))}

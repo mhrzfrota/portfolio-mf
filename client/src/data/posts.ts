@@ -2,7 +2,20 @@ import type { Lang } from "@/contexts/LanguageContext";
 
 export type PostContentBlock =
   | { type: "paragraph"; text: string }
-  | { type: "list"; items: string[] };
+  | { type: "list"; items: string[] }
+  /** Frase de destaque, para a regra que o texto quer que fique de pé sozinha. */
+  | { type: "quote"; text: string }
+  | { type: "code"; label?: string; code: string }
+  /** Desenho em texto: o mesmo diagrama serve claro, escuro e leitor de tela. */
+  | { type: "diagram"; ascii: string; caption?: string }
+  | { type: "image"; src: string; alt: string; caption: string }
+  /** Ilustração animada do artigo; `name` escolhe qual desenho renderizar. */
+  | {
+      type: "visual";
+      name: "orchestration" | "workspace" | "vault";
+      caption: string;
+    }
+  | { type: "cards"; items: { title: string; text: string }[] };
 
 export type PostSection = {
   heading: string;
@@ -23,6 +36,532 @@ export type Post = {
 };
 
 const postsPt: Post[] = [
+  {
+    id: 4,
+    slug: "orquestracao-agentes-ia",
+    title: "Meu ambiente de desenvolvimento com múltiplos agentes de IA",
+    excerpt:
+      "Como organizei projetos, terminais, Claude Code, Codex e uma base de conhecimento no Obsidian dentro de um único ambiente de trabalho.",
+    date: "2026-08-28",
+    readTime: "12 min de leitura",
+    tags: ["IA", "Workflow", "Obsidian"],
+    cover: "bg-gradient-to-br from-[#020A2E] via-[#0C2AFE] to-[#5B7CFF]",
+    lead: "Em vez de trabalhar em uma única janela do VS Code, alternando o tempo todo entre abas e ferramentas, passei a montar um ambiente em que cada agente tem uma função específica dentro do projeto. A ideia é simples: separar execução, revisão, contexto e documentação sem perder a visão geral. Este é o passo a passo de como esse ambiente funciona — e por que a parte mais importante dele não é a IA, é a memória.",
+    sections: [
+      {
+        heading: "O ponto de partida",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "Antes desse fluxo, meu processo acontecia inteiro dentro do VS Code. Eu já usava agentes como o Claude Code e o Codex, alternando entre abas e terminais conforme a tarefa mudava.",
+          },
+          {
+            type: "paragraph",
+            text: "Funcionava. Mas quando comecei a tocar vários projetos ao mesmo tempo, ficou difícil enxergar quem estava fazendo o quê: um agente refatorando aqui, outro esperando resposta ali, e eu tentando lembrar em qual aba estava cada coisa.",
+          },
+          {
+            type: "visual",
+            name: "orchestration",
+            caption:
+              "O ambiente em um desenho: um projeto, e as três formas de entrar nele — todas sobre os mesmos arquivos.",
+          },
+        ],
+      },
+      {
+        heading: "O projeto deixa de ser uma janela",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "A mudança de cabeça foi parar de tratar o projeto como uma janela aberta e passar a tratá-lo como um núcleo. Em volta desse núcleo ficam os terminais e os agentes, todos apontando para o mesmo lugar.",
+          },
+          {
+            type: "diagram",
+            ascii: `                    PROJETO
+                       │
+        ┌──────────────┼──────────────┐
+        │              │              │
+     Terminal      Claude Code      Codex
+        │              │              │
+        └──────────────┼──────────────┘
+                       │
+                   Código-fonte`,
+          },
+          {
+            type: "paragraph",
+            text: "O detalhe que mais confunde quem vê isso pela primeira vez é este: os agentes não têm projetos separados. Eles trabalham sobre o mesmo diretório Git, com os mesmos arquivos na mesma árvore.",
+          },
+          {
+            type: "code",
+            label: "estrutura do projeto",
+            code: `~/Documents/FRT-CEREBRO/
+│
+├── src/
+├── public/
+├── package.json
+├── AGENTS.md
+├── README.md
+└── .git/`,
+          },
+          {
+            type: "diagram",
+            ascii: `                    FRT-CEREBRO
+                         │
+                         ▼
+              ~/Documents/FRT-CEREBRO
+                   /     |     \\
+                  ▼      ▼      ▼
+               Claude  Codex  Terminal`,
+            caption:
+              "Os três enxergam os mesmos arquivos — o que muda é o papel de cada um.",
+          },
+        ],
+      },
+      {
+        heading: "01. Cada projeto ganha o seu próprio workspace",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "O primeiro passo é dar a cada projeto um espaço visual próprio, com os terminais que pertencem a ele. Nada de misturar: um projeto, um workspace, os agentes daquele projeto dentro dele.",
+          },
+          {
+            type: "code",
+            label: "diretórios",
+            code: `# Projeto A
+~/Documents/FRT-CEREBRO
+
+# Projeto B
+~/Desktop/projects/villashub`,
+          },
+          {
+            type: "paragraph",
+            text: "Assim, trocar de projeto é trocar de tela inteira — e não caçar qual aba pertencia a qual cliente.",
+          },
+        ],
+      },
+      {
+        heading: "02. Um terminal para o Claude Code",
+        blocks: [
+          {
+            type: "code",
+            label: "terminal 1",
+            code: `cd ~/Documents/FRT-CEREBRO
+
+claude`,
+          },
+          {
+            type: "paragraph",
+            text: "A partir daí o Claude passa a trabalhar naquele contexto: lê os arquivos do projeto, roda comandos e edita código dentro daquele diretório.",
+          },
+        ],
+      },
+      {
+        heading: "03. Outro terminal para o Codex",
+        blocks: [
+          {
+            type: "code",
+            label: "terminal 2",
+            code: `cd ~/Documents/FRT-CEREBRO
+
+codex`,
+          },
+          {
+            type: "paragraph",
+            text: "Mesmo diretório, segundo agente. Agora o projeto tem dois pares de olhos, e é aqui que a divisão de responsabilidades começa a valer a pena.",
+          },
+          {
+            type: "diagram",
+            ascii: `FRT-CEREBRO
+    │
+    ├── Claude Code
+    │
+    └── Codex`,
+          },
+        ],
+      },
+      {
+        heading: "O segredo: dividir responsabilidades",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "Dois agentes fazendo a mesma coisa é desperdício. O ganho aparece quando cada um tem um papel claro dentro do ciclo.",
+          },
+          {
+            type: "cards",
+            items: [
+              {
+                title: "Claude Code",
+                text: "Implementação maior, exploração do projeto, refatorações, criação de funcionalidades e debugging longo.",
+              },
+              {
+                title: "Codex",
+                text: "Segunda análise, revisão do que foi feito, caça a problemas, pequenas implementações e validação das decisões do primeiro agente.",
+              },
+            ],
+          },
+          {
+            type: "diagram",
+            ascii: `             FEATURE
+                │
+                ▼
+        ┌──────────────┐
+        │ Claude Code  │
+        │  implementa  │
+        └──────┬───────┘
+               │
+               ▼
+             Código
+               │
+               ▼
+        ┌──────────────┐
+        │    Codex     │
+        │    revisa    │
+        └──────┬───────┘
+               │
+               ▼
+         Ajustes finais`,
+          },
+          {
+            type: "paragraph",
+            text: "Quem revisa não é quem escreveu. Vale para gente e vale para agente: o segundo modelo chega sem o apego às decisões do primeiro e questiona o que o outro deu como resolvido.",
+          },
+        ],
+      },
+      {
+        heading: "A regra que evita o caos",
+        blocks: [
+          {
+            type: "quote",
+            text: "Nunca deixo dois agentes mexendo no mesmo trecho de código ao mesmo tempo.",
+          },
+          {
+            type: "paragraph",
+            text: "Sem essa regra, o ambiente vira um problema em vez de uma vantagem:",
+          },
+          {
+            type: "list",
+            items: [
+              "arquivos sobrescritos, com o trabalho de um apagando o do outro;",
+              "decisões conflitantes dentro da mesma funcionalidade;",
+              "alterações difíceis de revisar, porque ninguém sabe de onde vieram;",
+              "contexto divergente: cada agente acreditando em uma versão do projeto.",
+            ],
+          },
+          {
+            type: "paragraph",
+            text: "Na prática, só existem dois arranjos seguros — em série, ou em arquivos diferentes.",
+          },
+          {
+            type: "diagram",
+            ascii: `EM SÉRIE                    EM PARALELO
+
+Claude → implementação      Claude → feature A
+           ↓                Codex  → feature B
+        termina                       ↓
+           ↓                  arquivos diferentes
+Codex  → revisão                      ↓
+           ↓                     sem colisão
+        ajustes
+           ↓
+      git commit`,
+          },
+        ],
+      },
+      {
+        heading: "O Git continua no centro",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "Nada disso vira um ambiente mágico e sem controle. Tudo o que os agentes fazem cai na árvore de trabalho, e a árvore de trabalho continua sendo minha.",
+          },
+          {
+            type: "diagram",
+            ascii: `Claude ──┐
+         │
+Codex  ──┼──→ working tree ──→ git diff ──→ commit
+         │
+Eu ──────┘`,
+          },
+          {
+            type: "code",
+            label: "o de sempre",
+            code: `git status
+git diff
+git add .
+git commit -m "feat: ..."`,
+          },
+          {
+            type: "paragraph",
+            text: "A revisão manual continua acontecendo, no terminal ou no próprio VS Code. A IA executa; eu continuo respondendo pelo código que entra no repositório.",
+          },
+        ],
+      },
+      {
+        heading: "A aplicação rodando também faz parte do ambiente",
+        blocks: [
+          {
+            type: "visual",
+            name: "workspace",
+            caption:
+              "Cada janela tem uma responsabilidade, mas todas fazem parte do mesmo fluxo.",
+          },
+          {
+            type: "list",
+            items: [
+              "① Aplicação rodando em localhost",
+              "② Claude Code, implementando",
+              "③ Codex, revisando",
+              "④ O projeto e seus arquivos",
+              "⑤ Obsidian, o contexto",
+            ],
+          },
+          {
+            type: "paragraph",
+            text: "Com a aplicação aberta ao lado dos agentes, o ciclo fecha sem eu sair do ambiente: o agente altera, o servidor recarrega, eu olho a tela e digo o que ainda está errado.",
+          },
+          {
+            type: "diagram",
+            ascii: `        Claude / Codex
+              │
+              ▼
+            código
+              │
+              ▼
+         npm run dev
+              │
+              ▼
+          localhost
+              │
+              ▼
+      validação visual
+              │
+              ▼
+         novo ajuste`,
+          },
+        ],
+      },
+      {
+        heading: "O problema de usar IA sem memória",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "Modelos são muito bons em executar tarefas, mas esbarram sempre no mesmo ponto: contexto. Um agente pode conhecer o projeto a fundo durante uma sessão e, na conversa seguinte, precisar reconstruir quase tudo do zero.",
+          },
+          {
+            type: "paragraph",
+            text: "A solução não é um prompt maior. É tirar o conhecimento de dentro das conversas e colocá-lo em um lugar que sobreviva a elas.",
+          },
+          {
+            type: "diagram",
+            ascii: `                 OBSIDIAN
+                    │
+               conhecimento
+                    │
+          ┌─────────┴─────────┐
+          ▼                   ▼
+     Claude Code            Codex
+          │                   │
+          └─────────┬─────────┘
+                    ▼
+                 Projeto`,
+          },
+        ],
+      },
+      {
+        heading: "O Obsidian como segundo cérebro",
+        blocks: [
+          {
+            type: "visual",
+            name: "vault",
+            caption:
+              "Projetos, clientes, decisões, referências e aprendizados vivem fora das conversas dos agentes.",
+          },
+          {
+            type: "paragraph",
+            text: "Para um agente, isso não é “um Obsidian”. São arquivos Markdown em um diretório — exatamente o tipo de coisa que ele já sabe ler. O Obsidian é a interface confortável para mim; o conteúdo é texto puro, versionável e legível por qualquer ferramenta.",
+          },
+        ],
+      },
+      {
+        heading: "AGENTS.md: a primeira coisa que o agente lê",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "Um arquivo na raiz concentra o que todo agente precisa saber antes de escrever a primeira linha: stack, regras, arquitetura e convenções.",
+          },
+          {
+            type: "code",
+            label: "AGENTS.md",
+            code: `# AGENTS.md
+
+## Stack
+- Next.js
+- TypeScript
+- Tailwind
+- Supabase
+
+## Regras
+- Nunca modificar migrations sem autorização.
+- Sempre verificar responsividade.
+- Rodar os testes antes de finalizar.
+- Não fazer deploy automaticamente.
+
+## Arquitetura
+src/
+  components/
+  services/
+  hooks/
+  pages/
+
+## Convenções
+- Componentes em PascalCase
+- Funções em camelCase
+- Commits em Conventional Commits`,
+          },
+          {
+            type: "paragraph",
+            text: "Repare que metade do arquivo são proibições. É o que evita o tipo de iniciativa que ninguém pediu — apagar uma migration, subir para produção, reescrever o que já estava decidido.",
+          },
+        ],
+      },
+      {
+        heading: "Uma nota por projeto",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "Além das regras gerais, cada projeto tem a sua própria nota, com o estado atual e o que ficou pendente.",
+          },
+          {
+            type: "code",
+            label: "projetos/villas-flow.md",
+            code: `# Villas Flow
+
+## Stack
+Next.js + Supabase + Vercel
+
+## Objetivo
+Sistema interno de gestão.
+
+## Banco
+Supabase
+
+## Decisões
+- autenticação via Supabase Auth
+- deploy via Vercel
+
+## Pendências
+- revisar dashboard
+- corrigir mobile
+- melhorar loading`,
+          },
+          {
+            type: "paragraph",
+            text: "Com isso, abrir uma sessão nova deixa de ser uma explicação inteira e vira uma frase: leia a nota do projeto antes de começar.",
+          },
+          {
+            type: "diagram",
+            ascii: `SEM CONTEXTO EXTERNO         COM O CÉREBRO
+
+nova conversa                nova conversa
+      ↓                            ↓
+"me explique esse             leia AGENTS.md
+ projeto"                          ↓
+      ↓                      leia projetos/*.md
+o agente explora                   ↓
+tudo de novo                 leia decisões
+      ↓                            ↓
+minutos gastos               entende o ambiente
+para chegar                        ↓
+onde já estávamos            começa a trabalhar`,
+          },
+        ],
+      },
+      {
+        heading: "O fluxo completo",
+        blocks: [
+          {
+            type: "diagram",
+            ascii: `                        EU
+                         │
+                         ▼
+                     AMBIENTE
+                         │
+       ┌─────────────────┼─────────────────┐
+       ▼                 ▼                 ▼
+   Projeto A         Projeto B         Projeto C
+       │
+       ├───────────────┐
+       ▼               ▼
+ Claude Code         Codex
+ implementação       revisão
+       │               │
+       └───────┬───────┘
+               ▼
+             Código
+               │
+               ▼
+              Git
+               │
+               ▼
+        aplicação local
+               ▲
+               │
+       ┌───────┴────────┐
+       ▼                ▼
+   AGENTS.md        OBSIDIAN
+                        │
+                   conhecimento
+                        │
+              projetos / clientes /
+              decisões / referências`,
+            caption: "O ambiente inteiro em um desenho só.",
+          },
+        ],
+      },
+      {
+        heading: "Não é sobre ter mais agentes",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "O objetivo nunca foi abrir mais janelas. É montar uma arquitetura de trabalho em que cada ferramenta tem uma responsabilidade clara — e em que a última palavra continua sendo humana.",
+          },
+          {
+            type: "cards",
+            items: [
+              {
+                title: "Contexto",
+                text: "O Obsidian e a documentação mantêm o conhecimento vivo entre uma sessão e outra.",
+              },
+              {
+                title: "Execução",
+                text: "Claude Code ou Codex implementam a tarefa dentro do diretório do projeto.",
+              },
+              {
+                title: "Revisão",
+                text: "Um segundo agente questiona a implementação do primeiro antes de qualquer commit.",
+              },
+              {
+                title: "Controle",
+                text: "Git e revisão manual seguem sendo a fonte final de verdade sobre o que entra no código.",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        heading: "Em resumo",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "Tecnologia não é só escrever código. Um bom ambiente de desenvolvimento reduz contexto perdido, melhora a revisão e permite usar IA como parte real do processo de engenharia — e não como um atalho para pedir código pronto.",
+          },
+          {
+            type: "paragraph",
+            text: "Esse é um dos fluxos que uso nos projetos que desenvolvo na MF Services. O ambiente muda conforme as ferramentas mudam; a divisão entre contexto, execução, revisão e controle é o que permanece.",
+          },
+        ],
+      },
+    ],
+  },
   {
     id: 1,
     slug: "deploy-moderno-fullstack",
@@ -265,6 +804,532 @@ const postsPt: Post[] = [
 ];
 
 const postsEn: Post[] = [
+  {
+    id: 4,
+    slug: "orquestracao-agentes-ia",
+    title: "My development environment with multiple AI agents",
+    excerpt:
+      "How I organised projects, terminals, Claude Code, Codex and an Obsidian knowledge base inside a single workspace.",
+    date: "2026-08-28",
+    readTime: "12 min read",
+    tags: ["AI", "Workflow", "Obsidian"],
+    cover: "bg-gradient-to-br from-[#020A2E] via-[#0C2AFE] to-[#5B7CFF]",
+    lead: "Instead of working in a single VS Code window, constantly switching between tabs and tools, I started building an environment where each agent has a specific job inside the project. The idea is simple: separate execution, review, context and documentation without losing the big picture. This is how that environment works — and why its most important part is not the AI, it's the memory.",
+    sections: [
+      {
+        heading: "The starting point",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "Before this workflow, my whole process lived inside VS Code. I already used agents like Claude Code and Codex, switching between tabs and terminals as the task changed.",
+          },
+          {
+            type: "paragraph",
+            text: "It worked. But once I started running several projects at the same time, it got hard to see who was doing what: one agent refactoring here, another waiting for an answer there, and me trying to remember which tab held which thing.",
+          },
+          {
+            type: "visual",
+            name: "orchestration",
+            caption:
+              "The environment as a drawing: one project and the three ways into it — all on the same files.",
+          },
+        ],
+      },
+      {
+        heading: "A project stops being a window",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "The mental shift was to stop treating a project as an open window and start treating it as a core. Around that core sit the terminals and the agents, all pointing at the same place.",
+          },
+          {
+            type: "diagram",
+            ascii: `                    PROJECT
+                       │
+        ┌──────────────┼──────────────┐
+        │              │              │
+     Terminal      Claude Code      Codex
+        │              │              │
+        └──────────────┼──────────────┘
+                       │
+                   Source code`,
+          },
+          {
+            type: "paragraph",
+            text: "The detail that confuses people seeing this for the first time is this one: the agents do not have separate projects. They work on the same Git directory, on the same files, in the same tree.",
+          },
+          {
+            type: "code",
+            label: "project structure",
+            code: `~/Documents/FRT-CEREBRO/
+│
+├── src/
+├── public/
+├── package.json
+├── AGENTS.md
+├── README.md
+└── .git/`,
+          },
+          {
+            type: "diagram",
+            ascii: `                    FRT-CEREBRO
+                         │
+                         ▼
+              ~/Documents/FRT-CEREBRO
+                   /     |     \\
+                  ▼      ▼      ▼
+               Claude  Codex  Terminal`,
+            caption:
+              "All three see the same files — what changes is their role.",
+          },
+        ],
+      },
+      {
+        heading: "01. Every project gets its own workspace",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "The first step is giving each project its own visual space, with the terminals that belong to it. No mixing: one project, one workspace, its agents inside it.",
+          },
+          {
+            type: "code",
+            label: "directories",
+            code: `# Project A
+~/Documents/FRT-CEREBRO
+
+# Project B
+~/Desktop/projects/villashub`,
+          },
+          {
+            type: "paragraph",
+            text: "Switching projects becomes switching the whole screen — not hunting for which tab belonged to which client.",
+          },
+        ],
+      },
+      {
+        heading: "02. One terminal for Claude Code",
+        blocks: [
+          {
+            type: "code",
+            label: "terminal 1",
+            code: `cd ~/Documents/FRT-CEREBRO
+
+claude`,
+          },
+          {
+            type: "paragraph",
+            text: "From there Claude works in that context: it reads the project files, runs commands and edits code inside that directory.",
+          },
+        ],
+      },
+      {
+        heading: "03. Another terminal for Codex",
+        blocks: [
+          {
+            type: "code",
+            label: "terminal 2",
+            code: `cd ~/Documents/FRT-CEREBRO
+
+codex`,
+          },
+          {
+            type: "paragraph",
+            text: "Same directory, second agent. The project now has two pairs of eyes, and this is where splitting responsibilities starts to pay off.",
+          },
+          {
+            type: "diagram",
+            ascii: `FRT-CEREBRO
+    │
+    ├── Claude Code
+    │
+    └── Codex`,
+          },
+        ],
+      },
+      {
+        heading: "The trick: split the responsibilities",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "Two agents doing the same thing is waste. The gain shows up when each one has a clear role in the cycle.",
+          },
+          {
+            type: "cards",
+            items: [
+              {
+                title: "Claude Code",
+                text: "Larger implementation, exploring the project, refactors, building features and long debugging sessions.",
+              },
+              {
+                title: "Codex",
+                text: "A second opinion, reviewing what was built, hunting for problems, small implementations and validating the first agent's decisions.",
+              },
+            ],
+          },
+          {
+            type: "diagram",
+            ascii: `             FEATURE
+                │
+                ▼
+        ┌──────────────┐
+        │ Claude Code  │
+        │  implements  │
+        └──────┬───────┘
+               │
+               ▼
+              Code
+               │
+               ▼
+        ┌──────────────┐
+        │    Codex     │
+        │   reviews    │
+        └──────┬───────┘
+               │
+               ▼
+          Final fixes`,
+          },
+          {
+            type: "paragraph",
+            text: "Whoever reviews is not whoever wrote it. That holds for people and for agents: the second model arrives without attachment to the first one's decisions and questions what the other called done.",
+          },
+        ],
+      },
+      {
+        heading: "The rule that prevents chaos",
+        blocks: [
+          {
+            type: "quote",
+            text: "I never let two agents touch the same piece of code at the same time.",
+          },
+          {
+            type: "paragraph",
+            text: "Without that rule, the environment becomes a problem instead of an advantage:",
+          },
+          {
+            type: "list",
+            items: [
+              "overwritten files, with one agent erasing the other's work;",
+              "conflicting decisions inside the same feature;",
+              "changes that are hard to review, because nobody knows where they came from;",
+              "diverging context: each agent believing in a different version of the project.",
+            ],
+          },
+          {
+            type: "paragraph",
+            text: "In practice only two arrangements are safe — in series, or on different files.",
+          },
+          {
+            type: "diagram",
+            ascii: `IN SERIES                   IN PARALLEL
+
+Claude → implementation     Claude → feature A
+           ↓                Codex  → feature B
+         done                         ↓
+           ↓                   different files
+Codex  → review                       ↓
+           ↓                     no collision
+         fixes
+           ↓
+       git commit`,
+          },
+        ],
+      },
+      {
+        heading: "Git stays at the centre",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "None of this turns into a magic, uncontrolled environment. Everything the agents do lands in the working tree, and the working tree is still mine.",
+          },
+          {
+            type: "diagram",
+            ascii: `Claude ──┐
+         │
+Codex  ──┼──→ working tree ──→ git diff ──→ commit
+         │
+Me ──────┘`,
+          },
+          {
+            type: "code",
+            label: "the usual",
+            code: `git status
+git diff
+git add .
+git commit -m "feat: ..."`,
+          },
+          {
+            type: "paragraph",
+            text: "Manual review still happens, in the terminal or in VS Code itself. The AI executes; I still answer for the code that enters the repository.",
+          },
+        ],
+      },
+      {
+        heading: "The running app is part of the environment too",
+        blocks: [
+          {
+            type: "visual",
+            name: "workspace",
+            caption:
+              "Each window has one responsibility, but they all belong to the same flow.",
+          },
+          {
+            type: "list",
+            items: [
+              "① The app running on localhost",
+              "② Claude Code, implementing",
+              "③ Codex, reviewing",
+              "④ The project and its files",
+              "⑤ Obsidian, the context",
+            ],
+          },
+          {
+            type: "paragraph",
+            text: "With the app open next to the agents, the loop closes without leaving the environment: the agent changes the code, the server reloads, I look at the screen and say what is still wrong.",
+          },
+          {
+            type: "diagram",
+            ascii: `        Claude / Codex
+              │
+              ▼
+             code
+              │
+              ▼
+         npm run dev
+              │
+              ▼
+          localhost
+              │
+              ▼
+       visual check
+              │
+              ▼
+         next tweak`,
+          },
+        ],
+      },
+      {
+        heading: "The problem with AI without memory",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "Models are very good at executing tasks, but they always hit the same wall: context. An agent can know a project deeply during one session and, in the next conversation, have to rebuild almost all of it from scratch.",
+          },
+          {
+            type: "paragraph",
+            text: "The answer is not a longer prompt. It is moving the knowledge out of the conversations and into a place that outlives them.",
+          },
+          {
+            type: "diagram",
+            ascii: `                 OBSIDIAN
+                    │
+                knowledge
+                    │
+          ┌─────────┴─────────┐
+          ▼                   ▼
+     Claude Code            Codex
+          │                   │
+          └─────────┬─────────┘
+                    ▼
+                 Project`,
+          },
+        ],
+      },
+      {
+        heading: "Obsidian as a second brain",
+        blocks: [
+          {
+            type: "visual",
+            name: "vault",
+            caption:
+              "Projects, clients, decisions, references and lessons live outside the agents' conversations.",
+          },
+          {
+            type: "paragraph",
+            text: "To an agent this is not “an Obsidian”. It is Markdown files in a directory — exactly the kind of thing it already knows how to read. Obsidian is the comfortable interface for me; the content is plain text, versionable and readable by any tool.",
+          },
+        ],
+      },
+      {
+        heading: "AGENTS.md: the first thing an agent reads",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "One file at the root holds what every agent needs to know before writing a single line: stack, rules, architecture and conventions.",
+          },
+          {
+            type: "code",
+            label: "AGENTS.md",
+            code: `# AGENTS.md
+
+## Stack
+- Next.js
+- TypeScript
+- Tailwind
+- Supabase
+
+## Rules
+- Never change migrations without approval.
+- Always check responsiveness.
+- Run the tests before finishing.
+- Do not deploy automatically.
+
+## Architecture
+src/
+  components/
+  services/
+  hooks/
+  pages/
+
+## Conventions
+- Components in PascalCase
+- Functions in camelCase
+- Commits in Conventional Commits`,
+          },
+          {
+            type: "paragraph",
+            text: "Notice that half the file is prohibitions. That is what prevents the kind of initiative nobody asked for — dropping a migration, pushing to production, rewriting what was already decided.",
+          },
+        ],
+      },
+      {
+        heading: "One note per project",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "Beyond the general rules, each project has its own note, with the current state and what is still open.",
+          },
+          {
+            type: "code",
+            label: "projects/villas-flow.md",
+            code: `# Villas Flow
+
+## Stack
+Next.js + Supabase + Vercel
+
+## Goal
+Internal management system.
+
+## Database
+Supabase
+
+## Decisions
+- authentication via Supabase Auth
+- deploy via Vercel
+
+## Open items
+- review the dashboard
+- fix mobile
+- improve loading`,
+          },
+          {
+            type: "paragraph",
+            text: "With that, opening a new session stops being a whole explanation and becomes one sentence: read the project note before you start.",
+          },
+          {
+            type: "diagram",
+            ascii: `NO EXTERNAL CONTEXT          WITH THE BRAIN
+
+new conversation             new conversation
+      ↓                            ↓
+"explain this                read AGENTS.md
+ project"                          ↓
+      ↓                      read projects/*.md
+the agent explores                 ↓
+everything again             read the decisions
+      ↓                            ↓
+minutes spent                understands the setup
+getting back                       ↓
+to where we were             starts working`,
+          },
+        ],
+      },
+      {
+        heading: "The whole flow",
+        blocks: [
+          {
+            type: "diagram",
+            ascii: `                        ME
+                         │
+                         ▼
+                    ENVIRONMENT
+                         │
+       ┌─────────────────┼─────────────────┐
+       ▼                 ▼                 ▼
+   Project A         Project B         Project C
+       │
+       ├───────────────┐
+       ▼               ▼
+ Claude Code         Codex
+ implementation      review
+       │               │
+       └───────┬───────┘
+               ▼
+              Code
+               │
+               ▼
+              Git
+               │
+               ▼
+         local app
+               ▲
+               │
+       ┌───────┴────────┐
+       ▼                ▼
+   AGENTS.md        OBSIDIAN
+                        │
+                    knowledge
+                        │
+              projects / clients /
+              decisions / references`,
+            caption: "The whole environment in a single drawing.",
+          },
+        ],
+      },
+      {
+        heading: "It is not about having more agents",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "The goal was never to open more windows. It is to build a working architecture where every tool has a clear responsibility — and where the last word is still human.",
+          },
+          {
+            type: "cards",
+            items: [
+              {
+                title: "Context",
+                text: "Obsidian and the documentation keep knowledge alive between one session and the next.",
+              },
+              {
+                title: "Execution",
+                text: "Claude Code or Codex implement the task inside the project directory.",
+              },
+              {
+                title: "Review",
+                text: "A second agent questions the first one's implementation before any commit.",
+              },
+              {
+                title: "Control",
+                text: "Git and manual review remain the final source of truth about what enters the code.",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        heading: "In short",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "Technology is not only about writing code. A good development environment reduces lost context, improves review and lets AI be a real part of the engineering process — not a shortcut for asking someone else to write the code.",
+          },
+          {
+            type: "paragraph",
+            text: "This is one of the workflows I use on the projects I build at MF Services. The environment changes as the tools change; the split between context, execution, review and control is what stays.",
+          },
+        ],
+      },
+    ],
+  },
   {
     id: 1,
     slug: "deploy-moderno-fullstack",

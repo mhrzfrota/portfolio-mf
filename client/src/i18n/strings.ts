@@ -209,6 +209,7 @@ const strings = {
       notFoundTitle: "Esse texto ainda não existe",
       notFoundText: "O artigo que você procura pode ter mudado de endereço.",
       backToBlog: "Voltar ao blog",
+      imageComing: "imagem em breve",
       ctaTitle: "Isso encaixa na sua empresa?",
       ctaText:
         "Conte seu contexto e eu mostro como essa ideia vira solução — do plano ao ar.",
@@ -422,6 +423,7 @@ const strings = {
       notFoundTitle: "This article doesn't exist yet",
       notFoundText: "The article you're looking for may have moved.",
       backToBlog: "Back to blog",
+      imageComing: "image coming soon",
       ctaTitle: "Does this fit your company?",
       ctaText:
         "Share your context and I'll show how this idea becomes a solution — from plan to production.",
