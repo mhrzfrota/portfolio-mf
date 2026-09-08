@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import {
   ArrowUpRight,
   Clock,
@@ -122,6 +122,8 @@ function FooterWhatsForm({
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [activeSection, setActiveSection] = useState("inicio");
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [atTop, setAtTop] = useState(true);
+  const [hasSkyHero, setHasSkyHero] = useState(false);
   const [location, setLocation] = useLocation();
   const { theme, toggleTheme } = useTheme();
   const { lang, toggleLang } = useLanguage();
@@ -132,6 +134,25 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   useAnimations([location]);
 
   const navItems = navIds.map(id => ({ id, label: t.nav[id] }));
+
+  // A topbar só fica sem fundo quando existe o céu azul do hero atrás dela;
+  // nas rotas internas (projeto, post, board) o pill aparece de saída.
+  // useLayoutEffect e não useEffect: o hero é commitado no mesmo passe, e
+  // medir antes da pintura evita um flash do pill na carga da home.
+  useLayoutEffect(() => {
+    setHasSkyHero(document.getElementById("inicio") !== null);
+  }, [location]);
+
+  useEffect(() => {
+    const onScroll = () => setAtTop(window.scrollY < 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Sobre o azul: tipografia e ícones brancos, zero fundo. Ao primeiro scroll
+  // o pill de sempre se forma por baixo.
+  const overSky = hasSkyHero && atTop;
 
   useEffect(() => {
     const sections = navIds
@@ -171,19 +192,33 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     }, 0);
   };
 
+  const activeLang = overSky ? "text-white" : "text-foreground";
+
   const langToggle = (
     <button
       type="button"
       onClick={toggleLang}
       aria-label={t.topbar.switchLang}
       title={t.topbar.switchLang}
-      className="mono-label flex h-9 items-center gap-1 rounded-full px-2.5 text-[11px] text-muted-foreground transition-colors duration-300 hover:bg-muted hover:text-foreground"
+      className={cn(
+        "mono-label flex h-9 items-center gap-1 rounded-full px-2.5 text-[11px] transition-colors duration-300",
+        overSky
+          ? "text-white/70 hover:bg-white/15 hover:text-white"
+          : "text-muted-foreground hover:bg-muted hover:text-foreground"
+      )}
     >
-      <span className={lang === "pt" ? "text-foreground" : ""}>PT</span>
+      <span className={lang === "pt" ? activeLang : ""}>PT</span>
       {/* Era text-border: 1.29:1, invisível. Decorativo, então some do leitor. */}
       <span aria-hidden="true">/</span>
-      <span className={lang === "en" ? "text-foreground" : ""}>EN</span>
+      <span className={lang === "en" ? activeLang : ""}>EN</span>
     </button>
+  );
+
+  const iconButton = cn(
+    "flex h-9 w-9 items-center justify-center rounded-full transition-colors duration-300",
+    overSky
+      ? "text-white/80 hover:bg-white/15 hover:text-white"
+      : "text-muted-foreground hover:bg-muted hover:text-foreground"
   );
 
   return (
@@ -193,8 +228,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="mx-auto max-w-[1080px] p-2 sm:p-3">
           {/* O ring a 4% dava 1.04:1 e não existia na tela; a sombra é quem
               descola o pill do fundo. */}
-          <div className="flex items-center justify-between rounded-full bg-card px-[5px] py-2 shadow-[0_4px_24px_rgba(2,6,19,0.10)] ring-1 ring-black/[0.08] dark:ring-white/12">
-            <div className="flex items-center gap-4">
+          <div
+            className={cn(
+              "flex items-center justify-between rounded-full px-[5px] py-2 ring-1 transition-[background-color,box-shadow] duration-500",
+              overSky
+                ? "bg-transparent shadow-none ring-transparent"
+                : "bg-card shadow-[0_4px_24px_rgba(2,6,19,0.10)] ring-black/[0.08] dark:ring-white/12"
+            )}
+          >
+            <div className="flex items-center gap-6 lg:gap-10">
               <button
                 onClick={() => handleNavClick("inicio")}
                 className="flex items-center pl-3 transition-opacity hover:opacity-80"
@@ -203,7 +245,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 <img
                   src="/logo-topbar.png"
                   alt="MF Services"
-                  className="h-6 w-auto sm:h-7 dark:brightness-0 dark:invert"
+                  className={cn(
+                    "h-6 w-auto transition-[filter] duration-500 sm:h-7",
+                    overSky
+                      ? "brightness-0 invert"
+                      : "dark:brightness-0 dark:invert"
+                  )}
                 />
               </button>
 
@@ -216,10 +263,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     className={cn(
                       // Hover reforça em vez de enfraquecer: antes o link
                       // clareava para muted-foreground ao passar o mouse.
-                      "mono-label text-[11px] transition-colors duration-300",
-                      activeSection === item.id
-                        ? "text-primary"
-                        : "text-muted-foreground hover:text-foreground"
+                      "mono-label text-[13px] font-medium transition-colors duration-300",
+                      overSky
+                        ? activeSection === item.id
+                          ? "text-white"
+                          : "text-white/70 hover:text-white"
+                        : activeSection === item.id
+                          ? "text-primary"
+                          : "text-muted-foreground hover:text-foreground"
                     )}
                   >
                     {item.label}
@@ -229,17 +280,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </div>
 
             <div className="hidden items-center gap-2 pr-2 md:flex">
-              <span className="hidden items-center gap-1.5 pr-2 text-[13px] text-muted-foreground lg:flex">
-                <Clock size={14} />
-                <FortalezaTime suffix={t.topbar.timeSuffix} />
-              </span>
               {langToggle}
               <button
                 type="button"
                 onClick={() => toggleTheme?.()}
                 aria-label={isDark ? t.topbar.lightMode : t.topbar.darkMode}
                 title={isDark ? t.topbar.light : t.topbar.dark}
-                className="flex h-9 w-9 items-center justify-center rounded-full text-muted-foreground transition-colors duration-300 hover:bg-muted hover:text-foreground"
+                className={iconButton}
               >
                 {isDark ? (
                   <Sun className="h-4 w-4" />
@@ -256,7 +303,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 type="button"
                 onClick={() => toggleTheme?.()}
                 aria-label={isDark ? t.topbar.lightMode : t.topbar.darkMode}
-                className="flex h-9 w-9 items-center justify-center rounded-full text-muted-foreground transition-colors duration-300 hover:bg-muted hover:text-foreground"
+                className={iconButton}
               >
                 {isDark ? (
                   <Sun className="h-4 w-4" />
@@ -266,7 +313,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               </button>
               <button
                 onClick={() => setMobileOpen(true)}
-                className="mono-label flex items-center gap-1.5 rounded-full bg-[var(--brand-ink)] px-4 py-2.5 text-[11px] text-white dark:bg-white dark:text-[var(--brand-ink)]"
+                className={cn(
+                  "mono-label flex items-center gap-1.5 rounded-full px-4 py-2.5 text-[11px] transition-colors duration-300",
+                  overSky
+                    ? "bg-white/15 text-white ring-1 ring-inset ring-white/40 backdrop-blur-sm"
+                    : "bg-[var(--brand-ink)] text-white dark:bg-white dark:text-[var(--brand-ink)]"
+                )}
                 aria-label={t.topbar.openMenu}
                 aria-expanded={mobileOpen}
                 aria-controls="mobile-menu"
