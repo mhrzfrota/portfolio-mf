@@ -624,83 +624,10 @@
     background: var(--grey-50);
   }
 
-  /* ---------- Slider de projetos (o layout dos Testimonials da referência) --
-     Cards altos (30rem, ~3 por viewport) com a foto em full-bleed, gradiente
-     escuro subindo do pé e o texto por cima. Navegação por setas circulares no
-     cabeçalho + scroll/arraste nativo com snap; o card seguinte fica
-     parcialmente visível na borda. */
-
-  .pslider {
-    display: flex;
-    gap: 24px;
-    overflow-x: auto;
-    /* Só o eixo X rola: sem isso o overflow-y implícito vira "auto" e qualquer
-       pixel de sobra cria um scroll vertical preso dentro do carrossel. */
-    overflow-y: hidden;
-    /* No toque, a fileira só reage a arrasto horizontal. Sem isso, depois de
-       passar os cards pro lado o navegador prende o gesto no carrossel e o
-       swipe pra baixo não desce a página. */
-    touch-action: pan-x pinch-zoom;
-    /* Chegar no fim da fileira não empurra o scroll (nem o "voltar" do
-       navegador) pro que está atrás. */
-    overscroll-behavior-x: contain;
-    scroll-snap-type: x proximity;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .pslider::-webkit-scrollbar {
-    display: none;
-  }
-
-  /* Os screenshots são ~2.15:1 (1200×555, 1600×742). Num card alto com
-     `cover` eles viravam uma tira vertical — daí a foto não aparecer. Agora a
-     imagem tem moldura própria em 16/9 no topo e o texto vem embaixo, no
-     painel escuro; o card fica largo (dois por tela) em vez de alto. */
-  .pslider-card {
-    position: relative;
-    display: flex;
-    flex: 0 0 clamp(300px, 46%, 600px);
-    flex-direction: column;
-    overflow: clip;
-    border-radius: 24px;
-    background: var(--ink);
-    scroll-snap-align: start;
-  }
-
-  @media (max-width: 767px) {
-    .pslider-card {
-      flex-basis: 86%;
-    }
-  }
-
-  .pslider-card-media {
-    position: relative;
-    aspect-ratio: 16 / 9;
-    overflow: clip;
-    background: var(--grey-50);
-  }
-
-  /* `top center`: o topo do screenshot é a parte reconhecível de um site. */
-  .pslider-card-media img {
-    height: 100%;
-    width: 100%;
-    object-fit: cover;
-    object-position: top center;
-    transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .pslider-card:hover .pslider-card-media img {
-    transform: scale(1.04);
-  }
-
-  .pslider-card-body {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    gap: 10px;
-    padding: 26px 28px 28px;
-  }
+  /* ---------- Carrossel de projetos ----------
+     O card virou coverflow 3D (components/ui/coverflow-carousel.tsx): a
+     geometria toda vive no componente, aqui ficam só as setas do cabeçalho.
+     O CSS do slider antigo (.pslider*) saiu junto com ele. */
 
   /* Setas circulares do cabeçalho, como na referência. */
   .slider-arrow {

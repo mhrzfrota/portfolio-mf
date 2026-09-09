@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
 import { Link } from "wouter";
 
@@ -7,6 +7,10 @@ import { useLanguage, type Lang } from "@/contexts/LanguageContext";
 import { getStrings } from "@/i18n/strings";
 import { getProjectAction } from "@/lib/projectAction";
 import SectionHeader from "@/components/SectionHeader";
+import {
+  CoverflowCarousel,
+  type CoverflowApi,
+} from "@/components/ui/coverflow-carousel";
 
 const byNewest = [...allProjects].reverse();
 
@@ -19,70 +23,74 @@ export const otherProjects = byNewest.filter(
 );
 
 /**
- * Carrossel de projetos com setas circulares no cabeçalho, no espírito da
- * seção de depoimentos da referência.
+ * Painel de informação do card: fica escondido e aparece com o mouse em cima
+ * (ou com o foco no link), e no toque abre no clique — daí o `data-open`.
  *
- * O card mudou de forma: os screenshots são ~2.15:1, e num card alto com
- * `object-fit: cover` só sobrava uma tira vertical da imagem. Agora a foto tem
- * moldura própria em 16/9 no topo (ancorada em `top center`, que é a parte
- * reconhecível de um site) e o texto vem embaixo no painel escuro.
+ * Só monta no card da frente: nos cards rakeados o texto ficaria ilegível e o
+ * link roubaria cliques que são pra girar o carrossel.
  */
-function ProjectCard({ project, lang }: { project: Project; lang: Lang }) {
+function ProjectInfo({
+  project,
+  lang,
+  open,
+}: {
+  project: Project;
+  lang: Lang;
+  open: boolean;
+}) {
   const t = getStrings(lang);
   const action = getProjectAction(project, lang);
   const category = t.projects.categories[project.category] ?? project.category;
 
-  const body = (
-    <>
-      <div className="pslider-card-media">
-        <img
-          src={project.image}
-          alt={project.title}
-          loading="lazy"
-          decoding="async"
-          draggable={false}
-        />
-      </div>
-
-      <div className="pslider-card-body">
-        <span className="mono-label text-[11px] text-white/60">{category}</span>
-
-        <h3 className="text-[22px] font-medium leading-tight tracking-[-0.04em] text-white">
-          {project.title}
-        </h3>
-
-        <p className="project-clamp text-[14px] leading-relaxed text-white/70">
-          {project.description[lang]}
-        </p>
-
-        <span className="mono-label mt-auto inline-flex items-center gap-1.5 pt-4 text-[11px] text-white">
-          {action.label}
-          <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-        </span>
-      </div>
-    </>
+  const cta = (
+    <span className="mono-label mt-3 inline-flex items-center gap-1.5 rounded-full bg-white px-4 py-2 text-[11px] text-[var(--brand-ink)] transition-colors hover:bg-white/85 sm:mt-4">
+      {action.label}
+      <ArrowUpRight className="h-4 w-4" />
+    </span>
   );
 
-  const className = "pslider-card group";
-
-  if (action.external) {
-    return (
-      <a
-        href={action.href}
-        target="_blank"
-        rel="noreferrer"
-        className={className}
-        aria-label={project.title}
-      >
-        {body}
-      </a>
-    );
-  }
-
   return (
-    <Link href={action.href} className={className} aria-label={project.title}>
-      {body}
-    </Link>
+    <div
+      data-open={open}
+      // pointer-events acompanha a opacidade: invisível não clica, senão o
+      // link engoliria o toque no card fechado.
+      className="pointer-events-none absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-[var(--brand-ink)] via-[var(--brand-ink)]/92 to-[var(--brand-ink)]/40 p-5 backdrop-blur-[2px] opacity-0 transition-opacity duration-500 group-hover:pointer-events-auto group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:opacity-100 data-[open=true]:pointer-events-auto data-[open=true]:opacity-100 sm:p-7"
+    >
+      <span className="mono-label text-[11px] text-white/60">{category}</span>
+
+      <h3 className="mt-1 text-[19px] font-medium leading-tight tracking-[-0.04em] text-white sm:text-[26px]">
+        {project.title}
+      </h3>
+
+      {/* O card nasce na proporção do screenshot (~2:1): no celular ele tem
+          150px de altura e a descrição não cabe sem cortar. Fica no card,
+          inteira, a partir do sm. */}
+      <p className="mt-2 hidden line-clamp-3 max-w-[52ch] text-[13px] leading-relaxed text-white/70 sm:block sm:text-[14px]">
+        {project.description[lang]}
+      </p>
+
+      <div>
+        {action.external ? (
+          <a
+            href={action.href}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={project.title}
+            onClick={event => event.stopPropagation()}
+          >
+            {cta}
+          </a>
+        ) : (
+          <Link
+            href={action.href}
+            aria-label={project.title}
+            onClick={event => event.stopPropagation()}
+          >
+            {cta}
+          </Link>
+        )}
+      </div>
+    </div>
   );
 }
 
@@ -101,78 +109,16 @@ export default function ProjectsShowcase({
 }) {
   const { lang } = useLanguage();
   const t = getStrings(lang);
-  const sliderRef = useRef<HTMLDivElement>(null);
-  const [canPrev, setCanPrev] = useState(false);
-  const [canNext, setCanNext] = useState(true);
-
-  const updateArrows = useCallback(() => {
-    const el = sliderRef.current;
-    if (!el) return;
-    setCanPrev(el.scrollLeft > 4);
-    setCanNext(el.scrollLeft < el.scrollWidth - el.clientWidth - 4);
-  }, []);
-
-  useEffect(() => {
-    updateArrows();
-    window.addEventListener("resize", updateArrows);
-    return () => window.removeEventListener("resize", updateArrows);
-  }, [updateArrows]);
-
-  // Depois de um scroll lateral, o navegador "prende" o gesto no carrossel
-  // (scroll latching) e a rodinha/trackpad vertical para de descer a página.
-  // O eixo é decidido uma vez por gesto (e liberado numa pausa), então a inércia
-  // horizontal do trackpad nunca engole a rolagem vertical seguinte.
-  // Precisa de listener nativo: o onWheel do React é passivo e não permite
-  // preventDefault.
-  useEffect(() => {
-    const el = sliderRef.current;
-    if (!el) return;
-
-    let axis: "x" | "y" | null = null;
-    let idle = 0;
-
-    const onWheel = (event: WheelEvent) => {
-      if (event.ctrlKey) return; // pinch-zoom
-
-      // Pausa entre eventos = gesto terminou; o próximo escolhe o eixo de novo.
-      window.clearTimeout(idle);
-      idle = window.setTimeout(() => {
-        axis = null;
-      }, 140);
-
-      if (!axis) {
-        const dx = Math.abs(event.deltaX);
-        const dy = Math.abs(event.deltaY);
-        if (dx < 1 && dy < 1) return;
-        axis = dx > dy ? "x" : "y";
-      }
-
-      if (axis === "x") return; // carrossel rola nativo
-
-      event.preventDefault();
-      // deltaMode 1 = linhas (Firefox com mouse); converte pra pixels.
-      const dy = event.deltaMode === 1 ? event.deltaY * 16 : event.deltaY;
-      // "instant": a rodinha nativa é imediata; sem isso o scroll-behavior
-      // smooth global deixa a rolagem elástica só em cima do carrossel.
-      window.scrollBy({ top: dy, behavior: "instant" });
-    };
-
-    el.addEventListener("wheel", onWheel, { passive: false });
-    return () => {
-      window.clearTimeout(idle);
-      el.removeEventListener("wheel", onWheel);
-    };
-  }, []);
-
-  const scrollByCard = (direction: -1 | 1) => {
-    const el = sliderRef.current;
-    if (!el) return;
-    const card = el.firstElementChild as HTMLElement | null;
-    const step = (card?.offsetWidth ?? 420) + 24;
-    el.scrollBy({ left: direction * step, behavior: "smooth" });
-  };
+  const api = useRef<CoverflowApi>(null);
+  /** Card aberto no clique (toque). O hover não passa por aqui: é CSS. */
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   if (projects.length === 0) return null;
+
+  const slides = projects.map(project => ({
+    src: project.image,
+    alt: project.title,
+  }));
 
   return (
     <section id={id} className="section-box section-pad scroll-mt-24">
@@ -186,8 +132,7 @@ export default function ProjectsShowcase({
               <button
                 type="button"
                 className="slider-arrow"
-                onClick={() => scrollByCard(-1)}
-                disabled={!canPrev}
+                onClick={() => api.current?.prev()}
                 aria-label={t.projects.prev}
               >
                 <ArrowLeft className="h-5 w-5" />
@@ -195,8 +140,7 @@ export default function ProjectsShowcase({
               <button
                 type="button"
                 className="slider-arrow"
-                onClick={() => scrollByCard(1)}
-                disabled={!canNext}
+                onClick={() => api.current?.next()}
                 aria-label={t.projects.next}
               >
                 <ArrowRight className="h-5 w-5" />
@@ -205,16 +149,36 @@ export default function ProjectsShowcase({
           }
         />
 
-        <div
-          ref={sliderRef}
-          onScroll={updateArrows}
-          data-anim="card-reveal"
-          data-anim-children
-          className="pslider mt-12 sm:mt-16"
-        >
-          {projects.map(project => (
-            <ProjectCard key={project.id} project={project} lang={lang} />
-          ))}
+        <div data-anim="fade-up" className="mt-12 sm:mt-16">
+          <CoverflowCarousel
+            apiRef={api}
+            slides={slides}
+            label={title}
+            // Os screenshots são ~2:1: o card nasce na proporção da foto, sem
+            // cortar nem esticar. `top center` guarda a margem dos 2.16:1.
+            aspect={2}
+            cardWidth="clamp(260px, 72vw, 640px)"
+            rotate={38}
+            depth={0.34}
+            perspective={2.2}
+            fade={0.14}
+            gap={0.08}
+            cardClassName="group cursor-pointer bg-[var(--brand-ink)]"
+            imageClassName="object-top"
+            onSelect={() => setOpenIndex(null)}
+            onCardClick={(index, isActive) => {
+              if (isActive) setOpenIndex(openIndex === index ? null : index);
+            }}
+            renderOverlay={({ index, isActive }) =>
+              isActive ? (
+                <ProjectInfo
+                  project={projects[index]}
+                  lang={lang}
+                  open={openIndex === index}
+                />
+              ) : null
+            }
+          />
         </div>
       </div>
     </section>
