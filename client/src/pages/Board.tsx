@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import {
   ArrowLeft,
   Check,
+  Brain,
   CircleCheckBig,
   Pencil,
   Plus,
@@ -521,11 +522,18 @@ export default function Board() {
             {totalCards} {totalCards === 1 ? "cartão" : "cartões"}
           </p>
           <Link
+            href="/cerebro"
+            className="board-glass mono-label flex items-center gap-2 rounded-full px-4 py-2.5 text-[10px] text-white/80 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+          >
+            <Brain className="h-3.5 w-3.5" />
+            <span className="hidden sm:inline">Cérebro</span>
+          </Link>
+          <Link
             href="/habitos"
             className="board-glass mono-label flex items-center gap-2 rounded-full px-4 py-2.5 text-[10px] text-white/80 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
           >
             <CircleCheckBig className="h-3.5 w-3.5" />
-            Hábitos
+            <span className="hidden sm:inline">Hábitos</span>
           </Link>
           <InternalAccount />
         </div>

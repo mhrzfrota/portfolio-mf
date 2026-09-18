@@ -11,6 +11,7 @@ import ProjectDetail from "./pages/ProjectDetail";
 import BlogPost from "./pages/BlogPost";
 import Board from "./pages/Board";
 import Habits from "./pages/Habits";
+import Cerebro from "./pages/Cerebro";
 import Login from "./pages/Login";
 
 function Router() {
@@ -26,6 +27,11 @@ function Router() {
       <Route path="/habitos">
         <ProtectedRoute returnTo="/habitos">
           <Habits />
+        </ProtectedRoute>
+      </Route>
+      <Route path="/cerebro">
+        <ProtectedRoute returnTo="/cerebro">
+          <Cerebro />
         </ProtectedRoute>
       </Route>
       <Route>

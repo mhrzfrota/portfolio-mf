@@ -137,6 +137,21 @@ O frontend é gerado em `dist/public` e servido pelo Express. A porta pode ser c
 
 O build produz dois artefatos: o site estático em `dist/public` e o servidor Express em `dist/index.js` (que serve os estáticos e faz o fallback de rotas do SPA — necessário para rotas diretas como `/board`).
 
+
+### Cérebro: o vault dentro do portfólio
+
+A rota `/cerebro` mostra o segundo cérebro (vault do Obsidian): foco da semana,
+tokens por pasta e por nota, notas frias e pesadas, e as mais citadas. O vault
+continua sendo a fonte da verdade; o app só lê um snapshot no Supabase.
+
+1. Rode `supabase/migrations/0001_cerebro.sql` no SQL Editor do projeto (uma vez).
+2. No `.env.local`, preencha `SUPABASE_SERVICE_ROLE_KEY` (Project Settings > API Keys).
+   Ela só é lida pelo script no seu Mac. Nunca prefixe com `VITE_`.
+3. `pnpm cerebro:dry` mede o vault sem gravar. `pnpm cerebro:sync` grava.
+
+Variáveis opcionais: `CEREBRO_VAULT` (pasta do vault, padrão `~/Documents/FRT CEREBRO`)
+e `CEREBRO_OWNER_EMAIL` (só quando o projeto Supabase tiver mais de um usuário).
+
 ### Opção 1 — Plataforma Node (Render, Railway, Fly.io, VPS)
 
 1. Build: `pnpm install && pnpm build`
