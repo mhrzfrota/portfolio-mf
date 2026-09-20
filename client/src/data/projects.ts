@@ -395,6 +395,74 @@ export const projects: Project[] = [
     repoUrl: "https://github.com/mhrzfrota",
     category: "Web",
   },
+  {
+    id: 17,
+    slug: "planner",
+    title: "Planner",
+    description: {
+      pt: "Plataforma de gestão de comunicação municipal: campanhas, demandas em Kanban, aprovação com cliente externo, notificações multicanal e um assistente de IA que revisa as peças antes de irem pro ar.",
+      en: "Municipal communication management platform: campaigns, Kanban demands, external client approval, multichannel notifications and an AI assistant that reviews deliverables before they go live.",
+    },
+    tags: [
+      "React 19",
+      "Node.js",
+      "Express",
+      "Prisma",
+      "PostgreSQL",
+      "Docker",
+      "JWT",
+      "IA (Claude)",
+      "RAG",
+      "Web Push",
+    ],
+    image: "/images/planner-dashboard.webp",
+    liveUrl: "#",
+    repoUrl: "#",
+    category: "Plataformas",
+    featured: true,
+    caseStudy: {
+      clientProblem: {
+        pt: "Uma agência de comunicação institucional tocava dezenas de campanhas para prefeituras espalhadas em planilhas, grupos de WhatsApp e e-mail. Ninguém sabia dizer, sem perguntar, em que pé estava cada peça, quem precisava aprovar o quê e o que já tinha estourado o prazo. A aprovação do assessor do município acontecia fora de qualquer registro.",
+        en: "An institutional communication agency ran dozens of municipal campaigns across spreadsheets, WhatsApp groups and email. Nobody could say, without asking around, where each deliverable stood, who had to approve what, or what was already past deadline. Client-side approval happened with no record at all.",
+      },
+      solution: {
+        pt: "Construí a plataforma inteira, do banco à interface. Campanhas e demandas com fluxo de status (rascunho, envio, revisão, aprovação, execução, entrega) e quadro Kanban com arrastar e soltar. Cinco perfis de acesso com permissões próprias, incluindo o assessor do município aprovando pelo próprio login. Motor único de notificações em quatro canais (in-app, Web Push, WhatsApp e e-mail) com audiências e modelos de mensagem montados pelo admin, mais um varredor de SLA que avisa antes do prazo estourar. E o Severino, assistente de IA que revisa texto e vídeo das peças, aponta problemas antes da entrega, busca arquivos no Dropbox da agência e responde sobre o histórico do cliente usando RAG com busca vetorial.",
+        en: "I built the whole platform, from database to interface. Campaigns and demands with a status flow (draft, submitted, review, approved, executed, delivered) and a drag-and-drop Kanban board. Five access profiles with their own permissions, including the municipal officer approving through their own login. A single notification engine across four channels (in-app, Web Push, WhatsApp and email) with audiences and message templates built by the admin, plus an SLA scanner that warns before deadlines slip. And Severino, an AI assistant that reviews the text and video of each deliverable, flags issues before delivery, fetches files from the agency's Dropbox and answers questions about client history using RAG with vector search.",
+      },
+      benefit: {
+        pt: "A operação inteira passou a viver em um lugar só: 35 clientes, 33 usuários e mais de 500 demandas com histórico rastreável e aprovação registrada. O que era cobrança manual virou aviso automático, e a revisão por IA pega o erro antes do cliente ver.",
+        en: "The entire operation now lives in one place: 35 clients, 33 users and over 500 demands with a traceable history and recorded approvals. Manual chasing became automatic alerts, and the AI review catches mistakes before the client does.",
+      },
+      images: [
+        {
+          src: "/images/planner-dashboard.webp",
+          alt: {
+            pt: "Dashboard do Planner com indicadores de campanhas e demandas",
+            en: "Planner dashboard with campaign and demand indicators",
+          },
+          caption: {
+            pt: "Dashboard com taxa de aprovação, taxa de execução, tempo médio em desenvolvimento e demandas vencidas.",
+            en: "Dashboard with approval rate, execution rate, average development time and overdue demands.",
+          },
+        },
+        {
+          src: "/images/planner-kanban.webp",
+          alt: {
+            pt: "Quadro Kanban de demandas do Planner",
+            en: "Planner Kanban board of demands",
+          },
+          caption: {
+            pt: "Kanban de demandas por etapa, com prazo, anexos, responsável e os apontamentos da revisão por IA.",
+            en: "Kanban of demands by stage, with deadlines, attachments, owner and AI review notes.",
+          },
+        },
+      ],
+      ctaLabel: {
+        pt: "Quero um sistema parecido",
+        en: "I want a similar system",
+      },
+    },
+  },
 ];
 
 export const categories = ["Todos", "Web", "Plataformas", "Landing Page"];
