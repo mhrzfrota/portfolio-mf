@@ -463,11 +463,11 @@ export default function Habits() {
             <span className="hidden sm:inline">Cérebro</span>
           </Link>
           <Link
-            href="/board"
+            href="/interno" aria-label="Visão geral"
             className="habit-glass mono-label flex items-center gap-2 rounded-full px-4 py-2.5 text-[10px] text-white/80 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
           >
             <LayoutGrid className="h-3.5 w-3.5" />
-            <span className="hidden sm:inline">Board</span>
+            <span className="hidden sm:inline">Visão geral</span>
           </Link>
           <InternalAccount surface="habits" />
         </div>

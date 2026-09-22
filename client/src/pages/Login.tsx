@@ -10,10 +10,15 @@ import {
 import { Link, Redirect } from "wouter";
 import { useAuth } from "@/contexts/AuthContext";
 
-function requestedPath(): "/board" | "/habitos" | "/cerebro" {
+function requestedPath(): "/interno" | "/financeiro" | "/habitos" | "/cerebro" {
   const requested = new URLSearchParams(window.location.search).get("returnTo");
-  if (requested === "/habitos" || requested === "/cerebro") return requested;
-  return "/board";
+  if (
+    requested === "/habitos" ||
+    requested === "/cerebro" ||
+    requested === "/financeiro"
+  )
+    return requested;
+  return "/interno";
 }
 
 function AccessShell({ children }: { children: ReactNode }) {

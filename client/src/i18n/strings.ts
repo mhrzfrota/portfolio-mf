@@ -44,7 +44,7 @@ const strings = {
       formLabel: "Me chame no WhatsApp",
       formPlaceholder: "Escreva sua mensagem…",
       formSubmit: "Enviar",
-      boardLink: "Board interno",
+      boardLink: "Sistema interno",
       habitsLink: "Hábitos",
     },
     hero: {
@@ -257,7 +257,7 @@ const strings = {
       formLabel: "Message me on WhatsApp",
       formPlaceholder: "Write your message…",
       formSubmit: "Send",
-      boardLink: "Internal board",
+      boardLink: "Internal system",
       habitsLink: "Habits",
     },
     hero: {

@@ -1,5 +1,5 @@
 import NotFound from "@/pages/NotFound";
-import { Route, Switch } from "wouter";
+import { Redirect, Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { AuthProvider } from "./contexts/AuthContext";
@@ -9,7 +9,8 @@ import Layout from "./components/Layout";
 import Home from "./pages/Home";
 import ProjectDetail from "./pages/ProjectDetail";
 import BlogPost from "./pages/BlogPost";
-import Board from "./pages/Board";
+import Overview from "./pages/Overview";
+import Finance from "./pages/Finance";
 import Habits from "./pages/Habits";
 import Cerebro from "./pages/Cerebro";
 import Login from "./pages/Login";
@@ -20,8 +21,16 @@ function Router() {
       {/* Ferramenta interna, tela cheia: fica fora do Layout do site. */}
       <Route path="/acesso" component={Login} />
       <Route path="/board">
-        <ProtectedRoute returnTo="/board">
-          <Board />
+        <Redirect to="/interno" replace />
+      </Route>
+      <Route path="/interno">
+        <ProtectedRoute returnTo="/interno">
+          <Overview />
+        </ProtectedRoute>
+      </Route>
+      <Route path="/financeiro">
+        <ProtectedRoute returnTo="/financeiro">
+          <Finance />
         </ProtectedRoute>
       </Route>
       <Route path="/habitos">

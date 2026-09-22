@@ -512,7 +512,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               {/* Ferramenta pessoal: o link existe pra rota ter um caminho,
                   mas fica discreto de propósito. */}
               <a
-                href="/board"
+                href="/interno"
                 className="text-[12px] text-white/45 transition-colors hover:text-white/80"
               >
                 {t.footer.boardLink}
