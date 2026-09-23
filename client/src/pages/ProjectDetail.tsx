@@ -19,6 +19,10 @@ export default function ProjectDetail({
 }: RouteComponentProps<ProjectDetailParams>) {
   const project = getProjectBySlug(params.slug);
   const caseStudy = project?.caseStudy;
+  // "#" é o marcador de "não existe link público": sistema interno de cliente
+  // não tem site aberto nem repositório visível.
+  const hasLive = Boolean(project && project.liveUrl !== "#");
+  const hasRepo = Boolean(project && project.repoUrl !== "#");
   const { lang } = useLanguage();
   const t = getStrings(lang);
 
@@ -91,17 +95,19 @@ export default function ProjectDetail({
               href={WHATSAPP_BUDGET_URL}
               external
             />
-            <Button
-              asChild
-              size="lg"
-              variant="outline"
-              className="rounded-full border-border text-[13px] font-medium hover:text-primary"
-            >
-              <a href={project.liveUrl} target="_blank" rel="noreferrer">
-                {t.projectDetail.viewLive}
-                <ExternalLink className="h-4 w-4" />
-              </a>
-            </Button>
+            {hasLive && (
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="rounded-full border-border text-[13px] font-medium hover:text-primary"
+              >
+                <a href={project.liveUrl} target="_blank" rel="noreferrer">
+                  {t.projectDetail.viewLive}
+                  <ExternalLink className="h-4 w-4" />
+                </a>
+              </Button>
+            )}
           </div>
         </div>
 
@@ -109,7 +115,8 @@ export default function ProjectDetail({
           <img
             src={project.image}
             alt={project.title}
-            className="aspect-[4/3] w-full object-cover"
+            style={{ aspectRatio: project.imageAspect }}
+            className="w-full object-cover"
           />
         </div>
       </section>
@@ -159,29 +166,35 @@ export default function ProjectDetail({
             </div>
           </div>
 
-          <div className="rounded-2xl border border-border bg-card p-6">
-            <h2 className="text-[13px] font-semibold uppercase tracking-wide text-primary">
-              {t.projectDetail.links}
-            </h2>
-            <div className="mt-4 grid gap-3">
-              <a
-                href={project.liveUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="flex items-center justify-between rounded-xl border border-border px-4 py-3 text-sm transition-colors hover:border-primary hover:text-primary"
-              >
-                {t.projectDetail.liveLink} <ExternalLink className="h-4 w-4" />
-              </a>
-              <a
-                href={project.repoUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="flex items-center justify-between rounded-xl border border-border px-4 py-3 text-sm transition-colors hover:border-primary hover:text-primary"
-              >
-                {t.projectDetail.repository} <Github className="h-4 w-4" />
-              </a>
+          {(hasLive || hasRepo) && (
+            <div className="rounded-2xl border border-border bg-card p-6">
+              <h2 className="text-[13px] font-semibold uppercase tracking-wide text-primary">
+                {t.projectDetail.links}
+              </h2>
+              <div className="mt-4 grid gap-3">
+                {hasLive && (
+                  <a
+                    href={project.liveUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-center justify-between rounded-xl border border-border px-4 py-3 text-sm transition-colors hover:border-primary hover:text-primary"
+                  >
+                    {t.projectDetail.liveLink} <ExternalLink className="h-4 w-4" />
+                  </a>
+                )}
+                {hasRepo && (
+                  <a
+                    href={project.repoUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-center justify-between rounded-xl border border-border px-4 py-3 text-sm transition-colors hover:border-primary hover:text-primary"
+                  >
+                    {t.projectDetail.repository} <Github className="h-4 w-4" />
+                  </a>
+                )}
+              </div>
             </div>
-          </div>
+          )}
 
           <div className="rounded-2xl bg-[var(--brand-ink)] p-6 text-white">
             <h2 className="text-[17px] font-semibold">

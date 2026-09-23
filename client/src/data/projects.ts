@@ -505,6 +505,63 @@ export const projects: Project[] = [
     category: "Web",
     featured: true,
   },
+  {
+    id: 19,
+    slug: "villas-flow",
+    title: "Villa's Flow",
+    description: {
+      pt: "Sistema interno de gestão de demandas para uma empresa de comunicação visual: Kanban, calendário, aprovações, cronograma de entregas e logística de equipe em campo, com permissão por setor escrita dentro do banco.",
+      en: "Internal demand management system for a visual communication company: Kanban, calendar, approvals, delivery schedule and field team logistics, with sector-level permissions written inside the database.",
+    },
+    tags: [
+      "Next.js 14",
+      "TypeScript",
+      "Tailwind",
+      "Supabase",
+      "PostgreSQL",
+      "RLS",
+      "Realtime",
+      "pg_cron",
+      "Resend",
+    ],
+    image: "/images/villas-flow.webp",
+    imageAspect: 2.289,
+    liveUrl: "#",
+    repoUrl: "#",
+    category: "Plataformas",
+    featured: true,
+    caseStudy: {
+      clientProblem: {
+        pt: "Uma empresa de comunicação visual com seis setores e equipe em campo tocava as demandas por WhatsApp e memória. O dono não conseguia ver tudo o que estava em andamento sem perguntar de um em um, o gerente operacional não sabia dizer quem estava sobrecarregado, e prazo só era lembrado quando já tinha estourado. Aprovação acontecia na conversa, sem registro de quem liberou o quê.",
+        en: "A visual communication company with six departments and a field team ran its work through WhatsApp and memory. The owner could not see everything in progress without asking person by person, the operations manager could not tell who was overloaded, and deadlines were only remembered after they had passed. Approvals happened in conversation, with no record of who released what.",
+      },
+      solution: {
+        pt: "Construí a plataforma inteira, do banco à interface. As demandas passaram a ter quadro Kanban, lista com filtros, calendário e cronograma de entregas, mais aprovações com dono e data. A operação em campo ganhou logística com agenda de deslocamentos, cadastro de locais e a tela de onde a equipe está agora. O controle de acesso é o coração: cada pessoa só enxerga o que o cargo dela permite, e essa regra vive no banco com RLS, não na tela, então nem uma chamada direta à API devolve o que não é daquele setor. Os lembretes de prazo rodam de hora em hora dentro do próprio Postgres com pg_cron, e não na hospedagem, para o aviso continuar de pé mesmo se o app mudar de servidor.",
+        en: "I built the whole platform, from database to interface. Demands gained a Kanban board, a filtered list, a calendar and a delivery schedule, plus approvals with an owner and a date. Field work gained logistics with a travel agenda, a locations registry and a live view of where the team is. Access control is the core: each person only sees what their role allows, and that rule lives in the database with RLS rather than in the interface, so not even a direct API call returns another department's data. Deadline reminders run hourly inside Postgres itself with pg_cron instead of on the host, so the alerts keep working even if the app changes servers.",
+      },
+      benefit: {
+        pt: "A operação inteira passou a caber numa tela só, com as seis áreas da empresa e o organograma refletido no acesso. O que era cobrança no grupo virou aviso automático antes do prazo, e cada aprovação ficou registrada com nome e hora.",
+        en: "The entire operation now fits on one screen, with the company's six areas and its org chart reflected in the access rules. Chasing people in a group chat became an automatic alert before the deadline, and every approval is recorded with a name and a timestamp.",
+      },
+      images: [
+        {
+          src: "/images/villas-flow.webp",
+          alt: {
+            pt: "Visão geral do Villa's Flow com os atalhos das áreas de trabalho, operação e negócio",
+            en: "Villa's Flow overview with shortcuts for the work, operations and business areas",
+          },
+          caption: {
+            pt: "Visão geral: indicadores calculados sobre os setores que o usuário pode ver, e os atalhos agrupados em Trabalho, Operação e Negócio.",
+            en: "Overview: indicators calculated across the departments the user is allowed to see, with shortcuts grouped into Work, Operations and Business.",
+          },
+        },
+      ],
+      ctaLabel: {
+        pt: "Quero um sistema parecido",
+        en: "I want a similar system",
+      },
+    },
+  },
 ];
 
 export const categories = ["Todos", "Web", "Plataformas", "Landing Page"];
