@@ -500,7 +500,7 @@ export const projects: Project[] = [
     ],
     image: "/images/carstore.webp",
     imageAspect: 2.289,
-    liveUrl: "#",
+    liveUrl: "https://carstorepremium.com.br",
     repoUrl: "https://github.com/mhrzfrota/carstore",
     category: "Web",
     featured: true,
