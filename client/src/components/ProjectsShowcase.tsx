@@ -12,15 +12,8 @@ import {
   type CoverflowApi,
 } from "@/components/ui/coverflow-carousel";
 
-const byNewest = [...allProjects].reverse();
-
-/** Landing pages e "o resto" viram duas seções distintas na home. */
-export const landingProjects = byNewest.filter(
-  project => project.category === "Landing Page"
-);
-export const otherProjects = byNewest.filter(
-  project => project.category !== "Landing Page"
-);
+/** Mais recente primeiro: é o que o visitante quer ver. */
+export const allProjectsByNewest = [...allProjects].reverse();
 
 /**
  * Painel de informação do card: fica escondido e aparece com o mouse em cima
@@ -118,10 +111,16 @@ export default function ProjectsShowcase({
   const slides = projects.map(project => ({
     src: project.image,
     alt: project.title,
+    aspect: project.imageAspect,
   }));
 
+  // Fundo opaco e acima do hero: é esta seção que "entra por cima" do azul
+  // na saída da primeira tela.
   return (
-    <section id={id} className="section-box section-pad scroll-mt-24">
+    <section
+      id={id}
+      className="section-box section-pad relative z-10 bg-background scroll-mt-24"
+    >
       <div className="container padding-global">
         <SectionHeader
           eyebrow={eyebrow}
@@ -149,22 +148,23 @@ export default function ProjectsShowcase({
           }
         />
 
-        <div data-anim="fade-up" className="mt-12 sm:mt-16">
+        <div data-anim="fade-up" className="mt-4 sm:mt-8">
           <CoverflowCarousel
             apiRef={api}
             slides={slides}
             label={title}
-            // Os screenshots são ~2:1: o card nasce na proporção da foto, sem
-            // cortar nem esticar. `top center` guarda a margem dos 2.16:1.
+            // Cada card nasce na proporção do próprio screenshot (vêm de 1.6
+            // a 2.32), então nada é cortado nem esticado. O `aspect` aqui é só
+            // a reserva para um projeto que entre sem medida.
             aspect={2}
-            cardWidth="clamp(260px, 72vw, 640px)"
-            rotate={38}
-            depth={0.34}
-            perspective={2.2}
-            fade={0.14}
-            gap={0.08}
+            cardWidth="clamp(320px, 92vw, 900px)"
+            rotate={30}
+            depth={0.28}
+            perspective={2.8}
+            fade={0.12}
+            gap={0.14}
             cardClassName="group cursor-pointer bg-[var(--brand-ink)]"
-            imageClassName="object-top"
+            imageClassName="object-center"
             onSelect={() => setOpenIndex(null)}
             onCardClick={(index, isActive) => {
               if (isActive) setOpenIndex(openIndex === index ? null : index);

@@ -30,9 +30,16 @@ export default function Hero() {
   return (
     <section
       id="inicio"
+      data-anim="hero-parallax"
       className="section-box relative flex min-h-[calc(100svh-16px)] flex-col overflow-hidden md:min-h-[calc(100svh-24px)]"
     >
-      <div className="hero-sky absolute inset-0" aria-hidden="true" />
+      {/* `inset-[-8%]`: o céu sobe e cresce na saída, e sem folga apareceria a
+          borda branca da página por baixo dele. */}
+      <div
+        data-hero-sky
+        className="hero-sky absolute inset-[-8%]"
+        aria-hidden="true"
+      />
 
       {SKY_VIDEO && (
         <video
@@ -51,7 +58,10 @@ export default function Hero() {
       <div className="hero-grain" aria-hidden="true" />
       <div className="hero-scrim" aria-hidden="true" />
 
-      <div className="relative z-10 mx-auto flex w-full max-w-[880px] flex-1 flex-col items-center justify-center px-5 pb-10 pt-28 text-center sm:px-8 sm:pt-32">
+      <div
+        data-hero-content
+        className="relative z-10 mx-auto flex w-full max-w-[880px] flex-1 flex-col items-center justify-center px-5 pb-10 pt-28 text-center sm:px-8 sm:pt-32"
+      >
         <h1 aria-label={t.hero.ariaHeadline} className="text-white">
           <span data-anim="hero-words" className="block" aria-hidden="true">
             {words.map((word, index) => (

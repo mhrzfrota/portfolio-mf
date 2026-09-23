@@ -4,6 +4,7 @@ import {
   Clock,
   Github,
   Instagram,
+  LayoutGrid,
   Linkedin,
   Menu,
   MessageCircle,
@@ -281,6 +282,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
             <div className="hidden items-center gap-2 pr-2 md:flex">
               {langToggle}
+              <a
+                href="/interno"
+                aria-label={t.topbar.internal}
+                title={t.topbar.internal}
+                className={iconButton}
+              >
+                <LayoutGrid className="h-4 w-4" />
+              </a>
               <button
                 type="button"
                 onClick={() => toggleTheme?.()}
@@ -299,6 +308,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             {/* Ações mobile */}
             <div className="flex items-center gap-1.5 md:hidden">
               {langToggle}
+              <a
+                href="/interno"
+                aria-label={t.topbar.internal}
+                title={t.topbar.internal}
+                className={iconButton}
+              >
+                <LayoutGrid className="h-4 w-4" />
+              </a>
               <button
                 type="button"
                 onClick={() => toggleTheme?.()}
@@ -417,10 +434,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="container padding-global py-14 sm:py-16">
           <div className="grid gap-12 lg:grid-cols-[1.6fr_1fr_1fr_1fr] lg:gap-8">
             <div className="max-w-md">
+              {/* Mesma marca da topbar: o rodapé usava a versão empilhada e
+                  o site assinava com dois desenhos diferentes. */}
               <img
-                src="/logo2-removebg-preview.png"
+                src="/logo-topbar.png"
                 alt="MF Services"
-                className="h-10 w-auto brightness-0 invert"
+                className="h-7 w-auto brightness-0 invert sm:h-8"
               />
               <p className="mt-5 text-[14px] leading-relaxed text-white/70">
                 {t.footer.tagline}
@@ -505,24 +524,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
           <div className="mt-12 flex flex-col items-start gap-5 border-t border-white/10 pt-8 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-[12px] leading-relaxed text-white/70">
-              © {new Date().getFullYear()} MF Services — Matheus Frota ·{" "}
+              © {new Date().getFullYear()} MF Services · Matheus Frota ·{" "}
               {t.footer.role}
             </p>
             <div className="flex items-center gap-5">
-              {/* Ferramenta pessoal: o link existe pra rota ter um caminho,
-                  mas fica discreto de propósito. */}
-              <a
-                href="/interno"
-                className="text-[12px] text-white/45 transition-colors hover:text-white/80"
-              >
-                {t.footer.boardLink}
-              </a>
-              <a
-                href="/habitos"
-                className="text-[12px] text-white/45 transition-colors hover:text-white/80"
-              >
-                {t.footer.habitsLink}
-              </a>
               <span className="mono-label flex items-center gap-1.5 text-[11px] text-white/60">
                 <Clock size={13} />
                 <FortalezaTime suffix={t.topbar.timeSuffix} />

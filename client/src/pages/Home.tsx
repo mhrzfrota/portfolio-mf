@@ -14,8 +14,7 @@ import { getStrings } from "@/i18n/strings";
 import AboutBento from "@/components/AboutBento";
 import GlassMonogram from "@/components/GlassMonogram";
 import ProjectsShowcase, {
-  landingProjects,
-  otherProjects,
+  allProjectsByNewest,
 } from "@/components/ProjectsShowcase";
 import StackShowcase from "@/components/StackShowcase";
 import Hero from "@/components/hero/Hero";
@@ -80,30 +79,19 @@ export default function Home() {
     <div className="flex flex-col">
       <Hero />
 
-      {/* Ordem da referência: hero → faixa de logos → sobre → serviços →
-          destaque → preços → blog → CTA final. */}
-      <StackShowcase />
-
-      <AboutBento />
-
-      {/* Sistemas, plataformas e sites em cima; landing pages logo abaixo. São
-          públicos diferentes: quem procura sistema não procura página de
-          captura. */}
+      {/* Projeto é a prova: vem logo depois do hero, antes de qualquer
+          discurso. Uma seção só, do mais recente para o mais antigo. */}
       <ProjectsShowcase
         id="projetos"
         eyebrow={t.nav.projetos}
         title={t.projects.title}
         subtitle={t.projects.subtitle}
-        projects={otherProjects}
+        projects={allProjectsByNewest}
       />
 
-      <ProjectsShowcase
-        id="landing-pages"
-        eyebrow={t.projects.landingEyebrow}
-        title={t.projects.landingTitle}
-        subtitle={t.projects.landingSubtitle}
-        projects={landingProjects}
-      />
+      <StackShowcase />
+
+      <AboutBento />
 
       {/* COMBOS — o "Pricing" da referência */}
       <section id="combos" className="section-box section-pad scroll-mt-24">

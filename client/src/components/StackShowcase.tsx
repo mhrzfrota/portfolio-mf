@@ -1,7 +1,7 @@
 import { useLanguage } from "@/contexts/LanguageContext";
 import { getStrings } from "@/i18n/strings";
 
-export const STACK = [
+export const STACK: { name: string; logo: string; logoDark?: string }[] = [
   { name: "React", logo: "/logos/stack/react.svg" },
   { name: "Node.js", logo: "/logos/stack/nodejs.svg" },
   { name: "TypeScript", logo: "/logos/stack/typescript.svg" },
@@ -10,7 +10,8 @@ export const STACK = [
   { name: "Tailwind CSS", logo: "/logos/stack/tailwindcss.svg" },
   { name: "Supabase", logo: "/logos/stack/supabase.svg" },
   { name: "Docker", logo: "/logos/stack/docker.svg" },
-  { name: "AWS", logo: "/logos/stack/aws.svg" },
+  // A marca da AWS tem o texto em azul quase preto, que some no tema escuro.
+  { name: "AWS", logo: "/logos/stack/aws.svg", logoDark: "/logos/stack/aws-dark.svg" },
   { name: "Java", logo: "/logos/stack/java.svg" },
 ];
 
@@ -46,15 +47,27 @@ export default function StackShowcase() {
               className="flex min-w-36 items-center justify-center px-6 md:min-w-48"
               aria-label={tech.name}
             >
-              {/* Cinza uniforme como na referência; a cor volta no hover, e o
-                  marquee pausa junto, então dá pra identificar cada uma. */}
+              {/* Cor da marca, sempre. O cinza uniforme escondia justamente a
+                  informação que a faixa carrega: qual stack é qual. */}
               <img
                 src={tech.logo}
                 alt={tech.name}
-                className="h-8 w-24 object-contain opacity-55 grayscale transition duration-300 hover:opacity-100 hover:grayscale-0 md:h-10 md:w-28 dark:opacity-45 dark:invert dark:hover:invert-0"
+                className={`h-8 w-24 object-contain opacity-90 transition duration-300 hover:scale-110 hover:opacity-100 md:h-10 md:w-28 ${
+                  tech.logoDark ? "dark:hidden" : ""
+                }`}
                 draggable={false}
                 loading="lazy"
               />
+              {tech.logoDark && (
+                <img
+                  src={tech.logoDark}
+                  alt=""
+                  aria-hidden="true"
+                  className="hidden h-8 w-24 object-contain opacity-90 transition duration-300 hover:scale-110 hover:opacity-100 md:h-10 md:w-28 dark:block"
+                  draggable={false}
+                  loading="lazy"
+                />
+              )}
             </div>
           ))}
         </div>

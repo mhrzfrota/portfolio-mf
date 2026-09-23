@@ -9,6 +9,9 @@ const useIsoLayoutEffect =
 export interface CoverflowSlide {
   src: string;
   alt: string;
+  /** Proporção da imagem (largura/altura). O card nasce nela, e a foto não é
+   *  cortada. Sem isso, cai no `aspect` geral do carrossel. */
+  aspect?: number;
   title?: string;
   subtitle?: string;
   meta?: { label: string; value: string }[];
@@ -85,6 +88,8 @@ export function CoverflowCarousel({
   onSelect,
   apiRef,
 }: CoverflowCarouselProps) {
+  // Menor proporção = card mais alto. Define a altura do trilho.
+  const tallest = Math.min(aspect, ...slides.map(s => s.aspect ?? aspect));
   const count = slides.length;
 
   const frameRef = React.useRef<HTMLDivElement>(null);
@@ -142,7 +147,7 @@ export function CoverflowCarousel({
       const tilt = Math.min(rotate * ramp, 82) * Math.sign(offset);
 
       card.style.transform =
-        `translateX(calc(-50% + ${offset * pitch}px)) ` +
+        `translate(calc(-50% + ${offset * pitch}px), -50%) ` +
         `translateZ(${-depth * width * ramp}px) rotateY(${-tilt}deg)`;
 
       // A card is teleported across the ring at exactly half a turn out, so it
@@ -341,7 +346,7 @@ export function CoverflowCarousel({
             }
           }}
           // Vertical padding keeps the drop shadows clear of the overflow clip.
-          className="cursor-grab overflow-hidden py-10 outline-none ring-ring focus-visible:ring-2 active:cursor-grabbing"
+          className="cursor-grab overflow-hidden py-4 outline-none ring-ring focus-visible:ring-2 active:cursor-grabbing"
           style={{
             perspective: `calc(var(--cf-card) * ${perspective})`,
             // Horizontal drag is ours; the page keeps vertical scrolling.
@@ -354,7 +359,9 @@ export function CoverflowCarousel({
           <div
             className="pointer-events-none relative select-none"
             style={{
-              height: `calc(var(--cf-card) / ${aspect})`,
+              // A altura é a do card mais alto (menor proporção): as fotos têm
+            // formatos diferentes e o trilho precisa caber a maior delas.
+            height: `calc(var(--cf-card) / ${tallest})`,
               transformStyle: "preserve-3d",
             }}
           >
@@ -369,10 +376,13 @@ export function CoverflowCarousel({
                 aria-label={`${index + 1} of ${count}`}
                 onClick={() => handleCardClick(index)}
                 className={cn(
-                  "pointer-events-auto absolute left-1/2 top-0 overflow-hidden rounded-2xl bg-muted shadow-xl will-change-transform",
+                  "pointer-events-auto absolute left-1/2 top-1/2 overflow-hidden rounded-2xl bg-muted shadow-xl will-change-transform",
                   cardClassName
                 )}
-                style={{ width: "var(--cf-card)", aspectRatio: aspect }}
+                style={{
+                  width: "var(--cf-card)",
+                  aspectRatio: slide.aspect ?? aspect,
+                }}
               >
                 <img
                   src={slide.src}

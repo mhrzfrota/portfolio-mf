@@ -232,6 +232,48 @@ function counter(el: HTMLElement, tl: gsap.core.Timeline) {
   });
 }
 
+/**
+ * Saída do hero, presa ao scroll (`scrub`): o céu azul sobe devagar e encolhe
+ * enquanto o texto sobe rápido e some. Como a seção seguinte é branca e opaca,
+ * o efeito é o azul saindo por baixo e o branco entrando por cima.
+ *
+ * Só a parte visual se mexe. A caixa da seção fica parada, senão o resto da
+ * página andaria junto e o scroll ficaria borrachudo.
+ */
+function heroParallax(el: HTMLElement, triggers: ScrollTrigger[]) {
+  const sky = el.querySelector<HTMLElement>("[data-hero-sky]");
+  const content = el.querySelector<HTMLElement>("[data-hero-content]");
+  if (!sky && !content) return;
+
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: el,
+      start: "top top",
+      end: "bottom top",
+      // 0.6s de inércia: o painel continua o movimento um instante depois do
+      // dedo parar, que é o que dá a sensação de peso.
+      scrub: 0.6,
+    },
+  });
+
+  // O fundo anda menos que a página: é daí que vem a profundidade.
+  if (sky) {
+    tl.to(sky, { yPercent: -14, scale: 1.06, ease: "none" }, 0);
+  }
+
+  // O texto anda mais que a página e sai antes do azul.
+  if (content) {
+    tl.to(
+      content,
+      { yPercent: -26, opacity: 0, filter: "blur(6px)", ease: "none" },
+      0
+    );
+  }
+
+  const trigger = tl.scrollTrigger;
+  if (trigger) triggers.push(trigger);
+}
+
 /* ---------- Runtime ---------- */
 
 const BUILDERS: Record<string, (ctx: Ctx) => void> = {
@@ -253,6 +295,7 @@ function setup(el: HTMLElement, triggers: ScrollTrigger[]) {
   if (variant === "marquee-left") return marquee(el, -1);
   if (variant === "marquee-right") return marquee(el, 1);
   if (variant === "pill-float") return pillFloat(el);
+  if (variant === "hero-parallax") return heroParallax(el, triggers);
 
   const tl = gsap.timeline({
     paused: true,

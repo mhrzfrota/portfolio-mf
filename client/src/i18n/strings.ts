@@ -20,6 +20,7 @@ const strings = {
       contato: "Contato",
     },
     topbar: {
+      internal: "Área interna",
       timeSuffix: "em Fortaleza",
       menu: "Menu",
       close: "Fechar",
@@ -31,7 +32,7 @@ const strings = {
       dark: "Modo escuro",
       switchLang: "Switch to English",
       requestQuote: "Vamos conversar",
-      backHome: "MF Services — voltar ao início",
+      backHome: "MF Services, voltar ao início",
     },
     footer: {
       role: "Desenvolvedor de Software",
@@ -44,8 +45,6 @@ const strings = {
       formLabel: "Me chame no WhatsApp",
       formPlaceholder: "Escreva sua mensagem…",
       formSubmit: "Enviar",
-      boardLink: "Sistema interno",
-      habitsLink: "Hábitos",
     },
     hero: {
       headline: "Desenvolvedor",
@@ -56,9 +55,9 @@ const strings = {
         "de sistemas web.",
         "de software sob medida.",
       ],
-      ariaHeadline: "Matheus Frota — desenvolvedor full stack, automações e IA",
+      ariaHeadline: "Matheus Frota, desenvolvedor full stack, automações e IA",
       description:
-        "Sou Matheus Frota. Uso código, automações e inteligência artificial para resolver problemas reais de empresas — do site ao sistema sob medida.",
+        "Sou Matheus Frota. Uso código, automações e inteligência artificial para resolver problemas reais de empresas, do site ao sistema sob medida.",
       startProject: "Falar comigo",
       viewProjects: "Ver meus projetos",
     },
@@ -68,13 +67,13 @@ const strings = {
     about: {
       title: "Antes do código, o problema do negócio",
       subtitle:
-        "Sou Matheus Frota, desenvolvedor em Fortaleza. Trabalho com empresas que já sabem onde dói mas não sabem como resolver — e traduzo isso em software que funciona no dia a dia.",
+        "Sou Matheus Frota, desenvolvedor em Fortaleza. Trabalho com empresas que já sabem onde dói mas não sabem como resolver, e traduzo isso em software que funciona no dia a dia.",
       projectsLabel: "Projetos entregues e no ar",
       stackLabel: "Tecnologias no dia a dia",
       degreeValue: "ADS",
-      degreeLabel: "Análise e Desenvolvimento de Sistemas — UNIFOR",
+      degreeLabel: "Análise e Desenvolvimento de Sistemas, UNIFOR",
       baseValue: "Fortaleza",
-      baseLabel: "Ceará, Brasil — atendo remoto para todo o país",
+      baseLabel: "Ceará, Brasil. Atendo remoto para todo o país",
       quote:
         "Tecnologia para resolver, IA para potencializar, visão de negócio para gerar resultado.",
     },
@@ -100,15 +99,15 @@ const strings = {
     combos: {
       title: "Por onde começar",
       subtitle:
-        "Cada empresa está num momento diferente. Escolha o seu — ou me conte o problema, e eu desenho o caminho sob medida.",
+        "Cada empresa está num momento diferente. Escolha o seu, ou me conte o problema, e eu desenho o caminho sob medida.",
       mostChosen: "Mais escolhido",
-      quote: "Investimento sob medida — me chame e eu analiso o seu caso",
+      quote: "Investimento sob medida. Me chame e eu analiso o seu caso",
       cta: "Começar por aqui",
       items: [
         {
           name: "Presença Digital",
           tagline:
-            "Para quem perde cliente por não ser encontrado — ou por parecer menor do que é.",
+            "Para quem perde cliente por não ser encontrado, ou por parecer menor do que é.",
           features: [
             "Site institucional ou landing page rápida e responsiva",
             "Texto e design que conduzem ao contato",
@@ -130,7 +129,7 @@ const strings = {
         {
           name: "Produto Completo",
           tagline:
-            "Para o processo que hoje só funciona na cabeça de alguém — e precisa virar sistema.",
+            "Para o processo que hoje só funciona na cabeça de alguém e precisa virar sistema.",
           features: [
             "Sistema web sob medida, do banco de dados à tela",
             "Acessos e permissões para a equipe",
@@ -143,13 +142,13 @@ const strings = {
     blog: {
       title: "Notas & ideias",
       subtitle:
-        "O que aprendo usando tecnologia para destravar negócios reais — sem tecniquês.",
+        "O que aprendo usando tecnologia para destravar negócios reais, sem tecniquês.",
       readArticle: "Ler artigo",
     },
     contact: {
       title: "Conte o problema. A tecnologia é comigo.",
       subtitle:
-        "Sem compromisso e sem tecniquês: uma conversa sobre onde sua empresa perde tempo — e o que dá para resolver primeiro.",
+        "Sem compromisso e sem tecniquês: uma conversa sobre onde sua empresa perde tempo e o que dá para resolver primeiro.",
       directBadge: "Você fala direto comigo",
       whatsappTitlePrefix: "Vamos conversar pelo",
       whatsappParagraph:
@@ -212,14 +211,14 @@ const strings = {
       imageComing: "imagem em breve",
       ctaTitle: "Isso encaixa na sua empresa?",
       ctaText:
-        "Conte seu contexto e eu mostro como essa ideia vira solução — do plano ao ar.",
+        "Conte seu contexto e eu mostro como essa ideia vira solução, do plano ao ar.",
       ctaButton: "Conversar no WhatsApp",
       keepReading: "Continue lendo",
       readArticle: "Ler artigo",
     },
     notFound: {
       title: "Página não encontrada",
-      text: "Essa página não existe — mas o seu problema com certeza tem solução. Volte ao início e me conte.",
+      text: "Essa página não existe, mas o seu problema com certeza tem solução. Volte ao início e me conte.",
       goHome: "Voltar para o início",
     },
   },
@@ -233,6 +232,7 @@ const strings = {
       contato: "Contact",
     },
     topbar: {
+      internal: "Internal area",
       timeSuffix: "in Fortaleza",
       menu: "Menu",
       close: "Close",
@@ -257,8 +257,6 @@ const strings = {
       formLabel: "Message me on WhatsApp",
       formPlaceholder: "Write your message…",
       formSubmit: "Send",
-      boardLink: "Internal system",
-      habitsLink: "Habits",
     },
     hero: {
       headline: "Developer",
