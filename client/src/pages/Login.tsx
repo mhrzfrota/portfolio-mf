@@ -10,12 +10,13 @@ import {
 import { Link, Redirect } from "wouter";
 import { useAuth } from "@/contexts/AuthContext";
 
-function requestedPath(): "/interno" | "/financeiro" | "/habitos" | "/cerebro" {
+function requestedPath(): "/interno" | "/financeiro" | "/habitos" | "/cerebro" | "/plano" {
   const requested = new URLSearchParams(window.location.search).get("returnTo");
   if (
     requested === "/habitos" ||
     requested === "/cerebro" ||
-    requested === "/financeiro"
+    requested === "/financeiro" ||
+    requested === "/plano"
   )
     return requested;
   return "/interno";

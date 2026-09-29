@@ -13,6 +13,7 @@ import Overview from "./pages/Overview";
 import Finance from "./pages/Finance";
 import Habits from "./pages/Habits";
 import Cerebro from "./pages/Cerebro";
+import Plano from "./pages/Plano";
 import Login from "./pages/Login";
 
 function Router() {
@@ -41,6 +42,11 @@ function Router() {
       <Route path="/cerebro">
         <ProtectedRoute returnTo="/cerebro">
           <Cerebro />
+        </ProtectedRoute>
+      </Route>
+      <Route path="/plano">
+        <ProtectedRoute returnTo="/plano">
+          <Plano />
         </ProtectedRoute>
       </Route>
       <Route>

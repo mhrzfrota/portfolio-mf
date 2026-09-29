@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { ArrowUpRight, Brain, CircleCheckBig, Wallet } from "lucide-react";
+import { ArrowUpRight, Brain, CircleCheckBig, ListChecks, Wallet } from "lucide-react";
 import InternalShell from "@/components/InternalShell";
 
 const screens = [
@@ -24,6 +24,13 @@ const screens = [
     icon: Brain,
     label: "Seu contexto",
   },
+  {
+    href: "/plano",
+    title: "Plano",
+    description: "Ideias, o que vou fazer e o que já fiz, numa lista.",
+    icon: ListChecks,
+    label: "Suas ideias",
+  },
 ];
 
 export default function Overview() {
@@ -32,7 +39,7 @@ export default function Overview() {
       <p className="mt-3 text-sm text-white/70">
         Tudo o que você precisa, por aqui.
       </p>
-      <div className="mt-10 grid gap-4 md:grid-cols-3">
+      <div className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         {screens.map(({ href, title, description, icon: Icon, label }) => (
           <Link
             key={href}
