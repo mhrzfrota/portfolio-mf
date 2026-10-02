@@ -27,7 +27,7 @@ const screens = [
   {
     href: "/plano",
     title: "Plano",
-    description: "Ideias, o que vou fazer e o que já fiz, numa lista.",
+    description: "Quadro estilo Trello: ideias, referências, a fazer, agenda e feito.",
     icon: ListChecks,
     label: "Suas ideias",
   },
