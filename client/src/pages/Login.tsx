@@ -10,17 +10,9 @@ import {
 import { Link, Redirect } from "wouter";
 import { useAuth } from "@/contexts/AuthContext";
 
-function requestedPath(): "/interno" | "/financeiro" | "/habitos" | "/cerebro" | "/plano" | "/calendario" {
+function requestedPath(): "/plano" | "/calendario" {
   const requested = new URLSearchParams(window.location.search).get("returnTo");
-  if (
-    requested === "/habitos" ||
-    requested === "/cerebro" ||
-    requested === "/financeiro" ||
-    requested === "/plano" ||
-    requested === "/calendario"
-  )
-    return requested;
-  return "/interno";
+  return requested === "/plano" ? "/plano" : "/calendario";
 }
 
 function AccessShell({ children }: { children: ReactNode }) {

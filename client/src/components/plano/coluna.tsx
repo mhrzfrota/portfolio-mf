@@ -4,6 +4,15 @@ import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable"
 import { Plus, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Cartao, ColunaId } from "@/features/plano/quadro";
+
+/** Cor de cada coluna, para bater o olho e saber onde está. */
+const COR_COLUNA: Record<ColunaId, string> = {
+  ideias: "#FFD60A",
+  referencias: "#BF5AF2",
+  fazer: "#0A84FF",
+  agenda: "#FF9F0A",
+  feito: "#30D158",
+};
 import { CartaoArrastavel } from "./cartao";
 
 export default function Coluna({
@@ -39,27 +48,25 @@ export default function Coluna({
     <section
       aria-label={titulo}
       className={cn(
-        "flex max-h-[calc(100dvh-15rem)] w-[280px] shrink-0 flex-col rounded-2xl bg-black/35 backdrop-blur-sm transition-colors sm:w-[300px]",
-        isOver && "bg-black/50 ring-2 ring-white/30",
+        "flex max-h-[calc(100dvh-12rem)] w-[284px] shrink-0 snap-start scroll-ml-3 flex-col rounded-2xl border border-white/[0.07] bg-[#121318] transition-colors sm:w-[300px]",
+        isOver && "border-[#0A84FF]/60 bg-[#141823]",
       )}
     >
-      <header className="flex shrink-0 items-start justify-between gap-2 px-3 pb-2 pt-3">
-        <div>
-          <h2 className="flex items-center gap-2 text-[14px] font-semibold">
-            {titulo}
-            <span className="rounded-full bg-white/10 px-2 text-[12px] font-medium text-white/70">{cartoes.length}</span>
-          </h2>
-          <p className="mt-0.5 text-[12px] text-white/50">{descricao}</p>
-        </div>
+      <header className="flex shrink-0 items-center justify-between gap-2 px-3.5 pb-2 pt-3" title={descricao}>
+        <h2 className="flex items-center gap-2 text-[14px] font-semibold">
+          <span className="h-2 w-2 rounded-full" style={{ background: COR_COLUNA[id] }} aria-hidden />
+          {titulo}
+          <span className="text-[12.5px] font-normal text-white/40">{cartoes.length}</span>
+        </h2>
         {!bloqueado && (
-          <button type="button" onClick={() => setCompondo(true)} aria-label={`Adicionar cartão em ${titulo}`} className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-white/70 hover:bg-white/10 hover:text-white">
+          <button type="button" onClick={() => setCompondo(true)} aria-label={`Adicionar cartão em ${titulo}`} className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-white/50 hover:bg-white/10 hover:text-white">
             <Plus size={18} />
           </button>
         )}
       </header>
 
       <SortableContext id={id} items={cartoes.map((c) => c.id)} strategy={verticalListSortingStrategy}>
-        <ul ref={setNodeRef} className="flex min-h-[48px] flex-1 flex-col gap-2 overflow-y-auto px-2 pb-2">
+        <ul ref={setNodeRef} className="flex min-h-[48px] flex-1 flex-col gap-1.5 overflow-y-auto px-2 pb-2 [scrollbar-width:thin]">
           {cartoes.map((c) => (
             <CartaoArrastavel key={c.id} c={c} abrir={() => abrir(c.id)} desabilitado={arrasteDesligado} />
           ))}
@@ -87,10 +94,10 @@ export default function Coluna({
                 if (e.key === "Escape") setCompondo(false);
               }}
               placeholder="Título do cartão"
-              className="block w-full resize-none rounded-xl border border-white/10 bg-[#10131A] p-3 text-[14px] text-white placeholder:text-white/40 focus:border-white/30 focus:outline-none"
+              className="block w-full resize-none rounded-xl border border-[#0A84FF]/60 bg-[#1C1D23] p-3 text-[14px] text-white placeholder:text-white/40 focus:outline-none"
             />
             <div className="mt-2 flex items-center gap-2">
-              <button type="submit" disabled={!texto.trim()} className="h-9 rounded-lg bg-white px-3 text-[13px] font-semibold text-black disabled:opacity-40">
+              <button type="submit" disabled={!texto.trim()} className="h-8 rounded-lg bg-[#0A84FF] px-3 text-[13px] font-semibold text-white disabled:opacity-40">
                 Adicionar
               </button>
               <button type="button" onClick={() => setCompondo(false)} aria-label="Cancelar" className="flex h-9 w-9 items-center justify-center rounded-lg text-white/70 hover:bg-white/10">
@@ -99,7 +106,7 @@ export default function Coluna({
             </div>
           </form>
         ) : (
-          <button type="button" onClick={() => setCompondo(true)} className="m-2 mt-0 flex h-10 items-center gap-2 rounded-xl px-3 text-[13px] text-white/60 hover:bg-white/10 hover:text-white">
+          <button type="button" onClick={() => setCompondo(true)} className="m-2 mt-0 flex h-9 items-center gap-2 rounded-lg px-2.5 text-[13px] text-white/45 hover:bg-white/[0.06] hover:text-white">
             <Plus size={16} /> Adicionar cartão
           </button>
         ))}

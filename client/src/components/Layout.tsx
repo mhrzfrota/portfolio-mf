@@ -283,7 +283,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <div className="hidden items-center gap-2 pr-2 md:flex">
               {langToggle}
               <a
-                href="/interno"
+                href="/calendario"
                 aria-label={t.topbar.internal}
                 title={t.topbar.internal}
                 className={iconButton}
@@ -309,7 +309,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <div className="flex items-center gap-1.5 md:hidden">
               {langToggle}
               <a
-                href="/interno"
+                href="/calendario"
                 aria-label={t.topbar.internal}
                 title={t.topbar.internal}
                 className={iconButton}

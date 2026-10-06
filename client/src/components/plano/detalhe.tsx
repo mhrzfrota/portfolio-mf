@@ -16,7 +16,7 @@ type Acoes = {
 };
 
 const campo =
-  "block w-full rounded-lg border border-white/10 bg-[#0B0D12] px-3 text-[14px] text-white placeholder:text-white/35 focus:border-white/35 focus:outline-none";
+  "block w-full rounded-lg border border-transparent bg-[#2C2C2E] px-3 text-[14px] text-white placeholder:text-white/35 focus:border-[#0A84FF] focus:outline-none";
 
 /**
  * Detalhe do cartão, como o do Trello: tudo editável no lugar. Cada campo
@@ -61,8 +61,8 @@ export default function DetalheCartao({ c, projetos, bloqueado, acoes }: { c: Ca
     acoes.editar({ etiquetas: c.etiquetas.includes(id) ? c.etiquetas.filter((e) => e !== id) : [...c.etiquetas, id] });
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/70 p-3 pt-[6vh] sm:p-6" onMouseDown={(e) => e.target === e.currentTarget && acoes.fechar()}>
-      <div ref={caixa} tabIndex={-1} role="dialog" aria-modal="true" aria-labelledby="titulo-cartao" className="w-full max-w-2xl rounded-2xl border border-white/10 bg-[#161A22] text-white shadow-2xl outline-none">
+    <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/60 p-3 pt-[6vh] backdrop-blur-[2px] sm:p-6" onMouseDown={(e) => e.target === e.currentTarget && acoes.fechar()}>
+      <div ref={caixa} tabIndex={-1} role="dialog" aria-modal="true" aria-labelledby="titulo-cartao" className="w-full max-w-2xl rounded-2xl border border-white/10 bg-[#1C1C1E] text-white shadow-2xl outline-none">
         <div className="flex items-start gap-3 border-b border-white/[0.07] p-4 sm:p-5">
           <div className="min-w-0 flex-1">
             <label htmlFor="titulo-cartao" className="sr-only">
@@ -77,7 +77,7 @@ export default function DetalheCartao({ c, projetos, bloqueado, acoes }: { c: Ca
               onChange={(e) => setTitulo(e.target.value.replace(/\n/g, " "))}
               onBlur={() => salvarSeMudou("titulo", titulo, () => setTitulo(c.titulo))}
               onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), e.currentTarget.blur())}
-              className="block w-full resize-none rounded-lg bg-transparent px-1 py-0.5 text-[20px] font-semibold leading-snug focus:bg-[#0B0D12] focus:outline-none [field-sizing:content]"
+              className="block w-full resize-none rounded-lg bg-transparent px-1 py-0.5 text-[20px] font-semibold leading-snug focus:bg-[#2C2C2E] focus:outline-none [field-sizing:content]"
             />
             <div className="mt-2 flex flex-wrap items-center gap-2 px-1 text-[13px] text-white/60">
               na coluna
@@ -89,7 +89,7 @@ export default function DetalheCartao({ c, projetos, bloqueado, acoes }: { c: Ca
                 disabled={bloqueado}
                 value={c.coluna}
                 onChange={(e) => acoes.mover(e.target.value as ColunaId)}
-                className="h-8 rounded-md border border-white/10 bg-[#0B0D12] px-2 text-[13px] font-medium text-white"
+                className="h-8 rounded-md border border-transparent bg-[#2C2C2E] px-2 text-[13px] font-medium text-white"
               >
                 {COLUNAS.map((col) => (
                   <option key={col.id} value={col.id}>
@@ -310,7 +310,7 @@ function ItemChecklist({ texto, feito, bloqueado, alternar, editar, remover }: {
         onChange={(e) => setValor(e.target.value)}
         onBlur={() => valor !== texto && !editar(valor) && setValor(texto)}
         onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
-        className={cn("min-h-9 min-w-0 flex-1 rounded bg-transparent px-1.5 text-[14px] focus:bg-[#0B0D12] focus:outline-none", feito && "text-white/45 line-through")}
+        className={cn("min-h-9 min-w-0 flex-1 rounded bg-transparent px-1.5 text-[14px] focus:bg-[#2C2C2E] focus:outline-none", feito && "text-white/45 line-through")}
       />
       {!bloqueado && (
         <button type="button" onClick={remover} aria-label={`Remover: ${texto}`} className="flex h-8 w-8 shrink-0 items-center justify-center rounded text-white/40 opacity-100 hover:bg-white/10 hover:text-white sm:opacity-0 sm:group-hover:opacity-100">

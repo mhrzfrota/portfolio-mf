@@ -13,7 +13,7 @@ import {
   type DragStartEvent,
 } from "@dnd-kit/core";
 import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
-import { Search, X } from "lucide-react";
+import { Search, SlidersHorizontal, X } from "lucide-react";
 import InternalShell from "@/components/InternalShell";
 import Coluna from "@/components/plano/coluna";
 import DetalheCartao from "@/components/plano/detalhe";
@@ -60,7 +60,7 @@ function lerInicial(userId: string) {
 /**
  * Quadro no estilo Trello. Cinco colunas fixas, cartões arrastáveis (mouse,
  * toque e teclado), detalhe com etiquetas, projeto, data, link e checklist.
- * Salva no navegador a cada mudança, como Hábitos e Financeiro.
+ * Salva no navegador a cada mudança.
  */
 function PlanoConteudo({ userId }: { userId: string }) {
   const [inicial] = useState(() => lerInicial(userId));
@@ -79,6 +79,7 @@ function PlanoConteudo({ userId }: { userId: string }) {
   const [busca, setBusca] = useState("");
   const [etiquetas, setEtiquetas] = useState<EtiquetaId[]>([]);
   const [projeto, setProjeto] = useState("");
+  const [filtrosAbertos, setFiltrosAbertos] = useState(false);
 
   // Primeira abertura (semente ou migração): grava já no formato novo
   useEffect(() => {
@@ -115,6 +116,7 @@ function PlanoConteudo({ userId }: { userId: string }) {
     [quadro, busca, etiquetas, projeto, filtroAtivo],
   );
   const listaProjetos = useMemo(() => projetos(quadro), [quadro]);
+  const total = useMemo(() => Object.values(quadro.colunas).reduce((n, l) => n + l.length, 0), [quadro]);
   const atrasados = useMemo(() => Object.values(quadro.colunas).flat().filter((c) => atrasado(c)).length, [quadro]);
   const cartaoAberto = aberto ? encontrar(quadro, aberto) : null;
   const cartaoArrastado = arrastando ? encontrar(quadro, arrastando) : null;
@@ -150,56 +152,39 @@ function PlanoConteudo({ userId }: { userId: string }) {
 
   return (
     <InternalShell title="Plano">
-      <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-white/70">
-        <span>Ideias, referências, a fazer, agenda e feito, num quadro só.</span>
-        {atrasados > 0 && <span className="rounded-full bg-red-500/25 px-2.5 py-0.5 text-[13px] text-red-100">{atrasados} atrasado{atrasados > 1 ? "s" : ""}</span>}
-      </div>
-
-      {/* Filtros */}
-      <div className="mt-6 flex flex-col gap-3 lg:flex-row lg:items-center">
-        <label className="relative lg:w-72">
+      {/* Barra do quadro */}
+      <div className="flex flex-wrap items-center gap-2 pb-3 sm:gap-3">
+        <h1 className="mr-auto flex items-baseline gap-3 text-[26px] font-bold leading-none tracking-tight sm:text-[30px]">
+          Plano
+          <span className="text-[13px] font-normal tracking-normal text-white/40">{total} cartões</span>
+          {atrasados > 0 && (
+            <span className="rounded-full bg-[#FF453A]/15 px-2 py-0.5 text-[12px] font-semibold tracking-normal text-[#FF6961]">
+              {atrasados} atrasado{atrasados > 1 ? "s" : ""}
+            </span>
+          )}
+        </h1>
+        <label className="relative w-full sm:w-64">
           <span className="sr-only">Buscar cartões</span>
-          <Search size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-white/50" />
+          <Search size={15} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
           <input
             value={busca}
             onChange={(e) => setBusca(e.target.value)}
-            placeholder="Buscar cartões"
-            className="h-10 w-full rounded-xl border border-white/15 bg-black/30 pl-9 pr-3 text-[14px] text-white placeholder:text-white/45 focus:border-white/40 focus:outline-none"
+            placeholder="Buscar"
+            className="h-9 w-full rounded-lg border border-white/[0.1] bg-white/[0.04] pl-9 pr-3 text-[13.5px] text-white placeholder:text-white/40 focus:border-[#0A84FF] focus:outline-none"
           />
         </label>
-        <div className="-mx-5 flex gap-1.5 overflow-x-auto px-5 lg:mx-0 lg:flex-wrap lg:px-0" role="group" aria-label="Filtrar por etiqueta">
-          {ETIQUETAS.map((e) => {
-            const ativa = etiquetas.includes(e.id);
-            return (
-              <button
-                key={e.id}
-                type="button"
-                aria-pressed={ativa}
-                onClick={() => setEtiquetas((a) => (ativa ? a.filter((x) => x !== e.id) : [...a, e.id]))}
-                className={cn("h-8 shrink-0 rounded-md px-2.5 text-[12px] font-semibold text-white transition-opacity", ativa ? "ring-2 ring-white" : "opacity-55 hover:opacity-90")}
-                style={{ background: e.cor }}
-              >
-                {e.nome}
-              </button>
-            );
-          })}
-        </div>
-        <label className="sr-only" htmlFor="filtro-projeto">
-          Projeto
-        </label>
-        <select
-          id="filtro-projeto"
-          value={projeto}
-          onChange={(e) => setProjeto(e.target.value)}
-          className="h-10 rounded-xl border border-white/15 bg-black/30 px-3 text-[14px] text-white lg:ml-auto"
+        <button
+          type="button"
+          onClick={() => setFiltrosAbertos((f) => !f)}
+          aria-expanded={filtrosAbertos}
+          className={cn(
+            "flex h-9 items-center gap-1.5 rounded-lg border px-3 text-[13.5px] font-medium",
+            etiquetas.length || projeto ? "border-[#0A84FF]/60 bg-[#0A84FF]/15 text-white" : "border-white/[0.1] bg-white/[0.04] hover:bg-white/[0.08]",
+          )}
         >
-          <option value="">Todos os projetos</option>
-          {listaProjetos.map((p) => (
-            <option key={p} value={p}>
-              {p}
-            </option>
-          ))}
-        </select>
+          <SlidersHorizontal size={15} /> Filtros
+          {(etiquetas.length > 0 || projeto) && <span className="rounded-full bg-[#0A84FF] px-1.5 text-[11px] font-semibold">{etiquetas.length + (projeto ? 1 : 0)}</span>}
+        </button>
         {filtroAtivo && (
           <button
             type="button"
@@ -208,24 +193,61 @@ function PlanoConteudo({ userId }: { userId: string }) {
               setEtiquetas([]);
               setProjeto("");
             }}
-            className="inline-flex h-10 items-center gap-1.5 rounded-xl px-3 text-[13px] text-white/80 hover:bg-white/10"
+            className="flex h-9 items-center gap-1 rounded-lg px-2.5 text-[13px] text-white/60 hover:bg-white/[0.08] hover:text-white"
           >
-            <X size={15} /> Limpar
+            <X size={14} /> Limpar
           </button>
         )}
       </div>
-      {filtroAtivo && <p className="mt-2 text-[13px] text-white/55">Com filtro ativo, arrastar fica desligado. Limpe o filtro para reorganizar.</p>}
 
-      {(aviso || erro) && (
-        <p role={erro ? "alert" : "status"} className={cn("mt-4 rounded-xl px-4 py-2.5 text-sm", erro ? "bg-red-500/20 text-red-100" : "bg-white/15 text-white")}>
-          {erro || aviso}
+      {filtrosAbertos && (
+        <div className="mb-3 flex flex-col gap-3 rounded-xl border border-white/[0.07] bg-[#121318] p-3 sm:flex-row sm:items-center">
+          <div className="flex flex-wrap gap-1.5" role="group" aria-label="Filtrar por etiqueta">
+            {ETIQUETAS.map((e) => {
+              const ativa = etiquetas.includes(e.id);
+              return (
+                <button
+                  key={e.id}
+                  type="button"
+                  aria-pressed={ativa}
+                  onClick={() => setEtiquetas((a) => (ativa ? a.filter((x) => x !== e.id) : [...a, e.id]))}
+                  className={cn(
+                    "flex h-8 items-center gap-1.5 rounded-full border px-3 text-[12.5px] font-medium transition-colors",
+                    ativa ? "border-transparent text-white" : "border-white/[0.1] text-white/70 hover:border-white/25",
+                  )}
+                  style={ativa ? { background: e.cor } : undefined}
+                >
+                  {!ativa && <span className="h-2 w-2 rounded-full" style={{ background: e.cor }} />}
+                  {e.nome}
+                </button>
+              );
+            })}
+          </div>
+          <label className="sr-only" htmlFor="filtro-projeto">Projeto</label>
+          <select
+            id="filtro-projeto"
+            value={projeto}
+            onChange={(e) => setProjeto(e.target.value)}
+            className="h-9 rounded-lg border border-white/[0.1] bg-[#1C1C1E] px-3 text-[13.5px] text-white [color-scheme:dark] sm:ml-auto"
+          >
+            <option value="">Todos os projetos</option>
+            {listaProjetos.map((p) => (
+              <option key={p} value={p}>{p}</option>
+            ))}
+          </select>
+        </div>
+      )}
+
+      {(aviso || erro || filtroAtivo) && (
+        <p role={erro ? "alert" : "status"} className={cn("mb-3 rounded-xl px-4 py-2.5 text-[13.5px]", erro ? "bg-[#FF453A]/15 text-[#FFB3AD]" : aviso ? "bg-white/[0.08] text-white/90" : "bg-transparent px-0 py-0 text-[12.5px] text-white/45")}>
+          {erro || aviso || "Com filtro ativo, arrastar fica desligado. Limpe o filtro para reorganizar."}
         </p>
       )}
 
-      {/* Quadro: ocupa a largura toda da tela e rola para o lado, como no Trello */}
-      <div className="mt-6 ml-[calc(50%-50vw)] w-screen overflow-x-auto pb-6">
+      {/* Quadro: colunas na altura da tela, rolando para o lado como no Trello */}
+      <div className="-mx-3 snap-x snap-mandatory overflow-x-auto px-3 pb-2 sm:-mx-6 sm:snap-none sm:px-6 [scrollbar-color:rgba(255,255,255,0.15)_transparent]">
         <DndContext sensors={sensores} collisionDetection={closestCorners} onDragStart={aoComecar} onDragEnd={aoSoltar} onDragCancel={() => setArrastando(null)}>
-          <div className="mx-auto flex w-max items-start gap-3 px-5 sm:px-8 xl:px-[max(2rem,calc((100vw-72rem)/2+2rem))]">
+          <div className="flex w-max items-start gap-3">
             {COLUNAS.map((col) => (
               <Coluna
                 key={col.id}

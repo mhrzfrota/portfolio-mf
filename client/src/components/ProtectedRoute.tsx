@@ -20,7 +20,7 @@ export default function ProtectedRoute({
   returnTo,
 }: {
   children: ReactNode;
-  returnTo: "/interno" | "/financeiro" | "/habitos" | "/cerebro" | "/plano" | "/calendario";
+  returnTo: "/plano" | "/calendario";
 }) {
   const { status } = useAuth();
 

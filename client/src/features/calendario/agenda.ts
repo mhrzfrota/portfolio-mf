@@ -17,7 +17,22 @@ export const TIPOS: { id: TipoEvento; nome: string }[] = [
   { id: "lembrete", nome: "Lembrete" },
 ];
 
-export const CORES = ["#60A5FA", "#F472B6", "#34D399", "#FBBF24", "#A78BFA", "#F87171", "#22D3EE", "#FB923C", "#A3E635", "#E2E8F0"];
+/** Paleta do Calendário do iOS (modo escuro), na ordem em que o iPhone mostra. */
+export const CORES_IOS: { cor: string; nome: string }[] = [
+  { cor: "#FF453A", nome: "Vermelho" },
+  { cor: "#FF9F0A", nome: "Laranja" },
+  { cor: "#FFD60A", nome: "Amarelo" },
+  { cor: "#30D158", nome: "Verde" },
+  { cor: "#40C8E0", nome: "Azul-claro" },
+  { cor: "#0A84FF", nome: "Azul" },
+  { cor: "#5E5CE6", nome: "Índigo" },
+  { cor: "#BF5AF2", nome: "Roxo" },
+  { cor: "#FF375F", nome: "Rosa" },
+  { cor: "#AC8E68", nome: "Marrom" },
+  { cor: "#98989D", nome: "Cinza" },
+];
+export const CORES = CORES_IOS.map((c) => c.cor);
+const corValida = (v: unknown): v is string => typeof v === "string" && /^#[0-9A-Fa-f]{6}$/.test(v);
 
 export type Calendario = {
   id: string;
@@ -38,6 +53,8 @@ export type Evento = {
   local: string;
   descricao: string;
   feito: boolean;
+  /** Cor própria do evento; vazio usa a do calendário. */
+  cor: string;
 };
 
 export type Agenda = { versao: 1; calendarios: Calendario[]; eventos: Evento[] };
@@ -46,8 +63,8 @@ export const PESSOAL = "pessoal";
 
 /** O que aparece numa célula do mês: evento próprio ou cartão do Plano. */
 export type Item =
-  | { origem: "evento"; id: string; calendarioId: string; titulo: string; data: string; inicio: string; fim: string; tipo: TipoEvento; feito: boolean; evento: Evento }
-  | { origem: "plano"; id: string; calendarioId: string; titulo: string; data: string; inicio: string; fim: ""; tipo: "tarefa"; feito: boolean; cartao: Cartao };
+  | { origem: "evento"; id: string; calendarioId: string; cor: string; titulo: string; data: string; inicio: string; fim: string; tipo: TipoEvento; feito: boolean; evento: Evento }
+  | { origem: "plano"; id: string; calendarioId: string; cor: string; titulo: string; data: string; inicio: string; fim: ""; tipo: "tarefa"; feito: boolean; cartao: Cartao };
 
 const novoId = (): string => globalThis.crypto.randomUUID();
 const limpar = (t: string) => t.trim().replace(/\s+/g, " ");
@@ -66,7 +83,7 @@ export function dataValida(v: unknown): v is string {
 const horaValida = (v: unknown): v is string => typeof v === "string" && (v === "" || /^([01]\d|2[0-3]):[0-5]\d$/.test(v));
 
 export function agendaVazia(): Agenda {
-  return { versao: 1, calendarios: [{ id: PESSOAL, nome: "Meu calendário", cor: "#E2E8F0", projeto: "" }], eventos: [] };
+  return { versao: 1, calendarios: [{ id: PESSOAL, nome: "Meu calendário", cor: "#0A84FF", projeto: "" }], eventos: [] };
 }
 
 // ---------- calendários ----------
@@ -85,7 +102,7 @@ function normalizarCalendario(a: Agenda, entrada: NovoCalendario, ignorar?: stri
     "Esse projeto do Plano já está ligado a outro calendário.",
   );
   const cor = entrada.cor ?? CORES[a.calendarios.length % CORES.length];
-  exigir(/^#[0-9A-Fa-f]{6}$/.test(cor), "Cor inválida.");
+  exigir(corValida(cor), "Cor inválida.");
   return { nome, cor, projeto };
 }
 
@@ -130,7 +147,9 @@ function normalizarEvento(a: Agenda, e: NovoEvento): Omit<Evento, "id"> {
   exigir(local.length <= 140, "Local deve ter até 140 caracteres.");
   const descricao = e.descricao ?? "";
   exigir(typeof descricao === "string" && descricao.length <= 4000, "Descrição deve ter até 4000 caracteres.");
-  return { calendarioId, titulo, tipo, data: e.data, inicio, fim, local, descricao, feito: e.feito === true };
+  const cor = e.cor ?? "";
+  exigir(cor === "" || corValida(cor), "Cor inválida.");
+  return { calendarioId, titulo, tipo, data: e.data, inicio, fim, local, descricao, feito: e.feito === true, cor };
 }
 
 export function criarEvento(a: Agenda, entrada: NovoEvento): Agenda {
@@ -163,15 +182,16 @@ const COLUNAS: ColunaId[] = ["ideias", "referencias", "fazer", "agenda", "feito"
 export function itensEntre(a: Agenda, quadro: Quadro | null, de: string, ate: string, visiveis?: Set<string>): Item[] {
   const ok = (cal: string, data: string) => data >= de && data <= ate && (!visiveis || visiveis.has(cal));
   const itens: Item[] = [];
+  const corDe = (cal: string) => a.calendarios.find((c) => c.id === cal)?.cor ?? CORES_IOS[5].cor;
   for (const e of a.eventos) {
-    if (ok(e.calendarioId, e.data)) itens.push({ origem: "evento", id: e.id, calendarioId: e.calendarioId, titulo: e.titulo, data: e.data, inicio: e.inicio, fim: e.fim, tipo: e.tipo, feito: e.feito, evento: e });
+    if (ok(e.calendarioId, e.data)) itens.push({ origem: "evento", id: e.id, calendarioId: e.calendarioId, cor: e.cor || corDe(e.calendarioId), titulo: e.titulo, data: e.data, inicio: e.inicio, fim: e.fim, tipo: e.tipo, feito: e.feito, evento: e });
   }
   if (quadro) {
     for (const col of COLUNAS) {
       for (const c of quadro.colunas[col]) {
         if (!c.data) continue;
         const cal = calendarioDoCartao(a, c);
-        if (ok(cal, c.data)) itens.push({ origem: "plano", id: c.id, calendarioId: cal, titulo: c.titulo, data: c.data, inicio: c.hora, fim: "", tipo: "tarefa", feito: c.coluna === "feito", cartao: c });
+        if (ok(cal, c.data)) itens.push({ origem: "plano", id: c.id, calendarioId: cal, cor: corDe(cal), titulo: c.titulo, data: c.data, inicio: c.hora, fim: "", tipo: "tarefa", feito: c.coluna === "feito", cartao: c });
       }
     }
   }
@@ -237,9 +257,15 @@ export function ehAgenda(v: unknown): v is Agenda {
     if (!cals.has(e.calendarioId as string) || !dataValida(e.data) || !horaValida(e.inicio) || !horaValida(e.fim)) return false;
     if (typeof e.titulo !== "string" || !TIPOS.some((t) => t.id === e.tipo) || typeof e.feito !== "boolean") return false;
     if (typeof e.local !== "string" || typeof e.descricao !== "string") return false;
+    if (e.cor !== undefined && e.cor !== "" && !corValida(e.cor)) return false;
     ids.add(e.id);
   }
   return true;
+}
+
+/** Dados salvos antes da cor por evento chegam sem `cor`: completa com "" (cor do calendário). */
+export function completarAgenda(a: Agenda): Agenda {
+  return a.eventos.every((e) => typeof e.cor === "string") ? a : { ...a, eventos: a.eventos.map((e) => ({ ...e, cor: e.cor ?? "" })) };
 }
 
 export const chaveAgenda = (userId: string) => `mf-calendario:v1:${userId}`;
@@ -254,7 +280,7 @@ export function carregarAgenda(storage: Pick<Storage, "getItem">, userId: string
   if (salvo === null) return { agenda: semente(), nova: true, erro: "" };
   try {
     const v: unknown = JSON.parse(salvo);
-    if (ehAgenda(v)) return { agenda: v, nova: false, erro: "" };
+    if (ehAgenda(v)) return { agenda: completarAgenda(v), nova: false, erro: "" };
   } catch {
     // corrompido: bloqueia a edição para não sobrescrever
   }

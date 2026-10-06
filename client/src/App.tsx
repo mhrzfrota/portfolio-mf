@@ -9,10 +9,6 @@ import Layout from "./components/Layout";
 import Home from "./pages/Home";
 import ProjectDetail from "./pages/ProjectDetail";
 import BlogPost from "./pages/BlogPost";
-import Overview from "./pages/Overview";
-import Finance from "./pages/Finance";
-import Habits from "./pages/Habits";
-import Cerebro from "./pages/Cerebro";
 import Plano from "./pages/Plano";
 import Calendario from "./pages/Calendario";
 import Login from "./pages/Login";
@@ -22,28 +18,21 @@ function Router() {
     <Switch>
       {/* Ferramenta interna, tela cheia: fica fora do Layout do site. */}
       <Route path="/acesso" component={Login} />
+      {/* O sistema interno é só Calendário e Plano; os endereços antigos caem no Calendário. */}
       <Route path="/board">
-        <Redirect to="/interno" replace />
+        <Redirect to="/calendario" replace />
       </Route>
       <Route path="/interno">
-        <ProtectedRoute returnTo="/interno">
-          <Overview />
-        </ProtectedRoute>
+        <Redirect to="/calendario" replace />
       </Route>
       <Route path="/financeiro">
-        <ProtectedRoute returnTo="/financeiro">
-          <Finance />
-        </ProtectedRoute>
+        <Redirect to="/calendario" replace />
       </Route>
       <Route path="/habitos">
-        <ProtectedRoute returnTo="/habitos">
-          <Habits />
-        </ProtectedRoute>
+        <Redirect to="/calendario" replace />
       </Route>
       <Route path="/cerebro">
-        <ProtectedRoute returnTo="/cerebro">
-          <Cerebro />
-        </ProtectedRoute>
+        <Redirect to="/calendario" replace />
       </Route>
       <Route path="/plano">
         <ProtectedRoute returnTo="/plano">

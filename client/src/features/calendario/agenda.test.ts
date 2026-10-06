@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { criarCartao, quadroVazio } from "../plano/quadro";
 import {
-  PESSOAL, agendaVazia, calendarioDoCartao, carregarAgenda, cartoesSemData, criarCalendario, criarEvento,
+  PESSOAL, agendaVazia, calendarioDoCartao, carregarAgenda, completarAgenda, cartoesSemData, criarCalendario, criarEvento,
   editarCalendario, editarEvento, ehAgenda, gradeDoMes, itensEntre, mudarMes, removerCalendario, salvarAgenda, sementeAgenda,
 } from "./agenda";
 
@@ -110,5 +110,25 @@ describe("armazenamento", () => {
   it("valida o formato", () => {
     expect(ehAgenda(sementeAgenda())).toBe(true);
     expect(ehAgenda({ versao: 1, calendarios: [], eventos: [] })).toBe(false);
+  });
+});
+
+describe("cor por evento", () => {
+  it("evento com cor própria usa ela; sem cor, a do calendário", () => {
+    let a = comCliente();
+    const ts = a.calendarios[1];
+    a = criarEvento(a, { titulo: "Com cor", data: "2026-10-08", calendarioId: ts.id, cor: "#FF453A" });
+    a = criarEvento(a, { titulo: "Sem cor", data: "2026-10-08", calendarioId: ts.id });
+    const [com, sem] = itensEntre(a, null, "2026-10-01", "2026-10-31");
+    expect(com.cor).toBe("#FF453A");
+    expect(sem.cor).toBe(ts.cor);
+    expect(() => criarEvento(a, { titulo: "x", data: "2026-10-08", cor: "vermelho" })).toThrow(/Cor/);
+  });
+  it("dado antigo sem cor continua válido e é completado", () => {
+    const antigo = criarEvento(agendaVazia(), { titulo: "Velho", data: "2026-10-08" });
+    const { cor: _, ...semCor } = antigo.eventos[0];
+    const salvo = { ...antigo, eventos: [semCor] };
+    expect(ehAgenda(salvo)).toBe(true);
+    expect(completarAgenda(salvo as never).eventos[0].cor).toBe("");
   });
 });
