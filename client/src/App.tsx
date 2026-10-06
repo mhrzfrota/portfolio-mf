@@ -14,6 +14,7 @@ import Finance from "./pages/Finance";
 import Habits from "./pages/Habits";
 import Cerebro from "./pages/Cerebro";
 import Plano from "./pages/Plano";
+import Calendario from "./pages/Calendario";
 import Login from "./pages/Login";
 
 function Router() {
@@ -47,6 +48,11 @@ function Router() {
       <Route path="/plano">
         <ProtectedRoute returnTo="/plano">
           <Plano />
+        </ProtectedRoute>
+      </Route>
+      <Route path="/calendario">
+        <ProtectedRoute returnTo="/calendario">
+          <Calendario />
         </ProtectedRoute>
       </Route>
       <Route>

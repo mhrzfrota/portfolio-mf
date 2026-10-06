@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { ArrowUpRight, Brain, CircleCheckBig, ListChecks, Wallet } from "lucide-react";
+import { ArrowUpRight, Brain, CalendarDays, CircleCheckBig, ListChecks, Wallet } from "lucide-react";
 import InternalShell from "@/components/InternalShell";
 
 const screens = [
@@ -31,6 +31,13 @@ const screens = [
     icon: ListChecks,
     label: "Suas ideias",
   },
+  {
+    href: "/calendario",
+    title: "Calendário",
+    description: "Seu mês e um calendário por cliente, ligado aos cartões do Plano.",
+    icon: CalendarDays,
+    label: "Seu mês",
+  },
 ];
 
 export default function Overview() {
@@ -39,7 +46,7 @@ export default function Overview() {
       <p className="mt-3 text-sm text-white/70">
         Tudo o que você precisa, por aqui.
       </p>
-      <div className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+      <div className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {screens.map(({ href, title, description, icon: Icon, label }) => (
           <Link
             key={href}

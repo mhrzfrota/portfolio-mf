@@ -70,7 +70,11 @@ function PlanoConteudo({ userId }: { userId: string }) {
     inicial.origem === "migrado" ? "Sua lista antiga veio para o quadro, junto com as pendências e ideias do vault." : "",
   );
   const [erro, setErro] = useState(inicial.erro);
-  const [aberto, setAberto] = useState<string | null>(null);
+  // Vindo do Calendário ("Abrir no Plano"), já abre o cartão
+  const [aberto, setAberto] = useState<string | null>(() => {
+    const id = new URLSearchParams(window.location.search).get("cartao");
+    return id && encontrar(inicial.quadro, id) ? id : null;
+  });
   const [arrastando, setArrastando] = useState<string | null>(null);
   const [busca, setBusca] = useState("");
   const [etiquetas, setEtiquetas] = useState<EtiquetaId[]>([]);
