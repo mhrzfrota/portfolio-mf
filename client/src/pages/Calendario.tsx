@@ -12,8 +12,8 @@ import {
   gradeDoMes, hojeISO, itensEntre, mesDe, mudarMes, removerCalendario, removerEvento, somarDias, type Item,
 } from "@/features/calendario/agenda";
 import { useAgendaNuvem } from "@/features/calendario/use-agenda";
-import { adicionar, carregarQuadro, editar as editarCartao, encontrar, mover, projetos, salvarQuadro, type Quadro } from "@/features/plano/quadro";
-import { semente } from "@/features/plano/semente";
+import { adicionar, editar as editarCartao, encontrar, mover, projetos } from "@/features/plano/quadro";
+import { useQuadroNuvem } from "@/features/plano/use-quadro";
 
 export default function CalendarioPagina() {
   const { user } = useAuth();
@@ -24,29 +24,23 @@ const MESES = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julh
 const CHAVE_OCULTOS = (u: string) => `mf-calendario:ocultos:${u}`;
 const diaCurto = (iso: string) => `${iso.slice(8)}/${iso.slice(5, 7)}`;
 
-function lerQuadro(userId: string) {
-  try {
-    return carregarQuadro(localStorage, userId, () => semente());
-  } catch {
-    return { quadro: null, origem: "v2" as const, erro: "Não foi possível ler o Plano." };
-  }
-}
-
 type Aberto = { tipo: "novo"; data: string } | { tipo: "evento"; id: string } | { tipo: "cartao"; id: string } | { tipo: "calendario"; id?: string } | null;
 
 /**
  * Calendário do mês no estilo do iOS: o seu e um por cliente, com os cartões
- * do Plano que têm data aparecendo sozinhos. A agenda fica no Supabase; os
- * cartões vêm do Plano deste navegador.
+ * do Plano que têm data aparecendo sozinhos. A agenda e o Plano ficam no
+ * Supabase (tabelas `calendario` e `plano`).
  */
 function Conteudo({ userId }: { userId: string }) {
   const [aviso, setAviso] = useState("");
   const { agenda, aplicar, estado, salvando } = useAgendaNuvem(userId, setAviso);
-  const [inicialQuadro] = useState(() => lerQuadro(userId));
-  const [quadro, setQuadro] = useState<Quadro | null>(inicialQuadro.quadro);
+  const { quadro, aplicar: aplicarPlano, estado: estadoPlano } = useQuadroNuvem(userId, setAviso);
   const bloqueado = estado !== "pronto" && estado !== "local";
-  const planoBloqueado = Boolean(inicialQuadro.erro) || !quadro;
-  const [erroPlano, setErroPlano] = useState(inicialQuadro.erro);
+  const planoBloqueado = estadoPlano !== "pronto" && estadoPlano !== "local";
+  const erroPlano =
+    estadoPlano === "invalido" ? "O Plano salvo está inválido. Abra a aba Plano para recuperar."
+    : estadoPlano === "sem-conexao" ? "Sem conexão com a nuvem: os cartões do Plano estão só para leitura."
+    : "";
   const erro =
     estado === "invalido" ? "O calendário salvo na nuvem está inválido. Recupere os dados antes de editar."
     : estado === "sem-conexao" ? "Sem conexão com a nuvem. Mostrando a última cópia deste navegador; a edição volta quando conectar."
@@ -82,22 +76,6 @@ function Conteudo({ userId }: { userId: string }) {
     return () => clearTimeout(t);
   }, [aviso]);
 
-  function aplicarPlano(op: (q: Quadro) => Quadro): boolean {
-    if (planoBloqueado || !quadro) return false;
-    try {
-      const prox = op(quadro);
-      if (!salvarQuadro(localStorage, userId, prox)) {
-        setErroPlano("Não foi possível salvar o Plano neste navegador.");
-        return false;
-      }
-      setQuadro(prox);
-      return true;
-    } catch (e) {
-      setAviso(e instanceof Error ? e.message : "Não foi possível fazer isso.");
-      return false;
-    }
-  }
-
   const grade = useMemo(() => gradeDoMes(mes), [mes]);
   const fimProximos = somarDias(dia, 14);
   const itens = useMemo(() => {
@@ -113,7 +91,7 @@ function Conteudo({ userId }: { userId: string }) {
   const doDia = porDia.get(dia) ?? [];
   const proximos = useMemo(() => itens.filter((i) => i.data > dia && i.data <= fimProximos && !i.feito).slice(0, 8), [itens, dia, fimProximos]);
   const semData = useMemo(() => cartoesSemData(quadro), [quadro]);
-  const listaProjetos = useMemo(() => (quadro ? projetos(quadro) : []), [quadro]);
+  const listaProjetos = useMemo(() => projetos(quadro), [quadro]);
   const somenteUm = visiveis.size === 1 ? agenda.calendarios.find((c) => visiveis.has(c.id)) : undefined;
   const calendarioNovo = somenteUm?.id ?? PESSOAL;
   const calendarioDe = (id: string) => agenda.calendarios.find((c) => c.id === id);
@@ -152,7 +130,7 @@ function Conteudo({ userId }: { userId: string }) {
   }, [aberto, mes, dia, hoje, bloqueado, irPara]);
 
   const eventoAberto = aberto?.tipo === "evento" ? agenda.eventos.find((e) => e.id === aberto.id) : undefined;
-  const cartaoAberto = aberto?.tipo === "cartao" && quadro ? encontrar(quadro, aberto.id) : null;
+  const cartaoAberto = aberto?.tipo === "cartao" ? encontrar(quadro, aberto.id) : null;
   const calendarioAberto = aberto?.tipo === "calendario" ? calendarioDe(aberto.id ?? "") : undefined;
   const ano = mes.slice(0, 4);
   const numMes = Number(mes.slice(5));

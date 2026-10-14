@@ -13,7 +13,7 @@ import {
   type DragStartEvent,
 } from "@dnd-kit/core";
 import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
-import { Search, SlidersHorizontal, X } from "lucide-react";
+import { Cloud, CloudOff, LoaderCircle, Search, SlidersHorizontal, X } from "lucide-react";
 import InternalShell from "@/components/InternalShell";
 import Coluna from "@/components/plano/coluna";
 import DetalheCartao from "@/components/plano/detalhe";
@@ -27,7 +27,6 @@ import {
   adicionarItem,
   alternarItem,
   atrasado,
-  carregarQuadro,
   duplicar,
   editar,
   editarItem,
@@ -37,43 +36,34 @@ import {
   projetos,
   remover,
   removerItem,
-  salvarQuadro,
   type ColunaId,
   type EtiquetaId,
-  type Quadro,
 } from "@/features/plano/quadro";
-import { semente } from "@/features/plano/semente";
+import { useQuadroNuvem } from "@/features/plano/use-quadro";
 
 export default function Plano() {
   const { user } = useAuth();
   return user ? <PlanoConteudo key={user.id} userId={user.id} /> : null;
 }
 
-function lerInicial(userId: string) {
-  try {
-    return carregarQuadro(localStorage, userId, () => semente());
-  } catch {
-    return { quadro: semente(), origem: "semente" as const, erro: "" };
-  }
-}
-
 /**
  * Quadro no estilo Trello. Cinco colunas fixas, cartões arrastáveis (mouse,
  * toque e teclado), detalhe com etiquetas, projeto, data, link e checklist.
- * Salva no navegador a cada mudança.
+ * Salva no Supabase (tabela `plano`) a cada mudança; sem a tabela, no navegador.
  */
 function PlanoConteudo({ userId }: { userId: string }) {
-  const [inicial] = useState(() => lerInicial(userId));
-  const [quadro, setQuadro] = useState<Quadro>(inicial.quadro);
-  const bloqueado = Boolean(inicial.erro);
-  const [aviso, setAviso] = useState(
-    inicial.origem === "migrado" ? "Sua lista antiga veio para o quadro, junto com as pendências e ideias do vault." : "",
-  );
-  const [erro, setErro] = useState(inicial.erro);
+  const [aviso, setAviso] = useState("");
+  // aplicar: operação pura na tela na hora e na nuvem em seguida; false quando a regra recusa
+  const { quadro, aplicar, estado, salvando } = useQuadroNuvem(userId, setAviso);
+  const bloqueado = estado !== "pronto" && estado !== "local";
+  const erro =
+    estado === "invalido" ? "O quadro salvo está inválido. Recupere os dados antes de editar."
+    : estado === "sem-conexao" ? "Sem conexão com a nuvem. Mostrando a última cópia deste navegador; a edição volta quando conectar."
+    : "";
   // Vindo do Calendário ("Abrir no Plano"), já abre o cartão
   const [aberto, setAberto] = useState<string | null>(() => {
     const id = new URLSearchParams(window.location.search).get("cartao");
-    return id && encontrar(inicial.quadro, id) ? id : null;
+    return id && encontrar(quadro, id) ? id : null;
   });
   const [arrastando, setArrastando] = useState<string | null>(null);
   const [busca, setBusca] = useState("");
@@ -81,34 +71,18 @@ function PlanoConteudo({ userId }: { userId: string }) {
   const [projeto, setProjeto] = useState("");
   const [filtrosAbertos, setFiltrosAbertos] = useState(false);
 
-  // Primeira abertura (semente ou migração): grava já no formato novo
+  // Cartão pedido pelo Calendário que só existia na nuvem: abre quando ela responde
   useEffect(() => {
-    if (!bloqueado && inicial.origem !== "v2") salvarQuadro(localStorage, userId, inicial.quadro);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    if (estado !== "pronto" || aberto) return;
+    const id = new URLSearchParams(window.location.search).get("cartao");
+    if (id && encontrar(quadro, id)) setAberto(id);
+  }, [estado]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (!aviso) return;
     const t = setTimeout(() => setAviso(""), 5000);
     return () => clearTimeout(t);
   }, [aviso]);
-
-  /** Aplica uma operação pura e salva. Devolve false quando a regra recusa (a mensagem aparece na tela). */
-  function aplicar(operacao: (q: Quadro) => Quadro): boolean {
-    if (bloqueado) return false;
-    try {
-      const proximo = operacao(quadro);
-      if (!salvarQuadro(localStorage, userId, proximo)) {
-        setErro("Não foi possível salvar neste navegador. Verifique o espaço ou as permissões e tente de novo.");
-        return false;
-      }
-      setQuadro(proximo);
-      setErro("");
-      return true;
-    } catch (e) {
-      setAviso(e instanceof Error ? e.message : "Não foi possível fazer isso.");
-      return false;
-    }
-  }
 
   const filtroAtivo = Boolean(busca.trim() || etiquetas.length || projeto);
   const visivel = useMemo(
@@ -157,6 +131,12 @@ function PlanoConteudo({ userId }: { userId: string }) {
         <h1 className="mr-auto flex items-baseline gap-3 text-[26px] font-bold leading-none tracking-tight sm:text-[30px]">
           Plano
           <span className="text-[13px] font-normal tracking-normal text-white/40">{total} cartões</span>
+          <span className="hidden items-center gap-1.5 text-[12px] font-normal tracking-normal text-white/45 md:inline-flex" role="status" title="Onde o quadro está salvo">
+            {estado === "carregando" ? <><LoaderCircle size={13} className="animate-spin" /> carregando</>
+              : estado === "pronto" ? (salvando ? <><LoaderCircle size={13} className="animate-spin" /> salvando</> : <><Cloud size={13} /> salvo</>)
+              : estado === "local" ? <><CloudOff size={13} className="text-[#FF9F0A]" /> só neste navegador</>
+              : <><CloudOff size={13} className="text-[#FF9F0A]" /> sem nuvem</>}
+          </span>
           {atrasados > 0 && (
             <span className="rounded-full bg-[#FF453A]/15 px-2 py-0.5 text-[12px] font-semibold tracking-normal text-[#FF6961]">
               {atrasados} atrasado{atrasados > 1 ? "s" : ""}
