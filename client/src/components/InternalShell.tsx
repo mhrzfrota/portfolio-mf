@@ -1,17 +1,18 @@
 import { useEffect, type ReactNode } from "react";
 import { Link, useLocation } from "wouter";
-import { CalendarDays, KanbanSquare } from "lucide-react";
+import { CalendarDays, KanbanSquare, Moon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import InternalAccount from "./InternalAccount";
 
 export const ABAS = [
   { href: "/calendario", nome: "Calendário", icone: CalendarDays },
   { href: "/plano", nome: "Plano", icone: KanbanSquare },
+  { href: "/noite", nome: "Noite", icone: Moon },
 ] as const;
 
 /**
- * Casca do sistema interno: barra fixa com as duas ferramentas (Calendário e
- * Plano) e a conta. Fundo escuro neutro e largura total, para o calendário e
+ * Casca do sistema interno: barra fixa com as ferramentas (Calendário, Plano
+ * e o relatório da Noite) e a conta. Fundo escuro neutro e largura total, para o calendário e
  * o quadro usarem a tela inteira.
  */
 export default function InternalShell({ title, children }: { title: string; children: ReactNode }) {

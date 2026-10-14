@@ -1,0 +1,380 @@
+{
+  "type": "object",
+  "properties": {
+    "manchete": {
+      "type": "string"
+    },
+    "resumo": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "amanha": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "titulo": {
+            "type": "string"
+          },
+          "porque": {
+            "type": "string"
+          },
+          "projeto": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "titulo",
+          "porque",
+          "projeto"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "linhaDoTempo": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "hora": {
+            "type": "string"
+          },
+          "projeto": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "texto": {
+            "type": "string"
+          },
+          "tipo": {
+            "type": "string",
+            "enum": [
+              "commit",
+              "sessao",
+              "marco",
+              "vault",
+              "deploy"
+            ]
+          }
+        },
+        "required": [
+          "hora",
+          "projeto",
+          "texto",
+          "tipo"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "projetos": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "nome": {
+            "type": "string"
+          },
+          "avancou": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "avancou",
+              "travado",
+              "novo",
+              "entregue"
+            ]
+          },
+          "proximo": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "nome",
+          "avancou",
+          "status",
+          "proximo"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "projetosNovos": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "nome": {
+            "type": "string"
+          },
+          "descricao": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "nome",
+          "descricao"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "dev": {
+      "type": "object",
+      "properties": {
+        "momento": {
+          "type": "string"
+        },
+        "praticou": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "pontoForte": {
+          "type": "string"
+        },
+        "melhorar": {
+          "type": "string"
+        },
+        "estudo": {
+          "type": "object",
+          "properties": {
+            "tema": {
+              "type": "string"
+            },
+            "porque": {
+              "type": "string"
+            },
+            "link": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "tema",
+            "porque",
+            "link"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "momento",
+        "praticou",
+        "pontoForte",
+        "melhorar",
+        "estudo"
+      ],
+      "additionalProperties": false
+    },
+    "insights": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "tipo": {
+            "type": "string",
+            "enum": [
+              "oportunidade",
+              "risco",
+              "padrao"
+            ]
+          },
+          "titulo": {
+            "type": "string"
+          },
+          "texto": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "tipo",
+          "titulo",
+          "texto"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "noticias": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "titulo": {
+            "type": "string"
+          },
+          "fonte": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "data": {
+            "type": "string"
+          },
+          "resumo": {
+            "type": "string"
+          },
+          "porqueImporta": {
+            "type": "string"
+          },
+          "tema": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "titulo",
+          "fonte",
+          "url",
+          "data",
+          "resumo",
+          "porqueImporta",
+          "tema"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "conteudo": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "formato": {
+            "type": "string",
+            "enum": [
+              "reel",
+              "carrossel",
+              "post",
+              "story"
+            ]
+          },
+          "gancho": {
+            "type": "string"
+          },
+          "roteiro": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "base": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "formato",
+          "gancho",
+          "roteiro",
+          "base"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "clientes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "nome": {
+            "type": "string"
+          },
+          "situacao": {
+            "type": "string"
+          },
+          "proximaAcao": {
+            "type": "string"
+          },
+          "prioridade": {
+            "type": "string",
+            "enum": [
+              "alta",
+              "media",
+              "baixa"
+            ]
+          }
+        },
+        "required": [
+          "nome",
+          "situacao",
+          "proximaAcao",
+          "prioridade"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "prospeccao": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "nome": {
+            "type": "string"
+          },
+          "segmento": {
+            "type": "string"
+          },
+          "local": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "porque": {
+            "type": "string"
+          },
+          "abordagem": {
+            "type": "string"
+          },
+          "fonte": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "prioridade": {
+            "type": "string",
+            "enum": [
+              "alta",
+              "media",
+              "baixa"
+            ]
+          }
+        },
+        "required": [
+          "nome",
+          "segmento",
+          "local",
+          "porque",
+          "abordagem",
+          "fonte",
+          "prioridade"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "manchete",
+    "resumo",
+    "amanha",
+    "linhaDoTempo",
+    "projetos",
+    "projetosNovos",
+    "dev",
+    "insights",
+    "noticias",
+    "conteudo",
+    "clientes",
+    "prospeccao"
+  ],
+  "additionalProperties": false
+}

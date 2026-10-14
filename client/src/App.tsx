@@ -11,6 +11,7 @@ import ProjectDetail from "./pages/ProjectDetail";
 import BlogPost from "./pages/BlogPost";
 import Plano from "./pages/Plano";
 import Calendario from "./pages/Calendario";
+import Noite, { NoitePrevia } from "./pages/Noite";
 import Login from "./pages/Login";
 
 function Router() {
@@ -18,7 +19,7 @@ function Router() {
     <Switch>
       {/* Ferramenta interna, tela cheia: fica fora do Layout do site. */}
       <Route path="/acesso" component={Login} />
-      {/* O sistema interno é só Calendário e Plano; os endereços antigos caem no Calendário. */}
+      {/* O sistema interno é Calendário, Plano e Noite; os endereços antigos caem no Calendário. */}
       <Route path="/board">
         <Redirect to="/calendario" replace />
       </Route>
@@ -44,6 +45,13 @@ function Router() {
           <Calendario />
         </ProtectedRoute>
       </Route>
+      <Route path="/noite">
+        <ProtectedRoute returnTo="/noite">
+          <Noite />
+        </ProtectedRoute>
+      </Route>
+      {/* Só no pnpm dev: prévia do relatório sem login, abrindo o arquivo salvo no Mac. */}
+      {import.meta.env.DEV && <Route path="/dev/noite" component={NoitePrevia} />}
       <Route>
         <Layout>
           <Switch>

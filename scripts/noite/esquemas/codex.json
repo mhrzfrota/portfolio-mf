@@ -1,0 +1,105 @@
+{
+  "type": "object",
+  "properties": {
+    "noticias": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "titulo": {
+            "type": "string"
+          },
+          "fonte": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "data": {
+            "type": "string"
+          },
+          "resumo": {
+            "type": "string"
+          },
+          "porqueImporta": {
+            "type": "string"
+          },
+          "tema": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "titulo",
+          "fonte",
+          "url",
+          "data",
+          "resumo",
+          "porqueImporta",
+          "tema"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "leituraTecnica": {
+      "type": "object",
+      "properties": {
+        "construido": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "padroes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "riscos": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "sugestoes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "construido",
+        "padroes",
+        "riscos",
+        "sugestoes"
+      ],
+      "additionalProperties": false
+    },
+    "tendencias": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "tema": {
+            "type": "string"
+          },
+          "porque": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "tema",
+          "porque"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "noticias",
+    "leituraTecnica",
+    "tendencias"
+  ],
+  "additionalProperties": false
+}

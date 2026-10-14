@@ -109,3 +109,5 @@ temp/
 *.sqlite3
 
 marketingskills-main.zip
+
+.noite-teste/

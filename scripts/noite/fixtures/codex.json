@@ -1,0 +1,17 @@
+{
+  "noticias": [],
+  "leituraTecnica": {
+    "construido": [
+      "Exemplo de teste: rotina local para organizar fatos do dia."
+    ],
+    "padroes": ["Coleta determinística separada da síntese."],
+    "riscos": [],
+    "sugestoes": ["Sugestão: revisar as pendências antes do próximo commit."]
+  },
+  "tendencias": [
+    {
+      "tema": "Diário técnico automatizado",
+      "porque": "Transformar trabalho registrado em revisão diária."
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "manchete": "Demonstração local do Relatório da noite",
+  "resumo": [
+    "Textos de exemplo para validar a rotina.",
+    "As métricas vêm do coletor real.",
+    "Nenhuma notícia pesquisada neste teste."
+  ],
+  "amanha": [
+    {
+      "titulo": "Sugestão: revisar o relatório",
+      "porque": "Conferir os fatos antes do uso diário.",
+      "projeto": null
+    }
+  ],
+  "linhaDoTempo": [],
+  "projetos": [],
+  "projetosNovos": [],
+  "dev": {
+    "momento": "Demonstração da separação entre fatos e síntese.",
+    "praticou": ["Validação de dados"],
+    "pontoForte": "Contagens calculadas no coletor.",
+    "melhorar": "Sugestão: revisar pendências do dia.",
+    "estudo": {
+      "tema": "Rotinas locais",
+      "porque": "Entender a execução agendada.",
+      "link": null
+    }
+  },
+  "insights": [],
+  "noticias": [],
+  "conteudo": [
+    {
+      "formato": "post",
+      "gancho": "Como organizar fatos antes de pedir uma síntese à IA",
+      "roteiro": ["Coletar", "Validar", "Revisar"],
+      "base": "Exemplo fictício da rotina local"
+    }
+  ],
+  "clientes": [],
+  "prospeccao": []
+}
