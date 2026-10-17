@@ -1,4 +1,5 @@
 import { appendFileSync, mkdirSync, readFileSync } from "node:fs";
+import { spawn } from "node:child_process";
 import { dirname, join, resolve } from "node:path";
 import { homedir } from "node:os";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -17,6 +18,14 @@ import { avisar } from "./aviso.ts";
 import { pastaBase, travar, limpar, gravarJson } from "./arquivos.ts";
 import { erroSeguro } from "./processo.ts";
 import { ocultarSegredos } from "./segredos.ts";
+import {
+  diaPendente,
+  macAcordado,
+  relatorioCompleto,
+  tentativas,
+  registrarTentativa,
+  MAX_TENTATIVAS,
+} from "./pendente.ts";
 export function flags(args: string[], agora = Date.now()) {
   const op = {
     seco: false,
@@ -24,6 +33,7 @@ export function flags(args: string[], agora = Date.now()) {
     dia: diaDaNoite(agora),
     semCodex: false,
     semClaude: false,
+    sePendente: false,
   };
   for (let i = 0; i < args.length; i++) {
     switch (args[i]) {
@@ -39,6 +49,9 @@ export function flags(args: string[], agora = Date.now()) {
         break;
       case "--sem-claude":
         op.semClaude = true;
+        break;
+      case "--se-pendente":
+        op.sePendente = true;
         break;
       case "--dia":
         op.dia = args[++i] ?? "";
@@ -67,7 +80,26 @@ export async function main(args = process.argv.slice(2)): Promise<void> {
   const inicio = Date.now();
   const op = flags(args, inicio);
   const base = pastaBase();
-  const liberar = travar(base);
+  if (op.sePendente) {
+    // Agendador: só roda se a última noite ainda falta e o Mac está acordado de verdade
+    op.dia = diaPendente(inicio, process.env.NOITE_HORA ?? "23:30");
+    const pasta = join(base, op.dia);
+    if (relatorioCompleto(pasta) || tentativas(pasta) >= MAX_TENTATIVAS)
+      return;
+    if (!macAcordado()) {
+      console.log(
+        `${new Date(inicio).toISOString()} Noite ${op.dia} pendente: Mac em repouso, tenta de novo no próximo despertar`
+      );
+      return;
+    }
+  }
+  let liberar: () => void;
+  try {
+    liberar = travar(base);
+  } catch (e) {
+    if (op.sePendente && /já em execução/.test(erroSeguro(e))) return;
+    throw e;
+  }
   const pastaDoDia = join(base, op.dia);
   const repo = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
   try {
@@ -96,6 +128,22 @@ export async function main(args = process.argv.slice(2)): Promise<void> {
       }
     }
     let resultado = "erro";
+    if (op.sePendente) {
+      registrarTentativa(pastaDoDia);
+      log(`Tentativa ${tentativas(pastaDoDia)} de ${MAX_TENTATIVAS} (agendador)`);
+    }
+    if (!op.falso && process.platform === "darwin") {
+      log(`Energia: ${macAcordado() ? "Mac acordado" : "Mac em repouso (DarkWake), os agentes podem travar"}`);
+      try {
+        // Segura o Mac acordado enquanto a rotina roda (com a tampa aberta)
+        spawn("caffeinate", ["-i", "-w", String(process.pid)], {
+          stdio: "ignore",
+          detached: true,
+        }).unref();
+      } catch {
+        /* Sem caffeinate, segue. */
+      }
+    }
     try {
       await etapa("Limpeza", () => limpar(base, inicio, op.dia));
       const vault = resolve(

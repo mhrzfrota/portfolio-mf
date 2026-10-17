@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState, type ChangeEvent } from "react";
 import { useLocation, useSearch } from "wouter";
-import {
-  Bot, ChevronLeft, ChevronRight, FileUp, FolderGit2, LoaderCircle, Moon, Newspaper, Sparkles, Terminal, UserRound, Users, Clapperboard, Clock3,
-} from "lucide-react";
+import { Bot, ChevronLeft, ChevronRight, FileUp, FolderGit2, LoaderCircle, Moon, Sparkles, Terminal } from "lucide-react";
 import InternalShell from "@/components/InternalShell";
-import { Clientes, Conteudo, Fontes, Insights, LinhaDoTempo, Manchete, Noticias, Numeros, PorProjetoBarras, Projetos, Secao, VoceDev } from "@/components/noite/secoes";
+import {
+  ABAS, BarraDeAbas, Clientes, Conteudo, Fontes, Insights, LinhaDoTempo, Manchete, Noticias, PainelDoDia, PorProjetoBarras, Previas, Projetos, Secao, VoceDev,
+  type Aba,
+} from "@/components/noite/secoes";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/lib/supabase";
 import { cn } from "@/lib/utils";
@@ -43,6 +44,8 @@ function Tela({ userId }: { userId: string | null }) {
   const diaPedido = busca.get("dia");
   const [dias, setDias] = useState<string[]>([]);
   const [estado, setEstado] = useState<Estado>({ tipo: "carregando" });
+  // A aba escolhida vale para todas as noites: trocar de dia não volta para a visão geral
+  const [aba, setAba] = useState<Aba>("geral");
   const arquivo = useRef<HTMLInputElement>(null);
   const cliente = supabase as unknown as ClienteNoite | null;
 
@@ -131,7 +134,7 @@ function Tela({ userId }: { userId: string | null }) {
         </div>
 
         {estado.tipo === "pronto" ? (
-          <CorpoRelatorio r={estado.relatorio} arquivo={estado.origem === "arquivo"} />
+          <CorpoRelatorio r={estado.relatorio} arquivo={estado.origem === "arquivo"} aba={aba} mudarAba={setAba} />
         ) : (
           <Aviso estado={estado} />
         )}
@@ -140,45 +143,53 @@ function Tela({ userId }: { userId: string | null }) {
   );
 }
 
-function CorpoRelatorio({ r, arquivo }: { r: Relatorio; arquivo: boolean }) {
+function CorpoRelatorio({ r, arquivo, aba, mudarAba }: { r: Relatorio; arquivo: boolean; aba: Aba; mudarAba: (a: Aba) => void }) {
+  const topo = useRef<HTMLDivElement>(null);
+  const ir = (a: Aba) => {
+    mudarAba(a);
+    // Rolou para baixo e trocou de aba: volta para o começo dela, logo abaixo das abas
+    const alvo = topo.current;
+    if (alvo && alvo.getBoundingClientRect().top < 0) window.scrollTo({ top: alvo.getBoundingClientRect().top + window.scrollY - 8, behavior: "smooth" });
+  };
+  const nome = ABAS.find((a) => a.id === aba)?.nome ?? "";
   return (
-    <div className="mt-6">
+    <div>
+      <div ref={topo} />
+      <BarraDeAbas r={r} aba={aba} mudar={ir} />
       {arquivo && (
-        <p className="mb-4 rounded-xl bg-amber-300/10 px-4 py-2.5 text-[13px] text-amber-100">Aberto de um arquivo do Mac. Este relatório não está na nuvem.</p>
+        <p className="mt-4 rounded-xl bg-amber-300/10 px-4 py-2.5 text-[13px] text-amber-100">Aberto de um arquivo do Mac. Este relatório não está na nuvem.</p>
       )}
-      <Manchete r={r} />
-      <Numeros m={r.metricas} />
+      <div role="tabpanel" id={`painel-${aba}`} aria-labelledby={`aba-${aba}`} aria-label={nome} className="mt-6">
+        {aba === "geral" && (
+          <div className="space-y-4">
+            <Manchete r={r} />
+            <PainelDoDia itens={r.linhaDoTempo} m={r.metricas} />
+            <Secao id="noite-insights" icone={Sparkles} titulo="Insights" apoio="Cruzando o dia com o foco da semana e o funil de clientes." className="!mt-10">
+              <Insights itens={r.insights} />
+            </Secao>
+            <div className="pt-6">
+              <Previas r={r} ir={ir} />
+            </div>
+          </div>
+        )}
 
-      <Secao id="noite-dia-titulo" icone={Clock3} titulo="Como foi o dia" apoio="Os momentos do dia em ordem, e onde foram os commits.">
-        <div className="grid gap-3 lg:grid-cols-[1.4fr_1fr]">
-          <LinhaDoTempo itens={r.linhaDoTempo} />
-          <PorProjetoBarras itens={r.porProjeto} />
-        </div>
-      </Secao>
+        {aba === "dia" && (
+          <>
+            <div className="grid gap-3 lg:grid-cols-[1.4fr_1fr]">
+              <LinhaDoTempo itens={r.linhaDoTempo} />
+              <PorProjetoBarras itens={r.porProjeto} />
+            </div>
+            <Secao id="noite-projetos" icone={FolderGit2} titulo="Projetos" apoio="O que avançou em cada um e qual é o próximo passo." className="!mt-10">
+              <Projetos itens={r.projetos} novos={r.projetosNovos} />
+            </Secao>
+          </>
+        )}
 
-      <Secao id="noite-projetos" icone={FolderGit2} titulo="Projetos" apoio="O que avançou em cada um e qual é o próximo passo.">
-        <Projetos itens={r.projetos} novos={r.projetosNovos} />
-      </Secao>
-
-      <Secao id="noite-dev" icone={UserRound} titulo="Você como desenvolvedor" apoio="Uma leitura honesta do dia, para evoluir de propósito.">
-        <VoceDev d={r.dev} />
-      </Secao>
-
-      <Secao id="noite-insights" icone={Sparkles} titulo="Insights" apoio="Cruzando o dia com o foco da semana e o funil de clientes.">
-        <Insights itens={r.insights} />
-      </Secao>
-
-      <Secao id="noite-noticias" icone={Newspaper} titulo="Notícias que importam" apoio="Pesquisadas pelo Codex nas últimas 72 horas, com o motivo de importarem para você.">
-        <Noticias itens={r.noticias} />
-      </Secao>
-
-      <Secao id="noite-conteudo" icone={Clapperboard} titulo="Ideias de conteúdo" apoio="Nascidas do trabalho real do dia. Projeto de cliente só com autorização.">
-        <Conteudo itens={r.conteudo} />
-      </Secao>
-
-      <Secao id="noite-clientes" icone={Users} titulo="Clientes e prospecção" apoio="Quem precisa de retorno e quem vale abordar.">
-        <Clientes clientes={r.clientes} prospeccao={r.prospeccao} />
-      </Secao>
+        {aba === "noticias" && <Noticias itens={r.noticias} />}
+        {aba === "conteudo" && <Conteudo itens={r.conteudo} />}
+        {aba === "clientes" && <Clientes clientes={r.clientes} prospeccao={r.prospeccao} />}
+        {aba === "dev" && <VoceDev d={r.dev} />}
+      </div>
 
       <Fontes r={r} />
     </div>

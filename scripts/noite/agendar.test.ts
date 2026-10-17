@@ -6,7 +6,9 @@ it("gera plist com horário, shell de login, base e logs", () => {
   expect(p).toContain("<integer>23</integer>");
   expect(p).toContain("<integer>30</integer>");
   expect(p).toContain("<string>/bin/zsh</string><string>-lc</string>");
-  expect(p).toContain("cd &quot;/meu repo&quot; &amp;&amp; pnpm noite");
+  expect(p).toContain("cd &quot;/meu repo&quot; &amp;&amp; pnpm noite --se-pendente");
+  expect(p).toContain("<key>StartInterval</key><integer>1800</integer>");
+  expect(p).toContain("<key>NOITE_HORA</key><string>23:30</string>");
   expect(p.match(/\/noite\/logs\/launchd.log/g)).toHaveLength(2);
 });
 it("escapa XML e shell, incluindo substituição de comando", () => {

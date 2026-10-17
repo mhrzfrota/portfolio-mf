@@ -33,7 +33,8 @@ pnpm noite --seco --dia 2026-10-13
 - `--seco`: desliga apenas o upload, ainda chama os agentes reais.
 - `--falso`: usa fixtures curtas, não chama agentes e implica `--seco`. Textos são demonstrativos; métricas são reais. Fixtures não fingem notícias verificadas.
 - `--sem-codex`, `--sem-claude`: desativam cada etapa. Sem Claude, a montagem usa os fatos e eventuais notícias do Codex.
-- `--dia AAAA-MM-DD`: dia explícito, com validação. Não aceita datas futuras.
+- `--dia AAAA-MM-DD`: dia explícito, com validação. Não aceita datas futuras. Ao refazer uma noite passada, o "agora" passado aos agentes é o fim da janela daquele dia, para as notícias serem as daquela noite.
+- `--se-pendente`: modo do agendador. Escolhe a última noite que já passou do horário (hoje depois de `NOITE_HORA`, senão ontem) e só roda se o relatório dela ainda falta (sem síntese do Claude ou sem notícia nenhuma), se o Mac está acordado de verdade e até 3 tentativas por noite (`estado.json` na pasta do dia). Fora disso sai em silêncio.
 
 Variáveis opcionais:
 
@@ -61,7 +62,7 @@ O instalador cria `~/Library/LaunchAgents/com.mfservices.noite.plist`, descarreg
 
 O horário do launchd segue o relógio configurado no Mac. Mantenha o Mac no fuso de Fortaleza. A coleta sempre usa `America/Fortaleza` via `Intl`: antes de 04:00, o dia padrão é o anterior. A janela começa à meia-noite desse dia e termina no instante de execução ou às 04:00 do dia seguinte, o que vier primeiro. O agendamento depende de sessão de usuário disponível; não liga um Mac desligado.
 
-`ProgramArguments` usa `/bin/zsh -lc 'cd "<repo>" && pnpm noite'`. O plist preserva `NOITE_DIR`; configure as demais variáveis da execução em `.env.local`. stdout e stderr vão para `<base>/logs/launchd.log`.
+`ProgramArguments` usa `/bin/zsh -lc 'cd "<repo>" && pnpm noite --se-pendente'`, disparado no horário e também a cada 30 minutos (`StartInterval` 1800). Motivo: às 23:30 o Mac costuma estar de tampa fechada, na bateria; o launchd roda a rotina num DarkWake de segundos, o Mac volta a dormir no meio das buscas e os agentes estouram o tempo (aconteceu em 14, 15 e 16/10, sem notícia nenhuma). DarkWake é detectado por `pmset -g systemstate` sem a capacidade `Graphics`. Enquanto roda, a rotina segura o Mac acordado com `caffeinate -i` (vale com a tampa aberta). O plist preserva `NOITE_DIR`; configure as demais variáveis da execução em `.env.local`. stdout e stderr vão para `<base>/logs/launchd.log`.
 
 ## Arquivos e retenção
 

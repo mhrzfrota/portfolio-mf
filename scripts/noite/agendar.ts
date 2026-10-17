@@ -29,14 +29,17 @@ export function gerarPlist(op: {
 }): string {
   op = { ...op, home: op.home ?? homedir() };
   const { hora, minuto } = validarHora(op.horario);
-  const comando = `cd ${shellDuplo(op.repo)} && pnpm noite`;
+  // --se-pendente: às 23:30 o Mac costuma dormir; a cada 30 min o launchd tenta
+  // de novo e a rotina só roda se a noite ainda falta e o Mac está acordado.
+  const comando = `cd ${shellDuplo(op.repo)} && pnpm noite --se-pendente`;
   return `<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0"><dict>
 <key>Label</key><string>${LABEL}</string>
 <key>ProgramArguments</key><array><string>/bin/zsh</string><string>-lc</string><string>${xml(comando)}</string></array>
-<key>EnvironmentVariables</key><dict><key>NOITE_DIR</key><string>${xml(op.base)}</string><key>PATH</key><string>${xml(caminhoExecucao(op.home!))}</string></dict>
+<key>EnvironmentVariables</key><dict><key>NOITE_DIR</key><string>${xml(op.base)}</string><key>NOITE_HORA</key><string>${xml(op.horario)}</string><key>PATH</key><string>${xml(caminhoExecucao(op.home!))}</string></dict>
 <key>StartCalendarInterval</key><dict><key>Hour</key><integer>${hora}</integer><key>Minute</key><integer>${minuto}</integer></dict>
+<key>StartInterval</key><integer>1800</integer>
 <key>StandardOutPath</key><string>${xml(join(op.base, "logs/launchd.log"))}</string>
 <key>StandardErrorPath</key><string>${xml(join(op.base, "logs/launchd.log"))}</string>
 </dict></plist>\n`;

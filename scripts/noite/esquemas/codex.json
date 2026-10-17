@@ -26,6 +26,25 @@
           },
           "tema": {
             "type": "string"
+          },
+          "categoria": {
+            "type": "string",
+            "enum": [
+              "mercado",
+              "crescimento",
+              "ferramentas"
+            ]
+          },
+          "acao": {
+            "type": "string"
+          },
+          "relevancia": {
+            "type": "string",
+            "enum": [
+              "alta",
+              "media",
+              "baixa"
+            ]
           }
         },
         "required": [
@@ -35,7 +54,10 @@
           "data",
           "resumo",
           "porqueImporta",
-          "tema"
+          "tema",
+          "categoria",
+          "acao",
+          "relevancia"
         ],
         "additionalProperties": false
       }

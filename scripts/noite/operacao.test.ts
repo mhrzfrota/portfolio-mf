@@ -98,6 +98,7 @@ it("flags: falso implica seco, data explícita e opções inválidas", () => {
     dia: "2026-10-13",
     semCodex: true,
     semClaude: true,
+    sePendente: false,
   });
   expect(flags(["--dia", "2026-10-14"], agora).dia).toBe("2026-10-14");
   expect(() => flags(["--dia", "2026-10-15"], agora)).toThrow("futuro");

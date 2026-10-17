@@ -21,6 +21,13 @@ export const STATUS_PROJETO: readonly StatusProjeto[] = ["avancou", "travado", "
 export type TipoInsight = "oportunidade" | "risco" | "padrao";
 export const TIPOS_INSIGHT: readonly TipoInsight[] = ["oportunidade", "risco", "padrao"];
 
+/**
+ * Onde a notícia mexe com a MF: o mercado dos clientes, o crescimento da
+ * empresa, ou as ferramentas do dia a dia (só quando pede ação).
+ */
+export type CategoriaNoticia = "mercado" | "crescimento" | "ferramentas";
+export const CATEGORIAS_NOTICIA: readonly CategoriaNoticia[] = ["mercado", "crescimento", "ferramentas"];
+
 export type FormatoConteudo = "reel" | "carrossel" | "post" | "story";
 export const FORMATOS_CONTEUDO: readonly FormatoConteudo[] = ["reel", "carrossel", "post", "story"];
 
@@ -70,6 +77,12 @@ export type Noticia = {
   resumo: string;
   porqueImporta: string;
   tema: string;
+  /** Os três campos abaixo existem a partir de 2026-10-17; relatórios anteriores não têm. */
+  categoria?: CategoriaNoticia;
+  /** O que fazer com a notícia, em uma frase que começa por verbo */
+  acao?: string;
+  /** alta: pede ação nesta semana; media: vale saber */
+  relevancia?: Prioridade;
 };
 
 export type IdeiaConteudo = { formato: FormatoConteudo; gancho: string; roteiro: string[]; base: string };
@@ -161,8 +174,14 @@ const ehDev = (v: unknown): v is Dev =>
 
 const ehInsight = (v: unknown): v is Insight => ehObj(v) && umDe(TIPOS_INSIGHT)(v.tipo) && ehTexto(v.titulo) && ehTexto(v.texto);
 
+const opcional = <T>(teste: (x: unknown) => x is T) => (v: unknown): v is T | undefined => v === undefined || teste(v);
+
 const ehNoticia = (v: unknown): v is Noticia =>
-  ehObj(v) && ["titulo", "fonte", "url", "data", "resumo", "porqueImporta", "tema"].every((k) => ehTexto(v[k]));
+  ehObj(v) &&
+  ["titulo", "fonte", "url", "data", "resumo", "porqueImporta", "tema"].every((k) => ehTexto(v[k])) &&
+  opcional(umDe(CATEGORIAS_NOTICIA))(v.categoria) &&
+  opcional(ehTexto)(v.acao) &&
+  opcional(umDe(PRIORIDADES))(v.relevancia);
 
 const ehIdeia = (v: unknown): v is IdeiaConteudo =>
   ehObj(v) && umDe(FORMATOS_CONTEUDO)(v.formato) && ehTexto(v.gancho) && ehLista(v.roteiro, ehTexto) && ehTexto(v.base);

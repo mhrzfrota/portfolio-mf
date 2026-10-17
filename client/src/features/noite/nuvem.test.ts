@@ -68,6 +68,14 @@ describe("nuvem da noite", () => {
     expect(lerArquivo("{}")).toBeNull();
   });
 
+  it("notícia com categoria nova e notícia antiga (sem categoria) abrem; categoria fora da lista não", () => {
+    const antiga = { titulo: "T", fonte: "F", url: "https://a.b", data: "2026-10-13", resumo: "R", porqueImporta: "P", tema: "X" };
+    const nova = { ...antiga, categoria: "mercado", acao: "Avisar as revendas", relevancia: "alta" };
+    expect(lerArquivo(JSON.stringify({ ...relatorio, noticias: [antiga, nova] }))).not.toBeNull();
+    expect(lerArquivo(JSON.stringify({ ...relatorio, noticias: [{ ...nova, categoria: "fofoca" }] }))).toBeNull();
+    expect(lerArquivo(JSON.stringify({ ...relatorio, noticias: [{ ...nova, relevancia: "urgente" }] }))).toBeNull();
+  });
+
   it("só deixa passar link http(s)", () => {
     expect(linkSeguro("https://vite.dev/blog")).toBe("https://vite.dev/blog");
     expect(linkSeguro("javascript:alert(1)")).toBeNull();
