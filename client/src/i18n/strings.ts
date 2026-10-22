@@ -221,6 +221,14 @@ const strings = {
       text: "Essa página não existe, mas o seu problema com certeza tem solução. Volte ao início e me conte.",
       goHome: "Voltar para o início",
     },
+    bio: {
+      documentTitle: "Matheus Frota · Links",
+      role: "Site e sistema sob medida para sua empresa vender mais.",
+      whatsapp: "Me chama no WhatsApp",
+      whatsappNote: "Você fala direto comigo. Sem compromisso.",
+      projects: "Ver projetos",
+      footer: "MF Services · Fortaleza, CE",
+    },
   },
   en: {
     nav: {
@@ -433,6 +441,14 @@ const strings = {
       title: "Page not found",
       text: "This page doesn't exist — but your problem certainly has a solution. Head back home and tell me about it.",
       goHome: "Back to home",
+    },
+    bio: {
+      documentTitle: "Matheus Frota · Links",
+      role: "Custom websites and systems that help your business sell more.",
+      whatsapp: "Message me on WhatsApp",
+      whatsappNote: "You talk directly to me. No commitment.",
+      projects: "See projects",
+      footer: "MF Services · Fortaleza, Brazil",
     },
   },
 } as const;

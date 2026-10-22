@@ -26,6 +26,8 @@ type RollButtonProps = {
   onClick?: () => void;
   variant?: keyof typeof variants;
   className?: string;
+  /** Nome do evento no Umami (data-umami-event): conta o clique. */
+  event?: string;
 };
 
 /** Seta diagonal ↗ desenhada à mão: haste até o canto e cabeça em L. */
@@ -54,6 +56,7 @@ export default function RollButton({
   onClick,
   variant = "primary",
   className,
+  event,
 }: RollButtonProps) {
   const classes = cn("btn group", variants[variant], className);
 
@@ -85,6 +88,7 @@ export default function RollButton({
         onClick={onClick}
         download={download}
         {...(external ? { target: "_blank", rel: "noreferrer" } : {})}
+        data-umami-event={event}
         className={classes}
       >
         {content}
@@ -93,7 +97,12 @@ export default function RollButton({
   }
 
   return (
-    <button type="button" onClick={onClick} className={classes}>
+    <button
+      type="button"
+      onClick={onClick}
+      data-umami-event={event}
+      className={classes}
+    >
       {content}
     </button>
   );

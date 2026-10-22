@@ -13,12 +13,18 @@ import Plano from "./pages/Plano";
 import Calendario from "./pages/Calendario";
 import Noite, { NoitePrevia } from "./pages/Noite";
 import Login from "./pages/Login";
+import Bio from "./pages/Bio";
 
 function Router() {
   return (
     <Switch>
       {/* Ferramenta interna, tela cheia: fica fora do Layout do site. */}
       <Route path="/acesso" component={Login} />
+      {/* Link da bio do Instagram: tela própria, sem a topbar e o rodapé do site. */}
+      <Route path="/bio" component={Bio} />
+      <Route path="/links">
+        <Redirect to="/bio" replace />
+      </Route>
       {/* O sistema interno é Calendário, Plano e Noite; os endereços antigos caem no Calendário. */}
       <Route path="/board">
         <Redirect to="/calendario" replace />

@@ -717,7 +717,8 @@
       );
   }
 
-  .dark .hero-sky {
+  /* --light: a /bio fica no céu claro mesmo no modo escuro. */
+  .dark .hero-sky:not(.hero-sky--light) {
     background:
       radial-gradient(
         85% 50% at 50% 22%,
@@ -1198,6 +1199,109 @@
   }
 }
 
+@layer components {
+  /* ---------- Link da bio (/bio) ----------
+     Entrada em cascata curta: cada bloco sobe 14px com o atraso que a página
+     passa em --d. O botão do WhatsApp inverte o .btn-arrow (branco sobre o
+     céu, círculo azul), fica um pouco mais alto e sobe 2px no hover. As cores
+     são fixas porque a página não muda no modo escuro. */
+
+  .bio-rise {
+    animation: bio-rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: var(--d, 0ms);
+  }
+
+  @keyframes bio-rise {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+  }
+
+  .bio-cta.btn-arrow {
+    padding: 6px 6px 6px 24px;
+    background: #fff;
+    color: #131313;
+    box-shadow: 0 12px 32px rgba(10, 30, 120, 0.28);
+    transition:
+      color 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* A pintura azul nasce no círculo da seta. Aqui a pílula chega a 380px,
+     então a escala passa dos 14 do .btn-arrow para cobrir até a borda. */
+  .bio-cta.btn-arrow::before {
+    right: 6px;
+    background: #2453ff;
+    transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .bio-cta.btn-arrow:hover {
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 18px 40px rgba(36, 83, 255, 0.4);
+  }
+
+  .bio-cta.btn-arrow:hover::before {
+    transform: scale(22);
+  }
+
+  .bio-cta.btn-arrow:active {
+    transform: translateY(0) scale(0.98);
+    transition-duration: 0.15s;
+  }
+
+  .bio-cta .btn-circle {
+    background: #2453ff;
+    color: #fff;
+    transition:
+      background-color 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+      color 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Sobre a pintura azul o círculo inverte: branco com a seta azul. */
+  .bio-cta.btn-arrow:hover .btn-circle {
+    background: #fff;
+    color: #2453ff;
+  }
+
+  /* No celular não existe hover: a seta faz a troca diagonal sozinha a cada
+     3,6s para mostrar que o botão é para tocar. No fim do ciclo as duas setas
+     trocam de lugar sem aparecer, porque a visível está sempre no centro. */
+  @media (hover: none) and (prefers-reduced-motion: no-preference) {
+    .bio-cta .btn-swap > :first-child {
+      animation: bio-nudge-out 3.6s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+    }
+
+    .bio-cta .btn-swap > :last-child {
+      animation: bio-nudge-in 3.6s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+    }
+  }
+
+  @keyframes bio-nudge-out {
+    0%,
+    70% {
+      transform: translate(0, 0);
+    }
+    85%,
+    100% {
+      transform: translate(22px, -22px);
+    }
+  }
+
+  @keyframes bio-nudge-in {
+    0%,
+    70% {
+      transform: translate(-22px, 22px);
+    }
+    85%,
+    100% {
+      transform: translate(0, 0);
+    }
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -1205,7 +1309,8 @@
 
   .board-blob,
   .board-col-in,
-  .habit-row-in {
+  .habit-row-in,
+  .bio-rise {
     animation: none;
   }
 
