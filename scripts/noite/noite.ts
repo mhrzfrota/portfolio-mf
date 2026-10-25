@@ -14,6 +14,7 @@ import {
 } from "./etapa-claude.ts";
 import { montarRelatorio } from "./montar.ts";
 import { subir } from "./subir.ts";
+import { atualizarPlanoDoDia } from "./plano.ts";
 import { avisar } from "./aviso.ts";
 import { pastaBase, travar, limpar, gravarJson } from "./arquivos.ts";
 import { erroSeguro } from "./processo.ts";
@@ -216,6 +217,22 @@ export async function main(args = process.argv.slice(2)): Promise<void> {
         })
       );
       gravarJson(join(pastaDoDia, "relatorio.json"), relatorio);
+      if (!op.falso) {
+        try {
+          const plano = await etapa("Plano", () => atualizarPlanoDoDia({
+            pastaDoDia,
+            insumos,
+            dia: op.dia,
+            seco: op.seco,
+            log,
+          }));
+          if (!op.seco) relatorio.plano = { criados: plano.criados, concluidos: plano.concluidos, ...(plano.erro ? { erro: plano.erro } : {}) };
+        } catch (e) {
+          relatorio.plano = { criados: [], concluidos: [], erro: erroSeguro(e) };
+          log(`Plano: ${erroSeguro(e)}`);
+        }
+        gravarJson(join(pastaDoDia, "relatorio.json"), relatorio);
+      }
       let erroUpload: unknown;
       try {
         resultado = await etapa("Upload", () => subir(relatorio, op.seco, log));

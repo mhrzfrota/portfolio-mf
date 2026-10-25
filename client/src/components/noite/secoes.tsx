@@ -462,10 +462,12 @@ type GrupoNoticia = CategoriaNoticia | "outras";
 const CATEGORIA: Record<GrupoNoticia, { nome: string; apoio: string; icone: typeof Sparkles; cor: string; fundo: string; ponto: string }> = {
   mercado: { nome: "Mercado dos seus clientes", apoio: "O que muda para quem compra de você.", icone: Store, cor: "text-emerald-300", fundo: "bg-emerald-400/10", ponto: "bg-emerald-400" },
   crescimento: { nome: "Para a MF crescer", apoio: "Venda, preço, oportunidades e posicionamento.", icone: TrendingUp, cor: "text-[#B7C0FF]", fundo: "bg-[#0C2AFE]/20", ponto: "bg-[#8C99FF]" },
-  ferramentas: { nome: "Ferramentas que você usa", apoio: "Só o que pede alguma ação sua.", icone: Wrench, cor: "text-sky-300", fundo: "bg-sky-400/10", ponto: "bg-sky-400" },
+  ia: { nome: "IA no seu trabalho", apoio: "Mudanças em IA para desenvolver e vender tecnologia.", icone: Bot, cor: "text-violet-300", fundo: "bg-violet-400/10", ponto: "bg-violet-400" },
+  devs: { nome: "Devs no Brasil", apoio: "Trabalho, comunidade e ecossistema de tecnologia.", icone: Code2, cor: "text-amber-200", fundo: "bg-amber-300/10", ponto: "bg-amber-300" },
+  ferramentas: { nome: "Tecnologia e ferramentas", apoio: "Novidades da sua stack que abrem possibilidades ou pedem ação.", icone: Wrench, cor: "text-sky-300", fundo: "bg-sky-400/10", ponto: "bg-sky-400" },
   outras: { nome: "Outras notícias", apoio: "Relatório anterior à separação por categoria.", icone: Newspaper, cor: "text-white/70", fundo: "bg-white/[0.07]", ponto: "bg-white/50" },
 };
-const ORDEM_GRUPOS: GrupoNoticia[] = ["mercado", "crescimento", "ferramentas", "outras"];
+const ORDEM_GRUPOS: GrupoNoticia[] = ["mercado", "crescimento", "ia", "devs", "ferramentas", "outras"];
 const ORDEM_RELEVANCIA: Record<Prioridade, number> = { alta: 0, media: 1, baixa: 2 };
 const grupoDe = (n: Noticia): GrupoNoticia => n.categoria ?? "outras";
 /** O bloco de ação já é uma sugestão: tira o "Sugestão:" que o modelo às vezes põe na frente. */

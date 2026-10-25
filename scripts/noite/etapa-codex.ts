@@ -61,7 +61,7 @@ export async function etapaCodex(op: {
       {
         cwd: op.pastaDoDia,
         stdin: prompt,
-        timeout: timeoutMs(8), // a pesquisa leva menos de 2 min; travou uma vez depois das buscas
+        timeout: timeoutMs(12), // a pesquisa ampliada por categoria precisa de mais tempo
         env: ambienteAgente(),
       }
     );

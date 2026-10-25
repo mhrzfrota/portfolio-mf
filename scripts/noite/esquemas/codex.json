@@ -32,6 +32,8 @@
             "enum": [
               "mercado",
               "crescimento",
+              "ia",
+              "devs",
               "ferramentas"
             ]
           },

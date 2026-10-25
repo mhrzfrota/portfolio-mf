@@ -28,13 +28,15 @@ pnpm noite:seco
 NOITE_DIR=.noite-teste NOITE_SEM_AVISO=1 pnpm noite --falso
 pnpm noite --seco --sem-codex --sem-claude
 pnpm noite --seco --dia 2026-10-13
+pnpm plano:atualizar --seco
 ```
 
-- `--seco`: desliga apenas o upload, ainda chama os agentes reais.
+- `--seco`: impede gravação do Plano e desliga o upload, ainda chama os agentes reais.
 - `--falso`: usa fixtures curtas, não chama agentes e implica `--seco`. Textos são demonstrativos; métricas são reais. Fixtures não fingem notícias verificadas.
 - `--sem-codex`, `--sem-claude`: desativam cada etapa. Sem Claude, a montagem usa os fatos e eventuais notícias do Codex.
 - `--dia AAAA-MM-DD`: dia explícito, com validação. Não aceita datas futuras. Ao refazer uma noite passada, o "agora" passado aos agentes é o fim da janela daquele dia, para as notícias serem as daquela noite.
 - `--se-pendente`: modo do agendador. Escolhe a última noite que já passou do horário (hoje depois de `NOITE_HORA`, senão ontem) e só roda se o relatório dela ainda falta (sem síntese do Claude ou sem notícia nenhuma), se o Mac está acordado de verdade e até 3 tentativas por noite (`estado.json` na pasta do dia). Fora disso sai em silêncio.
+- A etapa final propõe atualizações para o Plano com evidências do dia. A rotina só grava no quadro se não estiver em `--seco`; o resultado aparece em `plano` no relatório. `--falso` pula essa etapa. `pnpm plano:atualizar [AAAA-MM-DD] [--seco]` reutiliza os insumos já coletados daquela noite; sem `--seco`, aplica com trava de versão. O modo seco lê o quadro e calcula o que faria, sem gravar no Supabase.
 
 Variáveis opcionais:
 
@@ -42,7 +44,7 @@ Variáveis opcionais:
 | --------------------- | ------------------------- | ----------------------------------------------------------------- |
 | `NOITE_DIR`           | `~/.local/share/noite-mf` | Pasta dos relatórios; caminhos relativos usam a pasta de execução |
 | `NOITE_VAULT`         | `~/Documents/FRT CEREBRO` | Vault de leitura (use caminho absoluto)                           |
-| `NOITE_TIMEOUT_MIN`   | `15`                      | Limite por agente, com encerramento do grupo de processos         |
+| `NOITE_TIMEOUT_MIN`   | `15`                      | Limite por agente; Codex usa 12 min e a proposta curta do Plano usa 3 min |
 | `NOITE_CLAUDE_MODELO` | `sonnet`                  | Modelo da síntese                                                 |
 | `NOITE_SEM_AVISO`     | desativado                | `1` pula a notificação                                            |
 | `NOITE_HORA`          | `23:30`                   | Horário ao instalar, exportado no shell                           |

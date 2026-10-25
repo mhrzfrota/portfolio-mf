@@ -1,4 +1,4 @@
-import { hojeISO, isPlanoState, storageKey, type PlanoState } from "./store";
+import { hojeISO, isPlanoState, storageKey, type PlanoState } from "./store.ts";
 
 export type ColunaId = "ideias" | "referencias" | "fazer" | "agenda" | "feito";
 export const COLUNAS: { id: ColunaId; titulo: string; descricao: string }[] = [

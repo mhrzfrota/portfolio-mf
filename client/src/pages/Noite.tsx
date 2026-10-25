@@ -164,6 +164,20 @@ function CorpoRelatorio({ r, arquivo, aba, mudarAba }: { r: Relatorio; arquivo: 
           <div className="space-y-4">
             <Manchete r={r} />
             <PainelDoDia itens={r.linhaDoTempo} m={r.metricas} />
+            {r.plano && (
+              <Secao id="noite-plano" icone={FolderGit2} titulo="O Plano hoje" apoio={r.plano.erro ? "A rotina não conseguiu atualizar o quadro." : "Atualizações sugeridas com base nas evidências do dia."} className="!mt-8">
+                {r.plano.erro ? (
+                  <p className="rounded-xl bg-amber-300/10 px-4 py-3 text-[13.5px] text-amber-100">{r.plano.erro}</p>
+                ) : r.plano.criados.length + r.plano.concluidos.length === 0 ? (
+                  <p className="rounded-xl bg-white/[0.035] px-4 py-3 text-[13.5px] text-white/60">Nenhuma mudança proposta hoje.</p>
+                ) : (
+                  <ul className="grid gap-2 sm:grid-cols-2">
+                    {r.plano.criados.map((x) => <li key={`criado-${x.titulo}`} className="rounded-xl bg-white/[0.035] px-4 py-3 text-[13.5px]"><span className="font-semibold">Criado em {x.coluna}: {x.titulo}</span><span className="mt-1 block text-white/55">{x.evidencia}</span></li>)}
+                    {r.plano.concluidos.map((x) => <li key={`feito-${x.titulo}`} className="rounded-xl bg-emerald-400/[0.08] px-4 py-3 text-[13.5px]"><span className="font-semibold">Concluído: {x.titulo}</span><span className="mt-1 block text-white/55">{x.evidencia}</span></li>)}
+                  </ul>
+                )}
+              </Secao>
+            )}
             <Secao id="noite-insights" icone={Sparkles} titulo="Insights" apoio="Cruzando o dia com o foco da semana e o funil de clientes." className="!mt-10">
               <Insights itens={r.insights} />
             </Secao>

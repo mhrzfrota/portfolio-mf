@@ -59,7 +59,7 @@ it("Codex recebe comando, esquema e stdin, lê saída e marca sucesso", async ()
     "-",
   ]);
   expect(op.stdin).toContain('"commits":4');
-  expect(op.timeout).toBe(8 * 60_000);
+  expect(op.timeout).toBe(12 * 60_000);
 });
 it("Codex em erro não reaproveita saída antiga", async () => {
   writeFileSync(join(pasta, "codex.json"), JSON.stringify(fixture("codex")));

@@ -1,0 +1,36 @@
+{
+  "type": "object",
+  "properties": {
+    "criar": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "titulo": { "type": "string" },
+          "coluna": { "type": "string", "enum": ["fazer", "agenda", "ideias"] },
+          "projeto": { "type": "string" },
+          "etiquetas": { "type": "array", "items": { "type": "string", "enum": ["cliente", "sistema", "automacao", "conteudo", "produto", "estudo", "pessoal", "urgente"] } },
+          "descricao": { "type": "string" },
+          "data": { "type": "string" },
+          "evidencia": { "type": "string" }
+        },
+        "required": ["titulo", "coluna", "projeto", "etiquetas", "descricao", "evidencia"],
+        "additionalProperties": false
+      }
+    },
+    "concluir": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "evidencia": { "type": "string" }
+        },
+        "required": ["id", "evidencia"],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": ["criar", "concluir"],
+  "additionalProperties": false
+}

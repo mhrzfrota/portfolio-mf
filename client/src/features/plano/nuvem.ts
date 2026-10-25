@@ -1,4 +1,4 @@
-import { ehQuadro, type Quadro } from "./quadro";
+import { ehQuadro, type Quadro } from "./quadro.ts";
 
 /**
  * Plano no Supabase (tabela `plano`, uma linha por usuário), no mesmo modelo

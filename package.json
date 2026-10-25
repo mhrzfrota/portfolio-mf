@@ -17,6 +17,7 @@
     "noite:seco": "node --env-file-if-exists=.env.local scripts/noite/noite.ts --seco",
     "noite:agendar": "node scripts/noite/agendar.ts",
     "noite:subir": "node --env-file-if-exists=.env.local scripts/noite/subir-salvos.ts",
+    "plano:atualizar": "node --env-file-if-exists=.env.local scripts/noite/plano.ts",
     "radar:lead": "node --env-file-if-exists=.env.local scripts/radar/lead.ts",
     "radar:envio": "node --env-file-if-exists=.env.local scripts/radar/envio.ts",
     "radar:site": "node --env-file-if-exists=.env.local scripts/radar/diagnostico-site.ts",
