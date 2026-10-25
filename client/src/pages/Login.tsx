@@ -10,10 +10,10 @@ import {
 import { Link, Redirect } from "wouter";
 import { useAuth } from "@/contexts/AuthContext";
 
-function requestedPath(): "/plano" | "/calendario" | "/noite" {
+function requestedPath(): "/plano" | "/calendario" | "/noite" | "/radar" {
   const requested = new URLSearchParams(window.location.search).get("returnTo");
   // Lista fechada: o returnTo vem da URL e não pode virar redirecionamento para fora
-  return requested === "/plano" || requested === "/noite" ? requested : "/calendario";
+  return requested === "/plano" || requested === "/noite" || requested === "/radar" ? requested : "/calendario";
 }
 
 function AccessShell({ children }: { children: ReactNode }) {

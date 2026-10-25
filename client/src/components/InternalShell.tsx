@@ -1,6 +1,6 @@
 import { useEffect, type ReactNode } from "react";
 import { Link, useLocation } from "wouter";
-import { CalendarDays, KanbanSquare, Moon } from "lucide-react";
+import { CalendarDays, KanbanSquare, Moon, Radar as RadarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import InternalAccount from "./InternalAccount";
 
@@ -8,6 +8,7 @@ export const ABAS = [
   { href: "/calendario", nome: "Calendário", icone: CalendarDays },
   { href: "/plano", nome: "Plano", icone: KanbanSquare },
   { href: "/noite", nome: "Noite", icone: Moon },
+  { href: "/radar", nome: "Radar", icone: RadarIcon },
 ] as const;
 
 /**
@@ -33,21 +34,22 @@ export default function InternalShell({ title, children }: { title: string; chil
             <span className="grid h-7 w-7 place-items-center rounded-lg bg-[#0C2AFE] text-[12px] font-bold">MF</span>
             <span className="hidden sm:inline">Interno</span>
           </Link>
-          <nav aria-label="Ferramentas" className="mx-auto flex rounded-xl bg-white/[0.06] p-1 sm:mx-0 sm:ml-4">
+          <nav aria-label="Ferramentas" className="mx-auto flex min-w-0 rounded-xl bg-white/[0.06] p-1 sm:mx-0 sm:ml-4">
             {ABAS.map(({ href, nome, icone: Icone }) => {
               const ativa = local.startsWith(href);
               return (
                 <Link
                   key={href}
                   href={href}
+                  title={nome}
                   aria-current={ativa ? "page" : undefined}
                   className={cn(
-                    "flex h-8 items-center gap-1.5 rounded-lg px-3 text-[13.5px] font-medium transition-colors sm:px-3.5",
+                    "flex h-9 min-w-9 items-center justify-center gap-1.5 rounded-lg px-2.5 text-[13.5px] font-medium transition-colors sm:h-8 sm:px-3.5",
                     ativa ? "bg-white/[0.14] text-white shadow-[0_1px_2px_rgba(0,0,0,0.4)]" : "text-white/60 hover:text-white",
                   )}
                 >
                   <Icone size={15} strokeWidth={2} />
-                  {nome}
+                  <span className="hidden sm:inline">{nome}</span>
                 </Link>
               );
             })}

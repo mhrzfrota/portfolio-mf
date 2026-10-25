@@ -16,7 +16,11 @@
     "noite": "node --env-file-if-exists=.env.local scripts/noite/noite.ts",
     "noite:seco": "node --env-file-if-exists=.env.local scripts/noite/noite.ts --seco",
     "noite:agendar": "node scripts/noite/agendar.ts",
-    "noite:subir": "node --env-file-if-exists=.env.local scripts/noite/subir-salvos.ts"
+    "noite:subir": "node --env-file-if-exists=.env.local scripts/noite/subir-salvos.ts",
+    "radar:lead": "node --env-file-if-exists=.env.local scripts/radar/lead.ts",
+    "radar:envio": "node --env-file-if-exists=.env.local scripts/radar/envio.ts",
+    "radar:site": "node --env-file-if-exists=.env.local scripts/radar/diagnostico-site.ts",
+    "radar:importar": "node --env-file-if-exists=.env.local scripts/radar/importar.ts"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

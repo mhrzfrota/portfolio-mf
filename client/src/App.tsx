@@ -14,6 +14,7 @@ import Calendario from "./pages/Calendario";
 import Noite, { NoitePrevia } from "./pages/Noite";
 import Login from "./pages/Login";
 import Bio from "./pages/Bio";
+import Radar from "./pages/Radar";
 
 function Router() {
   return (
@@ -54,6 +55,11 @@ function Router() {
       <Route path="/noite">
         <ProtectedRoute returnTo="/noite">
           <Noite />
+        </ProtectedRoute>
+      </Route>
+      <Route path="/radar">
+        <ProtectedRoute returnTo="/radar">
+          <Radar />
         </ProtectedRoute>
       </Route>
       {/* Só no pnpm dev: prévia do relatório sem login, abrindo o arquivo salvo no Mac. */}

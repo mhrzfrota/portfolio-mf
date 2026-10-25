@@ -1,0 +1,42 @@
+{
+  "id": "lead_ficticio_001",
+  "nome": "Negócio Fictício",
+  "segmento": "Clínica fictícia para testes",
+  "cidade": "Fortaleza",
+  "uf": "ce",
+  "instagram": {
+    "usuario": "@lead_ficticio_001",
+    "seguidores": 2500,
+    "ultimoPost": "2026-10-18",
+    "postsUltimos30Dias": 12,
+    "linkBio": "https://company.example",
+    "bio": "Perfil fictício usado somente nos testes."
+  },
+  "site": { "url": "https://company.example" },
+  "google": { "nota": 4.8, "avaliacoes": 40, "url": "https://maps.google.com/?q=negocio-ficticio" },
+  "contato": { "whatsapp": "+55 (00) 00000-0000", "email": "contato@company.example" },
+  "problemas": ["Site fictício sem adaptação ao celular e com informações antigas."],
+  "oportunidade": "Exemplo fictício de renovação do site e agendamento por WhatsApp.",
+  "servicos": ["site", "landing-page"],
+  "criterios": {
+    "presenca_web": { "ok": true, "evidencia": "Diagnóstico fictício: sem viewport e rodapé antigo.", "fonte": "https://company.example", "nivel": "ruim" },
+    "so_insta_whats": { "ok": true, "evidencia": "No exemplo, agendamentos são feitos apenas pelo WhatsApp.", "fonte": "https://www.instagram.com/lead_ficticio_001/" },
+    "concorrente_melhor": { "ok": true, "evidencia": "Concorrente fictício tem site adaptado ao celular.", "fonte": "https://competitor.example" },
+    "investe_divulgacao": { "ok": true, "evidencia": "Exemplo fictício de anúncio ativo.", "fonte": "https://www.facebook.com/ads/library/" },
+    "frequencia_posts": { "ok": true, "evidencia": "12 publicações fictícias nos últimos 30 dias.", "fonte": "https://www.instagram.com/lead_ficticio_001/" },
+    "boas_avaliacoes": { "ok": true, "evidencia": "Nota fictícia 4,8 com 40 avaliações.", "fonte": "https://maps.google.com/?q=negocio-ficticio" },
+    "valor_agregado": { "ok": true, "evidencia": "Serviços clínicos fictícios de valor agregado.", "fonte": "https://company.example" },
+    "crescimento": { "ok": false, "evidencia": "Não há evidência de expansão neste exemplo." },
+    "porte_ideal": { "ok": true, "evidencia": "Perfil fictício com 2.500 seguidores.", "fonte": "https://www.instagram.com/lead_ficticio_001/" },
+    "decisor_identificado": { "ok": false, "evidencia": "O exemplo não identifica o decisor." }
+  },
+  "concorrentes": [{ "nome": "Concorrente Fictício", "site": "https://competitor.example", "observacao": "Exemplo fictício de site com informações completas e navegação pelo celular." }],
+  "abordagem": {
+    "canal": "whatsapp",
+    "mensagem": "Olá! Esta é uma mensagem fictícia para teste da Negócio Fictício. Posso apresentar uma proposta de renovação do site?",
+    "followup": "Mensagem fictícia de acompanhamento para os testes."
+  },
+  "pontuacao": 80,
+  "analisadoEm": "2026-10-19",
+  "fontes": ["https://www.instagram.com/lead_ficticio_001/", "https://company.example"]
+}
