@@ -23,10 +23,16 @@ export const TIPOS_INSIGHT: readonly TipoInsight[] = ["oportunidade", "risco", "
 
 /**
  * Onde a notícia mexe com a MF: o mercado dos clientes, o crescimento da
- * empresa, ou as ferramentas do dia a dia (só quando pede ação).
+ * empresa, IA e mercado dev, ou as ferramentas do dia a dia.
  */
-export type CategoriaNoticia = "mercado" | "crescimento" | "ferramentas";
-export const CATEGORIAS_NOTICIA: readonly CategoriaNoticia[] = ["mercado", "crescimento", "ferramentas"];
+export type CategoriaNoticia = "mercado" | "crescimento" | "ia" | "devs" | "ferramentas";
+export const CATEGORIAS_NOTICIA: readonly CategoriaNoticia[] = ["mercado", "crescimento", "ia", "devs", "ferramentas"];
+
+export type ResumoPlano = {
+  criados: { titulo: string; coluna: "fazer" | "agenda" | "ideias"; evidencia: string }[];
+  concluidos: { titulo: string; evidencia: string }[];
+  erro?: string;
+};
 
 export type FormatoConteudo = "reel" | "carrossel" | "post" | "story";
 export const FORMATOS_CONTEUDO: readonly FormatoConteudo[] = ["reel", "carrossel", "post", "story"];
@@ -124,6 +130,8 @@ export type Relatorio = {
   conteudo: IdeiaConteudo[];
   clientes: Cliente[];
   prospeccao: Prospecto[];
+  /** Resultado opcional da atualização automática, ausente nos relatórios antigos. */
+  plano?: ResumoPlano;
   fontes: { commits: number; sessoesClaude: number; sessoesCodex: number; notas: number; noticias: number };
   agentes: { codex: Agente; claude: Agente };
 };
@@ -199,6 +207,12 @@ const ehProspecto = (v: unknown): v is Prospecto =>
   ehTextoOuNulo(v.fonte) &&
   umDe(PRIORIDADES)(v.prioridade);
 
+const ehResumoPlano = (v: unknown): v is ResumoPlano =>
+  ehObj(v) &&
+  ehLista(v.criados, (x): x is ResumoPlano["criados"][number] => ehObj(x) && ehTexto(x.titulo) && umDe(["fazer", "agenda", "ideias"] as const)(x.coluna) && ehTexto(x.evidencia)) &&
+  ehLista(v.concluidos, (x): x is ResumoPlano["concluidos"][number] => ehObj(x) && ehTexto(x.titulo) && ehTexto(x.evidencia)) &&
+  (v.erro === undefined || ehTexto(v.erro));
+
 const ehPrioridades = (v: unknown): v is Prioridades => ehObj(v) && ehTexto(v.titulo) && ehTexto(v.porque) && ehTextoOuNulo(v.projeto);
 
 const ehAgente = (v: unknown): v is Agente =>
@@ -224,6 +238,7 @@ export function ehRelatorio(v: unknown): v is Relatorio {
     ehLista(v.conteudo, ehIdeia) &&
     ehLista(v.clientes, ehCliente) &&
     ehLista(v.prospeccao, ehProspecto) &&
+    opcional(ehResumoPlano)(v.plano) &&
     ehObj(v.fontes) &&
     ["commits", "sessoesClaude", "sessoesCodex", "notas", "noticias"].every((k) => ehNumero((v.fontes as Obj)[k])) &&
     ehObj(v.agentes) &&
