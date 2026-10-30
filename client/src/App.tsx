@@ -64,10 +64,12 @@ function Router() {
       </Route>
       {/* Só no pnpm dev: prévia do relatório sem login, abrindo o arquivo salvo no Mac. */}
       {import.meta.env.DEV && <Route path="/dev/noite" component={NoitePrevia} />}
+      {/* A home virou um app de tela cheia com dock próprio (2026-10-29):
+          fica fora do Layout, como a /bio. Cases e blog seguem no Layout. */}
+      <Route path="/" component={Home} />
       <Route>
         <Layout>
           <Switch>
-            <Route path="/" component={Home} />
             <Route path="/projetos/:slug" component={ProjectDetail} />
             <Route path="/blog/:slug" component={BlogPost} />
             <Route component={NotFound} />

@@ -184,13 +184,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       return;
     }
 
-    setLocation("/");
-    window.setTimeout(() => {
-      document.getElementById(id)?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }, 0);
+    // A home virou app de telas (2026-10-29): a seção vira âncora, e a home
+    // abre a tela certa pelo hash (#projetos, #sobre, #combos, #blog...).
+    setLocation(id === "inicio" || id === "contato" ? "/" : `/#${id}`);
   };
 
   const activeLang = overSky ? "text-white" : "text-foreground";
