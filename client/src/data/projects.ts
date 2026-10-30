@@ -562,6 +562,21 @@ export const projects: Project[] = [
       },
     },
   },
+  {
+    id: 20,
+    title: "TS Kite Center",
+    description: {
+      pt: "Site da escola de kitesurf dos irmãos Set e Tomás, no Cumbuco, em português e inglês: o vídeo da escola na abertura, o vento ao vivo da praia, serviços (aulas, downwind, kite trip e foil), preços e reserva direto pelo WhatsApp.",
+      en: "Website for Set and Tomás's kitesurfing school in Cumbuco, in Portuguese and English: the school's video on the hero, live wind from the beach, services (lessons, downwind, kite trips and foil), prices and booking straight through WhatsApp.",
+    },
+    tags: ["React", "Vite", "Tailwind", "i18n", "Cloudflare Workers"],
+    image: "/images/ts-kite-center.webp",
+    imageAspect: 2.289,
+    liveUrl: "https://www.tskitecenter.com.br",
+    repoUrl: "https://github.com/mhrzfrota/tskitecenter",
+    category: "Web",
+    featured: true,
+  },
 ];
 
 export const categories = ["Todos", "Web", "Plataformas", "Landing Page"];
