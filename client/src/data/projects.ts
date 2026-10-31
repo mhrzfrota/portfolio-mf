@@ -577,6 +577,21 @@ export const projects: Project[] = [
     category: "Web",
     featured: true,
   },
+  {
+    id: 21,
+    title: "Silver Cell",
+    description: {
+      pt: "Site para uma loja de iPhones novos e seminovos em Fortaleza, com catálogo, filtros, troca de aparelho, conteúdo do Instagram e atendimento direto pelo WhatsApp.",
+      en: "Website for a new and pre-owned iPhone store in Fortaleza, with a catalog, filters, device trade-in, Instagram content and direct support through WhatsApp.",
+    },
+    tags: ["React", "TypeScript", "Vite", "Tailwind", "GSAP", "Cloudflare Workers"],
+    image: "/images/silvercell.png",
+    imageAspect: 1.9028,
+    liveUrl: "https://silvercell.com.br",
+    repoUrl: "https://github.com/mhrzfrota/silvercell",
+    category: "Web",
+    featured: true,
+  },
 ];
 
 export const categories = ["Todos", "Web", "Plataformas", "Landing Page"];
