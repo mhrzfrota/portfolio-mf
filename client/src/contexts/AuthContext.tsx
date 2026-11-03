@@ -15,9 +15,14 @@ export type AuthStatus =
   | "unauthenticated"
   | "unconfigured";
 
+/** Parceiro só usa o Radar (2026-11-03). A trava de verdade é a RLS da 0006; aqui só se esconde o resto. */
+export type Papel = "dono" | "parceiro";
+
 interface AuthContextValue {
   status: AuthStatus;
   user: User | null;
+  /** undefined enquanto confere o papel do usuário logado. */
+  papel: Papel | undefined;
   signIn: (email: string, password: string) => Promise<string | null>;
   signOut: () => Promise<string | null>;
 }
@@ -29,6 +34,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [status, setStatus] = useState<AuthStatus>(
     isSupabaseConfigured ? "loading" : "unconfigured"
   );
+  const [papel, setPapel] = useState<Papel | undefined>(undefined);
+  const userId = user?.id;
+
+  useEffect(() => {
+    setPapel(undefined);
+    if (!supabase || !userId) return;
+    let ativo = true;
+    void supabase
+      .from("radar_papeis")
+      .select("papel")
+      .eq("user_id", userId)
+      .maybeSingle()
+      .then(({ data, error }) => {
+        if (!ativo) return;
+        // Sem a tabela (0006 ainda não rodou) ninguém é parceiro.
+        setPapel(!error && data?.papel === "parceiro" ? "parceiro" : "dono");
+      });
+    return () => {
+      ativo = false;
+    };
+  }, [userId]);
 
   useEffect(() => {
     if (!supabase) return;
@@ -65,6 +91,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     () => ({
       status,
       user,
+      papel,
       signIn: async (email, password) => {
         if (!supabase) return "O Supabase ainda não foi configurado.";
         const { data, error } = await supabase.auth.signInWithPassword({
@@ -87,7 +114,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return null;
       },
     }),
-    [status, user]
+    [status, user, papel]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

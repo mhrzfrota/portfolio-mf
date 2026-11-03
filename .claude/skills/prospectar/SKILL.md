@@ -145,6 +145,10 @@ No fim da rodada, curto:
 - Quantos rascunhos entraram na fila para aprovar.
 - "Painel: `pnpm dev`, https://emefeservices.vercel.app/radar (aba Fila de envio para aprovar)".
 
+## Pedido de busca de parceiro
+
+Quando a origem for `pnpm radar:buscas -- pendentes`, reserve com `pegar <id>`, rode toda a busca usando `--dono <owner>` em `radar:lead` e `radar:envio`, e leia a oferta/config desse dono. Conclua com `concluir <id> --resultado '<json>'` contendo achados, gravados, duplicados, descartados e ids. Em falha, use `falhar <id> --erro "..."`. O agente nunca envia mensagens pelo parceiro.
+
 ## Regras
 
 - **Só dado público.** Nada de comprar lista, nada de ferramenta paga, nada de raspar dado pessoal.

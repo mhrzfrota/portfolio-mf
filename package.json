@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite --host",
     "build": "vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist",
+    "build:api": "esbuild server/radar/busca.ts --platform=node --packages=external --bundle --format=esm --log-level=warning --banner:js=\"// Gerado por pnpm build:api a partir de server/radar/busca.ts. Não edite.\" --outfile=api/radar/busca.js",
     "start": "NODE_ENV=production node dist/index.js",
     "preview": "vite preview --host",
     "check": "tsc --noEmit",
@@ -21,7 +22,9 @@
     "radar:lead": "node --env-file-if-exists=.env.local scripts/radar/lead.ts",
     "radar:envio": "node --env-file-if-exists=.env.local scripts/radar/envio.ts",
     "radar:site": "node --env-file-if-exists=.env.local scripts/radar/diagnostico-site.ts",
-    "radar:importar": "node --env-file-if-exists=.env.local scripts/radar/importar.ts"
+    "radar:importar": "node --env-file-if-exists=.env.local scripts/radar/importar.ts",
+    "radar:buscas": "node --env-file-if-exists=.env.local scripts/radar/buscas.ts",
+    "radar:parceiro": "node --env-file-if-exists=.env.local scripts/radar/parceiro.ts"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

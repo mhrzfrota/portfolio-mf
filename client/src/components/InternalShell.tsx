@@ -2,6 +2,7 @@ import { useEffect, type ReactNode } from "react";
 import { Link, useLocation } from "wouter";
 import { CalendarDays, KanbanSquare, Moon, Radar as RadarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/contexts/AuthContext";
 import InternalAccount from "./InternalAccount";
 
 export const ABAS = [
@@ -18,6 +19,8 @@ export const ABAS = [
  */
 export default function InternalShell({ title, children }: { title: string; children: ReactNode }) {
   const [local] = useLocation();
+  const { papel } = useAuth();
+  const abas = papel === "parceiro" ? ABAS.filter((aba) => aba.href === "/radar") : ABAS;
   useEffect(() => {
     const anterior = document.title;
     document.title = `${title} · MF`;
@@ -30,12 +33,12 @@ export default function InternalShell({ title, children }: { title: string; chil
     <div className="interno min-h-dvh bg-[#0B0C10] font-sans text-white antialiased [color-scheme:dark]">
       <header className="sticky top-0 z-40 border-b border-white/[0.07] bg-[#0B0C10]/85 backdrop-blur-xl">
         <div className="mx-auto flex h-14 max-w-[1680px] items-center gap-3 px-3 sm:px-6">
-          <Link href="/" className="flex shrink-0 items-center gap-2 rounded-lg pr-1 text-[15px] font-semibold tracking-tight" title="Voltar ao portfólio">
+          <Link href={papel === "parceiro" ? "/radar" : "/"} className="flex shrink-0 items-center gap-2 rounded-lg pr-1 text-[15px] font-semibold tracking-tight" title="Voltar ao portfólio">
             <span className="grid h-7 w-7 place-items-center rounded-lg bg-[#0C2AFE] text-[12px] font-bold">MF</span>
             <span className="hidden sm:inline">Interno</span>
           </Link>
           <nav aria-label="Ferramentas" className="mx-auto flex min-w-0 rounded-xl bg-white/[0.06] p-1 sm:mx-0 sm:ml-4">
-            {ABAS.map(({ href, nome, icone: Icone }) => {
+            {abas.map(({ href, nome, icone: Icone }) => {
               const ativa = local.startsWith(href);
               return (
                 <Link

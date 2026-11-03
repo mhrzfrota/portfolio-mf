@@ -14,7 +14,7 @@ export function configTeste(): ConfigRadar {
 export function leadTeste(id = "lead_ficticio_001", nota = 80): Lead {
   const resultado = validarLead(JSON.parse(readFileSync(new URL("./fixtures/lead-exemplo.json", import.meta.url), "utf8")), "2026-10-23");
   if (!resultado.ok) throw new Error(resultado.erros.join("\n"));
-  return { ...resultado.lead, id, nome: `Negócio Fictício ${id}`, instagram: { ...resultado.lead.instagram, usuario: id }, pontuacao: nota };
+  return { ...resultado.lead, id, nome: `Negócio Fictício ${id}`, instagram: { ultimoPost: "", ...resultado.lead.instagram, usuario: id }, pontuacao: nota };
 }
 export function estadoTeste(): EstadoEnvio { return { leads: [leadTeste()], envios: [], registros: {}, bloqueados: [], config: configTeste() }; }
 export function envioTeste(campos: Partial<Envio> = {}): Envio {

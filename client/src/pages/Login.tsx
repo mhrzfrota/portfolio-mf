@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { Link, Redirect } from "wouter";
 import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/lib/supabase";
 
 function requestedPath(): "/plano" | "/calendario" | "/noite" | "/radar" {
   const requested = new URLSearchParams(window.location.search).get("returnTo");
@@ -67,6 +68,68 @@ function ConfigurationNotice() {
   );
 }
 
+/** Link do convite do parceiro: o Supabase abre a sessão pelo endereço e a pessoa cria a senha aqui. */
+function CriarSenha() {
+  const [senha, setSenha] = useState("");
+  const [confirmacao, setConfirmacao] = useState("");
+  const [salvando, setSalvando] = useState(false);
+  const [erro, setErro] = useState<string | null>(null);
+  const [pronto, setPronto] = useState(false);
+
+  if (pronto) return <Redirect to="/radar" replace />;
+
+  const enviar = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (senha.length < 8) return setErro("Use pelo menos 8 caracteres.");
+    if (senha !== confirmacao) return setErro("As senhas não são iguais.");
+    if (!supabase) return setErro("O Supabase ainda não foi configurado.");
+    setSalvando(true);
+    setErro(null);
+    const { error } = await supabase.auth.updateUser({ password: senha });
+    setSalvando(false);
+    if (error) return setErro("Não foi possível salvar a senha. Abra o link do convite de novo.");
+    window.history.replaceState(null, "", "/acesso");
+    setPronto(true);
+  };
+
+  const campo =
+    "w-full rounded-2xl bg-white/14 px-4 py-3.5 text-[14px] text-white outline-none shadow-[inset_0_0_0_1px_rgba(255,255,255,0.22)] placeholder:text-white/35 focus-visible:ring-2 focus-visible:ring-white/80";
+  return (
+    <AccessShell>
+      <div className="flex h-11 w-11 items-center justify-center rounded-full bg-white text-[var(--brand-blue-dark)]">
+        <KeyRound className="h-5 w-5" />
+      </div>
+      <p className="mono-label mt-6 text-[10px] text-white/60">MF · Radar</p>
+      <h1 className="mt-2 text-[30px] font-medium tracking-[-0.05em]">Crie sua senha</h1>
+      <p className="mt-2 text-[14px] leading-relaxed text-white/65">
+        Você vai usar o seu e-mail e esta senha para entrar no Radar.
+      </p>
+      <form onSubmit={enviar} className="mt-7 space-y-4">
+        <label className="block">
+          <span className="mono-label mb-2 block text-[9px] text-white/70">Senha</span>
+          <input type="password" value={senha} onChange={e => setSenha(e.target.value)} autoComplete="new-password" required minLength={8} autoFocus className={campo} />
+        </label>
+        <label className="block">
+          <span className="mono-label mb-2 block text-[9px] text-white/70">Repita a senha</span>
+          <input type="password" value={confirmacao} onChange={e => setConfirmacao(e.target.value)} autoComplete="new-password" required minLength={8} className={campo} />
+        </label>
+        {erro && (
+          <p role="alert" className="rounded-xl bg-white/12 px-3.5 py-3 text-[13px] leading-snug text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,0.16)]">
+            {erro}
+          </p>
+        )}
+        <button
+          type="submit"
+          disabled={salvando}
+          className="flex w-full items-center justify-center gap-2 rounded-full bg-white px-5 py-3.5 text-[13px] font-semibold text-[var(--brand-blue-dark)] transition-transform hover:scale-[1.01] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 disabled:cursor-wait disabled:opacity-70"
+        >
+          {salvando ? <><LoaderCircle className="h-4 w-4 animate-spin" /> Salvando</> : "Salvar e entrar"}
+        </button>
+      </form>
+    </AccessShell>
+  );
+}
+
 export default function Login() {
   const { status, signIn } = useAuth();
   const [email, setEmail] = useState("");
@@ -84,6 +147,7 @@ export default function Login() {
   }, []);
 
   if (status === "authenticated") {
+    if (new URLSearchParams(window.location.search).get("convite") === "1") return <CriarSenha />;
     return <Redirect to={requestedPath()} replace />;
   }
 
@@ -127,9 +191,13 @@ export default function Login() {
         Bem-vindo de volta
       </h1>
       <p className="mt-2 text-[14px] leading-relaxed text-white/65">
-        Entre com o usuário cadastrado no Supabase para acessar o Board e seus
-        Hábitos.
+        Entre com o seu e-mail e senha para acessar a área interna.
       </p>
+      {status === "unauthenticated" && new URLSearchParams(window.location.search).get("convite") === "1" && (
+        <p role="alert" className="mt-4 rounded-xl bg-white/12 px-3.5 py-3 text-[13px] leading-snug text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,0.16)]">
+          O link do convite expirou ou já foi usado. Peça um convite novo para criar a senha.
+        </p>
+      )}
 
       <form onSubmit={handleSubmit} className="mt-7 space-y-4">
         <div>

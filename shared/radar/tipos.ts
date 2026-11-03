@@ -6,7 +6,13 @@
 
 import type { CriterioId } from "./criterios.ts";
 
-export type Servico = "site" | "landing-page" | "pagina-de-vendas" | "vsl" | "catalogo" | "loja-online";
+export type Servico =
+  | "site"
+  | "landing-page"
+  | "pagina-de-vendas"
+  | "vsl"
+  | "catalogo"
+  | "loja-online";
 
 /** Como está a presença na web: decide os pontos do critério `presenca_web`. */
 export type SituacaoSite = "sem-site" | "ruim" | "mediano" | "bom";
@@ -61,6 +67,7 @@ export type Concorrente = {
 };
 
 export type Lead = {
+  origem?: "agente" | "rapida";
   /** Slug do @ do Instagram, sem o @. Ex.: "clinicabela.ce". */
   id: string;
   nome: string;
@@ -68,7 +75,8 @@ export type Lead = {
   cidade: string;
   /** Sigla da UF, maiúscula. */
   uf: string;
-  instagram: {
+  /** Ausente só em leads `origem: "rapida"` (achados no Google sem @ no site). */
+  instagram?: {
     usuario: string;
     seguidores?: number;
     /** Data do post mais recente (fora os fixados), AAAA-MM-DD. */
@@ -132,7 +140,14 @@ export type ArquivoDescartados = { descartados: Descartado[] };
  * ---------------------------------------------------------------------- */
 
 /** rascunho → aprovado | reprovado; aprovado → enviando → enviado | falhou; falhou → aprovado; qualquer um antes de enviado → cancelado. */
-export type StatusEnvio = "rascunho" | "aprovado" | "reprovado" | "enviando" | "enviado" | "falhou" | "cancelado";
+export type StatusEnvio =
+  | "rascunho"
+  | "aprovado"
+  | "reprovado"
+  | "enviando"
+  | "enviado"
+  | "falhou"
+  | "cancelado";
 
 /** primeira: a mensagem que abre a conversa. followup: uma só, se não responder em `followupDias`. */
 export type TipoEnvio = "primeira" | "followup";
@@ -141,7 +156,7 @@ export type Envio = {
   /** `${leadId}:${tipo}`. Um lead tem no máximo uma primeira e um followup. */
   id: string;
   leadId: string;
-  canal: "instagram";
+  canal: "instagram" | "whatsapp";
   /** @ do Instagram do lead, sem o @. */
   destino: string;
   tipo: TipoEnvio;
@@ -184,7 +199,7 @@ export type ConfigRadar = {
     followupDias: number;
   };
   envio: {
-    canal: "instagram";
+    canal: "instagram" | "whatsapp";
     /** Conta que envia, sem o @. */
     conta: string;
     limiteDiario: number;
