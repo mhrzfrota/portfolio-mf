@@ -210,3 +210,25 @@ test("envio: repetir marcar-enviado completa o funil sem duplicar o envio", () =
   assert.equal(novamente.estado.envios[0].status, "enviado");
   assert.equal(novamente.estado.registros[estado.leads[0].id].etapa, "abordado");
 });
+
+test("envio: reprovar lead descarta no funil com o motivo e tira da fila", () => {
+  const estado = estadoTeste();
+  estado.leads = [leadTeste("a", 80), leadTeste("b", 70)];
+  estado.envios = [
+    envioTeste({ id: "a:primeira", leadId: "a", destino: "@a", status: "rascunho" }),
+    envioTeste({ id: "a:followup", leadId: "a", destino: "@a", tipo: "followup", status: "aprovado", decididoEm: AGORA.toISOString() }),
+    envioTeste({ id: "b:primeira", leadId: "b", destino: "@b", status: "rascunho" }),
+  ];
+  const antes = structuredClone(estado);
+  const { estado: depois } = aplicarAcao(estado, { acao: "reprovar-lead", leadId: "a", motivo: "Site já é bom" }, AGORA);
+  assert.deepEqual(estado, antes);
+  assert.equal(depois.registros.a.etapa, "descartado");
+  assert.equal(depois.registros.a.anotacao, "Reprovado: Site já é bom");
+  const porId = Object.fromEntries(depois.envios.map(e => [e.id, e]));
+  assert.equal(porId["a:primeira"].status, "reprovado");
+  assert.equal(porId["a:primeira"].motivoReprova, "Site já é bom");
+  assert.equal(porId["a:followup"].status, "cancelado");
+  assert.equal(porId["b:primeira"].status, "rascunho");
+  assert.throws(() => aplicarAcao(estado, { acao: "reprovar-lead", leadId: "a", motivo: " " }, AGORA), /motivo/);
+  assert.throws(() => aplicarAcao(estado, { acao: "reprovar-lead", leadId: "x", motivo: "Fora do perfil" }, AGORA));
+});

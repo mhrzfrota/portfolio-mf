@@ -481,6 +481,7 @@ export type AcaoEnvio =
     }
   | { acao: "resposta"; leadId: string; etapa?: Etapa; anotacao?: string }
   | { acao: "etapa"; leadId: string; etapa?: Etapa; anotacao?: string }
+  | { acao: "reprovar-lead"; leadId: string; motivo: string }
   | { acao: "followups" }
   | { acao: "bloquear"; instagram: string; motivo: string }
   | { acao: "pausa"; pausado: boolean }
@@ -545,6 +546,19 @@ function importarRegistros(
 }
 
 /** Um único caminho de efeitos evita diferenças entre CLI e painel. Não altera a entrada. */
+/** Anotação do funil que marca a reprovação de um lead; o motivo vem depois. */
+export const PREFIXO_REPROVADO = "Reprovado: ";
+
+/** Motivos de um toque no painel; "outro" pede texto livre. */
+export const MOTIVOS_REPROVACAO = [
+  "Já é cliente ou contato",
+  "Site já é bom",
+  "Fora do perfil",
+  "Pouco ativo",
+  "Negócio pequeno demais",
+  "Mensagem fraca",
+] as const;
+
 export function aplicarAcao(
   estado: EstadoEnvio,
   acao: AcaoEnvio,
@@ -613,6 +627,26 @@ export function aplicarAcao(
           ? transicionar(e, "cancelado", {}, agora)
           : e
       );
+  } else if (acao.acao === "reprovar-lead") {
+    // Reprovar o lead inteiro: sai da fila e vai para descartado com o motivo, que
+    // alimenta a próxima busca (pnpm radar:lead -- reprovados).
+    exigirLead(estado, acao.leadId);
+    const motivo = textoObrigatorio(acao.motivo, "motivo");
+    proximo.registros = mudarEtapa(
+      estado.registros,
+      acao.leadId,
+      "descartado",
+      agora,
+      `${PREFIXO_REPROVADO}${motivo}`
+    );
+    proximo.envios = estado.envios.map(e => {
+      if (e.leadId !== acao.leadId) return e;
+      if (e.status === "rascunho")
+        return transicionar(e, "reprovado", { motivo }, agora);
+      if (e.status === "aprovado" || e.status === "falhou")
+        return transicionar(e, "cancelado", {}, agora);
+      return e;
+    });
   } else if (acao.acao === "bloquear") {
     const instagram = normalizarInstagram(
       textoObrigatorio(acao.instagram, "instagram")

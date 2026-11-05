@@ -13,6 +13,7 @@ import { detalharPontuacao } from "../../shared/radar/pontuacao.ts";
 import { acharDuplicado, buscarTermo } from "../../shared/radar/dedup.ts";
 import type { Duplicado } from "../../shared/radar/dedup.ts";
 import { normalizarInstagram } from "../../shared/radar/normalizar.ts";
+import { contarMotivos, reprovacoes } from "../../shared/radar/aprendizado.ts";
 import {
   dataValida,
   validarDescartado,
@@ -22,6 +23,7 @@ import type { Descartado, Lead } from "../../shared/radar/tipos.ts";
 import {
   comTrava,
   lerDescartados,
+  lerFunil,
   lerLeads,
   salvarDescartados,
   salvarLeads,
@@ -47,6 +49,7 @@ function ajuda(): void {
   descartar --instagram x --motivo "..." [--nome x --cidade x --uf CE --site URL --telefone x]
   remover <id> --motivo "..."
   listar [--uf CE] [--min 70]
+  reprovados   (leads reprovados no painel e os motivos: leia antes de cada busca)
   validar`);
 }
 
@@ -137,6 +140,7 @@ async function executar(): Promise<void> {
       "descartar",
       "remover",
       "listar",
+      "reprovados",
       "validar",
     ].includes(comando)
   ) {
@@ -149,6 +153,19 @@ async function executar(): Promise<void> {
     throw new Error("hoje: informe uma data real no formato AAAA-MM-DD");
   if (comando === "criterios") {
     imprimirCriterios();
+    return;
+  }
+  if (comando === "reprovados") {
+    const [leads, registros] = await Promise.all([lerLeads(), lerFunil()]);
+    const itens = reprovacoes(leads, registros);
+    if (!itens.length) {
+      console.log("Nenhum lead reprovado no painel ainda.");
+      return;
+    }
+    console.log(`# Leads reprovados no painel (${itens.length})\n\n## Motivos`);
+    for (const [motivo, n] of contarMotivos(itens)) console.log(`- ${motivo}: ${n}`);
+    console.log("\n## Leads");
+    for (const i of itens) console.log(`- ${i.em} · ${i.nome} (${i.segmento}, ${i.cidade}/${i.uf}): ${i.motivo}`);
     return;
   }
   return comTrava(async () => {

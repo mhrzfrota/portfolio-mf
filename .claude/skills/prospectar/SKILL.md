@@ -8,7 +8,7 @@ argument-hint: "<nicho> em <cidade, UF ou Brasil>, <quantidade> leads"
 
 Objetivo: encontrar clientes qualificados, priorizar as melhores oportunidades e deixar a abordagem pronta. Cada lead entra em tabela `radar_leads` pelo `pnpm radar:lead`, e o painel (`pnpm dev`, https://emefeservices.vercel.app/radar) mostra na hora.
 
-**O agente da rodada nunca envia mensagem, não segue, não curte, não comenta.** Ele só lê e grava. A mensagem de cada lead quente entra na **fila de envio** como rascunho; o Matheus aprova no painel e o envio é outro passo (`/enviar`).
+**O agente da rodada nunca envia mensagem, não segue, não curte, não comenta.** Ele só lê e grava. **A rodada sempre grava os leads no banco e põe na Fila** (pedido do Matheus em 2026-11-05): ele e o parceiro acompanham por lá. "Não gravar no banco" num brief vale só para o agente delegado. A mensagem de cada lead quente entra na **fila de envio** como rascunho; o Matheus aprova no painel e o envio é outro passo (`/enviar`).
 
 ## Entrada
 
@@ -31,7 +31,8 @@ Objetivo: encontrar clientes qualificados, priorizar as melhores oportunidades e
 
 1. `pnpm radar:lead -- criterios`: a régua de 0 a 100. **É a única regra de pontuação**; não invente critério.
 2. `pnpm radar:lead -- listar`: o que já existe, para não repetir cidade e nicho sem querer.
-3. configuração do Radar (Supabase): o **cliente ideal** (nichos, regiões, sinais e quem fica de fora) e a oferta da primeira mensagem. Sem nicho ou região no pedido, escolha dali.
+3. `pnpm radar:lead -- reprovados`: os leads que o Matheus ou o parceiro reprovaram no painel (botão **Reprovar lead**) e o motivo de cada um. **Não repita o erro:** se "Site já é bom" aparece muito, seja mais rigoroso no diagnóstico; se "Já é cliente ou contato", confira o vault e pergunte antes; se "Fora do perfil" ou "Negócio pequeno demais" se concentram num nicho ou porte, evite. Cite em uma linha o que mudou nesta rodada por causa disso.
+4. configuração do Radar (Supabase): o **cliente ideal** (nichos, regiões, sinais e quem fica de fora) e a oferta da primeira mensagem. Sem nicho ou região no pedido, escolha dali.
 
 ## Passo 2: achar candidatos
 
