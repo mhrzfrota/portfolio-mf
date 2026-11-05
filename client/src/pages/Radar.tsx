@@ -97,8 +97,9 @@ export default function Radar() {
   const envios = estado?.envios ?? [];
   const porId = useMemo(() => new Map(envios.map((e) => [e.id, e])), [envios]);
   const leadSelecionado = leadId ? estado?.leads.find((l) => l.id === leadId) : null;
-  const listaLeads = useMemo(() => estado ? filtrar(estado.leads, { ...filtros, busca: filtros.busca }, estado.registros).filter((l) => !termo || semAcento(`${l.nome} ${l.segmento} ${l.cidade} ${l.instagram?.usuario ?? ""} ${l.contato.whatsapp ?? l.contato.telefone ?? ""}`).includes(semAcento(termo))) : [], [estado, filtros, termo]);
-  const fila = useMemo(() => envios.filter((e) => e.status !== "cancelado").sort((a,b) => (estado?.leads.find((l) => l.id === b.leadId)?.pontuacao ?? 0) - (estado?.leads.find((l) => l.id === a.leadId)?.pontuacao ?? 0) || (a.decididoEm ?? a.criadoEm).localeCompare(b.decididoEm ?? b.criadoEm)), [envios, estado?.leads]);
+  const listaLeads = useMemo(() => estado ? filtrar(estado.leads, { ...filtros, busca: filtros.busca }, estado.registros).filter((l) => !termo || semAcento(`${l.nome} ${l.segmento} ${l.cidade} ${l.instagram?.usuario ?? ""} ${l.contato.whatsapp ?? l.contato.telefone ?? ""}`).includes(semAcento(termo))).sort((a, b) => b.analisadoEm.localeCompare(a.analisadoEm) || b.pontuacao - a.pontuacao) : [], [estado, filtros, termo]);
+  // Mais novos primeiro: quem chegou por último na fila aparece no topo; no mesmo instante, a nota maior vem antes.
+  const fila = useMemo(() => envios.filter((e) => e.status !== "cancelado").sort((a,b) => b.criadoEm.localeCompare(a.criadoEm) || (estado?.leads.find((l) => l.id === b.leadId)?.pontuacao ?? 0) - (estado?.leads.find((l) => l.id === a.leadId)?.pontuacao ?? 0)), [envios, estado?.leads]);
   const visiveis = useMemo(() => fila.filter((e) => !statusEnvioFiltro || e.status === statusEnvioFiltro), [fila, statusEnvioFiltro]);
   const atual = visiveis.findIndex((e) => e.id === selecionado);
   const envioSelecionado = selecionado ? porId.get(selecionado) : undefined;
