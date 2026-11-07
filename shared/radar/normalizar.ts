@@ -2,7 +2,7 @@ export const DOMINIOS_NAO_PROPRIOS = [
   "instagram.com", "facebook.com", "fb.com", "wa.me", "api.whatsapp.com",
   "whatsapp.com", "linktr.ee", "beacons.ai", "bio.link", "linkin.bio",
   "taplink.cc", "campsite.bio", "lnk.bio", "msha.ke", "linkbio.co",
-  "carrd.co", "bio.site", "solo.to", "linklist.bio", "canva.com",
+  "carrd.co", "bio.site", "solo.to", "linklist.bio", "canva.com", "contate.me", "tintim.link",
   // Encurtadores: o destino é que diz se há site; o encurtador em si é de todo mundo
   "bit.ly", "w.app", "wa.link", "shre.ink", "trakto.link", "tinyurl.com", "cutt.ly", "encurtador.com.br", "abre.ai",
   "google.com", "g.page", "goo.gl", "maps.app.goo.gl", "youtube.com", "tiktok.com",
@@ -51,7 +51,7 @@ export function plataformaDeLinkBio(url: string): string | undefined {
     "taplink.cc": "Taplink", "campsite.bio": "Campsite", "lnk.bio": "Lnk.Bio",
     "msha.ke": "Milkshake", "linkbio.co": "Linkbio",
     // Página de botões num subdomínio gratuito: visual pode ser bonito, mas não é site
-    "carrd.co": "Carrd", "bio.site": "Bio Site", "solo.to": "Solo.to", "linklist.bio": "Linklist",
+    "carrd.co": "Carrd", "bio.site": "Bio Site", "solo.to": "Solo.to", "linklist.bio": "Linklist", "contate.me": "Contate.me",
     "canva.com": "Canva",
   };
   return Object.entries(plataformas).find(([dominio]) => pertence(host, dominio))?.[1];
