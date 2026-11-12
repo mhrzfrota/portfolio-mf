@@ -218,6 +218,10 @@ export function ConteudoDoPainel({ painel, t, lang }: { painel: Painel; t: UIStr
                   ) : null}
                 </div>
                 <p className={`mt-1.5 text-[14px] leading-snug ${destaque ? "text-white/90" : ""}`}>{combo.tagline}</p>
+                <p className="mt-3 leading-tight">
+                  <span className={`block text-[12px] font-medium uppercase tracking-[0.06em] ${destaque ? "text-white/75" : "app-muted"}`}>{t.combos.priceFrom}</span>
+                  <span className="text-[24px] font-semibold tracking-[-0.03em]">{combo.price}</span>
+                </p>
                 <ul className="mt-3.5 space-y-2">
                   {combo.features.map(f => (
                     <li key={f} className={`flex items-start gap-2 text-[13.5px] leading-snug ${destaque ? "text-white/90" : "app-muted"}`}>
@@ -242,6 +246,7 @@ export function ConteudoDoPainel({ painel, t, lang }: { painel: Painel; t: UIStr
             );
           })}
         </div>
+        <p className="app-muted text-[12.5px] leading-relaxed">{t.combos.footnote}</p>
       </div>
     );
   }

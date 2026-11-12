@@ -101,11 +101,14 @@ const strings = {
       subtitle:
         "Cada empresa está num momento diferente. Escolha o seu, ou me conte o problema, e eu desenho o caminho sob medida.",
       mostChosen: "Mais escolhido",
-      quote: "Investimento sob medida. Me chame e eu analiso o seu caso",
+      priceFrom: "A partir de",
+      quote: "O valor final depende do escopo. Me chame e eu analiso o seu caso.",
+      footnote: "Manutenção mensal R$ 150 · Pix com 5% de desconto · Cartão em até 6x",
       cta: "Começar por aqui",
       items: [
         {
           name: "Presença Digital",
+          price: "R$ 900",
           tagline:
             "Para quem perde cliente por não ser encontrado, ou por parecer menor do que é.",
           features: [
@@ -117,6 +120,7 @@ const strings = {
         },
         {
           name: "Operação & Dados",
+          price: "R$ 1.500",
           tagline:
             "Para quem já vende, mas decide no escuro e perde horas em rotina manual.",
           features: [
@@ -128,6 +132,7 @@ const strings = {
         },
         {
           name: "Produto Completo",
+          price: "R$ 2.000 + R$ 150/mês",
           tagline:
             "Para o processo que hoje só funciona na cabeça de alguém e precisa virar sistema.",
           features: [
@@ -363,11 +368,14 @@ const strings = {
       subtitle:
         "Every company is at a different moment. Pick yours — or tell me the problem and I'll design a custom path.",
       mostChosen: "Most popular",
-      quote: "Custom pricing — reach out and I'll assess your case",
+      priceFrom: "From",
+      quote: "The final price depends on scope. Message me and I'll look at your case.",
+      footnote: "Monthly maintenance R$ 150 · 5% off with Pix · Card in up to 6 installments",
       cta: "Start here",
       items: [
         {
           name: "Digital Presence",
+          price: "R$ 900",
           tagline:
             "For those losing clients by not being found — or by looking smaller than they are.",
           features: [
@@ -379,6 +387,7 @@ const strings = {
         },
         {
           name: "Operations & Data",
+          price: "R$ 1,500",
           tagline:
             "For those already selling, but deciding in the dark and losing hours to manual routine.",
           features: [
@@ -390,6 +399,7 @@ const strings = {
         },
         {
           name: "Full Product",
+          price: "R$ 2,000 + R$ 150/month",
           tagline:
             "For the process that today only works inside someone's head — and needs to become a system.",
           features: [
