@@ -1,6 +1,6 @@
 import { useEffect, type ReactNode } from "react";
 import { Link, useLocation } from "wouter";
-import { CalendarDays, KanbanSquare, Moon, Radar as RadarIcon } from "lucide-react";
+import { CalendarDays, KanbanSquare, Moon, Radar as RadarIcon, Workflow } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
 import InternalAccount from "./InternalAccount";
@@ -10,6 +10,7 @@ export const ABAS = [
   { href: "/plano", nome: "Plano", icone: KanbanSquare },
   { href: "/noite", nome: "Noite", icone: Moon },
   { href: "/radar", nome: "Radar", icone: RadarIcon },
+  { href: "/automacoes", nome: "Automações", icone: Workflow },
 ] as const;
 
 /**

@@ -47,6 +47,8 @@ var DOMINIOS_NAO_PROPRIOS = [
   "solo.to",
   "linklist.bio",
   "canva.com",
+  "contate.me",
+  "tintim.link",
   // Encurtadores: o destino é que diz se há site; o encurtador em si é de todo mundo
   "bit.ly",
   "w.app",
@@ -114,6 +116,7 @@ function plataformaDeLinkBio(url) {
     "bio.site": "Bio Site",
     "solo.to": "Solo.to",
     "linklist.bio": "Linklist",
+    "contate.me": "Contate.me",
     "canva.com": "Canva"
   };
   return Object.entries(plataformas).find(([dominio]) => pertence(host, dominio))?.[1];

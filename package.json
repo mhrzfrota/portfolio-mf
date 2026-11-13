@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite --host",
     "build": "vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist",
-    "build:api": "esbuild server/radar/busca.ts --platform=node --packages=external --bundle --format=esm --log-level=warning --banner:js=\"// Gerado por pnpm build:api a partir de server/radar/busca.ts. Não edite.\" --outfile=api/radar/busca.js",
+    "build:api": "esbuild server/radar/busca.ts --platform=node --packages=external --bundle --format=esm --log-level=warning --banner:js=\"// Gerado por pnpm build:api a partir de server/radar/busca.ts. Não edite.\" --outfile=api/radar/busca.js && esbuild server/automacoes/webhook.ts server/automacoes/painel.ts --platform=node --packages=external --bundle --format=esm --log-level=warning --outdir=api --outbase=server --entry-names=[dir]/[name] --banner:js=\"// Gerado por pnpm build:api a partir de server/automacoes/. Não edite.\"",
     "start": "NODE_ENV=production node dist/index.js",
     "preview": "vite preview --host",
     "check": "tsc --noEmit",
