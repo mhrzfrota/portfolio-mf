@@ -10,6 +10,7 @@ import Home from "./pages/Home";
 import ProjectDetail from "./pages/ProjectDetail";
 import BlogPost from "./pages/BlogPost";
 import Plano from "./pages/Plano";
+import Conteudo, { ConteudoPrevia } from "./pages/Conteudo";
 import Calendario from "./pages/Calendario";
 import Noite, { NoitePrevia } from "./pages/Noite";
 import Login from "./pages/Login";
@@ -48,6 +49,11 @@ function Router() {
           <Plano />
         </ProtectedRoute>
       </Route>
+      <Route path="/conteudo">
+        <ProtectedRoute returnTo="/conteudo">
+          <Conteudo />
+        </ProtectedRoute>
+      </Route>
       <Route path="/calendario">
         <ProtectedRoute returnTo="/calendario">
           <Calendario />
@@ -70,6 +76,8 @@ function Router() {
       </Route>
       {/* Só no pnpm dev: as Automações com dados de demonstração, sem login. */}
       {import.meta.env.DEV && <Route path="/dev/automacoes" component={AutomacoesPrevia} />}
+      {/* Só no pnpm dev: o estúdio de conteúdo com a semente, sem login. */}
+      {import.meta.env.DEV && <Route path="/dev/conteudo" component={ConteudoPrevia} />}
       {/* Só no pnpm dev: prévia do relatório sem login, abrindo o arquivo salvo no Mac. */}
       {import.meta.env.DEV && <Route path="/dev/noite" component={NoitePrevia} />}
       {/* A home virou um app de tela cheia com dock próprio (2026-10-29):
