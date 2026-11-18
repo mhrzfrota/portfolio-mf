@@ -38,7 +38,7 @@ export function MenuCalendarios({
       <button type="button" onClick={() => setAberto((a) => !a)} aria-expanded={aberto} aria-haspopup="dialog" className="flex h-9 items-center gap-2 rounded-lg border border-white/[0.1] bg-white/[0.04] px-3 text-[13.5px] font-medium hover:bg-white/[0.08]">
         <span className="flex -space-x-1" aria-hidden>
           {calendarios.filter((c) => visiveis.has(c.id)).slice(0, 4).map((c) => (
-            <span key={c.id} className="h-3 w-3 rounded-full ring-2 ring-[#16171C]" style={{ background: c.cor }} />
+            <span key={c.id} className="h-3 w-3 rounded-full ring-2 ring-[var(--i-s1)]" style={{ background: c.cor }} />
           ))}
         </span>
         <span className="hidden sm:inline">Calendários</span>
@@ -47,10 +47,10 @@ export function MenuCalendarios({
       </button>
 
       {aberto && (
-        <div role="dialog" aria-label="Calendários" className="absolute right-0 top-11 z-30 w-[300px] overflow-hidden rounded-2xl border border-white/[0.1] bg-[#1C1C1E] shadow-[0_20px_60px_-10px_rgba(0,0,0,0.7)]">
+        <div role="dialog" aria-label="Calendários" className="absolute right-0 top-11 z-30 w-[300px] overflow-hidden rounded-2xl border border-white/[0.1] bg-[var(--i-s1)] shadow-[0_20px_60px_-10px_rgba(0,0,0,0.7)]">
           <div className="flex items-center justify-between px-4 pb-2 pt-3">
             <p className="text-[13px] font-semibold uppercase tracking-[0.05em] text-white/45">Calendários</p>
-            <button type="button" onClick={todos} className="text-[13px] font-medium text-[#0A84FF]">Mostrar todos</button>
+            <button type="button" onClick={todos} className="text-[13px] font-medium text-[#0A6CDB]">Mostrar todos</button>
           </div>
           <ul className="max-h-[50vh] overflow-y-auto px-1.5 pb-1.5">
             {calendarios.map((c) => {
@@ -69,14 +69,14 @@ export function MenuCalendarios({
                   <button type="button" onClick={() => { so(c.id); setAberto(false); }} className="rounded-md px-2 py-1 text-[12px] text-white/45 opacity-0 hover:bg-white/10 hover:text-white focus:opacity-100 group-hover:opacity-100 max-sm:opacity-100" title={`Ver só ${c.nome}`}>
                     só
                   </button>
-                  <button type="button" onClick={() => { editar(c.id); setAberto(false); }} aria-label={`Editar ${c.nome}`} className="mr-1 grid h-8 w-8 place-items-center rounded-full text-[#0A84FF] hover:bg-white/10">
+                  <button type="button" onClick={() => { editar(c.id); setAberto(false); }} aria-label={`Editar ${c.nome}`} className="mr-1 grid h-8 w-8 place-items-center rounded-full text-[#0A6CDB] hover:bg-white/10">
                     <Info size={18} />
                   </button>
                 </li>
               );
             })}
           </ul>
-          <button type="button" disabled={bloqueado} onClick={() => { novo(); setAberto(false); }} className="flex w-full items-center gap-2 border-t border-white/[0.08] px-4 py-3 text-[14.5px] text-[#0A84FF] hover:bg-white/[0.04] disabled:opacity-40">
+          <button type="button" disabled={bloqueado} onClick={() => { novo(); setAberto(false); }} className="flex w-full items-center gap-2 border-t border-white/[0.08] px-4 py-3 text-[14.5px] text-[#0A6CDB] hover:bg-white/[0.04] disabled:opacity-40">
             <Plus size={17} /> Adicionar calendário de cliente
           </button>
         </div>
@@ -130,7 +130,7 @@ export function ModalCalendario({
               <button type="button" onClick={() => remover() && fechar()} className="h-8 rounded-lg bg-[#FF453A] px-3 font-semibold">Excluir</button>
             </div>
           ) : (
-            <button type="button" disabled={bloqueado} onClick={() => setConfirmar(true)} className="h-[46px] w-full text-center text-[15px] text-[#FF453A] disabled:opacity-40">
+            <button type="button" disabled={bloqueado} onClick={() => setConfirmar(true)} className="h-[46px] w-full text-center text-[15px] text-[#D12C21] disabled:opacity-40">
               Excluir calendário
             </button>
           )}

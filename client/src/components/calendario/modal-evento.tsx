@@ -44,7 +44,7 @@ export function Folha({ titulo, acao, acaoDesligada, fechar, enviar, children }:
         role="dialog"
         aria-modal="true"
         aria-labelledby={id}
-        className="flex max-h-[92dvh] w-full max-w-[460px] flex-col overflow-hidden rounded-t-[22px] bg-[#1C1C1E] [color-scheme:dark] text-white shadow-2xl sm:rounded-[22px]"
+        className="flex max-h-[92dvh] w-full max-w-[460px] flex-col overflow-hidden rounded-t-[22px] bg-[var(--i-s1)] [color-scheme:light] text-white shadow-2xl sm:rounded-[22px]"
       >
         <div className="grid shrink-0 grid-cols-[1fr_auto_1fr] items-center border-b border-white/[0.08] px-2 py-2.5">
           <button type="button" onClick={fechar} className="justify-self-start rounded-lg px-2.5 py-1.5 text-[15px]" style={{ color: AZUL }}>
@@ -67,7 +67,7 @@ export function Grupo({ children, rotulo }: { children: ReactNode; rotulo?: stri
   return (
     <div>
       {rotulo && <p className="mb-1.5 px-3 text-[12px] uppercase tracking-[0.04em] text-white/40">{rotulo}</p>}
-      <div className="divide-y divide-white/[0.08] overflow-hidden rounded-xl bg-[#2C2C2E]">{children}</div>
+      <div className="divide-y divide-white/[0.08] overflow-hidden rounded-xl bg-[var(--i-s3)]">{children}</div>
     </div>
   );
 }
@@ -82,7 +82,7 @@ export function Linha({ rotulo, children, htmlFor }: { rotulo: string; children:
 }
 
 export const entrada = "block h-[46px] w-full bg-transparent px-3.5 text-[15px] text-white placeholder:text-white/30 focus:outline-none disabled:opacity-50";
-export const valor = "rounded-md bg-white/[0.08] px-2 py-1 text-[15px] text-white focus:outline-none focus:ring-2 focus:ring-[#0A84FF] disabled:opacity-40 [color-scheme:dark]";
+export const valor = "rounded-md bg-white/[0.08] px-2 py-1 text-[15px] text-white focus:outline-none focus:ring-2 focus:ring-[#0A84FF] disabled:opacity-40 [color-scheme:light]";
 
 export function Interruptor({ ligado, mudar, rotulo, desligado }: { ligado: boolean; mudar: (v: boolean) => void; rotulo: string; desligado?: boolean }) {
   return (
@@ -118,7 +118,7 @@ export function Cores({ cor, mudar, padrao, desligado }: { cor: string; mudar: (
             title={o.nome}
             disabled={desligado}
             onClick={() => mudar(o.cor)}
-            className={cn("relative grid h-8 w-8 place-items-center rounded-full transition-transform active:scale-90", marcada && "ring-2 ring-white ring-offset-2 ring-offset-[#2C2C2E]")}
+            className={cn("relative grid h-8 w-8 place-items-center rounded-full transition-transform active:scale-90", marcada && "ring-2 ring-white ring-offset-2 ring-offset-[var(--i-s3)]")}
             style={{ background: c }}
           >
             {!o.cor && <span className="absolute inset-[9px] rounded-full border-2 border-white/80" aria-hidden />}
@@ -269,7 +269,7 @@ export function ModalEvento({
               <button type="button" onClick={() => { remover(); fechar(); }} className="h-8 rounded-lg bg-[#FF453A] px-3 font-semibold">Excluir</button>
             </div>
           ) : (
-            <button type="button" disabled={bloqueado} onClick={() => setConfirmar(true)} className="h-[46px] w-full text-center text-[15px] text-[#FF453A] disabled:opacity-40">
+            <button type="button" disabled={bloqueado} onClick={() => setConfirmar(true)} className="h-[46px] w-full text-center text-[15px] text-[#D12C21] disabled:opacity-40">
               Excluir evento
             </button>
           )}
@@ -316,7 +316,7 @@ export function ModalCartao({
           <input id="ct-hora" type="time" value={hora} onChange={(e) => setHora(e.target.value)} disabled={bloqueado || !data} className={valor} />
         </Linha>
       </Grupo>
-      {!data && <p className="px-3 text-[12.5px] text-[#FFD60A]/90">Sem data, o cartão sai do calendário e continua no Plano.</p>}
+      {!data && <p className="px-3 text-[12.5px] text-[#8F7400]/90">Sem data, o cartão sai do calendário e continua no Plano.</p>}
       <Grupo>
         <button type="button" disabled={bloqueado} onClick={() => mover(feito ? "fazer" : "feito") && fechar()} className="h-[46px] w-full text-center text-[15px] disabled:opacity-40" style={{ color: AZUL }}>
           {feito ? "Reabrir (volta para A fazer)" : "Marcar como feito"}

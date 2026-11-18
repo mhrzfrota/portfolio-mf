@@ -28,8 +28,8 @@ export function FaceCartao({ c, arrastando = false }: { c: Cartao; arrastando?: 
   return (
     <div
       className={cn(
-        "rounded-xl border border-white/[0.06] bg-[#1C1D23] px-3 py-2.5 text-left text-white shadow-[0_1px_2px_rgba(0,0,0,0.35)] transition-colors",
-        arrastando ? "rotate-[2deg] border-[#0A84FF]/50 shadow-2xl" : "group-hover:border-white/[0.16] group-hover:bg-[#22232A]",
+        "rounded-xl border border-white/[0.06] bg-[var(--i-s1)] px-3 py-2.5 text-left text-white shadow-[0_1px_2px_rgba(0,0,0,0.35)] transition-colors",
+        arrastando ? "rotate-[2deg] border-[#0A84FF]/50 shadow-2xl" : "group-hover:border-white/[0.16] group-hover:bg-[var(--i-s3)]",
       )}
     >
       {c.etiquetas.length > 0 && (
@@ -47,7 +47,7 @@ export function FaceCartao({ c, arrastando = false }: { c: Cartao; arrastando?: 
             <span
               className={cn(
                 "inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 font-medium",
-                feito ? "bg-[#30D158]/15 text-[#30D158]" : vencido ? "bg-[#FF453A]/15 text-[#FF6961]" : c.data === hojeISO() ? "bg-[#FF9F0A]/15 text-[#FFB340]" : "bg-white/[0.06] text-white/65",
+                feito ? "bg-[#30D158]/15 text-[#1B8A3C]" : vencido ? "bg-[#FF453A]/15 text-[#D93025]" : c.data === hojeISO() ? "bg-[#FF9F0A]/15 text-[#A86200]" : "bg-white/[0.06] text-white/65",
               )}
             >
               <CalendarDays size={12} aria-hidden />
@@ -58,7 +58,7 @@ export function FaceCartao({ c, arrastando = false }: { c: Cartao; arrastando?: 
           {c.descricao && <AlignLeft size={13} aria-label="Tem descrição" />}
           {c.link && <Link2 size={13} aria-label="Tem link" />}
           {p.total > 0 && (
-            <span className={cn("inline-flex items-center gap-1 rounded-md px-1.5 py-0.5", p.feitos === p.total ? "bg-[#30D158]/15 text-[#30D158]" : "")}>
+            <span className={cn("inline-flex items-center gap-1 rounded-md px-1.5 py-0.5", p.feitos === p.total ? "bg-[#30D158]/15 text-[#1B8A3C]" : "")}>
               <CheckSquare size={12} aria-hidden />
               {p.feitos}/{p.total}
             </span>

@@ -19,7 +19,7 @@ export type AcoesPeca = {
 };
 
 const campo =
-  "block w-full rounded-lg border border-transparent bg-[#2C2C2E] px-3 text-[14px] text-white placeholder:text-white/35 focus:border-[#0A84FF] focus:outline-none disabled:opacity-60";
+  "block w-full rounded-lg border border-transparent bg-[var(--i-s3)] px-3 text-[14px] text-white placeholder:text-white/35 focus:border-[#0A84FF] focus:outline-none disabled:opacity-60";
 const rotulo = "mb-2 flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.08em] text-white/55";
 
 const METRICAS: { id: keyof Metricas; nome: string }[] = [
@@ -46,7 +46,7 @@ function Texto({
     <div>
       <div className="mb-1.5 flex items-baseline justify-between">
         <label htmlFor={id} className="text-[13px] font-medium text-white/70">{rotuloTexto}</label>
-        {contador && <span className={cn("text-[11.5px] tabular-nums", v.length > limite * 0.9 ? "text-[#FFB340]" : "text-white/35")}>{v.length}/{limite}</span>}
+        {contador && <span className={cn("text-[11.5px] tabular-nums", v.length > limite * 0.9 ? "text-[#A86200]" : "text-white/35")}>{v.length}/{limite}</span>}
       </div>
       <textarea
         id={id}
@@ -73,7 +73,7 @@ function Numero({ m, valor, bloqueado, salvar }: { m: { id: keyof Metricas; nome
     if (!salvar(n)) setV(valor == null ? "" : String(valor));
   };
   return (
-    <label className="block rounded-lg bg-[#2C2C2E] px-3 py-2">
+    <label className="block rounded-lg bg-[var(--i-s3)] px-3 py-2">
       <span className="block text-[11.5px] text-white/50">{m.nome}</span>
       <input
         inputMode="numeric"
@@ -131,7 +131,7 @@ export default function DetalhePeca({ p, tematicas, bloqueado, acoes }: { p: Pec
 
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/60 p-3 pt-[5vh] backdrop-blur-[2px] sm:p-6" onMouseDown={(e) => e.target === e.currentTarget && acoes.fechar()}>
-      <div ref={caixa} tabIndex={-1} role="dialog" aria-modal="true" aria-labelledby="titulo-peca" className="w-full max-w-3xl rounded-2xl border border-white/10 bg-[#1C1C1E] text-white shadow-2xl outline-none">
+      <div ref={caixa} tabIndex={-1} role="dialog" aria-modal="true" aria-labelledby="titulo-peca" className="w-full max-w-3xl rounded-2xl border border-white/10 bg-[var(--i-s1)] text-white shadow-2xl outline-none">
         <div className="flex items-start gap-3 border-b border-white/[0.07] p-4 sm:p-5">
           <div className="min-w-0 flex-1">
             <label htmlFor="titulo-peca" className="sr-only">Título</label>
@@ -144,15 +144,15 @@ export default function DetalhePeca({ p, tematicas, bloqueado, acoes }: { p: Pec
               onChange={(e) => setTitulo(e.target.value.replace(/\n/g, " "))}
               onBlur={() => titulo !== p.titulo && !acoes.editar({ titulo }) && setTitulo(p.titulo)}
               onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), e.currentTarget.blur())}
-              className="block w-full resize-none rounded-lg bg-transparent px-1 py-0.5 text-[20px] font-semibold leading-snug focus:bg-[#2C2C2E] focus:outline-none [field-sizing:content]"
+              className="block w-full resize-none rounded-lg bg-transparent px-1 py-0.5 text-[20px] font-semibold leading-snug focus:bg-[var(--i-s3)] focus:outline-none [field-sizing:content]"
             />
             <div className="mt-2 flex flex-wrap items-center gap-2 px-1 text-[13px] text-white/60">
               <label htmlFor="etapa-peca">Etapa</label>
-              <select id="etapa-peca" disabled={bloqueado} value={p.etapa} onChange={(e) => acoes.mover(e.target.value as EtapaId)} className="h-8 rounded-md bg-[#2C2C2E] px-2 text-[13px] font-medium text-white">
+              <select id="etapa-peca" disabled={bloqueado} value={p.etapa} onChange={(e) => acoes.mover(e.target.value as EtapaId)} className="h-8 rounded-md bg-[var(--i-s3)] px-2 text-[13px] font-medium text-white">
                 {ETAPAS.map((e) => <option key={e.id} value={e.id}>{e.titulo}</option>)}
               </select>
               <label htmlFor="tematica-peca" className="ml-1">Temática</label>
-              <select id="tematica-peca" disabled={bloqueado} value={p.tematica} onChange={(e) => acoes.editar({ tematica: e.target.value })} className="h-8 max-w-[220px] rounded-md bg-[#2C2C2E] px-2 text-[13px] font-medium text-white">
+              <select id="tematica-peca" disabled={bloqueado} value={p.tematica} onChange={(e) => acoes.editar({ tematica: e.target.value })} className="h-8 max-w-[220px] rounded-md bg-[var(--i-s3)] px-2 text-[13px] font-medium text-white">
                 <option value="">Sem temática</option>
                 {tematicas.map((t) => <option key={t.id} value={t.id}>{t.nome}</option>)}
               </select>
@@ -182,7 +182,7 @@ export default function DetalhePeca({ p, tematicas, bloqueado, acoes }: { p: Pec
           <div className="grid gap-5 sm:grid-cols-[auto_1fr]">
             <section>
               <h3 className={rotulo}>Profundidade</h3>
-              <div className="flex rounded-full bg-[#2C2C2E] p-0.5" role="group" aria-label="Profundidade">
+              <div className="flex rounded-full bg-[var(--i-s3)] p-0.5" role="group" aria-label="Profundidade">
                 {(["raso", "profundo"] as Profundidade[]).map((pr) => (
                   <button
                     key={pr}
@@ -220,7 +220,7 @@ export default function DetalhePeca({ p, tematicas, bloqueado, acoes }: { p: Pec
           <div className="grid gap-4 sm:grid-cols-2">
             <section>
               <h3 className={rotulo}><CalendarDays size={14} /> Data de publicação</h3>
-              <input type="date" disabled={bloqueado} value={p.data} onChange={(e) => acoes.editar({ data: e.target.value })} className={cn(campo, "h-10 [color-scheme:dark]")} aria-label="Data de publicação" />
+              <input type="date" disabled={bloqueado} value={p.data} onChange={(e) => acoes.editar({ data: e.target.value })} className={cn(campo, "h-10 [color-scheme:light]")} aria-label="Data de publicação" />
             </section>
             <section>
               <h3 className={rotulo}><Link2 size={14} /> Link (post no ar ou referência)</h3>
@@ -236,7 +236,7 @@ export default function DetalhePeca({ p, tematicas, bloqueado, acoes }: { p: Pec
                   aria-label="Link"
                 />
                 {p.link && (
-                  <a href={p.link} target="_blank" rel="noopener noreferrer" aria-label="Abrir link" className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#2C2C2E] text-white/70 hover:text-white">
+                  <a href={p.link} target="_blank" rel="noopener noreferrer" aria-label="Abrir link" className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[var(--i-s3)] text-white/70 hover:text-white">
                     <ExternalLink size={16} />
                   </a>
                 )}
@@ -297,7 +297,7 @@ export default function DetalhePeca({ p, tematicas, bloqueado, acoes }: { p: Pec
                   <button type="button" onClick={() => setConfirmarRemover(false)} className="h-9 rounded-lg px-3 text-white/70 hover:bg-white/10">Cancelar</button>
                 </span>
               ) : (
-                <button type="button" onClick={() => setConfirmarRemover(true)} className="ml-auto flex h-9 items-center gap-1.5 rounded-lg px-3 text-[13px] text-[#FF6961] hover:bg-[#FF453A]/10">
+                <button type="button" onClick={() => setConfirmarRemover(true)} className="ml-auto flex h-9 items-center gap-1.5 rounded-lg px-3 text-[13px] text-[#D93025] hover:bg-[#FF453A]/10">
                   <Trash2 size={14} /> Excluir
                 </button>
               )}

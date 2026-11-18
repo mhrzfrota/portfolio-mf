@@ -5,7 +5,7 @@ import { ANGULOS, ETAPAS, type AnguloId, type Estudio, type Peca, type Tematica 
 import { FacePeca } from "./pecas";
 
 const campo =
-  "block w-full rounded-lg border border-transparent bg-[#2C2C2E] px-3 text-[13.5px] text-white placeholder:text-white/35 focus:border-[#0A84FF] focus:outline-none disabled:opacity-60";
+  "block w-full rounded-lg border border-transparent bg-[var(--i-s3)] px-3 text-[13.5px] text-white placeholder:text-white/35 focus:border-[#0A84FF] focus:outline-none disabled:opacity-60";
 
 type Celula = { tematica: string; angulo: AnguloId };
 
@@ -36,7 +36,7 @@ export default function Formular({ estudio, abrir, criar, tematicaAcoes, bloquea
 
   return (
     <div className="space-y-5">
-      <section className="rounded-2xl border border-white/[0.07] bg-[#121318] p-3 sm:p-4">
+      <section className="rounded-2xl border border-white/[0.07] bg-[var(--i-s1)] p-3 sm:p-4">
         <div className="flex flex-wrap items-baseline justify-between gap-2 px-1">
           <h2 className="text-[15px] font-semibold">Temática × ângulo</h2>
           <p className="text-[12.5px] text-white/45">{vazias} cruzamentos ainda sem peça. Toque numa casa vazia para criar a ideia.</p>
@@ -88,7 +88,7 @@ export default function Formular({ estudio, abrir, criar, tematicaAcoes, bloquea
         </div>
 
         {sel && selTematica && selAngulo && (
-          <div className="mt-3 rounded-xl border border-white/[0.08] bg-[#17181E] p-3">
+          <div className="mt-3 rounded-xl border border-white/[0.08] bg-[var(--i-s1)] p-3">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div className="min-w-0">
                 <p className="text-[14px] font-semibold">{selTematica.nome} · {selAngulo.nome}</p>
@@ -158,7 +158,7 @@ function CartaoTematica({ t, bloqueado, editar, remover }: { t: Tematica; bloque
   const salvar = <K extends "nome" | "cliente" | "eu">(k: K, v: string, voltar: () => void) => v !== t[k] && !editar({ [k]: v }) && voltar();
 
   return (
-    <article className="flex flex-col rounded-2xl border border-white/[0.07] bg-[#121318] p-4">
+    <article className="flex flex-col rounded-2xl border border-white/[0.07] bg-[var(--i-s1)] p-4">
       <div className="flex items-center gap-2">
         <label className="relative h-4 w-4 shrink-0 overflow-hidden rounded" title="Cor da temática">
           <span className="absolute inset-0" style={{ background: t.cor }} />
@@ -172,7 +172,7 @@ function CartaoTematica({ t, bloqueado, editar, remover }: { t: Tematica; bloque
           onBlur={() => salvar("nome", nome, () => setNome(t.nome))}
           onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
           aria-label="Nome da temática"
-          className="min-w-0 flex-1 rounded-md bg-transparent px-1 text-[15px] font-semibold focus:bg-[#2C2C2E] focus:outline-none"
+          className="min-w-0 flex-1 rounded-md bg-transparent px-1 text-[15px] font-semibold focus:bg-[var(--i-s3)] focus:outline-none"
         />
         {!bloqueado &&
           (confirmar ? (

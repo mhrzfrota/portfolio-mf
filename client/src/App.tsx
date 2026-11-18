@@ -16,7 +16,6 @@ import Noite, { NoitePrevia } from "./pages/Noite";
 import Login from "./pages/Login";
 import Bio from "./pages/Bio";
 import Radar from "./pages/Radar";
-import Automacoes, { AutomacoesPrevia } from "./pages/Automacoes";
 
 function Router() {
   return (
@@ -69,13 +68,6 @@ function Router() {
           <Radar />
         </ProtectedRoute>
       </Route>
-      <Route path="/automacoes">
-        <ProtectedRoute returnTo="/automacoes">
-          <Automacoes />
-        </ProtectedRoute>
-      </Route>
-      {/* Só no pnpm dev: as Automações com dados de demonstração, sem login. */}
-      {import.meta.env.DEV && <Route path="/dev/automacoes" component={AutomacoesPrevia} />}
       {/* Só no pnpm dev: o estúdio de conteúdo com a semente, sem login. */}
       {import.meta.env.DEV && <Route path="/dev/conteudo" component={ConteudoPrevia} />}
       {/* Só no pnpm dev: prévia do relatório sem login, abrindo o arquivo salvo no Mac. */}

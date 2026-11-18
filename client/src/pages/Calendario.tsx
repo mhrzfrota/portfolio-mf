@@ -145,8 +145,8 @@ function Conteudo({ userId }: { userId: string }) {
         <span className="hidden items-center gap-1.5 text-[12px] text-white/45 md:flex" role="status" title="Onde a agenda está salva">
           {estado === "carregando" ? <><LoaderCircle size={13} className="animate-spin" /> carregando</>
             : estado === "pronto" ? (salvando ? <><LoaderCircle size={13} className="animate-spin" /> salvando</> : <><Cloud size={13} /> salvo</>)
-            : estado === "local" ? <><CloudOff size={13} className="text-[#FF9F0A]" /> só neste navegador</>
-            : <><CloudOff size={13} className="text-[#FF9F0A]" /> sem nuvem</>}
+            : estado === "local" ? <><CloudOff size={13} className="text-[#B86E00]" /> só neste navegador</>
+            : <><CloudOff size={13} className="text-[#B86E00]" /> sem nuvem</>}
         </span>
         <MenuCalendarios
           calendarios={agenda.calendarios}
@@ -169,14 +169,14 @@ function Conteudo({ userId }: { userId: string }) {
       </div>
 
       {(aviso || erro) && (
-        <p role={erro ? "alert" : "status"} className={cn("mb-3 rounded-xl px-4 py-2.5 text-[13.5px]", erro ? "bg-[#FF453A]/15 text-[#FFB3AD]" : "bg-white/[0.08] text-white/90")}>
+        <p role={erro ? "alert" : "status"} className={cn("mb-3 rounded-xl px-4 py-2.5 text-[13.5px]", erro ? "bg-[#FF453A]/15 text-[#C4261D]" : "bg-white/[0.08] text-white/90")}>
           {erro || aviso}
         </p>
       )}
       {somenteUm && (
         <p className="mb-3 flex items-center gap-2 text-[13px] text-white/60">
           <span className="h-2.5 w-2.5 rounded-full" style={{ background: somenteUm.cor }} /> Mostrando só {somenteUm.nome}
-          <button type="button" onClick={() => setOcultos(new Set())} className="font-medium text-[#0A84FF]">Mostrar todos</button>
+          <button type="button" onClick={() => setOcultos(new Set())} className="font-medium text-[#0A6CDB]">Mostrar todos</button>
         </p>
       )}
 
@@ -194,13 +194,13 @@ function Conteudo({ userId }: { userId: string }) {
         />
 
         {/* Dia selecionado */}
-        <aside className="flex min-h-0 flex-col rounded-2xl border border-white/[0.07] bg-[#121318]" aria-label="Dia selecionado">
+        <aside className="flex min-h-0 flex-col rounded-2xl border border-white/[0.07] bg-[var(--i-s1)]" aria-label="Dia selecionado">
           <div className="flex items-start justify-between gap-2 px-4 pb-2 pt-4">
             <div className="min-w-0">
-              <p className={cn("text-[12px] font-semibold uppercase tracking-[0.06em]", dia === hoje ? "text-[#FF453A]" : "text-white/45")}>{dia === hoje ? "Hoje" : diaDaSemana(dia)}</p>
+              <p className={cn("text-[12px] font-semibold uppercase tracking-[0.06em]", dia === hoje ? "text-[#D12C21]" : "text-white/45")}>{dia === hoje ? "Hoje" : diaDaSemana(dia)}</p>
               <h2 className="mt-0.5 text-[21px] font-bold tracking-tight first-letter:uppercase">{dia === hoje ? `${diaDaSemana(dia)}, ${dataPorExtenso(dia)}` : dataPorExtenso(dia)}</h2>
             </div>
-            <button type="button" disabled={bloqueado} onClick={() => setAberto({ tipo: "novo", data: dia })} aria-label="Novo evento neste dia" className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-white/[0.08] text-[#0A84FF] hover:bg-white/[0.14] disabled:opacity-40">
+            <button type="button" disabled={bloqueado} onClick={() => setAberto({ tipo: "novo", data: dia })} aria-label="Novo evento neste dia" className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-white/[0.08] text-[#0A6CDB] hover:bg-white/[0.14] disabled:opacity-40">
               <Plus size={19} strokeWidth={2.5} />
             </button>
           </div>

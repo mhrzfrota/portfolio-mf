@@ -48,8 +48,8 @@ export default function Coluna({
     <section
       aria-label={titulo}
       className={cn(
-        "flex max-h-[calc(100dvh-12rem)] w-[284px] shrink-0 snap-start scroll-ml-3 flex-col rounded-2xl border border-white/[0.07] bg-[#121318] transition-colors sm:w-[300px]",
-        isOver && "border-[#0A84FF]/60 bg-[#141823]",
+        "flex max-h-[calc(100dvh-12rem)] w-[284px] shrink-0 snap-start scroll-ml-3 flex-col rounded-2xl border border-white/[0.07] bg-[var(--i-s1)] transition-colors sm:w-[300px]",
+        isOver && "border-[#0A84FF]/60 bg-[var(--i-s1)]",
       )}
     >
       <header className="flex shrink-0 items-center justify-between gap-2 px-3.5 pb-2 pt-3" title={descricao}>
@@ -94,7 +94,7 @@ export default function Coluna({
                 if (e.key === "Escape") setCompondo(false);
               }}
               placeholder="Título do cartão"
-              className="block w-full resize-none rounded-xl border border-[#0A84FF]/60 bg-[#1C1D23] p-3 text-[14px] text-white placeholder:text-white/40 focus:outline-none"
+              className="block w-full resize-none rounded-xl border border-[#0A84FF]/60 bg-[var(--i-s1)] p-3 text-[14px] text-white placeholder:text-white/40 focus:outline-none"
             />
             <div className="mt-2 flex items-center gap-2">
               <button type="submit" disabled={!texto.trim()} className="h-8 rounded-lg bg-[#0A84FF] px-3 text-[13px] font-semibold text-white disabled:opacity-40">

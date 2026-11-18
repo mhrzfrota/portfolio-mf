@@ -1546,3 +1546,36 @@
     transition: none;
   }
 }
+
+/* ---------- Sistema interno, tema claro ----------
+   As telas internas nasceram escuras e usam text-white/bg-white/x para tinta e
+   véu. No Tailwind 4 essas classes leem --color-white e --color-black, então
+   trocar as duas variáveis no escopo do sistema vira o tema inteiro: "white"
+   passa a ser a tinta escura e "black" o papel. Botão com fundo de cor forte
+   volta a ter texto branco de verdade. :root:has() cobre os portais (diálogos
+   e arrasto no body). */
+:root:has(.interno),
+.interno {
+  --color-white: #14161b;
+  --color-black: #ffffff;
+  --i-bg: #f4f5f8;
+  --i-s1: #ffffff;
+  --i-s2: #f8f9fb;
+  --i-s3: #eceef3;
+  --i-linha: rgba(20, 22, 27, 0.09);
+}
+:root:has(.interno) body {
+  background: var(--i-bg);
+}
+.interno {
+  letter-spacing: 0;
+}
+.interno :is(
+    [class~="bg-[#0C2AFE]"], [class~="bg-[#0A84FF]"], [class~="bg-[#FF453A]"], [class~="bg-[#30D158]"],
+    [class~="bg-[#5B6CFF]"], [class~="bg-[#BF5AF2]"], [class~="bg-[#FF9F0A]"], [class~="bg-[#2B95FF]"],
+    [class*="from-[#0C2AFE]"], .cor-forte
+  ),
+:root:has(.interno) :is([class~="bg-[#0C2AFE]"], [class~="bg-[#0A84FF]"], [class~="bg-[#FF453A]"]) {
+  --color-white: #ffffff;
+  --color-black: #14161b;
+}

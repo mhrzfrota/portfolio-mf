@@ -90,7 +90,7 @@ export default function Mes({
       ref={caixa}
       onTouchStart={inicioToque}
       onTouchEnd={fimToque}
-      className="grid select-none grid-cols-7 overflow-hidden rounded-2xl border border-white/[0.07] bg-[#121318] lg:h-full"
+      className="grid select-none grid-cols-7 overflow-hidden rounded-2xl border border-white/[0.07] bg-[var(--i-s1)] lg:h-full"
       style={{ gridTemplateRows: `32px repeat(${grade.length}, minmax(0, 1fr))` }}
       role="grid"
       aria-label="Dias do mês"
@@ -122,8 +122,8 @@ export default function Mes({
             className={cn(
               "relative flex min-h-[52px] min-w-0 cursor-default flex-col border-t border-white/[0.06] outline-none transition-colors sm:min-h-[96px] lg:min-h-0",
               idx % 7 !== 0 && "border-l",
-              fimDeSemana ? "bg-[#0F1014]" : "bg-transparent",
-              fora && "bg-[#0D0E11]",
+              fimDeSemana ? "bg-[var(--i-bg)]" : "bg-transparent",
+              fora && "bg-[var(--i-bg)]",
               sel && "sm:bg-white/[0.045]",
               "focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#0A84FF]",
             )}
@@ -135,7 +135,7 @@ export default function Mes({
                   "grid h-7 w-7 place-items-center rounded-full text-[15px] tabular-nums sm:h-6 sm:w-6 sm:text-[13px]",
                   fora ? "text-white/25" : "text-white/85",
                   ehHoje && "font-semibold",
-                  ehHoje && !sel && "text-[#FF453A] sm:bg-[#FF453A] sm:text-white",
+                  ehHoje && !sel && "text-[#D12C21] sm:bg-[#FF453A] sm:text-white",
                   ehHoje && sel && "bg-[#FF453A] text-white",
                   !ehHoje && sel && "bg-white font-semibold text-black sm:bg-transparent sm:text-white",
                 )}

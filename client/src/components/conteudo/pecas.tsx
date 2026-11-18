@@ -54,8 +54,8 @@ export function FacePeca({ p, tematica, arrastando = false }: { p: Peca; tematic
   return (
     <div
       className={cn(
-        "rounded-xl border border-white/[0.06] bg-[#1C1D23] px-3 py-2.5 text-left text-white shadow-[0_1px_2px_rgba(0,0,0,0.35)] transition-colors",
-        arrastando ? "rotate-[2deg] border-[#0A84FF]/50 shadow-2xl" : "group-hover:border-white/[0.16] group-hover:bg-[#22232A]",
+        "rounded-xl border border-white/[0.06] bg-[var(--i-s1)] px-3 py-2.5 text-left text-white shadow-[0_1px_2px_rgba(0,0,0,0.35)] transition-colors",
+        arrastando ? "rotate-[2deg] border-[#0A84FF]/50 shadow-2xl" : "group-hover:border-white/[0.16] group-hover:bg-[var(--i-s3)]",
       )}
     >
       {(p.angulo || f || p.profundidade) && (
@@ -63,7 +63,7 @@ export function FacePeca({ p, tematica, arrastando = false }: { p: Peca; tematic
           {p.angulo && <SeloAngulo id={p.angulo} compacto />}
           {f && <span className="rounded-full px-1.5 py-0.5 text-[11.5px] text-white/50">{f.nome}</span>}
           {p.profundidade && (
-            <span className={cn("rounded-full px-1.5 py-0.5 text-[11px] font-semibold uppercase tracking-[0.06em]", p.profundidade === "profundo" ? "text-[#64D2FF]" : "text-white/40")}>
+            <span className={cn("rounded-full px-1.5 py-0.5 text-[11px] font-semibold uppercase tracking-[0.06em]", p.profundidade === "profundo" ? "text-[#0A73A0]" : "text-white/40")}>
               {p.profundidade}
             </span>
           )}
@@ -83,7 +83,7 @@ export function FacePeca({ p, tematica, arrastando = false }: { p: Peca; tematic
             <span
               className={cn(
                 "inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 font-medium",
-                publicada ? "bg-[#30D158]/15 text-[#30D158]" : vencida ? "bg-[#FF453A]/15 text-[#FF6961]" : p.data === hojeISO() ? "bg-[#FF9F0A]/15 text-[#FFB340]" : "bg-white/[0.06] text-white/65",
+                publicada ? "bg-[#30D158]/15 text-[#1B8A3C]" : vencida ? "bg-[#FF453A]/15 text-[#D93025]" : p.data === hojeISO() ? "bg-[#FF9F0A]/15 text-[#A86200]" : "bg-white/[0.06] text-white/65",
               )}
             >
               <CalendarDays size={12} aria-hidden />
@@ -96,7 +96,7 @@ export function FacePeca({ p, tematica, arrastando = false }: { p: Peca; tematic
             </span>
           )}
           {p.checklist.length > 0 && (
-            <span className={cn("inline-flex items-center gap-1 rounded-md px-1.5 py-0.5", feitos === p.checklist.length && "bg-[#30D158]/15 text-[#30D158]")}>
+            <span className={cn("inline-flex items-center gap-1 rounded-md px-1.5 py-0.5", feitos === p.checklist.length && "bg-[#30D158]/15 text-[#1B8A3C]")}>
               <CheckSquare size={12} aria-hidden />
               {feitos}/{p.checklist.length}
             </span>
@@ -145,8 +145,8 @@ export function ColunaEtapa({
     <section
       aria-label={titulo}
       className={cn(
-        "flex max-h-[calc(100dvh-14rem)] w-[284px] shrink-0 snap-start scroll-ml-3 flex-col rounded-2xl border border-white/[0.07] bg-[#121318] transition-colors sm:w-[300px]",
-        isOver && "border-[#0A84FF]/60 bg-[#141823]",
+        "flex max-h-[calc(100dvh-14rem)] w-[284px] shrink-0 snap-start scroll-ml-3 flex-col rounded-2xl border border-white/[0.07] bg-[var(--i-s1)] transition-colors sm:w-[300px]",
+        isOver && "border-[#0A84FF]/60 bg-[var(--i-s1)]",
       )}
     >
       <header className="shrink-0 px-3.5 pb-2 pt-3">
@@ -192,7 +192,7 @@ export function ColunaEtapa({
                 if (e.key === "Escape") setCompondo(false);
               }}
               placeholder="Sobre o que é a peça?"
-              className="block w-full resize-none rounded-xl border border-[#0A84FF]/60 bg-[#1C1D23] p-3 text-[14px] text-white placeholder:text-white/40 focus:outline-none"
+              className="block w-full resize-none rounded-xl border border-[#0A84FF]/60 bg-[var(--i-s1)] p-3 text-[14px] text-white placeholder:text-white/40 focus:outline-none"
             />
             <div className="mt-2 flex items-center gap-2">
               <button type="submit" disabled={!texto.trim()} className="h-8 rounded-lg bg-[#0A84FF] px-3 text-[13px] font-semibold text-white disabled:opacity-40">Adicionar</button>

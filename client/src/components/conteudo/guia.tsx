@@ -34,7 +34,7 @@ export default function Guia({ estudio, acoes, bloqueado }: { estudio: Estudio; 
   const contagem = (g: GrupoNota) => estudio.notas.filter((n) => n.grupo === g).length;
 
   return (
-    <div className="grid min-h-[calc(100dvh-14rem)] grid-cols-1 grid-rows-[auto_1fr] overflow-hidden rounded-2xl border border-white/[0.07] bg-[#121318] md:grid-cols-[200px_280px_minmax(0,1fr)] md:grid-rows-1">
+    <div className="grid min-h-[calc(100dvh-14rem)] grid-cols-1 grid-rows-[auto_1fr] overflow-hidden rounded-2xl border border-white/[0.07] bg-[var(--i-s1)] md:grid-cols-[200px_280px_minmax(0,1fr)] md:grid-rows-1">
       {/* Pastas */}
       <nav aria-label="Pastas" className={cn("min-w-0 border-b border-white/[0.07] p-2 md:border-b-0 md:border-r", nota && "hidden md:block")}>
         <ul className="flex gap-1 overflow-x-auto pb-1 md:flex-col md:overflow-visible md:pb-0 [scrollbar-width:none]">
@@ -88,7 +88,7 @@ export default function Guia({ estudio, acoes, bloqueado }: { estudio: Estudio; 
             <li key={n.id}>
               <button type="button" onClick={() => setAberta(n.id)} className={cn("block w-full rounded-lg px-3 py-2.5 text-left", aberta === n.id ? "bg-[#0A84FF]/25" : "hover:bg-white/[0.05]")}>
                 <span className="flex items-center gap-1.5 text-[13.5px] font-semibold">
-                  {n.fixada && <Pin size={12} className="shrink-0 text-[#FF9F0A]" aria-label="Fixada" />}
+                  {n.fixada && <Pin size={12} className="shrink-0 text-[#B86E00]" aria-label="Fixada" />}
                   <span className="truncate">{n.titulo}</span>
                 </span>
                 <span className="mt-0.5 line-clamp-2 block text-[12.5px] leading-snug text-white/45">{resumo(n.texto) || "Sem texto"}</span>
@@ -123,7 +123,7 @@ function Editor({ nota, acoes, bloqueado, voltar, fechar }: { nota: Nota; acoes:
   return (
     <div className="flex h-full flex-col">
       <div className="flex items-center gap-1 border-b border-white/[0.07] p-2">
-        <button type="button" onClick={voltar} className="flex h-8 items-center gap-1 rounded-lg px-2 text-[13px] text-[#0A84FF] md:hidden">
+        <button type="button" onClick={voltar} className="flex h-8 items-center gap-1 rounded-lg px-2 text-[13px] text-[#0A6CDB] md:hidden">
           <ChevronLeft size={16} /> Notas
         </button>
         <span className="ml-1 hidden text-[12px] text-white/35 md:inline">editada em {nota.atualizadoEm.split("-").reverse().join("/")}</span>

@@ -11,10 +11,10 @@ import { Link, Redirect } from "wouter";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/lib/supabase";
 
-function requestedPath(): "/plano" | "/calendario" | "/noite" | "/radar" | "/automacoes" | "/conteudo" {
+function requestedPath(): "/plano" | "/calendario" | "/noite" | "/radar" | "/conteudo" {
   const requested = new URLSearchParams(window.location.search).get("returnTo");
   // Lista fechada: o returnTo vem da URL e não pode virar redirecionamento para fora
-  return requested === "/plano" || requested === "/noite" || requested === "/radar" || requested === "/automacoes" || requested === "/conteudo" ? requested : "/calendario";
+  return requested === "/plano" || requested === "/noite" || requested === "/radar" || requested === "/conteudo" ? requested : "/calendario";
 }
 
 function AccessShell({ children }: { children: ReactNode }) {

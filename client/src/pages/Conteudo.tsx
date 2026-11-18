@@ -5,36 +5,35 @@ import {
   type DragEndEvent,
 } from "@dnd-kit/core";
 import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
-import { BookOpen, CalendarRange, Cloud, CloudOff, Columns3, Grid3x3, LoaderCircle, Search, X } from "lucide-react";
+import { BookOpen, CalendarRange, Cloud, CloudOff, Columns3, Lightbulb, LoaderCircle, Plus, Search, X } from "lucide-react";
 import InternalShell from "@/components/InternalShell";
 import { ColunaEtapa, FacePeca } from "@/components/conteudo/pecas";
 import DetalhePeca from "@/components/conteudo/detalhe";
-import Semana from "@/components/conteudo/semana";
-import Formular from "@/components/conteudo/formular";
+import Semanas, { IdeiasLivres, ModelosOrganicos, botaoPrimario, type AcoesSemanas } from "@/components/conteudo/semanas";
 import Guia from "@/components/conteudo/guia";
 import { useAuth } from "@/contexts/AuthContext";
 import { cn } from "@/lib/utils";
 import {
   ANGULOS, ETAPAS,
   adicionar as adicionarPeca, adicionarItem, adicionarNota, adicionarTematica, alternarNotaFixada as alternarFixada,
-  alternarItem, duplicar as duplicarPeca, editarMetricas, editarNota, editar as editarPeca, editarTematica,
+  alternarItem, duplicar as duplicarPeca, editarMetricas, editarNota, editar as editarPeca,
   encontrar as encontrarPeca, filtrarPecas, mover as moverPeca, removerItem, removerNota, remover as removerPeca,
-  removerTematica,
   type AnguloId, type EtapaId, type Estudio, type GrupoNota,
 } from "@/features/conteudo/estudio";
 import { useEstudioNuvem } from "@/features/conteudo/use-estudio";
 import { semente } from "@/features/conteudo/semente";
+import { ORGANICO, idOrganico, pecaDoModelo, semanas as listarSemanas } from "@/features/conteudo/organicos";
 
-type Vista = "quadro" | "semana" | "formular" | "guia";
+type Vista = "semanas" | "ideias" | "quadro" | "guia";
 const VISTAS: { id: Vista; nome: string; icone: typeof Columns3 }[] = [
-  { id: "quadro", nome: "Quadro", icone: Columns3 },
-  { id: "semana", nome: "Semana", icone: CalendarRange },
-  { id: "formular", nome: "Formular", icone: Grid3x3 },
+  { id: "semanas", nome: "Semanas", icone: CalendarRange },
+  { id: "ideias", nome: "Ideias", icone: Lightbulb },
+  { id: "quadro", nome: "Esteira", icone: Columns3 },
   { id: "guia", nome: "Guia", icone: BookOpen },
 ];
 const lerVista = (): Vista => {
   const v = new URLSearchParams(window.location.search).get("ver");
-  return VISTAS.some((x) => x.id === v) ? (v as Vista) : "quadro";
+  return VISTAS.some((x) => x.id === v) ? (v as Vista) : "semanas";
 };
 
 /** Todas as peças, de todas as etapas: para achar a que acabou de nascer. */
@@ -89,7 +88,7 @@ function ConteudoEstudio({ fonte, aviso, setAviso }: { fonte: Fonte; aviso: stri
 
   useEffect(() => {
     const url = new URL(window.location.href);
-    if (vista === "quadro") url.searchParams.delete("ver");
+    if (vista === "semanas") url.searchParams.delete("ver");
     else url.searchParams.set("ver", vista);
     window.history.replaceState(null, "", url);
   }, [vista]);
@@ -146,6 +145,29 @@ function ConteudoEstudio({ fonte, aviso, setAviso }: { fonte: Fonte; aviso: stri
     return ok;
   }
 
+  const estaSemana = useMemo(() => listarSemanas(estudio, 6), [estudio]);
+  const acoesSemanas: AcoesSemanas = {
+    abrir: setAberta,
+    escolherIdeia: (id, data) => {
+      if (aplicar((e) => editarPeca(e, id, { data }))) setAviso("Ideia marcada para a semana.");
+    },
+    novaIdeia: (data) => void criarEAbrir({ etapa: "ideias", titulo: "Nova ideia", data }),
+    usarModelo: (m, data) => {
+      const ok = aplicar((e) => {
+        let x = e;
+        let tematica = idOrganico(x);
+        if (!tematica) {
+          x = adicionarTematica(x, { nome: ORGANICO.nome, cor: ORGANICO.cor });
+          tematica = idOrganico(x)!;
+        }
+        return adicionarPeca(x, pecaDoModelo(m, tematica, data));
+      });
+      if (ok) setAviso(`Orgânico "${m.titulo}" na semana. Palavra no Zernio: ${m.palavra}.`);
+    },
+  };
+  // Ideia tocada no banco vai para a primeira semana ainda sem post caprichado
+  const semanaLivre = estaSemana.find((s) => !s.caprichado.length) ?? estaSemana[0];
+
   return (
     <InternalShell title="Conteúdo">
       <div className="flex flex-wrap items-center gap-2 pb-3 sm:gap-3">
@@ -155,8 +177,8 @@ function ConteudoEstudio({ fonte, aviso, setAviso }: { fonte: Fonte; aviso: stri
           <span className="hidden items-center gap-1.5 text-[12px] font-normal tracking-normal text-white/45 md:inline-flex" role="status" title="Onde o estúdio está salvo">
             {estado === "carregando" ? <><LoaderCircle size={13} className="animate-spin" /> carregando</>
               : estado === "pronto" ? (salvando ? <><LoaderCircle size={13} className="animate-spin" /> salvando</> : <><Cloud size={13} /> salvo</>)
-              : estado === "local" ? <><CloudOff size={13} className="text-[#FF9F0A]" /> só neste navegador</>
-              : <><CloudOff size={13} className="text-[#FF9F0A]" /> sem nuvem</>}
+              : estado === "local" ? <><CloudOff size={13} className="text-[#B86E00]" /> só neste navegador</>
+              : <><CloudOff size={13} className="text-[#B86E00]" /> sem nuvem</>}
           </span>
         </h1>
         <div role="tablist" aria-label="Vistas" className="flex w-full rounded-xl bg-white/[0.06] p-1 sm:w-auto">
@@ -167,7 +189,7 @@ function ConteudoEstudio({ fonte, aviso, setAviso }: { fonte: Fonte; aviso: stri
               role="tab"
               aria-selected={vista === id}
               onClick={() => setVista(id)}
-              className={cn("flex h-8 flex-1 items-center justify-center gap-1.5 rounded-lg px-3 text-[13px] font-medium transition-colors sm:flex-none", vista === id ? "bg-white/[0.14] text-white shadow-[0_1px_2px_rgba(0,0,0,0.4)]" : "text-white/60 hover:text-white")}
+              className={cn("flex h-9 flex-1 items-center justify-center gap-1.5 rounded-[10px] px-3.5 text-[13.5px] font-semibold transition-colors sm:flex-none", vista === id ? "bg-[var(--i-s1)] text-white shadow-[0_1px_3px_rgba(20,22,27,0.14)]" : "text-white/60 hover:text-white")}
             >
               <Icone size={14} className="shrink-0" /> {nome}
             </button>
@@ -176,7 +198,7 @@ function ConteudoEstudio({ fonte, aviso, setAviso }: { fonte: Fonte; aviso: stri
       </div>
 
       {(aviso || erro) && (
-        <p role={erro ? "alert" : "status"} className={cn("mb-3 rounded-xl px-4 py-2.5 text-[13.5px]", erro ? "bg-[#FF453A]/15 text-[#FFB3AD]" : "bg-white/[0.08] text-white/90")}>
+        <p role={erro ? "alert" : "status"} className={cn("mb-3 rounded-xl px-4 py-2.5 text-[13.5px]", erro ? "bg-[#FF453A]/15 text-[#C4261D]" : "bg-white/[0.08] text-white/90")}>
           {erro || aviso}
         </p>
       )}
@@ -208,7 +230,7 @@ function ConteudoEstudio({ fonte, aviso, setAviso }: { fonte: Fonte; aviso: stri
           </div>
           {filtroAtivo && <p className="mb-2 text-[12.5px] text-white/45">Com filtro ativo, arrastar fica desligado.</p>}
 
-          <div className="-mx-3 snap-x snap-mandatory overflow-x-auto px-3 pb-2 sm:-mx-6 sm:snap-none sm:px-6 [scrollbar-color:rgba(255,255,255,0.15)_transparent]">
+          <div className="-mx-3 snap-x snap-mandatory overflow-x-auto px-3 pb-2 sm:-mx-6 sm:snap-none sm:px-6 [scrollbar-color:rgba(22,24,29,0.15)_transparent]">
             <DndContext sensors={sensores} collisionDetection={closestCorners} onDragStart={(e) => setArrastando(String(e.active.id))} onDragEnd={aoSoltar} onDragCancel={() => setArrastando(null)}>
               <div className="flex w-max items-start gap-3">
                 {ETAPAS.map((e) => (
@@ -232,26 +254,32 @@ function ConteudoEstudio({ fonte, aviso, setAviso }: { fonte: Fonte; aviso: stri
         </>
       )}
 
-      {vista === "semana" && (
-        <Semana estudio={estudio} tematicas={tematicas} abrir={setAberta} bloqueado={bloqueado} criarNoDia={(data) => criarEAbrir({ etapa: "ideias", titulo: "Nova peça", data })} />
-      )}
+      {vista === "semanas" && <Semanas estudio={estudio} acoes={acoesSemanas} bloqueado={bloqueado} />}
 
-      {vista === "formular" && (
-        <Formular
-          estudio={estudio}
-          abrir={setAberta}
-          bloqueado={bloqueado}
-          criar={({ tematica, angulo }) => {
-            const a = ANGULOS.find((x) => x.id === angulo)!;
-            const t = tematicas.get(tematica)!;
-            criarEAbrir({ etapa: "ideias", titulo: `${a.nome}: ${t.nome}`, tematica, angulo, roteiro: a.esqueleto.map((s) => `${s}:\n`).join("\n") });
-          }}
-          tematicaAcoes={{
-            adicionar: (nome) => aplicar((e) => adicionarTematica(e, { nome })),
-            editar: (id, patch) => aplicar((e) => editarTematica(e, id, patch)),
-            remover: (id) => aplicar((e) => removerTematica(e, id)),
-          }}
-        />
+      {vista === "ideias" && (
+        <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)]">
+          <section aria-labelledby="ideias-caprichado" className="flex flex-col gap-3">
+            <div className="flex items-start gap-3">
+              <div className="min-w-0 flex-1">
+                <h2 id="ideias-caprichado" className="text-[18px] font-semibold tracking-tight">Para o post caprichado</h2>
+                <p className="mt-0.5 text-[13.5px] text-white/55">Toque numa ideia e ela vai para a semana de {semanaLivre.inicio.slice(8, 10)}/{semanaLivre.inicio.slice(5, 7)}.</p>
+              </div>
+              <button type="button" disabled={bloqueado} onClick={() => criarEAbrir({ etapa: "ideias", titulo: "Nova ideia" })} className={botaoPrimario}>
+                <Plus size={16} /> Nova
+              </button>
+            </div>
+            <div className="rounded-[20px] border border-[var(--i-linha)] bg-[var(--i-s1)] p-2">
+              <IdeiasLivres estudio={estudio} data={semanaLivre.diaCaprichado} acoes={acoesSemanas} />
+            </div>
+          </section>
+          <section aria-labelledby="ideias-organicos" className="flex flex-col gap-3">
+            <div>
+              <h2 id="ideias-organicos" className="text-[18px] font-semibold tracking-tight">Orgânicos prontos · comenta e recebe</h2>
+              <p className="mt-0.5 text-[13.5px] text-white/55">Mostra algo útil, pede para comentarem a palavra e o Zernio manda no direct. Usar coloca nesta semana.</p>
+            </div>
+            <ModelosOrganicos data={estaSemana[0].diaOrganico} acoes={acoesSemanas} grade />
+          </section>
+        </div>
       )}
 
       {vista === "guia" && (

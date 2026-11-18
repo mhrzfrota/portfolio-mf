@@ -12,7 +12,7 @@ import type {
 } from "@shared/noite/relatorio";
 
 /* Azul da marca clareado para ícones e textos pequenos sobre o fundo escuro (o #0C2AFE puro fica sem contraste). */
-const AZUL = "text-[#8C99FF]";
+const AZUL = "text-[#3A4BE0]";
 const CARTAO = "rounded-2xl bg-white/[0.035] ring-1 ring-inset ring-white/[0.07]";
 const ROTULO = "text-[12px] font-semibold uppercase tracking-[0.14em] text-white/55";
 
@@ -57,7 +57,7 @@ export function contagem(r: Relatorio, aba: Aba): number | null {
 /** Barra de abas fixa logo abaixo do cabeçalho do sistema interno (h-14). */
 export function BarraDeAbas({ r, aba, mudar }: { r: Relatorio; aba: Aba; mudar: (a: Aba) => void }) {
   return (
-    <div className="sticky top-14 z-30 -mx-3 mt-6 border-b border-white/[0.07] bg-[#0B0C10]/90 px-3 backdrop-blur-xl sm:-mx-6 sm:px-6">
+    <div className="sticky top-14 z-30 -mx-3 mt-6 border-b border-white/[0.07] bg-[var(--i-bg)]/90 px-3 backdrop-blur-xl sm:-mx-6 sm:px-6">
       <div role="tablist" aria-label="Partes do relatório" className="mx-auto flex max-w-[1280px] gap-1 overflow-x-auto py-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {ABAS.map(({ id, nome, icone: Icone }) => {
           const ativa = id === aba;
@@ -73,13 +73,13 @@ export function BarraDeAbas({ r, aba, mudar }: { r: Relatorio; aba: Aba; mudar: 
               onClick={() => mudar(id)}
               className={cn(
                 "flex h-10 shrink-0 items-center gap-2 rounded-xl px-3.5 text-[14px] font-medium transition-colors",
-                ativa ? "bg-white text-[#0B0C10]" : "text-white/65 hover:bg-white/[0.06] hover:text-white",
+                ativa ? "bg-white text-[var(--i-bg)]" : "text-white/65 hover:bg-white/[0.06] hover:text-white",
               )}
             >
               <Icone aria-hidden size={16} />
               {nome}
               {n !== null && n > 0 && (
-                <span className={cn("rounded-full px-1.5 text-[11.5px] font-semibold tabular-nums", ativa ? "bg-[#0B0C10]/10" : "bg-white/[0.08] text-white/70")}>{n}</span>
+                <span className={cn("rounded-full px-1.5 text-[11.5px] font-semibold tabular-nums", ativa ? "bg-[var(--i-bg)]/10" : "bg-white/[0.08] text-white/70")}>{n}</span>
               )}
             </button>
           );
@@ -227,7 +227,7 @@ export function PainelDoDia({ itens, m }: { itens: Momento[]; m: Metricas }) {
           <span
             key={`${it.hora}-${i}`}
             title={`${it.hora} · ${NOME_MOMENTO[it.tipo]}: ${it.texto}`}
-            className={cn("absolute top-1/2 h-3.5 w-3.5 -translate-x-1/2 rounded-full ring-[3px] ring-[#121318]", COR_MOMENTO[it.tipo])}
+            className={cn("absolute top-1/2 h-3.5 w-3.5 -translate-x-1/2 rounded-full ring-[3px] ring-[var(--i-s1)]", COR_MOMENTO[it.tipo])}
             style={{ left: `${pos[i]}%`, transform: `translate(-50%, calc(-50% - ${nivel[i] * 11}px))` }}
           />
         ))}
@@ -254,7 +254,7 @@ export function PainelDoDia({ itens, m }: { itens: Momento[]; m: Metricas }) {
       {/* Números do coletor */}
       <ul className="mt-6 grid grid-cols-2 gap-px overflow-hidden rounded-xl bg-white/[0.07] sm:grid-cols-3 xl:grid-cols-6">
         {stats.map(({ rotulo, valor, dica, icone: Icone, alerta }) => (
-          <li key={rotulo} className="bg-[#111216] p-4">
+          <li key={rotulo} className="bg-[var(--i-bg)] p-4">
             <p className="flex items-center gap-1.5 text-[12px] font-medium text-white/55">
               <Icone aria-hidden size={14} className={alerta ? "text-amber-300" : AZUL} />
               {rotulo}
@@ -277,7 +277,7 @@ export function LinhaDoTempo({ itens }: { itens: Momento[] }) {
         {itens.map((m, i) => (
           <li key={`${m.hora}-${i}`} className="relative grid grid-cols-[3rem_1rem_1fr] items-start gap-x-2">
             <span className="pt-0.5 text-right font-mono text-[12.5px] tabular-nums text-white/55">{m.hora}</span>
-            <span aria-hidden className={cn("relative z-10 mt-1.5 h-2.5 w-2.5 justify-self-center rounded-full ring-4 ring-[#0B0C10]", COR_MOMENTO[m.tipo])} />
+            <span aria-hidden className={cn("relative z-10 mt-1.5 h-2.5 w-2.5 justify-self-center rounded-full ring-4 ring-[var(--i-bg)]", COR_MOMENTO[m.tipo])} />
             <div className="min-w-0">
               <p className="text-[14.5px] leading-snug">{m.texto}</p>
               <p className="mt-1 text-[12px] text-white/45">
@@ -327,7 +327,7 @@ export function PorProjetoBarras({ itens }: { itens: PorProjeto[] }) {
 }
 
 const STATUS: Record<StatusProjeto, { nome: string; classe: string; barra: string }> = {
-  avancou: { nome: "Avançou", classe: "bg-[#0C2AFE]/25 text-[#B7C0FF]", barra: "bg-[#5B6CFF]" },
+  avancou: { nome: "Avançou", classe: "bg-[#0C2AFE]/25 text-[#2D3FD8]", barra: "bg-[#5B6CFF]" },
   entregue: { nome: "Entregue", classe: "bg-emerald-400/15 text-emerald-300", barra: "bg-emerald-400" },
   travado: { nome: "Travado", classe: "bg-amber-300/15 text-amber-200", barra: "bg-amber-300" },
   novo: { nome: "Novo", classe: "bg-violet-400/15 text-violet-200", barra: "bg-violet-400" },
@@ -410,11 +410,11 @@ export function VoceDev({ d }: { d: Dev }) {
           <p className="mt-2 text-[14px] leading-relaxed text-white/80">{d.melhorar}</p>
         </div>
         <div className={cn(CARTAO, "bg-[#0C2AFE]/[0.12] p-5 sm:col-span-2 lg:col-span-1")}>
-          <p className="flex items-center gap-2 text-[13px] font-semibold text-[#B7C0FF]"><BookOpen aria-hidden size={15} /> Estudo sugerido</p>
+          <p className="flex items-center gap-2 text-[13px] font-semibold text-[#2D3FD8]"><BookOpen aria-hidden size={15} /> Estudo sugerido</p>
           <p className="mt-2 font-semibold">{d.estudo.tema}</p>
           <p className="mt-1 text-[13.5px] leading-relaxed text-white/65">{d.estudo.porque}</p>
           {estudo && (
-            <a href={estudo} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-1 text-[13px] font-semibold text-[#B7C0FF] hover:text-white">
+            <a href={estudo} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-1 text-[13px] font-semibold text-[#2D3FD8] hover:text-white">
               Abrir material <ArrowUpRight aria-hidden size={14} />
             </a>
           )}
@@ -429,7 +429,7 @@ export function VoceDev({ d }: { d: Dev }) {
 const INSIGHT: Record<TipoInsight, { nome: string; icone: typeof Sparkles; cor: string; borda: string }> = {
   oportunidade: { nome: "Oportunidade", icone: Lightbulb, cor: "text-emerald-300 bg-emerald-400/10", borda: "bg-emerald-400" },
   risco: { nome: "Risco", icone: AlertTriangle, cor: "text-amber-200 bg-amber-300/10", borda: "bg-amber-300" },
-  padrao: { nome: "Padrão", icone: Repeat2, cor: "text-[#B7C0FF] bg-[#0C2AFE]/20", borda: "bg-[#5B6CFF]" },
+  padrao: { nome: "Padrão", icone: Repeat2, cor: "text-[#2D3FD8] bg-[#0C2AFE]/20", borda: "bg-[#5B6CFF]" },
 };
 
 export function Insights({ itens }: { itens: Insight[] }) {
@@ -461,7 +461,7 @@ type GrupoNoticia = CategoriaNoticia | "outras";
 
 const CATEGORIA: Record<GrupoNoticia, { nome: string; apoio: string; icone: typeof Sparkles; cor: string; fundo: string; ponto: string }> = {
   mercado: { nome: "Mercado dos seus clientes", apoio: "O que muda para quem compra de você.", icone: Store, cor: "text-emerald-300", fundo: "bg-emerald-400/10", ponto: "bg-emerald-400" },
-  crescimento: { nome: "Para a MF crescer", apoio: "Venda, preço, oportunidades e posicionamento.", icone: TrendingUp, cor: "text-[#B7C0FF]", fundo: "bg-[#0C2AFE]/20", ponto: "bg-[#8C99FF]" },
+  crescimento: { nome: "Para a MF crescer", apoio: "Venda, preço, oportunidades e posicionamento.", icone: TrendingUp, cor: "text-[#2D3FD8]", fundo: "bg-[#0C2AFE]/20", ponto: "bg-[#8C99FF]" },
   ia: { nome: "IA no seu trabalho", apoio: "Mudanças em IA para desenvolver e vender tecnologia.", icone: Bot, cor: "text-violet-300", fundo: "bg-violet-400/10", ponto: "bg-violet-400" },
   devs: { nome: "Devs no Brasil", apoio: "Trabalho, comunidade e ecossistema de tecnologia.", icone: Code2, cor: "text-amber-200", fundo: "bg-amber-300/10", ponto: "bg-amber-300" },
   ferramentas: { nome: "Tecnologia e ferramentas", apoio: "Novidades da sua stack que abrem possibilidades ou pedem ação.", icone: Wrench, cor: "text-sky-300", fundo: "bg-sky-400/10", ponto: "bg-sky-400" },
@@ -494,7 +494,7 @@ function CartaoNoticia({ n }: { n: Noticia }) {
           <span>{n.fonte} · {dataCurta(n.data)}</span>
         </p>
         {url ? (
-          <a href={url} target="_blank" rel="noopener noreferrer" className="group mt-3 inline-flex items-start gap-1 text-[15.5px] font-semibold leading-snug hover:text-[#B7C0FF]">
+          <a href={url} target="_blank" rel="noopener noreferrer" className="group mt-3 inline-flex items-start gap-1 text-[15.5px] font-semibold leading-snug hover:text-[#2D3FD8]">
             {n.titulo}
             <ArrowUpRight aria-hidden size={15} className="mt-0.5 shrink-0 opacity-60 group-hover:opacity-100" />
           </a>
@@ -707,7 +707,7 @@ export function Clientes({ clientes, prospeccao }: { clientes: Cliente[]; prospe
                     {p.abordagem}
                   </p>
                   {fonte && (
-                    <a href={fonte} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-1 self-start text-[12.5px] font-semibold text-[#B7C0FF] hover:text-white">
+                    <a href={fonte} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-1 self-start text-[12.5px] font-semibold text-[#2D3FD8] hover:text-white">
                       Ver fonte <ArrowUpRight aria-hidden size={13} />
                     </a>
                   )}
@@ -730,7 +730,7 @@ function Previa({ titulo, icone: Icone, acao, ir, children }: { titulo: string; 
         <Icone aria-hidden size={14} className={AZUL} /> {titulo}
       </p>
       <div className="mt-4 flex-1">{children}</div>
-      <button type="button" onClick={ir} className="mt-4 inline-flex items-center gap-1.5 self-start rounded-lg text-[13px] font-semibold text-[#B7C0FF] hover:text-white">
+      <button type="button" onClick={ir} className="mt-4 inline-flex items-center gap-1.5 self-start rounded-lg text-[13px] font-semibold text-[#2D3FD8] hover:text-white">
         {acao} <ArrowRight aria-hidden size={14} />
       </button>
     </div>

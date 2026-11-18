@@ -134,11 +134,11 @@ function PlanoConteudo({ userId }: { userId: string }) {
           <span className="hidden items-center gap-1.5 text-[12px] font-normal tracking-normal text-white/45 md:inline-flex" role="status" title="Onde o quadro está salvo">
             {estado === "carregando" ? <><LoaderCircle size={13} className="animate-spin" /> carregando</>
               : estado === "pronto" ? (salvando ? <><LoaderCircle size={13} className="animate-spin" /> salvando</> : <><Cloud size={13} /> salvo</>)
-              : estado === "local" ? <><CloudOff size={13} className="text-[#FF9F0A]" /> só neste navegador</>
-              : <><CloudOff size={13} className="text-[#FF9F0A]" /> sem nuvem</>}
+              : estado === "local" ? <><CloudOff size={13} className="text-[#B86E00]" /> só neste navegador</>
+              : <><CloudOff size={13} className="text-[#B86E00]" /> sem nuvem</>}
           </span>
           {atrasados > 0 && (
-            <span className="rounded-full bg-[#FF453A]/15 px-2 py-0.5 text-[12px] font-semibold tracking-normal text-[#FF6961]">
+            <span className="rounded-full bg-[#FF453A]/15 px-2 py-0.5 text-[12px] font-semibold tracking-normal text-[#D93025]">
               {atrasados} atrasado{atrasados > 1 ? "s" : ""}
             </span>
           )}
@@ -181,7 +181,7 @@ function PlanoConteudo({ userId }: { userId: string }) {
       </div>
 
       {filtrosAbertos && (
-        <div className="mb-3 flex flex-col gap-3 rounded-xl border border-white/[0.07] bg-[#121318] p-3 sm:flex-row sm:items-center">
+        <div className="mb-3 flex flex-col gap-3 rounded-xl border border-white/[0.07] bg-[var(--i-s1)] p-3 sm:flex-row sm:items-center">
           <div className="flex flex-wrap gap-1.5" role="group" aria-label="Filtrar por etiqueta">
             {ETIQUETAS.map((e) => {
               const ativa = etiquetas.includes(e.id);
@@ -208,7 +208,7 @@ function PlanoConteudo({ userId }: { userId: string }) {
             id="filtro-projeto"
             value={projeto}
             onChange={(e) => setProjeto(e.target.value)}
-            className="h-9 rounded-lg border border-white/[0.1] bg-[#1C1C1E] px-3 text-[13.5px] text-white [color-scheme:dark] sm:ml-auto"
+            className="h-9 rounded-lg border border-white/[0.1] bg-[var(--i-s1)] px-3 text-[13.5px] text-white [color-scheme:light] sm:ml-auto"
           >
             <option value="">Todos os projetos</option>
             {listaProjetos.map((p) => (
@@ -219,13 +219,13 @@ function PlanoConteudo({ userId }: { userId: string }) {
       )}
 
       {(aviso || erro || filtroAtivo) && (
-        <p role={erro ? "alert" : "status"} className={cn("mb-3 rounded-xl px-4 py-2.5 text-[13.5px]", erro ? "bg-[#FF453A]/15 text-[#FFB3AD]" : aviso ? "bg-white/[0.08] text-white/90" : "bg-transparent px-0 py-0 text-[12.5px] text-white/45")}>
+        <p role={erro ? "alert" : "status"} className={cn("mb-3 rounded-xl px-4 py-2.5 text-[13.5px]", erro ? "bg-[#FF453A]/15 text-[#C4261D]" : aviso ? "bg-white/[0.08] text-white/90" : "bg-transparent px-0 py-0 text-[12.5px] text-white/45")}>
           {erro || aviso || "Com filtro ativo, arrastar fica desligado. Limpe o filtro para reorganizar."}
         </p>
       )}
 
       {/* Quadro: colunas na altura da tela, rolando para o lado como no Trello */}
-      <div className="-mx-3 snap-x snap-mandatory overflow-x-auto px-3 pb-2 sm:-mx-6 sm:snap-none sm:px-6 [scrollbar-color:rgba(255,255,255,0.15)_transparent]">
+      <div className="-mx-3 snap-x snap-mandatory overflow-x-auto px-3 pb-2 sm:-mx-6 sm:snap-none sm:px-6 [scrollbar-color:rgba(22,24,29,0.15)_transparent]">
         <DndContext sensors={sensores} collisionDetection={closestCorners} onDragStart={aoComecar} onDragEnd={aoSoltar} onDragCancel={() => setArrastando(null)}>
           <div className="flex w-max items-start gap-3">
             {COLUNAS.map((col) => (

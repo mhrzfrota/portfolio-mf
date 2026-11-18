@@ -3,7 +3,7 @@ import { AlertTriangle, LoaderCircle, Search, Zap, Telescope } from "lucide-reac
 import { LIMITES_BUSCA, type BuscaRadar, type ModoBusca } from "@shared/radar/buscas";
 import { listarBuscas, pedirBusca, type ClienteRadar } from "@/features/radar/nuvem";
 
-const painel = "rounded-xl border border-white/[0.08] bg-[#121318]";
+const painel = "rounded-xl border border-white/[0.08] bg-[var(--i-s1)]";
 const campo = "h-11 w-full rounded-lg border border-white/10 bg-black/20 px-3 text-sm text-white outline-none placeholder:text-white/35 focus:border-[#0C2AFE]";
 
 const MODOS: Record<ModoBusca, { nome: string; icone: typeof Zap; texto: string }> = {

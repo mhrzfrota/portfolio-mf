@@ -97,7 +97,7 @@ function Tela({ userId }: { userId: string | null }) {
         <div className="flex flex-col gap-4 pt-2 md:flex-row md:items-end md:justify-between">
           <div>
             <p className="flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.14em] text-white/55">
-              <Moon aria-hidden size={14} className="text-[#8C99FF]" /> Relatório da noite
+              <Moon aria-hidden size={14} className="text-[#3A4BE0]" /> Relatório da noite
             </p>
             <h1 className="mt-2 text-[1.75rem] font-semibold tracking-tight sm:text-[2.1rem]">
               {estado.tipo === "pronto" ? diaPorExtenso(estado.relatorio.dia) : "Seu dia, contado pelos agentes"}
@@ -115,7 +115,7 @@ function Tela({ userId }: { userId: string | null }) {
                   id="noite-dia"
                   value={atual ?? ""}
                   onChange={(e) => irPara(e.target.value)}
-                  className="h-9 rounded-lg bg-transparent px-2 text-[13.5px] font-medium text-white outline-none [&>option]:bg-[#16171C]"
+                  className="h-9 rounded-lg bg-transparent px-2 text-[13.5px] font-medium text-white outline-none [&>option]:bg-[var(--i-s1)]"
                 >
                   {dias.map((d) => (
                     <option key={d} value={d}>{diaPorExtenso(d)}</option>
@@ -237,7 +237,7 @@ function Aviso({ estado }: { estado: Exclude<Estado, { tipo: "pronto" }> }) {
   const { titulo, texto } = textos[estado.tipo];
   return (
     <div className="mx-auto mt-16 max-w-lg rounded-3xl bg-white/[0.035] p-8 text-center ring-1 ring-inset ring-white/[0.07]">
-      <span className="mx-auto grid h-12 w-12 place-items-center rounded-2xl bg-[#0C2AFE]/25 text-[#B7C0FF]">
+      <span className="mx-auto grid h-12 w-12 place-items-center rounded-2xl bg-[#0C2AFE]/25 text-[#2D3FD8]">
         {estado.tipo === "vazio" ? <Bot size={22} /> : <Terminal size={22} />}
       </span>
       <p className="mt-4 text-[1.15rem] font-semibold">{titulo}</p>

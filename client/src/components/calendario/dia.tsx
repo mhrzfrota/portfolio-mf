@@ -75,7 +75,7 @@ export function PuxarDoPlano({ cartoes, puxar, bloqueado }: { cartoes: Cartao[];
           {cartoes.map((c) => (
             <li key={c.id}>
               <button type="button" disabled={bloqueado} onClick={() => puxar(c.id)} className="group flex w-full items-center gap-2 rounded-lg px-2 py-1.5 text-left text-[13px] hover:bg-white/[0.06] disabled:opacity-50">
-                <Plus size={14} className="shrink-0 text-[#0A84FF]" />
+                <Plus size={14} className="shrink-0 text-[#0A6CDB]" />
                 <span className="min-w-0 flex-1 truncate">{c.titulo}</span>
                 {c.projeto && <span className="max-w-[40%] shrink-0 truncate text-[11.5px] text-white/40">{c.projeto}</span>}
               </button>

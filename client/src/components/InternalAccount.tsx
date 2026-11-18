@@ -2,11 +2,12 @@ import { useState } from "react";
 import { LoaderCircle, LogOut } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 
-export default function InternalAccount() {
+export default function InternalAccount({ compacto = false }: { compacto?: boolean }) {
   const { user, signOut } = useAuth();
   const [saindo, setSaindo] = useState(false);
   const [erro, setErro] = useState(false);
 
+  const compactoClasse = compacto ? "hidden" : "min-w-0 flex-1 truncate text-[12px] text-white/50";
   const sair = async () => {
     setSaindo(true);
     setErro(false);
@@ -18,8 +19,8 @@ export default function InternalAccount() {
 
   return (
     <div className="flex min-w-0 items-center gap-2">
-      <span className="hidden max-w-48 truncate text-[12px] text-white/45 lg:block" title={user?.email}>
-        {erro ? <span className="text-red-300">Não saiu. Tente de novo.</span> : user?.email}
+      <span className={compactoClasse} title={user?.email}>
+        {erro ? <span className="text-red-600">Não saiu. Tente de novo.</span> : user?.email}
       </span>
       <button
         type="button"

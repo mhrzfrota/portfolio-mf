@@ -57,9 +57,9 @@ export default function Semana({ estudio, tematicas, abrir, criarNoDia, bloquead
         {dias.map((d, i) => {
           const ehHoje = d.data === hoje;
           return (
-            <section key={d.data} aria-label={`${DIAS[i]} ${curta(d.data)}`} className={cn("flex min-h-[132px] flex-col rounded-2xl border bg-[#121318] p-2", ehHoje ? "border-[#0A84FF]/50" : "border-white/[0.07]")}>
+            <section key={d.data} aria-label={`${DIAS[i]} ${curta(d.data)}`} className={cn("flex min-h-[132px] flex-col rounded-2xl border bg-[var(--i-s1)] p-2", ehHoje ? "border-[#0A84FF]/50" : "border-white/[0.07]")}>
               <header className="flex items-center justify-between px-1.5 pb-1.5 pt-0.5">
-                <span className={cn("text-[13px] font-semibold", ehHoje ? "text-[#64D2FF]" : "text-white/80")}>
+                <span className={cn("text-[13px] font-semibold", ehHoje ? "text-[#0A73A0]" : "text-white/80")}>
                   {DIAS[i]} <span className="font-normal text-white/40">{curta(d.data)}</span>
                 </span>
                 {!bloqueado && (
@@ -85,7 +85,7 @@ export default function Semana({ estudio, tematicas, abrir, criarNoDia, bloquead
 
       <div className="grid gap-3 lg:grid-cols-[1fr_1.4fr]">
         {/* Peças prontas ou em andamento sem data: o que encaixar na semana */}
-        <section className="rounded-2xl border border-white/[0.07] bg-[#121318] p-3">
+        <section className="rounded-2xl border border-white/[0.07] bg-[var(--i-s1)] p-3">
           <h2 className="px-1 text-[14px] font-semibold">Para encaixar <span className="font-normal text-white/40">{semData.length}</span></h2>
           <p className="px-1 pb-2 text-[12px] text-white/40">Em roteiro, produção ou prontas, ainda sem data. Abra e escolha o dia.</p>
           <ul className="grid gap-1.5 sm:grid-cols-2">
@@ -101,7 +101,7 @@ export default function Semana({ estudio, tematicas, abrir, criarNoDia, bloquead
         </section>
 
         {/* Equilíbrio: um mês saudável tem raso e profundo, e testa os ângulos */}
-        <section className="rounded-2xl border border-white/[0.07] bg-[#121318] p-4">
+        <section className="rounded-2xl border border-white/[0.07] bg-[var(--i-s1)] p-4">
           <h2 className="text-[14px] font-semibold">Equilíbrio de {curta(mes.de)} a {curta(mes.ate)}</h2>
           <p className="text-[12px] text-white/40">Peças com data nestas 5 semanas.</p>
 
