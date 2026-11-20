@@ -16,6 +16,7 @@ import Noite, { NoitePrevia } from "./pages/Noite";
 import Login from "./pages/Login";
 import Bio from "./pages/Bio";
 import Radar from "./pages/Radar";
+import Materiais from "./pages/Materiais";
 
 function Router() {
   return (
@@ -24,6 +25,8 @@ function Router() {
       <Route path="/acesso" component={Login} />
       {/* Link da bio do Instagram: tela própria, sem a topbar e o rodapé do site. */}
       <Route path="/bio" component={Bio} />
+      {/* Materiais da comunidade Atrium: página pública, sem login. */}
+      <Route path="/materiais/:slug?" component={Materiais} />
       <Route path="/links">
         <Redirect to="/bio" replace />
       </Route>
