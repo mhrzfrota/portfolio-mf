@@ -38,6 +38,7 @@ Objetivo: encontrar clientes qualificados, priorizar as melhores oportunidades e
 
 Junte de 2 a 3 vezes a quantidade pedida, porque parte cai na análise.
 
+0. **Google Maps primeiro (`pnpm radar:maps`):** `pnpm radar:maps -- "<nicho> em <cidade> <UF>" --cidade "<Cidade>, <UF>"` roda o Google Maps Scraper Kit local (sem chave, ~1 min por busca) e devolve só quem tem nota 4,5+ com 25+ avaliações e **não tem site próprio** (sem site, só Instagram ou WhatsApp, link de bio, agendador tipo Booksy ou Schedweb, construtor gratuito), já com telefone e @ quando a ficha tem, e marca "JÁ NO RADAR" quem existe ou foi descartado. É a lista inicial de candidatos; cada um ainda passa pelo Passo 3 inteiro (o @ que o kit acha pode estar errado: confira no Instagram). `--com-site` inclui quem tem site (para achar site antigo ou fora do ar), `--profundidade 2` varre mais área, `--csv` reaproveita uma busca já feita.
 1. **Busca:** "<nicho> <cidade>", "<nicho> <cidade> instagram", "melhores <nicho> em <cidade>", fichas do Google Maps, guias locais, Doctoralia (saúde), listas de associação (OAB, CRO...).
 2. **Instagram:** a busca de `https://www.instagram.com/explore/` (campo Pesquisar no topo) com "<nicho> <cidade>" devolve perfis de negócio direto; também hashtags de nicho e cidade e os perfis sugeridos de um bom candidato. Google com "<nicho> <cidade>" traz perfis e sites misturados: bom para achar candidato com site antigo.
 3. **Antes de analisar qualquer um:** `pnpm radar:lead -- existe @usuario dominio.com.br <telefone>`. Já existe ou já foi descartado: pule.
