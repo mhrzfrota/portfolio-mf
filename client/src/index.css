@@ -1579,3 +1579,73 @@
   --color-white: #ffffff;
   --color-black: #14161b;
 }
+
+/* ── Finanças (o FRTCASH dentro do sistema interno) ──────────────────
+   As telas vieram do FRTCASH e usam estas variáveis. Aqui elas seguem o
+   tema claro do interno: superfícies brancas, linha fina e o azul da MF. */
+.frtcash {
+  --bg-app: transparent;
+  --header-bg: transparent;
+  --surface-bg: #ffffff;
+  --surface-strong: rgba(255, 255, 255, 0.72);
+  --surface-muted: #f1f2f6;
+  --column-bg: #eceef3;
+  --card-bg: #ffffff;
+  --input-bg: #ffffff;
+  --control-bg: #ffffff;
+  --control-bg-hover: #f1f2f6;
+  --button-primary-bg: #0c2afe;
+  --button-primary-hover: #0a22d4;
+  --button-primary-text: #ffffff;
+  --accent-income: #0d9488;
+  --accent-expense: #ea580c;
+  --accent-debt: #dc2626;
+  --text: #14161b;
+  --text-muted: #646a78;
+  --border-subtle: rgba(20, 22, 27, 0.09);
+  --ring-subtle: rgba(20, 22, 27, 0.08);
+  --danger-soft: #fef2f2;
+  --danger: #dc2626;
+  --negative-value: #b91c1c;
+  --income-tag-bg: #f0fdfa;
+  --income-tag-text: #115e59;
+  --income-tag-ring: #99f6e4;
+  --expense-tag-bg: #fff7ed;
+  --expense-tag-text: #9a3412;
+  --expense-tag-ring: #fed7aa;
+  --debt-tag-bg: #fef2f2;
+  --debt-tag-text: #991b1b;
+  --debt-tag-ring: #fecaca;
+  --stat-teal-from: #f0fdfa;
+  --stat-teal-to: rgba(204, 251, 241, 0.8);
+  --stat-teal-text: #134e4a;
+  --stat-teal-ring: rgba(153, 246, 228, 0.65);
+  --stat-orange-from: #fff7ed;
+  --stat-orange-to: rgba(255, 237, 213, 0.8);
+  --stat-orange-text: #7c2d12;
+  --stat-orange-ring: rgba(254, 215, 170, 0.65);
+  --stat-red-from: #fef2f2;
+  --stat-red-to: rgba(254, 226, 226, 0.8);
+  --stat-red-text: #7f1d1d;
+  --stat-red-ring: rgba(254, 202, 202, 0.65);
+  --stat-slate-from: #f8fafc;
+  --stat-slate-to: rgba(241, 245, 249, 0.8);
+  --stat-slate-text: #0f172a;
+  --stat-slate-ring: rgba(226, 232, 240, 0.75);
+  --stat-indigo-from: #eef2ff;
+  --stat-indigo-to: rgba(224, 231, 255, 0.8);
+  --stat-indigo-text: #312e81;
+  --stat-indigo-ring: rgba(199, 210, 254, 0.75);
+  --scrollbar-thumb: rgba(20, 22, 27, 0.15);
+  color: var(--text);
+}
+/* As telas do FRTCASH tinham cabeçalho de página inteira: aqui ele vira parte do conteúdo. */
+.frtcash header.border-b { border-bottom: 0; backdrop-filter: none; }
+.frtcash .min-h-screen { min-height: 0; }
+.frtcash .max-w-\[1200px\], .frtcash .max-w-\[900px\] { max-width: 1280px; }
+.frtcash header > div, .frtcash main.mx-auto { padding-left: 0; padding-right: 0; }
+@keyframes frtcash-card-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.frtcash .animate-card-in { animation: frtcash-card-in 0.28s ease-out both; }
+@media (prefers-reduced-motion: reduce) { .frtcash .animate-card-in { animation: none; } }
+/* Colunas de grade podem encolher no celular (a tabela larga já rola dentro do próprio cartão). */
+.frtcash .grid > * { min-width: 0; }

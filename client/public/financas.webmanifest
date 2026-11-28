@@ -1,0 +1,17 @@
+{
+  "name": "MF Finanças",
+  "short_name": "Finanças",
+  "description": "Finanças pessoais com registro automático das compras do iPhone.",
+  "start_url": "/financas",
+  "scope": "/financas",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f4f5f8",
+  "theme_color": "#0c2afe",
+  "lang": "pt-BR",
+  "icons": [
+    { "src": "/financas-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/financas-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/financas-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

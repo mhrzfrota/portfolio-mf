@@ -1,3 +1,4 @@
+import { lazy, Suspense } from "react";
 import NotFound from "@/pages/NotFound";
 import { Redirect, Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
@@ -17,6 +18,9 @@ import Login from "./pages/Login";
 import Bio from "./pages/Bio";
 import Radar from "./pages/Radar";
 import Materiais from "./pages/Materiais";
+// Finanças fica fora do pacote do site público: só carrega quando a aba abre.
+const Financas = lazy(() => import("./pages/Financas"));
+const FinancasPrevia = import.meta.env.DEV ? lazy(() => import("./pages/FinancasPrevia")) : null;
 
 function Router() {
   return (
@@ -38,7 +42,14 @@ function Router() {
         <Redirect to="/calendario" replace />
       </Route>
       <Route path="/financeiro">
-        <Redirect to="/calendario" replace />
+        <Redirect to="/financas" replace />
+      </Route>
+      <Route path="/financas/*?">
+        <ProtectedRoute returnTo="/financas">
+          <Suspense fallback={null}>
+            <Financas />
+          </Suspense>
+        </ProtectedRoute>
       </Route>
       <Route path="/habitos">
         <Redirect to="/calendario" replace />
@@ -75,6 +86,13 @@ function Router() {
       {import.meta.env.DEV && <Route path="/dev/conteudo" component={ConteudoPrevia} />}
       {/* Só no pnpm dev: prévia do relatório sem login, abrindo o arquivo salvo no Mac. */}
       {import.meta.env.DEV && <Route path="/dev/noite" component={NoitePrevia} />}
+      {FinancasPrevia && (
+        <Route path="/dev/financas/*?">
+          <Suspense fallback={null}>
+            <FinancasPrevia />
+          </Suspense>
+        </Route>
+      )}
       {/* A home virou um app de tela cheia com dock próprio (2026-10-29):
           fica fora do Layout, como a /bio. Cases e blog seguem no Layout. */}
       <Route path="/" component={Home} />

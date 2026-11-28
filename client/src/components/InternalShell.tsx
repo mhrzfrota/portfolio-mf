@@ -1,6 +1,6 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { Link, useLocation } from "wouter";
-import { ArrowUpRight, CalendarDays, ChevronsLeft, Clapperboard, KanbanSquare, Moon, Radar as RadarIcon } from "lucide-react";
+import { ArrowUpRight, CalendarDays, ChevronsLeft, Clapperboard, KanbanSquare, Moon, Radar as RadarIcon, Wallet } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
 import InternalAccount from "./InternalAccount";
@@ -8,6 +8,7 @@ import InternalAccount from "./InternalAccount";
 export const ABAS = [
   { href: "/calendario", nome: "Calendário", icone: CalendarDays, dica: "Agenda e lembretes" },
   { href: "/plano", nome: "Plano", icone: KanbanSquare, dica: "Ideias, a fazer e feito" },
+  { href: "/financas", nome: "Finanças", icone: Wallet, dica: "Dinheiro e compras do iPhone" },
   { href: "/conteudo", nome: "Conteúdo", icone: Clapperboard, dica: "O post da semana e os orgânicos" },
   { href: "/noite", nome: "Noite", icone: Moon, dica: "Relatório da noite" },
   { href: "/radar", nome: "Radar", icone: RadarIcon, dica: "Prospecção" },
@@ -154,7 +155,7 @@ export default function InternalShell({ title, children }: { title: string; chil
                 key={href}
                 href={href}
                 aria-current={i === ativa ? "page" : undefined}
-                className={cn("relative flex h-14 flex-col items-center justify-center gap-1 rounded-[16px] text-[11px] font-medium transition-colors", i === ativa ? "cor-forte text-white" : "text-white/55")}
+                className={cn("relative flex h-14 flex-col items-center justify-center gap-1 rounded-[16px] text-[11px] font-medium transition-colors max-[359px]:text-[9px] max-[359px]:tracking-[-0.03em]", i === ativa ? "cor-forte text-white" : "text-white/55")}
               >
                 <Icone size={20} strokeWidth={2} />
                 {nome}
